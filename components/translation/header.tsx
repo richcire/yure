@@ -38,8 +38,8 @@ export function Header() {
     <header className="bg-background border-b">
       <div className="container mx-auto px-4 py-4 flex justify-between items-center">
         <div className="flex items-center">
-          <MusicIcon className="mr-2 h-6 w-6 text-[#69140E]" />
-          <h1 className="text-2xl font-bold text-[#69140E]">J-POP 가사 번역</h1>
+          <MusicIcon className="mr-2 h-6 w-6" />
+          <h1 className="text-2xl font-bold">J-POP 가사 번역</h1>
         </div>
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-2">

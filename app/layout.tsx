@@ -36,7 +36,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko" className={taeMovieFont.className} suppressHydrationWarning>
-      <body className="bg-hanji text-foreground">
+      <body className="bg-hanji text-[#69140E]">
         <ThemeProvider
           attribute="class"
           defaultTheme="ligth"

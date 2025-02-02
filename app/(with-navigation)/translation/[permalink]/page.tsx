@@ -96,7 +96,7 @@ export default function TranslationPage({ params }: Props) {
         </div>
         <EditorContent
           editor={editor}
-          className="prose dark:prose-invert max-w-none"
+          className="prose dark:prose-invert max-w-none "
         />
       </div>
     </div>

@@ -81,7 +81,7 @@ export default function TiptapEditor({ id }: { id?: string }) {
       }),
       Highlight.configure({
         HTMLAttributes: {
-          class: "bg-yellow-200 dark:bg-yellow-800",
+          class: "bg-[#84894A] dark:bg-[#84894A]",
         },
       }),
       //   FontSize,

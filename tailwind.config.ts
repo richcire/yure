@@ -17,7 +17,51 @@ const config = {
         "2xl": "1400px",
       },
     },
+
     extend: {
+      typography: {
+        DEFAULT: {
+          css: {
+            color: "#69140E",
+            h1: {
+              color: "#69140E",
+            },
+            h2: {
+              color: "#69140E",
+            },
+            h3: {
+              color: "#69140E",
+            },
+            h4: {
+              color: "#69140E",
+            },
+            h5: {
+              color: "#69140E",
+            },
+            h6: {
+              color: "#69140E",
+            },
+            strong: {
+              color: "#69140E",
+            },
+            em: {
+              color: "#69140E",
+            },
+            a: {
+              color: "#69140E",
+            },
+            "li::marker": {
+              color: "#69140E",
+            },
+            hr: {
+              borderColor: "#69140E",
+            },
+            blockquote: {
+              color: "#69140E",
+            },
+          },
+        },
+      },
       colors: {
         border: "#69140E",
         input: "#69140E",
