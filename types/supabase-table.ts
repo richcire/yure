@@ -12,4 +12,5 @@ export interface ITranslations {
   thumbnail_url: string;
   created_at: string;
   release_date: string;
+  permalink: string;
 }

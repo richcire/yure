@@ -9,7 +9,7 @@ interface SongCardProps {
 
 export function SongCard({ song }: SongCardProps) {
   return (
-    <Link href={`/translation/${song.id}`} passHref>
+    <Link href={`/translation/${song.permalink}`} passHref>
       <Card className="w-full max-w-sm cursor-pointer relative group overflow-hidden aspect-[5/7]">
         <div className="absolute inset-0">
           <Image

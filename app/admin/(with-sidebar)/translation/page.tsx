@@ -10,6 +10,7 @@ async function getData(): Promise<ITranslations[]> {
   const { data, error } = await supabase
     .from("translations")
     .select("*")
+    .order("created_at", { ascending: false })
     .returns<ITranslations[]>();
 
   if (error) {

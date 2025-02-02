@@ -24,6 +24,16 @@ import {
 import { useRouter } from "next/navigation";
 import { DatePicker } from "@/components/date-picker";
 import { ITranslations } from "@/types/supabase-table";
+import {
+  Drawer,
+  DrawerClose,
+  DrawerContent,
+  DrawerDescription,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
+} from "@/components/ui/drawer";
 
 interface Category {
   id: string;
@@ -50,6 +60,7 @@ export default function TiptapEditor({ id }: { id?: string }) {
   const [categories, setCategories] = useState<Category[]>([]);
   const [progressValue, setProgressValue] = useState(0);
   const [isSaving, setIsSaving] = useState(false);
+  const [permalink, setPermalink] = useState("");
   const router = useRouter();
 
   const editor = useEditor({
@@ -115,6 +126,7 @@ export default function TiptapEditor({ id }: { id?: string }) {
         setArtist(translation.artist);
         setCategoryId(translation.category_id);
         setReleaseDate(new Date(translation.release_date));
+        setPermalink(translation.permalink);
         editor?.commands.setContent(translation.content);
       }
     };
@@ -228,6 +240,7 @@ export default function TiptapEditor({ id }: { id?: string }) {
         category_id: categoryId,
         release_date: formatDate(releaseDate),
         thumbnail_url: thumbnailUrl,
+        permalink,
       };
 
       // Save or update the content in the translations table
@@ -310,14 +323,40 @@ export default function TiptapEditor({ id }: { id?: string }) {
           <Button onClick={handleCancel} className="shadow-lg">
             취소
           </Button>
-          <Button
-            onClick={handleSave}
-            disabled={!title || !artist || !categoryId}
-            className="shadow-lg"
-          >
-            <Save className="w-4 h-4 mr-2" />
-            Save Translation
-          </Button>
+          <Drawer>
+            <DrawerTrigger asChild>
+              <Button
+                disabled={!title || !artist || !categoryId}
+                className="shadow-lg"
+              >
+                <Save className="w-4 h-4 mr-2" />
+                Save Translation
+              </Button>
+            </DrawerTrigger>
+            <DrawerContent>
+              <div className="mx-auto w-full max-w-sm">
+                <DrawerHeader>
+                  <DrawerTitle>퍼마링크 입력</DrawerTitle>
+                  <DrawerDescription>
+                    다른 글과 중복되면 안됩니다.
+                  </DrawerDescription>
+                </DrawerHeader>
+                <div className="p-4 pb-0">
+                  <Input
+                    placeholder="퍼마링크 입력"
+                    value={permalink}
+                    onChange={(e) => setPermalink(e.target.value)}
+                  />
+                </div>
+                <DrawerFooter>
+                  <Button onClick={handleSave}>Submit</Button>
+                  <DrawerClose asChild>
+                    <Button variant="outline">Cancel</Button>
+                  </DrawerClose>
+                </DrawerFooter>
+              </div>
+            </DrawerContent>
+          </Drawer>
         </div>
       </div>
     </>

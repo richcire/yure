@@ -25,21 +25,9 @@ export const YouTubeExtension = Node.create<YouTubeOptions>({
       },
       width: {
         default: "100%",
-        renderHTML: (attributes) => ({
-          width: attributes.width,
-        }),
       },
       aspectRatio: {
         default: "16/9",
-        renderHTML: (attributes) => ({
-          style: `aspect-ratio: ${attributes.aspectRatio}`,
-        }),
-      },
-      textAlign: {
-        default: "center",
-        renderHTML: (attributes) => ({
-          style: `text-align: ${attributes.textAlign}`,
-        }),
       },
     };
   },
@@ -68,12 +56,12 @@ export const YouTubeExtension = Node.create<YouTubeOptions>({
       {
         tag: 'iframe[src*="youtube.com"], iframe[src*="youtube-nocookie.com"]',
         getAttrs: (element) => {
-          console.log(element.getAttribute("src"));
           if (!(element instanceof HTMLElement)) return {};
+
           return {
             src: element.getAttribute("src"),
-            height: element.getAttribute("height"),
             width: element.getAttribute("width"),
+            aspectRatio: element.dataset.aspectRatio || "16/9",
           };
         },
       },
@@ -81,12 +69,11 @@ export const YouTubeExtension = Node.create<YouTubeOptions>({
   },
 
   renderHTML({ HTMLAttributes }) {
-    console.log(HTMLAttributes.src);
     const cleanAttrs = {
       ...this.options.HTMLAttributes,
       src: HTMLAttributes.src,
-      height: HTMLAttributes.height,
       width: HTMLAttributes.width,
+      "data-aspect-ratio": HTMLAttributes.aspectRatio,
       frameborder: "0",
       allow:
         "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture",

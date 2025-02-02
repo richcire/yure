@@ -15,14 +15,14 @@ import { Badge } from "@/components/ui/badge";
 
 interface Props {
   params: Promise<{
-    id: string;
+    permalink: string;
   }>;
 }
 
 export default function TranslationPage({ params }: Props) {
   const [translation, setTranslation] = useState<ITranslations | null>(null);
   const router = useRouter();
-  const { id } = use(params);
+  const { permalink } = use(params);
   const editor = useEditor({
     immediatelyRender: false,
     extensions: [
@@ -56,7 +56,7 @@ export default function TranslationPage({ params }: Props) {
       const { data, error } = await supabase
         .from("translations")
         .select("*, categories(*)")
-        .eq("id", id)
+        .eq("permalink", permalink)
         .single<ITranslations>();
       if (error || !data) {
         router.push("/404");
@@ -71,7 +71,7 @@ export default function TranslationPage({ params }: Props) {
     };
 
     fetchTranslation();
-  }, [id, editor, router]);
+  }, [permalink, editor, router]);
 
   if (!translation || !editor) {
     return null;
