@@ -15,10 +15,10 @@ export async function GET(request: Request) {
     await supabase.auth.exchangeCodeForSession(code);
   }
 
-  if (redirectTo) {
-    return NextResponse.redirect(`${origin}${redirectTo}`);
-  }
+  // if (redirectTo) {
+  //   return NextResponse.redirect(`${origin}${redirectTo}`);
+  // }
 
   // URL to redirect to after sign up process completes
-  return NextResponse.redirect(`${origin}/protected`);
+  return NextResponse.redirect(`${origin}`);
 }

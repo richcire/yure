@@ -1,44 +1,71 @@
-import { signInAction } from "@/app/actions";
-import { FormMessage, Message } from "@/components/form-message";
-import { SubmitButton } from "@/components/submit-button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import Link from "next/link";
+"use client";
 
-export default async function Login(props: { searchParams: Promise<Message> }) {
-  const searchParams = await props.searchParams;
+import { useState } from "react";
+import Image from "next/image";
+import { Button } from "@/components/ui/button";
+import { signInWithGoogleAction } from "@/app/actions";
+
+const LoginPage = () => {
+  const [showPassword, setShowPassword] = useState(false);
+
   return (
-    <form className="flex-1 flex flex-col min-w-64">
-      <h1 className="text-2xl font-medium">Sign in</h1>
-      <p className="text-sm text-foreground">
-        Don't have an account?{" "}
-        <Link className="text-foreground font-medium underline" href="/sign-up">
-          Sign up
-        </Link>
-      </p>
-      <div className="flex flex-col gap-2 [&>input]:mb-3 mt-8">
-        <Label htmlFor="email">Email</Label>
-        <Input name="email" placeholder="you@example.com" required />
-        <div className="flex justify-between items-center">
-          <Label htmlFor="password">Password</Label>
-          <Link
-            className="text-xs text-foreground underline"
-            href="/forgot-password"
-          >
-            Forgot Password?
-          </Link>
+    <div className="w-full max-w-lg mx-auto p-8 rounded-lg backdrop-blur-sm shadow-lg">
+      {/* Logo Section */}
+      <div className="flex flex-col items-center mb-8">
+        <div className="w-16 h-16 relative mb-4">
+          {/* <Image
+            src="/logo.png" // Make sure to add your logo
+            alt="Logo"
+            fill
+            className="object-contain"
+          /> */}
         </div>
-        <Input
-          type="password"
-          name="password"
-          placeholder="Your password"
-          required
-        />
-        <SubmitButton pendingText="Signing In..." formAction={signInAction}>
-          Sign in
-        </SubmitButton>
-        <FormMessage message={searchParams} />
+        <h1 className="text-2xl font-bold text-gray-800 mb-6">로그인하기</h1>
       </div>
-    </form>
+
+      {/* Social Login Buttons */}
+      <div className="space-y-4 mb-8">
+        <Button
+          variant="outline"
+          className="w-full relative h-12 border-2"
+          onClick={signInWithGoogleAction}
+        >
+          <div className="absolute left-4">
+            <Image
+              src="/assets/icons/google.svg"
+              alt="Google"
+              width={20}
+              height={20}
+              className="object-contain"
+            />
+          </div>
+          <span className="mx-auto">Google로 계속하기</span>
+        </Button>
+
+        {/* <Button variant="outline" className="w-full relative h-12 border-2">
+          <div className="absolute left-4">
+            <Image
+              src="/assets/icons/kakaotalk.svg"
+              alt="Kakao"
+              width={20}
+              height={20}
+              className="object-contain"
+            />
+          </div>
+          <span className="mx-auto">카카오톡으로 계속하기</span>
+        </Button> */}
+      </div>
+      {/* Footer Links */}
+      <div className="mt-6 text-center">
+        <div className="mt-4">
+          <span className="text-gray-600">계정이 없으신가요? </span>
+          <a href="sign-up" className="text-emerald-600 hover:underline">
+            가입하기
+          </a>
+        </div>
+      </div>
+    </div>
   );
-}
+};
+
+export default LoginPage;

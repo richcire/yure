@@ -1,0 +1,31 @@
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import Image from "next/image";
+import Link from "next/link";
+import { ITranslations } from "@/types/supabase-table";
+
+interface SongCardProps {
+  song: ITranslations;
+}
+
+export function SongCard({ song }: SongCardProps) {
+  return (
+    <Link href={`/translation/${song.id}`} passHref>
+      <Card className="w-full max-w-sm cursor-pointer relative group overflow-hidden aspect-[5/7]">
+        <div className="absolute inset-0">
+          <Image
+            src={song.thumbnail_url || "/assets/logos/square.jpeg"}
+            alt={`${song.title} album cover`}
+            fill
+            className="object-cover transition-transform duration-300 group-hover:scale-110"
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          />
+          <div className="absolute inset-0 bg-black/40 transition-opacity duration-300 " />
+        </div>
+        <div className="relative z-10 h-full flex flex-col justify-end p-4">
+          <CardTitle className="text-white/80 mb-2">{song.title}</CardTitle>
+          <p className="text-sm text-white/80">{song.artist}</p>
+        </div>
+      </Card>
+    </Link>
+  );
+}

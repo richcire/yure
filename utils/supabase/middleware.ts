@@ -22,17 +22,17 @@ export const updateSession = async (request: NextRequest) => {
           },
           setAll(cookiesToSet) {
             cookiesToSet.forEach(({ name, value }) =>
-              request.cookies.set(name, value),
+              request.cookies.set(name, value)
             );
             response = NextResponse.next({
               request,
             });
             cookiesToSet.forEach(({ name, value, options }) =>
-              response.cookies.set(name, value, options),
+              response.cookies.set(name, value, options)
             );
           },
         },
-      },
+      }
     );
 
     // This will refresh session if expired - required for Server Components
@@ -44,9 +44,24 @@ export const updateSession = async (request: NextRequest) => {
       return NextResponse.redirect(new URL("/sign-in", request.url));
     }
 
-    if (request.nextUrl.pathname === "/" && !user.error) {
-      return NextResponse.redirect(new URL("/protected", request.url));
+    if (request.nextUrl.pathname.startsWith("/admin")) {
+      if (!!!user.error) {
+        const { data: role, error } = await supabase
+          .from("user_role")
+          .select("role")
+          .eq("user_id", user.data.user.id)
+          .single<{ role: string }>();
+        if (error || role?.role !== "admin") {
+          return NextResponse.redirect(new URL("/", request.url));
+        }
+      } else {
+        return NextResponse.redirect(new URL("/sign-in", request.url));
+      }
     }
+
+    // if (request.nextUrl.pathname === "/" && !user.error) {
+    //   return NextResponse.redirect(new URL("/protected", request.url));
+    // }
 
     return response;
   } catch (e) {
