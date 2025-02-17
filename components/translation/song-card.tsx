@@ -10,14 +10,14 @@ interface SongCardProps {
 export function SongCard({ song }: SongCardProps) {
   return (
     <Link href={`/translation/${song.permalink}`} passHref>
-      <Card className="w-full max-w-sm cursor-pointer relative group overflow-hidden aspect-[5/7]">
+      <Card className="w-full cursor-pointer relative group overflow-hidden aspect-video">
         <div className="absolute inset-0">
           <Image
             src={song.thumbnail_url || "/assets/logos/square.jpeg"}
             alt={`${song.title} album cover`}
             fill
             className="object-cover transition-transform duration-300 group-hover:scale-110"
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            sizes="(max-width: 768px) 100vw, 50vw"
           />
           <div className="absolute inset-0 bg-black/40 transition-opacity duration-300 " />
         </div>

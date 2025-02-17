@@ -60,10 +60,16 @@ const Navigation = () => {
           {/* Navigation Links - Centered */}
           <div className="hidden sm:flex items-center justify-center gap-8 col-span-2 lg:col-span-1">
             <Link
-              href="/"
+              href="/translation"
               className="hover:text-primary transition-colors whitespace-nowrap"
             >
               J-POP 가사번역
+            </Link>
+            <Link
+              href="/article"
+              className="hover:text-primary transition-colors whitespace-nowrap"
+            >
+              오리지널 컨텐츠(가명)
             </Link>
           </div>
 

@@ -14,3 +14,17 @@ export interface ITranslations {
   release_date: string;
   permalink: string;
 }
+
+export interface IArticles {
+  id: string;
+  title: string;
+  content: string;
+  excerpt: string;
+  user_info: {
+    name: string;
+  };
+  created_at: string;
+  updated_at: string;
+  slug: string;
+  thumbnail_url: string;
+}

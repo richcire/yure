@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Pagination,
   PaginationContent,
@@ -7,18 +9,34 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
-
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useCallback } from "react";
 interface PaginationControlProps {
   currentPage: number;
   totalPages: number;
-  onPageChange: (page: number) => void;
 }
 
 export function PaginationControl({
   currentPage,
   totalPages,
-  onPageChange,
 }: PaginationControlProps) {
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
+  const createQueryString = useCallback(
+    (name: string, value: string) => {
+      const params = new URLSearchParams(searchParams);
+      params.set(name, value);
+      return params.toString();
+    },
+    [searchParams]
+  );
+
+  const onPageChange = (page: number) => {
+    router.push(pathname + "?" + createQueryString("page", page.toString()));
+  };
+
   const getPageNumbers = () => {
     const pages = [];
     const showEllipsis = totalPages > 7;

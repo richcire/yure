@@ -47,7 +47,7 @@ export const updateSession = async (request: NextRequest) => {
     if (request.nextUrl.pathname.startsWith("/admin")) {
       if (!!!user.error) {
         const { data: role, error } = await supabase
-          .from("user_role")
+          .from("user_info")
           .select("role")
           .eq("user_id", user.data.user.id)
           .single<{ role: string }>();
