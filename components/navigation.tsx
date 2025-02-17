@@ -5,17 +5,29 @@ import Link from "next/link";
 import { createClient } from "@/utils/supabase/client";
 import { User } from "@supabase/supabase-js";
 import Image from "next/image";
+import { IUserInfo } from "@/types/supabase-table";
+import { useRouter } from "next/navigation";
 
 const Navigation = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [user, setUser] = useState<User | undefined>();
+  const [name, setName] = useState<string | undefined>();
   const [showDropdown, setShowDropdown] = useState(false);
   const supabase = createClient();
+  const router = useRouter();
 
   useEffect(() => {
     const getSession = async () => {
       const { data } = await supabase.auth.getSession();
       setUser(data.session?.user);
+
+      const { data: userData } = await supabase
+        .from("user_info")
+        .select("name")
+        .eq("user_id", data.session?.user.id)
+        .single<IUserInfo>();
+
+      setName(userData?.name);
     };
     getSession();
   }, []);
@@ -82,11 +94,17 @@ const Navigation = () => {
                 onMouseLeave={() => setShowDropdown(false)}
               >
                 <div className="text-sm hover:text-primary transition-colors cursor-pointer truncate max-w-[120px] sm:max-w-none">
-                  안녕하세요, {user.email?.split("@")[0]}님!
+                  안녕하세요, {name}님!
                 </div>
                 {showDropdown && (
                   <div className="absolute right-0 top-full pt-1">
                     <div className="w-48 bg-white/80 backdrop-blur-sm shadow-sm border rounded-md">
+                      <button
+                        onClick={() => router.push("/protected/myPage")}
+                        className="w-full text-left px-4 py-2 text-sm text-red-500 hover:bg-red-50 transition-colors rounded-md"
+                      >
+                        마이 페이지
+                      </button>
                       <button
                         onClick={handleSignOut}
                         className="w-full text-left px-4 py-2 text-sm text-red-500 hover:bg-red-50 transition-colors rounded-md"

@@ -10,8 +10,8 @@ interface ArticleCardProps {
 export function ArticleCard({ article }: ArticleCardProps) {
   return (
     <Link href={`/article/${article.slug}`}>
-      <Card className="h-full overflow-hidden transition-all duration-200 hover:shadow-lg group bg-background text-foreground border border-[#69140E]/50">
-        <div className="relative aspect-video m-4">
+      <Card className="flex flex-col h-[400px] overflow-hidden transition-all duration-300 hover:shadow-lg group bg-background text-foreground border-2 border-[#69140E]/50 hover:bg-[#69140E]/5">
+        <div className="relative aspect-video m-3">
           <Image
             src={article.thumbnail_url || "/assets/logos/square.jpeg"}
             alt={article.title}
@@ -20,15 +20,15 @@ export function ArticleCard({ article }: ArticleCardProps) {
             sizes="(max-width: 768px) 100vw, 50vw"
           />
         </div>
-        <CardContent className="p-6">
+        <CardContent className="p-4 pt-0 flex-1">
           <div className="flex flex-col h-full">
-            <h3 className="text-xl font-semibold mb-2 group-hover:text-primary transition-colors line-clamp-2">
+            <h3 className="text-xl font-semibold mb-2 line-clamp-2">
               {article.title}
             </h3>
-            <p className="text-[#69140E]/50 mb-4 flex-grow line-clamp-3">
+            <p className="text-[#69140E]/50 mb-4 flex-1 line-clamp-3">
               {article.content
                 .replace(/<[^>]*>/g, "")
-                .slice(0, 50)
+                .slice(0, 70)
                 .trim() + "..."}
             </p>
             <div className="flex justify-between items-center text-sm text-[#69140E]/50">

@@ -51,7 +51,7 @@ export default async function ArticleHomePage({ searchParams }: Props) {
     .returns<IArticles[]>();
 
   return (
-    <div className="w-full max-w-7xl mx-auto min-h-screen bg-background">
+    <div className="w-full max-w-5xl mx-auto min-h-screen bg-background">
       <Header />
       <main className="container mx-auto px-4 py-8">
         {articles ? (
