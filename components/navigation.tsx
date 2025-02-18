@@ -81,7 +81,7 @@ const Navigation = () => {
               href="/article"
               className="hover:text-primary transition-colors whitespace-nowrap"
             >
-              오리지널 컨텐츠(가명)
+              유레 매거진
             </Link>
           </div>
 
@@ -101,7 +101,7 @@ const Navigation = () => {
                     <div className="w-48 bg-white/80 backdrop-blur-sm shadow-sm border rounded-md">
                       <button
                         onClick={() => router.push("/protected/myPage")}
-                        className="w-full text-left px-4 py-2 text-sm text-red-500 hover:bg-red-50 transition-colors rounded-md"
+                        className="w-full text-left px-4 py-2 text-sm hover:bg-red-50 transition-colors rounded-md"
                       >
                         마이 페이지
                       </button>

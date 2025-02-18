@@ -1,9 +1,7 @@
 import { Header } from "@/components/translation/header";
-import { CategoryFilter } from "@/components/translation/category-filter";
-import { ITranslations } from "@/types/supabase-table";
-import { createClient } from "@/utils/supabase/server";
-import { SongGrid } from "@/components/translation/song-grid";
-import { PaginationControl } from "@/components/ui/pagination-control";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Suspense } from "react";
+import TranslationList from "@/components/translation/translation-list";
 
 const ITEMS_PER_PAGE = 8;
 
@@ -16,83 +14,34 @@ interface Props {
   }>;
 }
 
-export default async function TranslationHomePage({ searchParams }: Props) {
-  const {
-    search,
-    category,
-    page = "1",
-    sort = "created_desc",
-  } = await searchParams;
-  const currentPage = parseInt(page);
-  const supabase = await createClient();
-
-  // Fetch categories
-  const { data: categories } = await supabase
-    .from("categories")
-    .select("id, name")
-    .order("name");
-
-  // Build the base query
-  const baseQuery = supabase.from("translations").select(
-    `
-        id,
-        title,
-        artist,
-        category_id,
-        thumbnail_url,
-        permalink,
-        created_at,
-        release_date
-      `,
-    { count: "exact" }
+function TranslationListSkeleton() {
+  return (
+    <>
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        {[...Array(ITEMS_PER_PAGE)].map((_, i) => (
+          <div key={i} className="flex flex-col space-y-3">
+            <Skeleton className="w-full aspect-video rounded-lg" />{" "}
+            {/* Thumbnail */}
+            <Skeleton className="w-3/4 h-5" /> {/* Title */}
+            <Skeleton className="w-1/2 h-4" /> {/* Artist */}
+          </div>
+        ))}
+      </div>
+      <div className="mt-8 flex justify-center">
+        <Skeleton className="w-96 h-10" /> {/* Pagination */}
+      </div>
+    </>
   );
+}
 
-  if (search) {
-    baseQuery.or(`title.ilike.%${search}%,artist.ilike.%${search}%`);
-  }
-
-  if (category) {
-    baseQuery.eq("category_id", category);
-  }
-
-  // Get total count
-  const { count } = await baseQuery;
-  const totalPages = Math.ceil((count || 0) / ITEMS_PER_PAGE);
-
-  // Determine sort column and direction
-  const [column, direction] = sort.split("_");
-  const sortColumn = column === "release" ? "release_date" : "created_at";
-  const ascending = direction === "asc";
-
-  // Fetch paginated data with sorting
-  const { data: translations } = await baseQuery
-    .order(sortColumn, { ascending })
-    .range((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE - 1)
-    .returns<ITranslations[]>();
-
+export default async function TranslationHomePage({ searchParams }: Props) {
   return (
     <div className="w-full max-w-5xl mx-auto min-h-screen bg-background">
       <Header />
       <main className="container mx-auto px-4 py-8">
-        {categories && (
-          <CategoryFilter
-            categories={categories}
-            selectedCategoryId={category}
-          />
-        )}
-        {translations ? (
-          <>
-            <SongGrid songs={translations} />
-            {totalPages > 1 && (
-              <PaginationControl
-                currentPage={currentPage}
-                totalPages={totalPages}
-              />
-            )}
-          </>
-        ) : (
-          "error occurred"
-        )}
+        <Suspense fallback={<TranslationListSkeleton />}>
+          <TranslationList searchParams={searchParams} />
+        </Suspense>
       </main>
     </div>
   );

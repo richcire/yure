@@ -44,30 +44,30 @@ export default async function MyPage() {
   return (
     <div className="max-w-2xl mx-auto p-6">
       <div className="bg-white rounded-lg shadow-sm p-8 space-y-6">
-        <h1 className="text-2xl font-semibold text-gray-900">My Profile</h1>
+        <h1 className="text-2xl font-semibold text-gray-900">내 정보</h1>
 
         <div className="flex items-center justify-between border-b pb-4">
           <div>
-            <p className="text-sm text-gray-500">Name</p>
+            <p className="text-sm text-gray-500">닉네임</p>
             <p className="text-lg font-medium">{userData?.name || "Not set"}</p>
           </div>
 
           <Dialog>
             <DialogTrigger asChild>
-              <Button variant="outline">Edit Name</Button>
+              <Button variant="outline">수정</Button>
             </DialogTrigger>
             <DialogContent>
               <DialogHeader>
-                <DialogTitle>Edit Your Name</DialogTitle>
+                <DialogTitle>닉네임 수정</DialogTitle>
               </DialogHeader>
               <form action={updateName} className="space-y-4 mt-4">
                 <Input
                   name="name"
-                  placeholder="Enter your name"
+                  placeholder="닉네임을 입력해주세요"
                   defaultValue={userData?.name || ""}
                 />
                 <DialogClose asChild>
-                  <Button type="submit">Save Changes</Button>
+                  <Button type="submit">저장</Button>
                 </DialogClose>
               </form>
             </DialogContent>
