@@ -1,5 +1,6 @@
 import _ from "lodash";
 import { ArticleFilters } from "./article-filters";
+import { Suspense } from "react";
 export function Header() {
   return (
     <header className="container mx-auto px-4 py-12">
@@ -7,7 +8,9 @@ export function Header() {
       <p className="text-lg mb-8 text-muted-foreground">
         유레 매거진에서 유레의 최신 소식과 업데이트를 확인해보세요.
       </p>
-      <ArticleFilters />
+      <Suspense>
+        <ArticleFilters />
+      </Suspense>
     </header>
   );
 }
