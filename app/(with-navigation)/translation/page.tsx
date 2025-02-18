@@ -37,7 +37,9 @@ function TranslationListSkeleton() {
 export default async function TranslationHomePage({ searchParams }: Props) {
   return (
     <div className="w-full max-w-5xl mx-auto min-h-screen bg-background">
-      <Header />
+      <Suspense>
+        <Header />
+      </Suspense>
       <main className="container mx-auto px-4 py-8">
         <Suspense fallback={<TranslationListSkeleton />}>
           <TranslationList searchParams={searchParams} />

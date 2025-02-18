@@ -3,6 +3,7 @@ import { createClient } from "@/utils/supabase/server";
 import { CategoryFilter } from "./category-filter";
 import { SongGrid } from "./song-grid";
 import { PaginationControl } from "../ui/pagination-control";
+import { Suspense } from "react";
 
 const ITEMS_PER_PAGE = 8;
 
