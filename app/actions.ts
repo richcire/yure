@@ -55,6 +55,8 @@ export const signUpWithGoogleAction = async () => {
     return encodedRedirect("error", "/sign-up", error.message);
   }
 
+  console.log("approach end");
+
   return redirect(data.url);
 };
 
@@ -102,6 +104,20 @@ export const signOutAction = async () => {
 
 export const deleteUserAction = async (userId: string) => {
   const supabase = await createClient();
+
+  const { error: deleteUserInfoError } = await supabase
+    .from("user_info")
+    .delete()
+    .eq("user_id", userId);
+  if (deleteUserInfoError) {
+    console.error(deleteUserInfoError.message);
+    return encodedRedirect(
+      "error",
+      "/protected/myPage",
+      deleteUserInfoError.message
+    );
+  }
+
   await supabase.auth.signOut();
   console.log("signed out");
   const supabase_service_role = await createClient("service_role");
