@@ -1,4 +1,4 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardTitle } from "@/components/ui/card";
 import Image from "next/image";
 import Link from "next/link";
 import { ITranslations } from "@/types/supabase-table";
@@ -16,8 +16,9 @@ export function SongCard({ song }: SongCardProps) {
             src={song.thumbnail_url || "/assets/logos/square.jpeg"}
             alt={`${song.title} album cover`}
             fill
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             className="object-cover transition-transform duration-300 group-hover:scale-110"
-            sizes="(max-width: 768px) 100vw, 50vw"
+            priority={true}
           />
           <div className="absolute inset-0 bg-black/40 transition-opacity duration-300 " />
         </div>

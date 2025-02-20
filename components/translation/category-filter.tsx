@@ -2,7 +2,6 @@
 
 import { Badge } from "@/components/ui/badge";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useCallback } from "react";
 import { SortSelect } from "./sort-select";
 
 interface Category {
@@ -41,7 +40,7 @@ export function CategoryFilter({
   };
 
   return (
-    <div className="flex flex-wrap items-center justify-between gap-4 mb-6">
+    <div className="flex flex-wrap items-center justify-between gap-4 mb-6 mt-8">
       <div className="flex flex-wrap gap-2">
         {categories.map((category) => (
           <Badge

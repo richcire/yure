@@ -24,7 +24,7 @@ async function fetchTranslation(permalink: string) {
   const { data, error } = await supabase
     .from("translations")
     .select("*, categories(*)")
-    .eq("permalink", permalink)
+    .eq("permalink", decodeURIComponent(permalink))
     .single<ITranslations>();
 
   if (error || !data) {
@@ -35,6 +35,7 @@ async function fetchTranslation(permalink: string) {
 }
 
 export async function TranslationTitle({ permalink }: TranslationTitleProps) {
+  console.log("permalink", permalink);
   const translation = await fetchTranslation(permalink);
   return (
     <div className="bg-[#214E34] backdrop-blur-sm shadow-sm p-4 rounded-md mb-8">

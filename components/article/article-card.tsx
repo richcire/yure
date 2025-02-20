@@ -17,7 +17,7 @@ export function ArticleCard({ article }: ArticleCardProps) {
             alt={article.title}
             fill
             className="object-cover rounded-lg"
-            sizes="(max-width: 768px) 100vw, 50vw"
+            sizes="(max-width: 750px) 100vw, (max-width: 1000px) 50vw, 33vw"
           />
         </div>
         <CardContent className="p-4 pt-0 flex-1">

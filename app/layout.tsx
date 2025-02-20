@@ -2,6 +2,7 @@ import { Geist } from "next/font/google";
 import { ThemeProvider } from "next-themes";
 import "./globals.css";
 import localFont from "next/font/local";
+import { WebVitals } from "@/components/web-vitals";
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
   : "http://localhost:3000";
@@ -30,6 +31,8 @@ export default function RootLayout({
   return (
     <html lang="ko" className={taeMovieFont.className} suppressHydrationWarning>
       <body className="bg-hanji text-[#69140E]">
+        <WebVitals />
+
         <ThemeProvider
           attribute="class"
           defaultTheme="ligth"

@@ -81,6 +81,8 @@ export default function ArticleEditor({ id }: { id?: string }) {
   function slugifyLimited(text: string, maxLength = 20) {
     // 문자열로 변환하고, 앞뒤 공백 제거 및 영어의 경우 소문자 변환
     text = text.toString().trim().toLowerCase();
+    // Remove URL special characters
+    text = text.replace(/[%&?=/#]/g, "");
     const words = text.split(/\s+/);
     let slug = "";
 
@@ -186,6 +188,9 @@ export default function ArticleEditor({ id }: { id?: string }) {
         const {
           data: { publicUrl },
         } = supabase.storage.from("images").getPublicUrl(fileName);
+
+        // Update the image src with the public URL
+        img.setAttribute("src", publicUrl);
       });
 
       // Wait for all images to be uploaded
@@ -206,6 +211,8 @@ export default function ArticleEditor({ id }: { id?: string }) {
         thumbnail_url: thumbnailUrl,
         slug: slugifyLimited(title),
       };
+
+      console.log(slugifyLimited(title));
 
       // Save or update the content in the translations table
       const { error } = id

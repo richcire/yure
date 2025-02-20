@@ -1,9 +1,7 @@
 import { ITranslations } from "@/types/supabase-table";
 import { createClient } from "@/utils/supabase/server";
-import { CategoryFilter } from "./category-filter";
 import { SongGrid } from "./song-grid";
 import { PaginationControl } from "../ui/pagination-control";
-import { Suspense } from "react";
 
 const ITEMS_PER_PAGE = 8;
 
@@ -27,23 +25,14 @@ export default async function TranslationList({ searchParams }: Props) {
   const currentPage = parseInt(page);
   const supabase = await createClient();
 
-  // Fetch categories
-  const { data: categories } = await supabase
-    .from("categories")
-    .select("id, name")
-    .order("name");
-
   // Build the base query
   const baseQuery = supabase.from("translations").select(
     `
           id,
           title,
           artist,
-          category_id,
           thumbnail_url,
-          permalink,
-          created_at,
-          release_date
+          permalink
         `,
     { count: "exact" }
   );
@@ -73,9 +62,6 @@ export default async function TranslationList({ searchParams }: Props) {
 
   return (
     <>
-      {categories && (
-        <CategoryFilter categories={categories} selectedCategoryId={category} />
-      )}
       {translations ? (
         <>
           <SongGrid songs={translations} />

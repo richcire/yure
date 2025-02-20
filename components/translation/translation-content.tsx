@@ -53,7 +53,7 @@ export default function TranslationContent({
       const { data, error } = await supabase
         .from("translations")
         .select("*")
-        .eq("permalink", permalink)
+        .eq("permalink", decodeURIComponent(permalink))
         .single<ITranslations>();
       if (error || !data) {
         router.push("/404");

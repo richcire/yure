@@ -219,6 +219,9 @@ export default function TiptapEditor({ id }: { id?: string }) {
         const {
           data: { publicUrl },
         } = supabase.storage.from("images").getPublicUrl(fileName);
+
+        // Update the image src with the public URL
+        img.setAttribute("src", publicUrl);
       });
 
       // Wait for all images to be uploaded
