@@ -17,9 +17,8 @@ import {
   Heading1,
   Heading2,
   Heading3,
-  Heading4,
-  Heading5,
   MinusSquare,
+  Type,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -92,7 +91,7 @@ export function Toolbar({ editor }: ToolbarProps) {
   return (
     <div className="fixed top-0 left-0 right-0 h-16 flex justify-center bg-white/40 backdrop-blur-sm shadow-sm z-20">
       <div className="flex flex-wrap gap-2 p-2">
-        {[1, 2, 3, 4, 5].map((level) => (
+        {[1, 2, 3].map((level) => (
           <Button
             key={level}
             size="sm"
@@ -104,7 +103,7 @@ export function Toolbar({ editor }: ToolbarProps) {
               editor
                 .chain()
                 .focus()
-                .toggleHeading({ level: level as 1 | 2 | 3 | 4 | 5 })
+                .toggleHeading({ level: level as 1 | 2 | 3 })
                 .run();
 
               setTimeout(() => {
@@ -116,10 +115,15 @@ export function Toolbar({ editor }: ToolbarProps) {
             {level === 1 && <Heading1 className="h-4 w-4" />}
             {level === 2 && <Heading2 className="h-4 w-4" />}
             {level === 3 && <Heading3 className="h-4 w-4" />}
-            {level === 4 && <Heading4 className="h-4 w-4" />}
-            {level === 5 && <Heading5 className="h-4 w-4" />}
           </Button>
         ))}
+        <Button
+          size="sm"
+          variant={editor.isActive("paragraph") ? "secondary" : "ghost"}
+          onClick={() => editor.chain().focus().setParagraph().run()}
+        >
+          <Type className="h-4 w-4" />
+        </Button>
 
         <div className="w-px h-6 bg-border mx-2" />
 

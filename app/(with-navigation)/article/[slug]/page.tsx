@@ -5,6 +5,14 @@ import {
 } from "../../../../components/article/article-title";
 import ArticleContent from "../../../../components/article/article-content";
 
+export async function generateMetadata({ params }: Props) {
+  const { slug } = await params;
+
+  return {
+    title: `${decodeURIComponent(slug)} • 유레 揺れ`,
+  };
+}
+
 interface Props {
   params: Promise<{
     slug: string;

@@ -12,12 +12,12 @@ import {
 import { Input } from "@/components/ui/input";
 import { revalidatePath } from "next/cache";
 import Link from "next/link";
+import DeleteUserButton from "./DeleteUserButton";
 
 export default async function MyPage() {
   const supabase = await createClient();
 
   const { data } = await supabase.auth.getUser();
-  console.log(data);
   const { data: userData } = await supabase
     .from("user_info")
     .select("*")
@@ -79,6 +79,7 @@ export default async function MyPage() {
             홈으로
           </Button>
         </Link>
+        <DeleteUserButton userId={data.user?.id || ""} />
       </div>
     </div>
   );

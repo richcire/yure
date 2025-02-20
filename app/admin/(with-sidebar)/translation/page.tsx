@@ -1,12 +1,12 @@
 import { ITranslations } from "@/types/supabase-table";
 import { columns } from "./columns";
 import { DataTable } from "./data-table";
-import { createClient } from "@/utils/supabase/client";
+import { createClient } from "@/utils/supabase/server";
 import Link from "next/link";
 import { Label } from "@/components/ui/label";
 
 async function getData(): Promise<ITranslations[]> {
-  const supabase = createClient();
+  const supabase = await createClient();
   const { data, error } = await supabase
     .from("translations")
     .select("*")

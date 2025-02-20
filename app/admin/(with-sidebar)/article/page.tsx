@@ -1,12 +1,14 @@
 import { IArticles } from "@/types/supabase-table";
 import { columns } from "./columns";
 import { DataTable } from "./data-table";
-import { createClient } from "@/utils/supabase/client";
+import { createClient } from "@/utils/supabase/server";
 import Link from "next/link";
 import { Label } from "@/components/ui/label";
 
+export const revalidate = 60;
+
 async function getData(): Promise<IArticles[]> {
-  const supabase = createClient();
+  const supabase = await createClient();
   const { data, error } = await supabase
     .from("articles")
     .select(
@@ -23,7 +25,6 @@ async function getData(): Promise<IArticles[]> {
     console.error(error);
     return [];
   }
-  console.log(data);
   return data;
 }
 

@@ -1,13 +1,10 @@
 "use client";
 
-import { useState } from "react";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { signUpWithGoogleAction } from "@/app/actions";
 
 const LoginPage = () => {
-  const [showPassword, setShowPassword] = useState(false);
-
   return (
     <div className="w-full max-w-lg mx-auto p-8 rounded-lg backdrop-blur-sm shadow-lg">
       {/* Logo Section */}

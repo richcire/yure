@@ -94,6 +94,26 @@ export const signInAction = async (formData: FormData) => {
   return redirect("/protected");
 };
 
+export const signOutAction = async () => {
+  const supabase = await createClient();
+  await supabase.auth.signOut();
+  return redirect("/sign-in");
+};
+
+export const deleteUserAction = async (userId: string) => {
+  const supabase = await createClient();
+  await supabase.auth.signOut();
+  console.log("signed out");
+  const supabase_service_role = await createClient("service_role");
+  const { error } = await supabase_service_role.auth.admin.deleteUser(userId);
+  if (error) {
+    console.error(error.message);
+    return encodedRedirect("error", "/protected/myPage", error.message);
+  }
+  console.log("user deleted");
+  return encodedRedirect("success", "/", "User deleted");
+};
+
 export const forgotPasswordAction = async (formData: FormData) => {
   const email = formData.get("email")?.toString();
   const supabase = await createClient();
@@ -163,10 +183,4 @@ export const resetPasswordAction = async (formData: FormData) => {
   }
 
   encodedRedirect("success", "/protected/reset-password", "Password updated");
-};
-
-export const signOutAction = async () => {
-  const supabase = await createClient();
-  await supabase.auth.signOut();
-  return redirect("/sign-in");
 };

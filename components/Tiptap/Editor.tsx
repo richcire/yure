@@ -90,7 +90,7 @@ export default function TiptapEditor({ id }: { id?: string }) {
     editorProps: {
       attributes: {
         class:
-          "prose focus:outline-none prose-p:mt-0 prose-headings:mt-0 prose:max-w-none prose-sm:max-w-none max-w-none w-full",
+          "prose focus:outline-none prose-p:mt-0 prose-p:mb-0 prose-headings:mt-0 prose:max-w-none prose-sm:max-w-none max-w-none w-full",
       },
     },
   });

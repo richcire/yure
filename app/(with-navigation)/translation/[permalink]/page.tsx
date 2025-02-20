@@ -5,6 +5,35 @@ import {
   TranslationTitleSkeleton,
 } from "@/components/translation/translation-title";
 import TranslationContent from "@/components/translation/translation-content";
+import { createClient } from "@/utils/supabase/server";
+
+export async function generateMetadata({ params }: Props) {
+  const { permalink } = await params;
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("translations")
+    .select("title")
+    .eq("permalink", permalink)
+    .single();
+
+  return {
+    title: `${data?.title} • 유레 揺れ`,
+  };
+}
+
+// export async function generateStaticParams() {
+//   const supabase = await createClient();
+//   const { data, error } = await supabase
+//     .from("translations")
+//     .select("permalink")
+//     .returns<string[]>();
+
+//   if (error) {
+//     console.error(error);
+//     return [];
+//   }
+//   return data ?? [];
+// }
 
 interface Props {
   params: Promise<{

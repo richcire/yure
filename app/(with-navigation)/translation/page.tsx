@@ -3,6 +3,15 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Suspense } from "react";
 import TranslationList from "@/components/translation/translation-list";
 import TranslationFilter from "@/components/translation/translation-filter";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "揺れ 유레 • 당신의 마음을 흔들 음악을 번역해드려요.",
+  description: "J-POP 등 일본 음악/문화 위주로 소개합니다.",
+  icons: {
+    icon: "/assets/logos/round.png",
+  },
+};
 
 const ITEMS_PER_PAGE = 8;
 
