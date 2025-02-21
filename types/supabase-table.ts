@@ -19,11 +19,16 @@ export interface IArticles {
   id: string;
   title: string;
   content: string;
-  excerpt: string;
   user_info: IUserInfo;
   created_at: string;
   updated_at: string;
   slug: string;
+  thumbnail_url: string;
+}
+
+export interface IFeaturedArticles {
+  id: string;
+  title: string;
   thumbnail_url: string;
 }
 

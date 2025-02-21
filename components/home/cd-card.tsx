@@ -30,7 +30,7 @@ export function CDCard({ song, index }: CDCardProps) {
               alt={`${song.title} album cover`}
               fill
               className="object-cover"
-              sizes="(max-width: 768px) 100vw, 25vw"
+              sizes="25vw"
             />
             {/* CD Center Hole */}
             <div className="absolute inset-[40%] bg-black/80 rounded-full border-4 border-white/20" />

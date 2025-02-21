@@ -11,7 +11,7 @@ export default function WithNavigationLayout({
   return (
     <>
       <Navigation />
-      <main className="min-h-screen flex flex-col items-center pt-16">
+      <main className="min-h-screen flex flex-col items-center pt-12">
         <div className="flex-1 w-full flex flex-col items-center">
           {children}
 
