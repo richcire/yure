@@ -27,6 +27,7 @@ export const ImageExtension = Node.create<ImageOptions>({
       title: { default: null },
       width: { default: "100%" },
       textAlign: { default: "left" },
+      float: { default: "none" },
     };
   },
 
