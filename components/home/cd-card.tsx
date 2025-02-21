@@ -9,7 +9,11 @@ interface CDCardProps {
 
 export function CDCard({ song, index }: CDCardProps) {
   return (
-    <Link href={`/translation/${song.permalink}`} className="block">
+    <Link
+      href={`/translation/${song.permalink}`}
+      className="block"
+      aria-label={song.title}
+    >
       <div className="relative group">
         {/* CD Container */}
         <div className="relative w-full pt-[100%] rounded-full overflow-hidden group">

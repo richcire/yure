@@ -24,6 +24,7 @@ export async function FeaturedTranslations() {
           <Link
             href="/translation"
             className="flex items-center transition-colors"
+            aria-label="View all translations"
           >
             <span className="mr-2">더보기</span>
             <ArrowRightIcon className="w-4 h-4" />

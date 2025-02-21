@@ -16,10 +16,17 @@ export default function WithNavigationLayout({
           {children}
 
           <footer className="w-full flex items-center justify-center border-t mx-auto text-center text-xs gap-8 py-16">
-            <Link href="https://www.youtube.com/@yure.music12" target="_blank">
+            <Link
+              href="https://www.youtube.com/@yure.music12"
+              target="_blank"
+              aria-label="Youtube"
+            >
               <Youtube />
             </Link>
-            <Link href="https://www.instagram.com/yure.music?igsh=a2FwdXljc3hweTl3">
+            <Link
+              href="https://www.instagram.com/yure.music?igsh=a2FwdXljc3hweTl3"
+              aria-label="Instagram"
+            >
               <Instagram />
             </Link>
 

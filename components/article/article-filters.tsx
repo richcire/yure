@@ -57,7 +57,7 @@ export function ArticleFilters() {
         defaultValue={currentSort}
         onValueChange={handleSortChange}
       >
-        <SelectTrigger className="w-[180px]">
+        <SelectTrigger className="w-[180px]" aria-label="Sort by">
           <SelectValue placeholder="Sort by" />
         </SelectTrigger>
         <SelectContent>

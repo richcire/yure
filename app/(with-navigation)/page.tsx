@@ -55,7 +55,7 @@ export default function Home() {
       <Suspense fallback={<CarouselLoading />}>
         <FeaturedArticleWrapper />
       </Suspense>
-      <div className="max-w-7xl mx-auto mt-12">
+      <div className="max-w-6xl mx-auto mt-12">
         <Suspense fallback={<TranslationsLoading />}>
           <FeaturedTranslations />
         </Suspense>

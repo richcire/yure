@@ -93,6 +93,7 @@ export default function TiptapEditor({ id }: { id?: string }) {
           "prose focus:outline-none prose-p:mt-0 prose-p:mb-0 prose-headings:mt-0 prose:max-w-none prose-sm:max-w-none max-w-none w-full",
       },
     },
+    immediatelyRender: false,
   });
 
   useEffect(() => {
@@ -286,7 +287,7 @@ export default function TiptapEditor({ id }: { id?: string }) {
           isSaving ? "block" : "hidden"
         }`}
       >
-        <Progress value={progressValue} className="w-1/3" />
+        <Progress value={progressValue} className="w-1/3 " />
       </div>
       <div className="w-full relative min-h-screen pb-16">
         <div className="flex flex-col gap-6 max-w-5xl mx-auto w-full p-4">

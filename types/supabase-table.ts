@@ -30,6 +30,7 @@ export interface IFeaturedArticles {
   id: string;
   title: string;
   thumbnail_url: string;
+  slug: string;
 }
 
 export interface IUserInfo {

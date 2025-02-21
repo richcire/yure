@@ -22,16 +22,16 @@ export function ArticleCard({ article }: ArticleCardProps) {
         </div>
         <CardContent className="p-4 pt-0 flex-1">
           <div className="flex flex-col h-full">
-            <h3 className="text-xl font-semibold mb-2 line-clamp-2">
+            <div className="text-xl font-semibold mb-2 line-clamp-2">
               {article.title}
-            </h3>
-            <p className="text-[#69140E]/50 mb-4 flex-1 line-clamp-3">
+            </div>
+            <p className="text-muted-foreground mb-4 flex-1 line-clamp-3">
               {article.content
                 .replace(/<[^>]*>/g, "")
                 .slice(0, 70)
                 .trim() + "..."}
             </p>
-            <div className="flex justify-between items-center text-sm text-[#69140E]/50">
+            <div className="flex justify-between items-center text-sm text-muted-foreground">
               <span>{article.user_info.name}</span>
               <span>{new Date(article.created_at).toLocaleDateString()}</span>
             </div>

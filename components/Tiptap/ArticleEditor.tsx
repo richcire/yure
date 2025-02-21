@@ -53,6 +53,7 @@ export default function ArticleEditor({ id }: { id?: string }) {
           "prose focus:outline-none prose-p:mt-0 prose-p:mb-0 prose-headings:mt-0 prose:max-w-none prose-sm:max-w-none max-w-none w-full",
       },
     },
+    immediatelyRender: false,
   });
 
   useEffect(() => {

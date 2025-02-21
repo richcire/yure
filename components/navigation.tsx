@@ -20,6 +20,9 @@ const Navigation = () => {
   useEffect(() => {
     const getSession = async () => {
       const { data } = await supabase.auth.getSession();
+      if (!data.session) {
+        return;
+      }
       setUser(data.session?.user);
 
       const { data: userData } = await supabase

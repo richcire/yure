@@ -243,11 +243,11 @@ export function Toolbar({ editor }: ToolbarProps) {
           </DialogTrigger>
           <DialogContent>
             <DialogHeader>
-              <DialogTitle className="text-lg font-bold text-white">
+              <DialogTitle className="text-lg font-bold">
                 Embed YouTube Video
               </DialogTitle>
             </DialogHeader>
-            <div className="flex gap-2 text-white">
+            <div className="flex gap-2">
               <Input
                 placeholder="YouTube URL"
                 value={youtubeUrl}
