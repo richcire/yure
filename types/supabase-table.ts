@@ -24,6 +24,7 @@ export interface IArticles {
   updated_at: string;
   slug: string;
   thumbnail_url: string;
+  banner_url: string;
 }
 
 export interface IFeaturedArticles {
@@ -31,6 +32,7 @@ export interface IFeaturedArticles {
   title: string;
   thumbnail_url: string;
   slug: string;
+  banner_url: string;
 }
 
 export interface IUserInfo {

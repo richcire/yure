@@ -16,12 +16,23 @@ import { Input } from "@/components/ui/input";
 import { Progress } from "@/components/ui/progress";
 import { useRouter } from "next/navigation";
 import { IArticles } from "@/types/supabase-table";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
 
 export default function ArticleEditor({ id }: { id?: string }) {
   const [title, setTitle] = useState("");
   const [progressValue, setProgressValue] = useState(0);
   const [isSaving, setIsSaving] = useState(false);
   const router = useRouter();
+  const [selectedBannerImage, setSelectedBannerImage] = useState<File | null>(
+    null
+  );
 
   const editor = useEditor({
     extensions: [
@@ -104,7 +115,29 @@ export default function ArticleEditor({ id }: { id?: string }) {
     return slug;
   }
 
-  const handleSave = async () => {
+  const uploadBannerImage = async () => {
+    if (!selectedBannerImage) return;
+
+    const supabase = createClient();
+
+    const fileName = `article/banner-${Date.now()}-${Math.random().toString(36).substring(7)}.${selectedBannerImage.type.split("/")[1]}`;
+    const { data: uploadData, error: uploadError } = await supabase.storage
+      .from("images")
+      .upload(fileName, selectedBannerImage);
+
+    if (uploadError) {
+      console.error("Error uploading banner image:", uploadError);
+      return;
+    }
+
+    const {
+      data: { publicUrl },
+    } = supabase.storage.from("images").getPublicUrl(fileName);
+
+    return publicUrl;
+  };
+
+  const handleFinalSave = async () => {
     setIsSaving(true);
     if (!editor || !title) {
       setIsSaving(false);
@@ -112,14 +145,24 @@ export default function ArticleEditor({ id }: { id?: string }) {
       return;
     }
 
-    const supabase = createClient();
-    const content = editor.getHTML();
-    const tempDiv = document.createElement("div");
-    tempDiv.innerHTML = content;
-    let thumbnailUrl = "";
-    setProgressValue(20);
-
     try {
+      if (!selectedBannerImage) {
+        setIsSaving(false);
+        console.error("Please select a banner image");
+        return;
+      }
+
+      // Upload banner image if selected
+      const bannerUrl = await uploadBannerImage();
+
+      // Continue with the original save logic
+      const supabase = createClient();
+      const content = editor.getHTML();
+      const tempDiv = document.createElement("div");
+      tempDiv.innerHTML = content;
+      let thumbnailUrl = "";
+      setProgressValue(20);
+
       // If updating, handle deleted images
       if (id) {
         const { data: existingArticle } = await supabase
@@ -211,6 +254,7 @@ export default function ArticleEditor({ id }: { id?: string }) {
         content: finalContent,
         thumbnail_url: thumbnailUrl,
         slug: slugifyLimited(title),
+        banner_url: bannerUrl,
       };
 
       // Save or update the content in the translations table
@@ -270,10 +314,40 @@ export default function ArticleEditor({ id }: { id?: string }) {
           <Button onClick={handleCancel} className="shadow-lg">
             취소
           </Button>
-          <Button disabled={!title} className="shadow-lg" onClick={handleSave}>
-            <Save className="w-4 h-4 mr-2" />
-            저장
-          </Button>
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button disabled={!title} className="shadow-lg">
+                <Save className="w-4 h-4 mr-2" />
+                저장
+              </Button>
+            </DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>배너 이미지 선택</DialogTitle>
+              </DialogHeader>
+              <div className="grid gap-4 py-4">
+                <div className="grid gap-2">
+                  <Label htmlFor="banner">배너 이미지</Label>
+                  <Input
+                    id="banner"
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) =>
+                      setSelectedBannerImage(e.target.files?.[0] || null)
+                    }
+                  />
+                </div>
+              </div>
+              <div className="flex justify-end gap-2">
+                <Button
+                  onClick={handleFinalSave}
+                  disabled={!selectedBannerImage}
+                >
+                  저장
+                </Button>
+              </div>
+            </DialogContent>
+          </Dialog>
         </div>
       </div>
     </>

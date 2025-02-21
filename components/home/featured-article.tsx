@@ -13,6 +13,7 @@ export function FeaturedArticle({
 }: {
   articles: IFeaturedArticles[];
 }) {
+  console.log(articles);
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true });
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [scrollSnaps, setScrollSnaps] = useState<number[]>([]);
@@ -53,7 +54,11 @@ export function FeaturedArticle({
               >
                 <div className="w-full h-full relative">
                   <Image
-                    src={article.thumbnail_url || "/assets/logos/square.jpeg"}
+                    src={
+                      article.banner_url ||
+                      article.thumbnail_url ||
+                      "/assets/logos/square.jpeg"
+                    }
                     alt={`${article.title} thumbnail`}
                     fill
                     className="object-cover"

@@ -6,7 +6,7 @@ async function getArticles(): Promise<IFeaturedArticles[]> {
   const supabase = await createClient();
   const { data, error } = await supabase
     .from("articles")
-    .select("id, title, thumbnail_url, slug")
+    .select("id, title, thumbnail_url, slug, banner_url")
     .order("created_at", { ascending: false })
     .limit(5);
   if (error) {
