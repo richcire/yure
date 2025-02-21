@@ -19,7 +19,7 @@ export default function WithNavigationLayout({
             <Link href="https://www.youtube.com/@yure.music12" target="_blank">
               <Youtube />
             </Link>
-            <Link href="/">
+            <Link href="https://www.instagram.com/yure.music?igsh=a2FwdXljc3hweTl3">
               <Instagram />
             </Link>
 
