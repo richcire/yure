@@ -4,11 +4,10 @@ import { useCallback, useEffect, useState } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { createClient } from "@/utils/supabase/client";
-import { IArticles, IFeaturedArticles } from "@/types/supabase-table";
+import { IFeaturedArticles } from "@/types/supabase-table";
 import Image from "next/image";
 
-export function FeaturedCarousel({
+export function FeaturedArticle({
   articles,
 }: {
   articles: IFeaturedArticles[];

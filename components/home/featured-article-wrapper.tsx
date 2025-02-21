@@ -1,6 +1,6 @@
 import { createClient } from "@/utils/supabase/server";
-import { FeaturedCarousel } from "./featured-carousel";
-import { IArticles, IFeaturedArticles } from "@/types/supabase-table";
+import { FeaturedArticle } from "./featured-article";
+import { IFeaturedArticles } from "@/types/supabase-table";
 
 async function getArticles(): Promise<IFeaturedArticles[]> {
   const supabase = await createClient();
@@ -15,11 +15,11 @@ async function getArticles(): Promise<IFeaturedArticles[]> {
   return data || [];
 }
 
-export default async function FeaturedCarouselWrapper() {
+export default async function FeaturedArticleWrapper() {
   const articles = await getArticles();
   return (
     <section className="w-full max-w-7xl mx-auto relative overflow-hidden">
-      <FeaturedCarousel articles={articles} />
+      <FeaturedArticle articles={articles} />
     </section>
   );
 }

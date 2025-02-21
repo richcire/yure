@@ -1,8 +1,7 @@
 import { Suspense } from "react";
 import { FeaturedTranslations } from "@/components/home/featured-translations";
 import { Skeleton } from "@/components/ui/skeleton";
-import { FeaturedCarousel } from "@/components/home/featured-carousel";
-import FeaturedCarouselWrapper from "@/components/home/featured-carausel-wrapper";
+import FeaturedArticleWrapper from "@/components/home/featured-article-wrapper";
 
 function CarouselLoading() {
   return (
@@ -54,9 +53,9 @@ export default function Home() {
   return (
     <main className="w-full min-h-screen bg-background">
       <Suspense fallback={<CarouselLoading />}>
-        <FeaturedCarouselWrapper />
+        <FeaturedArticleWrapper />
       </Suspense>
-      <div className="max-w-5xl mx-auto">
+      <div className="max-w-7xl mx-auto mt-12">
         <Suspense fallback={<TranslationsLoading />}>
           <FeaturedTranslations />
         </Suspense>
