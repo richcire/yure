@@ -1,6 +1,6 @@
 import { NodeViewProps, NodeViewWrapper } from "@tiptap/react";
 import { Button } from "@/components/ui/button";
-import { Trash2 } from "lucide-react";
+import { Trash2, VideoOff, Video } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 
@@ -15,6 +15,7 @@ export default function YouTube({
   //   );
   const [isSticky, setIsSticky] = useState(false);
   const [isInitialRender, setIsInitialRender] = useState(true);
+  const [isFolded, setIsFolded] = useState(false);
   const videoRef = useRef<HTMLDivElement>(null);
   const showControls = editor?.isEditable;
   const aspectRatio = node.attrs.aspectRatio || "16/9";
@@ -68,7 +69,11 @@ export default function YouTube({
     <NodeViewWrapper>
       <div className="flex justify-center" ref={videoRef}>
         <div
-          className={`relative group ${!isInitialRender && isSticky ? "sticky-video" : ""}`}
+          className={`relative group ${
+            !isInitialRender && isSticky
+              ? `sticky-video ${isFolded ? "folded" : ""}`
+              : ""
+          }`}
           style={{ width: "100%" }}
         >
           {showControls && (
@@ -108,6 +113,20 @@ export default function YouTube({
                 </Button>
               </div>
             </div>
+          )}
+          {!showControls && isSticky && !isInitialRender && (
+            <Button
+              size="icon"
+              variant="secondary"
+              className={`sticky-video-button ${isFolded ? "folded" : ""}`}
+              onClick={() => setIsFolded(!isFolded)}
+            >
+              {isFolded ? (
+                <Video className="h-4 w-4" />
+              ) : (
+                <VideoOff className="h-4 w-4" />
+              )}
+            </Button>
           )}
           <iframe
             src={node.attrs.src}
