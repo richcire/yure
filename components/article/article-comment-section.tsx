@@ -28,7 +28,6 @@ export function CommentSection({ slug }: { slug: string }) {
       }
       setUser(data.session?.user);
     };
-    console.log(decodeURIComponent(slug));
     const getComments = async () => {
       const { data, error } = await supabase
         .rpc("get_article_comments", {
@@ -36,7 +35,6 @@ export function CommentSection({ slug }: { slug: string }) {
         })
         .returns<IComments[]>();
       if (data) {
-        console.log(data);
         const commentTree = makeCommentTree(data);
         setComments(commentTree);
       }

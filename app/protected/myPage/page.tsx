@@ -29,12 +29,10 @@ export default async function MyPage() {
 
     const newName = formData.get("name")?.toString();
     if (!newName) return;
-    console.log(newName);
 
     const supabase = await createClient();
     const { data } = await supabase.auth.getUser();
 
-    console.log(data);
     await supabase
       .from("user_info")
       .update({ name: newName })
