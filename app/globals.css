@@ -157,7 +157,7 @@ body {
   right: 20px;
   width: min(400px, calc(100vw - 40px)) !important;
   aspect-ratio: 16/9;
-  z-index: 50;
+  z-index: 20;
   animation: slideUp 0.3s ease-out;
   box-shadow:
     0 4px 6px -1px rgb(0 0 0 / 0.1),
