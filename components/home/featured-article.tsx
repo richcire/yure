@@ -13,7 +13,6 @@ export function FeaturedArticle({
 }: {
   articles: IFeaturedArticles[];
 }) {
-  console.log(articles);
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true });
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [scrollSnaps, setScrollSnaps] = useState<number[]>([]);

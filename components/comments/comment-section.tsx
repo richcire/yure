@@ -1,0 +1,116 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
+import { Comment } from "./comment";
+import type { IComments } from "@/types/supabase-table";
+import { User } from "@supabase/supabase-js";
+import { createClient } from "@/utils/supabase/client";
+import { useRouter } from "next/navigation";
+import { makeCommentTree } from "@/lib/utils";
+
+export function CommentSection({ permalink }: { permalink: string }) {
+  const [isOpen, setIsOpen] = useState(false);
+  const [newComment, setNewComment] = useState("");
+  const [comments, setComments] = useState<
+    (IComments & { replies: IComments[] })[]
+  >([]);
+  const [user, setUser] = useState<User | undefined>();
+  const supabase = createClient();
+  const router = useRouter();
+
+  useEffect(() => {
+    const getSession = async () => {
+      const { data } = await supabase.auth.getSession();
+      if (!data.session) {
+        return;
+      }
+      setUser(data.session?.user);
+    };
+    const getComments = async () => {
+      const { data, error } = await supabase
+        .rpc("get_translation_comments", {
+          p_link: decodeURIComponent(permalink),
+        })
+        .returns<IComments[]>();
+      if (data) {
+        const commentTree = makeCommentTree(data);
+        setComments(commentTree);
+      }
+    };
+    getComments();
+    getSession();
+  }, []);
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (!newComment.trim()) return;
+    const { data, error } = await supabase.rpc("add_translation_comment", {
+      p_link: decodeURIComponent(permalink),
+      new_content: newComment,
+    });
+    if (data) {
+      const commentTree = makeCommentTree(data);
+      setComments(commentTree);
+    }
+    setNewComment("");
+  };
+
+  return (
+    <div className="mt-8">
+      <Button
+        variant="ghost"
+        onClick={() => setIsOpen(!isOpen)}
+        className="flex items-center gap-2"
+      >
+        <span>{isOpen ? "Hide" : "Show"} Comments</span>
+        <span className="text-sm text-muted-foreground">
+          ({comments.length})
+        </span>
+      </Button>
+
+      {isOpen && (
+        <div className="mt-4 space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-4">
+            {user ? (
+              <Textarea
+                value={newComment}
+                onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
+                  setNewComment(e.target.value)
+                }
+                placeholder="댓글을 달아보세요!"
+                className="w-full"
+              />
+            ) : (
+              <Textarea
+                placeholder="로그인 후 댓글을 달아보세요!"
+                className="w-full"
+                onClick={() => {
+                  router.push("/sign-in");
+                }}
+                readOnly
+              />
+            )}
+            {user && (
+              <Button type="submit" disabled={!newComment.trim()}>
+                Post Comment
+              </Button>
+            )}
+          </form>
+
+          <div className="space-y-4">
+            {comments.map((comment) => (
+              <Comment
+                key={comment.id}
+                comment={comment}
+                user={user}
+                setComments={setComments}
+              />
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}

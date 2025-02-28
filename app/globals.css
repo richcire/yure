@@ -132,6 +132,24 @@ body {
   }
 }
 
+@keyframes slideRight {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(calc(100% + 20px));
+  }
+}
+
+@keyframes slideLeft {
+  from {
+    transform: translateX(calc(100% + 20px));
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
 /* Sticky Video Styles */
 .sticky-video {
   position: fixed;
@@ -139,13 +157,35 @@ body {
   right: 20px;
   width: min(400px, calc(100vw - 40px)) !important;
   aspect-ratio: 16/9;
-  z-index: 50;
+  z-index: 20;
   animation: slideUp 0.3s ease-out;
   box-shadow:
     0 4px 6px -1px rgb(0 0 0 / 0.1),
     0 2px 4px -2px rgb(0 0 0 / 0.1);
   border-radius: 0.5rem;
-  overflow: hidden;
+  overflow: visible;
+  transition: transform 0.3s ease-out;
+}
+
+.sticky-video.folded {
+  transform: translateX(calc(100% + 20px));
+}
+
+.sticky-video-button {
+  position: absolute;
+  left: -40px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 51;
+  background-color: hsl(var(--background));
+  border: 1px solid hsl(var(--border));
+}
+
+.sticky-video-button.folded {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  transform: none;
 }
 
 .sticky-video iframe {
@@ -156,6 +196,12 @@ body {
 
 @media (max-width: 640px) {
   .sticky-video {
+    bottom: 10px;
+    right: 10px;
+    width: min(300px, calc(100vw - 20px)) !important;
+  }
+
+  .sticky-video-button.folded {
     bottom: 10px;
     right: 10px;
   }

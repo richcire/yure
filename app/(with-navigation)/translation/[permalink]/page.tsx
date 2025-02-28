@@ -5,6 +5,7 @@ import {
   TranslationTitleSkeleton,
 } from "@/components/translation/translation-title";
 import TranslationContent from "@/components/translation/translation-content";
+import { CommentSection } from "@/components/comments/comment-section";
 import { createClient } from "@/utils/supabase/server";
 
 export async function generateMetadata({ params }: Props) {
@@ -41,8 +42,16 @@ interface Props {
   }>;
 }
 
-export default function TranslationPage({ params }: Props) {
-  const { permalink } = use(params);
+export default async function TranslationPage({ params }: Props) {
+  const { permalink } = await params;
+  const supabase = await createClient();
+
+  // Fetch translation ID for the comment section
+  const { data: translation } = await supabase
+    .from("translations")
+    .select("id")
+    .eq("permalink", permalink)
+    .single();
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -51,6 +60,11 @@ export default function TranslationPage({ params }: Props) {
           <TranslationTitle permalink={permalink} />
         </Suspense>
         <TranslationContent permalink={permalink} />
+        {translation && (
+          <Suspense fallback={<div>Loading comments...</div>}>
+            <CommentSection permalink={permalink} />
+          </Suspense>
+        )}
       </div>
     </div>
   );

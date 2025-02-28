@@ -40,7 +40,6 @@ export default async function MyPage() {
 
     revalidatePath("/protected/myPage");
   }
-
   return (
     <div className="max-w-2xl mx-auto p-6">
       <div className="bg-white rounded-lg shadow-sm p-8 space-y-6">

@@ -4,6 +4,7 @@ import {
   ArticleTitleSkeleton,
 } from "../../../../components/article/article-title";
 import ArticleContent from "../../../../components/article/article-content";
+import { CommentSection } from "@/components/article/article-comment-section";
 
 export async function generateMetadata({ params }: Props) {
   const { slug } = await params;
@@ -29,6 +30,9 @@ export default function ArticlePage({ params }: Props) {
           <ArticleTitle slug={slug} />
         </Suspense>
         <ArticleContent slug={slug} />
+        <Suspense fallback={<div>Loading comments...</div>}>
+          <CommentSection slug={slug} />
+        </Suspense>
       </div>
     </div>
   );

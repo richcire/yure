@@ -35,6 +35,16 @@ export interface IFeaturedArticles {
   banner_url: string;
 }
 
+export interface IComments {
+  id: string;
+  translation_id: string;
+  author_name: string;
+  author_id: string;
+  content: string;
+  parent_comment_id: string;
+  created_at: string;
+}
+
 export interface IUserInfo {
   id: string;
   name: string;
