@@ -29,10 +29,12 @@ export default async function MyPage() {
 
     const newName = formData.get("name")?.toString();
     if (!newName) return;
+    console.log(newName);
 
     const supabase = await createClient();
     const { data } = await supabase.auth.getUser();
 
+    console.log(data);
     await supabase
       .from("user_info")
       .update({ name: newName })
@@ -40,7 +42,6 @@ export default async function MyPage() {
 
     revalidatePath("/protected/myPage");
   }
-
   return (
     <div className="max-w-2xl mx-auto p-6">
       <div className="bg-white rounded-lg shadow-sm p-8 space-y-6">
