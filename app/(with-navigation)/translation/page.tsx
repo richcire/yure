@@ -4,6 +4,7 @@ import { Suspense } from "react";
 import TranslationList from "@/components/translation/translation-list";
 import TranslationFilter from "@/components/translation/translation-filter";
 import { Metadata } from "next";
+import { SideVerticalDisplayAd } from "@/components/google-adsense/side-veritcal-display-ad";
 
 export const metadata: Metadata = {
   title: "揺れ 유레 • 당신의 마음을 흔들 음악을 번역해드려요.",
@@ -74,6 +75,9 @@ export default async function TranslationHomePage({ searchParams }: Props) {
           <TranslationList searchParams={searchParams} />
         </Suspense>
       </main>
+      <div className="sticky-side-ad">
+        <SideVerticalDisplayAd />
+      </div>
     </div>
   );
 }

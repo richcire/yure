@@ -2,6 +2,7 @@ import { Header } from "@/components/article/header";
 import { Suspense } from "react";
 import ArticleList from "@/components/article/article-list";
 import { Skeleton } from "@/components/ui/skeleton";
+import { SideVerticalDisplayAd } from "@/components/google-adsense/side-veritcal-display-ad";
 
 interface Props {
   searchParams: Promise<{
@@ -40,6 +41,9 @@ export default async function ArticleHomePage({ searchParams }: Props) {
           <ArticleList searchParams={searchParams} />
         </Suspense>
       </main>
+      <div className="sticky-side-ad">
+        <SideVerticalDisplayAd />
+      </div>
     </div>
   );
 }

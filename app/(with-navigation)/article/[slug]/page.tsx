@@ -5,6 +5,8 @@ import {
 } from "../../../../components/article/article-title";
 import ArticleContent from "../../../../components/article/article-content";
 import { CommentSection } from "@/components/article/article-comment-section";
+import { BottomDisplayAd } from "@/components/google-adsense/bottom-display-ad";
+import { SideVerticalDisplayAd } from "@/components/google-adsense/side-veritcal-display-ad";
 
 export async function generateMetadata({ params }: Props) {
   const { slug } = await params;
@@ -30,9 +32,15 @@ export default function ArticlePage({ params }: Props) {
           <ArticleTitle slug={slug} />
         </Suspense>
         <ArticleContent slug={slug} />
+        <div className="my-12 bg-white max-w-[768px] h-40 mx-auto">
+          <BottomDisplayAd />
+        </div>
         <Suspense fallback={<div>Loading comments...</div>}>
           <CommentSection slug={slug} />
         </Suspense>
+      </div>
+      <div className="sticky-side-ad">
+        <SideVerticalDisplayAd />
       </div>
     </div>
   );
