@@ -2,7 +2,7 @@ import { Suspense } from "react";
 import { FeaturedTranslations } from "@/components/home/featured-translations";
 import { Skeleton } from "@/components/ui/skeleton";
 import FeaturedArticleWrapper from "@/components/home/featured-article-wrapper";
-
+import { BottomDisplayAd } from "@/components/google-adsense/bottom-display-ad";
 function CarouselLoading() {
   return (
     <section className="w-full relative overflow-hidden">
@@ -55,10 +55,14 @@ export default function Home() {
       <Suspense fallback={<CarouselLoading />}>
         <FeaturedArticleWrapper />
       </Suspense>
-      <div className="max-w-6xl mx-auto mt-12">
+      <div className="max-w-5xl mx-auto my-12">
         <Suspense fallback={<TranslationsLoading />}>
           <FeaturedTranslations />
         </Suspense>
+      </div>
+
+      <div className="max-w-[768px] mx-auto px-4 my-12 bg-white h-40">
+        <BottomDisplayAd />
       </div>
     </main>
   );
