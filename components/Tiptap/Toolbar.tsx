@@ -65,10 +65,18 @@ export function Toolbar({ editor }: ToolbarProps) {
   };
 
   const getEmbedUrl = (url: string) => {
-    const videoId = url.match(
-      /(?:https?:\/\/)?(?:www\.)?youtube\.com\/(?:watch\?v=|shorts\/)([a-zA-Z0-9_-]{11})/
-    )?.[1];
-    return videoId ? `https://www.youtube.com/embed/${videoId}` : url;
+    const patterns = [
+      /(?:https?:\/\/)?(?:www\.)?youtube\.com\/watch\?v=([^&]+)/,
+      /(?:https?:\/\/)?(?:www\.)?youtube\.com\/embed\/([^?]+)/,
+      /(?:https?:\/\/)?(?:www\.)?youtu\.be\/([^?]+)/,
+    ];
+    for (const pattern of patterns) {
+      const match = url.match(pattern);
+      if (match) {
+        return `https://www.youtube.com/embed/${match[1]}`;
+      }
+    }
+    return url;
   };
 
   const handleYoutubeEmbed = () => {
