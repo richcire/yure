@@ -73,7 +73,7 @@ const deleteArticle = async (id: string) => {
     .from("articles")
     .select("*")
     .eq("id", id)
-    .single();
+    .single<IArticles>();
 
   if (article) {
     // Create temporary div to parse HTML content
@@ -93,6 +93,11 @@ const deleteArticle = async (id: string) => {
     // Delete all images from storage
     if (contentImages.length > 0) {
       await supabase.storage.from("images").remove(contentImages);
+    }
+
+    const bannerImage = `article/${article.banner_url.split("/").pop()}`;
+    if (bannerImage) {
+      await supabase.storage.from("images").remove([bannerImage]);
     }
 
     // Delete the translation record

@@ -55,7 +55,7 @@ export default async function ArticleList({ searchParams }: Props) {
       {articles ? (
         <>
           <ArticleGrid articles={articles} />
-          <div className="my-12 bg-white max-w-[768px] h-40 mx-auto">
+          <div className="my-12 max-w-[768px] h-40 mx-auto">
             <BottomDisplayAd />
           </div>
           {totalPages > 1 && (

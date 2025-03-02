@@ -65,7 +65,7 @@ export default async function TranslationList({ searchParams }: Props) {
       {translations ? (
         <>
           <SongGrid songs={translations} />
-          <div className="my-12 bg-white max-w-[768px] mx-auto h-40">
+          <div className="my-12 max-w-[768px] mx-auto h-40">
             <BottomDisplayAd />
           </div>
           {totalPages > 1 && (
