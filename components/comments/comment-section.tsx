@@ -10,7 +10,19 @@ import { createClient } from "@/utils/supabase/client";
 import { useRouter } from "next/navigation";
 import { makeCommentTree } from "@/lib/utils";
 
-export function CommentSection({ permalink }: { permalink: string }) {
+interface CommentSectionProps {
+  resourceId: string;
+  inputId: string;
+  rpcGetComments: string;
+  rpcAddComment: string;
+}
+
+export function CommentSection({
+  resourceId,
+  inputId,
+  rpcGetComments,
+  rpcAddComment,
+}: CommentSectionProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [newComment, setNewComment] = useState("");
   const [comments, setComments] = useState<
@@ -30,8 +42,8 @@ export function CommentSection({ permalink }: { permalink: string }) {
     };
     const getComments = async () => {
       const { data, error } = await supabase
-        .rpc("get_translation_comments", {
-          p_link: decodeURIComponent(permalink),
+        .rpc(rpcGetComments, {
+          [inputId]: decodeURIComponent(resourceId),
         })
         .returns<IComments[]>();
       if (data) {
@@ -46,8 +58,8 @@ export function CommentSection({ permalink }: { permalink: string }) {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!newComment.trim()) return;
-    const { data, error } = await supabase.rpc("add_translation_comment", {
-      p_link: decodeURIComponent(permalink),
+    const { data, error } = await supabase.rpc(rpcAddComment, {
+      [inputId]: decodeURIComponent(resourceId),
       new_content: newComment,
     });
     if (data) {

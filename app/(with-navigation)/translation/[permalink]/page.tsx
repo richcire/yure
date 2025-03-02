@@ -67,7 +67,12 @@ export default async function TranslationPage({ params }: Props) {
         </div>
         {translation && (
           <Suspense fallback={<div>Loading comments...</div>}>
-            <CommentSection permalink={permalink} />
+            <CommentSection
+              resourceId={permalink}
+              inputId="p_link"
+              rpcGetComments="get_translation_comments"
+              rpcAddComment="add_translation_comment"
+            />
           </Suspense>
         )}
       </div>

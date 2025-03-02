@@ -4,7 +4,7 @@ import {
   ArticleTitleSkeleton,
 } from "../../../../components/article/article-title";
 import ArticleContent from "../../../../components/article/article-content";
-import { CommentSection } from "@/components/article/article-comment-section";
+import { CommentSection } from "@/components/comments/comment-section";
 import { BottomDisplayAd } from "@/components/google-adsense/bottom-display-ad";
 import { SideVerticalDisplayAd } from "@/components/google-adsense/side-veritcal-display-ad";
 
@@ -36,7 +36,12 @@ export default function ArticlePage({ params }: Props) {
           <BottomDisplayAd />
         </div>
         <Suspense fallback={<div>Loading comments...</div>}>
-          <CommentSection slug={slug} />
+          <CommentSection
+            resourceId={slug}
+            inputId="s_input"
+            rpcGetComments="get_article_comments"
+            rpcAddComment="add_article_comment"
+          />
         </Suspense>
       </div>
       <div className="sticky-side-ad">
