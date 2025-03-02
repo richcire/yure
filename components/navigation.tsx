@@ -39,6 +39,7 @@ const Navigation = () => {
   const handleSignOut = async () => {
     await supabase.auth.signOut();
     setUser(undefined);
+    router.refresh();
   };
 
   useEffect(() => {
