@@ -136,6 +136,10 @@ export default function TiptapEditor({ id }: { id?: string }) {
   }, [editor]);
 
   const handleSave = async () => {
+    if (permalink.includes("/")) {
+      alert("퍼마링크에 슬래시(/)는 포함될 수 없습니다.");
+      return;
+    }
     setIsSaving(true);
     if (!editor || !title || !artist || !categoryId) {
       setIsSaving(false);
