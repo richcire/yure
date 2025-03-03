@@ -9,8 +9,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
-import { useState, useCallback } from "react";
-import _ from "lodash";
+import { useState } from "react";
 
 export function ArticleFilters() {
   const router = useRouter();
@@ -22,36 +21,31 @@ export function ArticleFilters() {
 
   const currentSort = searchParams.get("sort") || "created_desc";
 
-  const createQueryString = useCallback(
-    (name: string, value: string) => {
-      const params = new URLSearchParams(searchParams.toString());
-      params.set(name, value);
-      return params.toString();
-    },
-    [searchParams]
-  );
-
-  const handleSearch = useCallback(
-    _.debounce((value: string) => {
-      setSearchTerm(value);
-      router.push(`${pathname}?${createQueryString("search", value)}`);
-    }, 300),
-    [pathname, router, createQueryString]
-  );
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const params = new URLSearchParams(searchParams.toString());
+    params.delete("page");
+    params.set("search", searchTerm);
+    router.push(`${pathname}?${params.toString()}`);
+  };
 
   const handleSortChange = (value: string) => {
-    router.push(`${pathname}?${createQueryString("sort", value)}`);
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("sort", value);
+    router.push(`${pathname}?${params.toString()}`);
   };
 
   return (
     <div className="flex gap-4 items-center">
-      <Input
-        placeholder="검색어를 입력해주세요"
-        className="max-w-sm"
-        name="search"
-        defaultValue={searchTerm}
-        onChange={(e) => handleSearch(e.target.value)}
-      />
+      <form onSubmit={handleSubmit} className="flex-1">
+        <Input
+          placeholder="검색어를 입력해주세요"
+          className="max-w-sm"
+          name="search"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+      </form>
       <Select
         name="sort"
         defaultValue={currentSort}
