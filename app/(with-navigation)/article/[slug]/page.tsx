@@ -32,7 +32,7 @@ export default function ArticlePage({ params }: Props) {
           <ArticleTitle slug={slug} />
         </Suspense>
         <ArticleContent slug={slug} />
-        <div className="my-12 max-w-[768px] h-40 mx-auto">
+        <div className="my-12 max-w-[768px] h-40 mx-auto w-full">
           <BottomDisplayAd />
         </div>
         <Suspense fallback={<div>Loading comments...</div>}>
