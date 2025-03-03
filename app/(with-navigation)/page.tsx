@@ -61,7 +61,7 @@ export default function Home() {
         </Suspense>
       </div>
 
-      <div className="max-w-[768px] mx-auto px-4 my-12  h-40">
+      <div className="max-w-[768px] mx-auto px-4 my-12 h-40 w-full">
         <BottomDisplayAd />
       </div>
     </main>

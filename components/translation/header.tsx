@@ -3,7 +3,7 @@
 import { MusicIcon } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useCallback, useState } from "react";
+import { useState } from "react";
 import _ from "lodash";
 
 export function Header() {
@@ -14,22 +14,13 @@ export function Header() {
     searchParams.get("search")?.toString() || ""
   );
 
-  const createQueryString = useCallback(
-    (name: string, value: string) => {
-      const params = new URLSearchParams(searchParams.toString());
-      params.set(name, value);
-      return params.toString();
-    },
-    [searchParams]
-  );
-
-  const handleSearch = useCallback(
-    _.debounce((value: string) => {
-      setSearchTerm(value);
-      router.push(`${pathname}?${createQueryString("search", value)}`);
-    }, 300),
-    [pathname, router, createQueryString]
-  );
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const params = new URLSearchParams(searchParams.toString());
+    params.delete("page");
+    params.set("search", searchTerm);
+    router.push(`${pathname}?${params.toString()}`);
+  };
 
   return (
     <header className="bg-background border-b">
@@ -40,14 +31,17 @@ export function Header() {
             <h1 className="text-xl sm:text-2xl font-bold">J-POP 가사 번역</h1>
           </div>
           <div className="w-full sm:w-auto">
-            <div className="flex items-center gap-2 max-w-md mx-auto sm:mx-0">
+            <form
+              onSubmit={handleSubmit}
+              className="flex items-center gap-2 max-w-md mx-auto sm:mx-0"
+            >
               <Input
                 placeholder="제목 또는 아티스트 검색"
                 className="w-full sm:w-64"
-                defaultValue={searchTerm}
-                onChange={(e) => handleSearch(e.target.value)}
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
               />
-            </div>
+            </form>
           </div>
         </div>
       </div>

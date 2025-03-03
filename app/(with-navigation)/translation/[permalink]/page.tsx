@@ -62,7 +62,7 @@ export default async function TranslationPage({ params }: Props) {
         </Suspense>
         <TranslationContent permalink={permalink} />
 
-        <div className="my-12 max-w-[768px] h-40 mx-auto">
+        <div className="my-12 max-w-[768px] h-40 mx-auto w-full">
           <BottomDisplayAd />
         </div>
         {translation && (
