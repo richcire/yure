@@ -212,6 +212,6 @@ body {
 
 @media (max-width: 1500px) {
   .sticky-side-ad {
-    display: hidden !important;
+    visibility: hidden;
   }
 }
