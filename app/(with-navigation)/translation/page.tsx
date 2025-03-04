@@ -70,7 +70,7 @@ export default async function TranslationHomePage({ searchParams }: Props) {
           <TranslationFilter searchParams={searchParams} />
         </Suspense>
       </div>
-      <main className="container mx-auto px-4 py-8">
+      <main className="container mx-auto px-4 py-8 w-full">
         <Suspense fallback={<TranslationListSkeleton />}>
           <TranslationList searchParams={searchParams} />
         </Suspense>

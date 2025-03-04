@@ -39,7 +39,7 @@ export default function RootLayout({
         <AdSenseCodeSnippet />
       </head>
       <body className="bg-hanji text-[#69140E]">
-        <WebVitals />
+        {/* <WebVitals /> */}
 
         <ThemeProvider
           attribute="class"
