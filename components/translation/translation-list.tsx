@@ -2,7 +2,7 @@ import { ITranslations } from "@/types/supabase-table";
 import { createClient } from "@/utils/supabase/server";
 import { SongGrid } from "./song-grid";
 import { PaginationControl } from "../ui/pagination-control";
-import { BottomDisplayAd } from "../google-adsense/bottom-display-ad";
+import { BottomDisplayAdWrapper } from "../google-adsense/bottom-display-ad-wrapper";
 const ITEMS_PER_PAGE = 8;
 
 interface Props {
@@ -65,9 +65,7 @@ export default async function TranslationList({ searchParams }: Props) {
       {translations ? (
         <>
           <SongGrid songs={translations} />
-          <div className="my-12 max-w-[768px] mx-auto px-4 h-40 w-full">
-            <BottomDisplayAd />
-          </div>
+          <BottomDisplayAdWrapper />
           {totalPages > 1 && (
             <PaginationControl
               currentPage={currentPage}
