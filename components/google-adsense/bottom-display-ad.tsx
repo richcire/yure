@@ -15,7 +15,7 @@ export const BottomDisplayAd = () => {
   }, []);
   return (
     <ins
-      className="adsbygoogle"
+      className="adsbygoogle bottom-display-ad"
       style={{ display: "block" }}
       data-ad-client="ca-pub-4738868818137222"
       data-ad-slot="6505812562"

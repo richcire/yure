@@ -66,7 +66,8 @@ export default async function TranslationList({ searchParams }: Props) {
       {translations ? (
         <>
           <SongGrid songs={translations} />
-          <BottomDisplayAdWrapper />
+          {/* <BottomDisplayAdWrapper /> */}
+          <BottomDisplayAd />
           {totalPages > 1 && (
             <PaginationControl
               currentPage={currentPage}

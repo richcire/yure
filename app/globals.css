@@ -215,3 +215,20 @@ body {
     display: none;
   }
 }
+
+.bottom-display-ad {
+  width: 320px;
+  height: 100px;
+}
+@media (min-width: 500px) {
+  .bottom-display-ad {
+    width: 468px;
+    height: 60px;
+  }
+}
+@media (min-width: 800px) {
+  .bottom-display-ad {
+    width: 728px;
+    height: 90px;
+  }
+}
