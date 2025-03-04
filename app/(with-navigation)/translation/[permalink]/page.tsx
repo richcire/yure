@@ -9,6 +9,7 @@ import { CommentSection } from "@/components/comments/comment-section";
 import { createClient } from "@/utils/supabase/server";
 import { BottomDisplayAd } from "@/components/google-adsense/bottom-display-ad";
 import { SideVerticalDisplayAd } from "@/components/google-adsense/side-veritcal-display-ad";
+import { BottomDisplayAdWrapper } from "@/components/google-adsense/bottom-display-ad-wrapper";
 export async function generateMetadata({ params }: Props) {
   const { permalink } = await params;
   const supabase = await createClient();
@@ -62,9 +63,7 @@ export default async function TranslationPage({ params }: Props) {
         </Suspense>
         <TranslationContent permalink={permalink} />
 
-        <div className="my-12 max-w-[768px] h-40 mx-auto w-full">
-          <BottomDisplayAd />
-        </div>
+        <BottomDisplayAdWrapper />
         {translation && (
           <Suspense fallback={<div>Loading comments...</div>}>
             <CommentSection permalink={permalink} />
