@@ -11,8 +11,8 @@ import { useRouter } from "next/navigation";
 import { makeCommentTree } from "@/lib/utils";
 
 interface CommentSectionProps {
-  getComments: () => Promise<IComments[]>;
-  addComment: (newComment: string) => Promise<void>;
+  getComments: () => Promise<IComments[] | null>;
+  addComment: (newComment: string) => Promise<IComments[] | null>;
 }
 
 export function CommentSection({
@@ -38,8 +38,10 @@ export function CommentSection({
     };
     const fetchComments = async () => {
       const data = await getComments();
-      const commentTree = makeCommentTree(data);
-      setComments(commentTree);
+      if (data) {
+        const commentTree = makeCommentTree(data);
+        setComments(commentTree);
+      }
     };
 
     fetchComments();
@@ -49,11 +51,11 @@ export function CommentSection({
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!newComment.trim()) return;
-
-    await addComment(newComment);
-    const data = await getComments();
-    const commentTree = makeCommentTree(data);
-    setComments(commentTree);
+    const data = await addComment(newComment);
+    if (data) {
+      const commentTree = makeCommentTree(data);
+      setComments(commentTree);
+    }
     setNewComment("");
   };
 

@@ -8,7 +8,6 @@ import { CommentSection } from "@/components/comments/comment-section";
 import { BottomDisplayAdWrapper } from "@/components/google-adsense/bottom-display-ad-wrapper";
 import { SideVerticalDisplayAd } from "@/components/google-adsense/side-veritcal-display-ad";
 import { createClient } from "@/utils/supabase/server";
-import { IComments } from "@/types/supabase-table";
 
 export async function generateMetadata({ params }: Props) {
   const { slug } = await params;
@@ -43,6 +42,7 @@ export default function ArticlePage({ params }: Props) {
       s_input: decodeURIComponent(slug),
       new_content: newComment,
     });
+    return data;
   };
 
   return (
