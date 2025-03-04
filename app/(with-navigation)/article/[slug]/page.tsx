@@ -5,7 +5,7 @@ import {
 } from "../../../../components/article/article-title";
 import ArticleContent from "../../../../components/article/article-content";
 import { CommentSection } from "@/components/article/article-comment-section";
-import { BottomDisplayAd } from "@/components/google-adsense/bottom-display-ad";
+import { BottomDisplayAdWrapper } from "@/components/google-adsense/bottom-display-ad-wrapper";
 import { SideVerticalDisplayAd } from "@/components/google-adsense/side-veritcal-display-ad";
 
 export async function generateMetadata({ params }: Props) {
@@ -32,9 +32,7 @@ export default function ArticlePage({ params }: Props) {
           <ArticleTitle slug={slug} />
         </Suspense>
         <ArticleContent slug={slug} />
-        <div className="my-12 max-w-[768px] h-40 mx-auto w-full">
-          <BottomDisplayAd />
-        </div>
+        <BottomDisplayAdWrapper />
         <Suspense fallback={<div>Loading comments...</div>}>
           <CommentSection slug={slug} />
         </Suspense>

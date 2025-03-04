@@ -2,7 +2,7 @@ import { ArticleGrid } from "@/components/article/article-grid";
 import { PaginationControl } from "@/components/ui/pagination-control";
 import { IArticles } from "@/types/supabase-table";
 import { createClient } from "@/utils/supabase/server";
-import { BottomDisplayAd } from "../google-adsense/bottom-display-ad";
+import { BottomDisplayAdWrapper } from "../google-adsense/bottom-display-ad-wrapper";
 
 const ITEMS_PER_PAGE = 9;
 
@@ -55,9 +55,7 @@ export default async function ArticleList({ searchParams }: Props) {
       {articles ? (
         <>
           <ArticleGrid articles={articles} />
-          <div className="my-12 max-w-[768px] h-40 mx-auto w-full">
-            <BottomDisplayAd />
-          </div>
+          <BottomDisplayAdWrapper />
           {totalPages > 1 && (
             <PaginationControl
               currentPage={currentPage}
