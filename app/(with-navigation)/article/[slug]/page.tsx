@@ -7,6 +7,8 @@ import ArticleContent from "../../../../components/article/article-content";
 import { CommentSection } from "@/components/comments/comment-section";
 import { BottomDisplayAd } from "@/components/google-adsense/bottom-display-ad";
 import { SideVerticalDisplayAd } from "@/components/google-adsense/side-veritcal-display-ad";
+import { createClient } from "@/utils/supabase/server";
+import { IComments } from "@/types/supabase-table";
 
 export async function generateMetadata({ params }: Props) {
   const { slug } = await params;
@@ -25,6 +27,24 @@ interface Props {
 export default function ArticlePage({ params }: Props) {
   const { slug } = use(params);
 
+  const getComments = async (): Promise<IComments[]> => {
+    "use server";
+    const supabase = await createClient();
+    const { data, error } = await supabase.rpc("get_article_comments", {
+      s_input: decodeURIComponent(slug),
+    });
+    return data;
+  };
+
+  const addComment = async (newComment: string): Promise<void> => {
+    "use server";
+    const supabase = await createClient();
+    const { data, error } = await supabase.rpc("add_article_comment", {
+      s_input: decodeURIComponent(slug),
+      new_content: newComment,
+    });
+  };
+
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="max-w-4xl mx-auto">
@@ -36,12 +56,7 @@ export default function ArticlePage({ params }: Props) {
           <BottomDisplayAd />
         </div>
         <Suspense fallback={<div>Loading comments...</div>}>
-          <CommentSection
-            resourceId={slug}
-            inputId="s_input"
-            rpcGetComments="get_article_comments"
-            rpcAddComment="add_article_comment"
-          />
+          <CommentSection getComments={getComments} addComment={addComment} />
         </Suspense>
       </div>
       <div className="sticky-side-ad">

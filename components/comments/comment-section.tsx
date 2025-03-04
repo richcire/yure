@@ -11,17 +11,13 @@ import { useRouter } from "next/navigation";
 import { makeCommentTree } from "@/lib/utils";
 
 interface CommentSectionProps {
-  resourceId: string;
-  inputId: string;
-  rpcGetComments: string;
-  rpcAddComment: string;
+  getComments: () => Promise<IComments[]>;
+  addComment: (newComment: string) => Promise<void>;
 }
 
 export function CommentSection({
-  resourceId,
-  inputId,
-  rpcGetComments,
-  rpcAddComment,
+  getComments,
+  addComment,
 }: CommentSectionProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [newComment, setNewComment] = useState("");
@@ -40,32 +36,24 @@ export function CommentSection({
       }
       setUser(data.session?.user);
     };
-    const getComments = async () => {
-      const { data, error } = await supabase
-        .rpc(rpcGetComments, {
-          [inputId]: decodeURIComponent(resourceId),
-        })
-        .returns<IComments[]>();
-      if (data) {
-        const commentTree = makeCommentTree(data);
-        setComments(commentTree);
-      }
+    const fetchComments = async () => {
+      const data = await getComments();
+      const commentTree = makeCommentTree(data);
+      setComments(commentTree);
     };
-    getComments();
+
+    fetchComments();
     getSession();
   }, []);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!newComment.trim()) return;
-    const { data, error } = await supabase.rpc(rpcAddComment, {
-      [inputId]: decodeURIComponent(resourceId),
-      new_content: newComment,
-    });
-    if (data) {
-      const commentTree = makeCommentTree(data);
-      setComments(commentTree);
-    }
+
+    await addComment(newComment);
+    const data = await getComments();
+    const commentTree = makeCommentTree(data);
+    setComments(commentTree);
     setNewComment("");
   };
 
