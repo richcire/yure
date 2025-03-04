@@ -9,7 +9,7 @@ import { CommentSection } from "@/components/comments/comment-section";
 import { createClient } from "@/utils/supabase/server";
 import { BottomDisplayAd } from "@/components/google-adsense/bottom-display-ad";
 import { SideVerticalDisplayAd } from "@/components/google-adsense/side-veritcal-display-ad";
-import { BottomDisplayAdWrapper } from "@/components/google-adsense/bottom-display-ad-wrapper";
+import { IComments } from "@/types/supabase-table";
 export async function generateMetadata({ params }: Props) {
   const { permalink } = await params;
   const supabase = await createClient();
@@ -55,6 +55,24 @@ export default async function TranslationPage({ params }: Props) {
     .eq("permalink", permalink)
     .single();
 
+  const getComments = async () => {
+    "use server";
+    const supabase = await createClient();
+    const { data, error } = await supabase.rpc("get_translation_comments", {
+      p_link: decodeURIComponent(permalink),
+    });
+    return data;
+  };
+
+  const addComment = async (newComment: string) => {
+    "use server";
+    const supabase = await createClient();
+    const { data, error } = await supabase.rpc("add_translation_comment", {
+      p_link: decodeURIComponent(permalink),
+      new_content: newComment,
+    });
+  };
+
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="max-w-4xl mx-auto">
@@ -63,10 +81,12 @@ export default async function TranslationPage({ params }: Props) {
         </Suspense>
         <TranslationContent permalink={permalink} />
 
-        <BottomDisplayAdWrapper />
+        <div className="my-12 bg-white max-w-[768px] h-40 mx-auto">
+          <BottomDisplayAd />
+        </div>
         {translation && (
           <Suspense fallback={<div>Loading comments...</div>}>
-            <CommentSection permalink={permalink} />
+            <CommentSection getComments={getComments} addComment={addComment} />
           </Suspense>
         )}
       </div>
