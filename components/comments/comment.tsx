@@ -39,7 +39,7 @@ interface ReplyProps {
 }
 
 function Reply({ reply, user, onDelete }: ReplyProps) {
-  const canDelete = user?.id === reply.author_id;
+  // const canDelete = user?.id === reply.author_id;
 
   return (
     <div className="relative pl-8 py-4 border-t">
@@ -55,24 +55,24 @@ function Reply({ reply, user, onDelete }: ReplyProps) {
             })}
           </span>
         </div>
-        {canDelete && (
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="icon" className="h-8 w-8">
-                <MoreHorizontal className="h-4 w-4" />
-                <span className="sr-only">Open menu</span>
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuItem
-                className="text-destructive"
-                onClick={() => onDelete(reply.id)}
-              >
-                Delete
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        )}
+        {/* {canDelete && ( */}
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="ghost" size="icon" className="h-8 w-8">
+              <MoreHorizontal className="h-4 w-4" />
+              <span className="sr-only">Open menu</span>
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuItem
+              className="text-destructive"
+              onClick={() => onDelete(reply.id)}
+            >
+              Delete
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+        {/* )} */}
       </div>
       <p className="mt-2">{reply.content}</p>
     </div>
