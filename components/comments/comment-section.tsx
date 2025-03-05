@@ -5,15 +5,24 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Comment } from "./comment";
 import type { IComments } from "@/types/supabase-table";
-import { User } from "@supabase/supabase-js";
+import { PostgrestError, User } from "@supabase/supabase-js";
 import { createClient } from "@/utils/supabase/client";
 import { useRouter } from "next/navigation";
 import { makeCommentTree } from "@/lib/utils";
 
 interface CommentSectionProps {
-  getComments: () => Promise<IComments[] | null>;
-  addComment: (new_content: string) => Promise<IComments[] | null>;
-  deleteComment: (commentId: string) => Promise<IComments[] | null>;
+  getComments: () => Promise<{
+    data: IComments[] | null;
+    error: PostgrestError | null;
+  }>;
+  addComment: (new_content: string) => Promise<{
+    data: IComments[] | null;
+    error: PostgrestError | null;
+  }>;
+  deleteComment: (commentId: string) => Promise<{
+    data: IComments[] | null;
+    error: PostgrestError | null;
+  }>;
 }
 
 export function CommentSection({
@@ -39,7 +48,7 @@ export function CommentSection({
       setUser(data.session?.user);
     };
     const fetchComments = async () => {
-      const data = await getComments();
+      const { data, error } = await getComments();
       if (data) {
         const commentTree = makeCommentTree(data);
         setComments(commentTree);
@@ -53,7 +62,7 @@ export function CommentSection({
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!newComment.trim()) return;
-    const data = await addComment(newComment);
+    const { data, error } = await addComment(newComment);
     if (data) {
       const commentTree = makeCommentTree(data);
       setComments(commentTree);

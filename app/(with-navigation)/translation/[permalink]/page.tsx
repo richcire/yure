@@ -10,6 +10,7 @@ import { createClient } from "@/utils/supabase/server";
 import { BottomDisplayAd } from "@/components/google-adsense/bottom-display-ad";
 import { SideVerticalDisplayAd } from "@/components/google-adsense/side-veritcal-display-ad";
 import { BottomDisplayAdWrapper } from "@/components/google-adsense/bottom-display-ad-wrapper";
+import { IComments } from "@/types/supabase-table";
 
 export async function generateMetadata({ params }: Props) {
   const { permalink } = await params;
@@ -59,21 +60,25 @@ export default async function TranslationPage({ params }: Props) {
   const getComments = async () => {
     "use server";
     const supabase = await createClient();
-    const { data, error } = await supabase.rpc("get_translation_comments", {
-      p_link: decodeURIComponent(permalink),
-    });
-    return data;
+    const { data, error } = await supabase
+      .rpc("get_translation_comments", {
+        p_link: decodeURIComponent(permalink),
+      })
+      .returns<IComments[]>();
+    return { data, error };
   };
 
   const addComment = async (new_content: string, parent_id?: string) => {
     "use server";
     const supabase = await createClient();
-    const { data, error } = await supabase.rpc("add_translation_comment", {
-      p_link: decodeURIComponent(permalink),
-      new_content,
-      parent_id,
-    });
-    return data;
+    const { data, error } = await supabase
+      .rpc("add_translation_comment", {
+        p_link: decodeURIComponent(permalink),
+        new_content,
+        parent_id,
+      })
+      .returns<IComments[]>();
+    return { data, error };
   };
 
   const deleteComment = async (commentId: string) => {
@@ -83,8 +88,9 @@ export default async function TranslationPage({ params }: Props) {
       .from("translation_comments")
       .delete()
       .eq("id", commentId)
-      .select();
-    return data;
+      .select()
+      .returns<IComments[]>();
+    return { data, error };
   };
 
   return (

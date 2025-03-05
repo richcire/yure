@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { formatDistanceToNow } from "date-fns";
 import type { IComments, IUserInfo } from "@/types/supabase-table";
-import { User } from "@supabase/supabase-js";
+import { PostgrestError, User } from "@supabase/supabase-js";
 import { CornerDownRight, MoreHorizontal } from "lucide-react";
 import { createClient } from "@/utils/supabase/client";
 import { useParams } from "next/navigation";
@@ -24,12 +24,21 @@ interface CommentProps {
   setComments: Dispatch<
     SetStateAction<(IComments & { replies: IComments[] })[]>
   >;
-  getComments: () => Promise<IComments[] | null>;
+  getComments: () => Promise<{
+    data: IComments[] | null;
+    error: PostgrestError | null;
+  }>;
   addComment: (
     new_content: string,
     parent_id: string
-  ) => Promise<IComments[] | null>;
-  deleteComment: (commentId: string) => Promise<IComments[] | null>;
+  ) => Promise<{
+    data: IComments[] | null;
+    error: PostgrestError | null;
+  }>;
+  deleteComment: (commentId: string) => Promise<{
+    data: IComments[] | null;
+    error: PostgrestError | null;
+  }>;
 }
 
 interface ReplyProps {
@@ -97,10 +106,10 @@ export function Comment({
   // const canDelete = user?.id === comment.author_id;
 
   const handleDelete = async (commentId: string) => {
-    const data = await deleteComment(commentId);
+    const { data, error } = await deleteComment(commentId);
 
     if (data) {
-      const updatedComments = await getComments();
+      const { data: updatedComments } = await getComments();
 
       if (updatedComments) {
         const commentTree = makeCommentTree(updatedComments);
@@ -117,7 +126,7 @@ export function Comment({
     e.preventDefault();
     if (!replyContent.trim()) return;
 
-    const data = await addComment(replyContent, comment.id);
+    const { data, error } = await addComment(replyContent, comment.id);
     setReplyContent("");
     setIsReplying(false);
 
