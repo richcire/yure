@@ -12,12 +12,14 @@ import { makeCommentTree } from "@/lib/utils";
 
 interface CommentSectionProps {
   getComments: () => Promise<IComments[] | null>;
-  addComment: (newComment: string) => Promise<IComments[] | null>;
+  addComment: (new_content: string) => Promise<IComments[] | null>;
+  deleteComment: (commentId: string) => Promise<IComments[] | null>;
 }
 
 export function CommentSection({
   getComments,
   addComment,
+  deleteComment,
 }: CommentSectionProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [newComment, setNewComment] = useState("");
@@ -108,6 +110,9 @@ export function CommentSection({
                 comment={comment}
                 user={user}
                 setComments={setComments}
+                getComments={getComments}
+                addComment={addComment}
+                deleteComment={deleteComment}
               />
             ))}
           </div>

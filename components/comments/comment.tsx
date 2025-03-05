@@ -24,6 +24,12 @@ interface CommentProps {
   setComments: Dispatch<
     SetStateAction<(IComments & { replies: IComments[] })[]>
   >;
+  getComments: () => Promise<IComments[] | null>;
+  addComment: (
+    new_content: string,
+    parent_id: string
+  ) => Promise<IComments[] | null>;
+  deleteComment: (commentId: string) => Promise<IComments[] | null>;
 }
 
 interface ReplyProps {
@@ -73,7 +79,14 @@ function Reply({ reply, user, onDelete }: ReplyProps) {
   );
 }
 
-export function Comment({ comment, user, setComments }: CommentProps) {
+export function Comment({
+  comment,
+  user,
+  setComments,
+  getComments,
+  addComment,
+  deleteComment,
+}: CommentProps) {
   const [isReplying, setIsReplying] = useState(false);
   const [replyContent, setReplyContent] = useState("");
   const supabase = createClient();
@@ -84,18 +97,10 @@ export function Comment({ comment, user, setComments }: CommentProps) {
   // const canDelete = user?.id === comment.author_id;
 
   const handleDelete = async (commentId: string) => {
-    const { data, error } = await supabase
-      .from("translation_comments")
-      .delete()
-      .eq("id", commentId)
-      .select();
+    const data = await deleteComment(commentId);
 
     if (data) {
-      const { data: updatedComments } = await supabase
-        .rpc("get_translation_comments", {
-          p_link: decodeURIComponent(permalink),
-        })
-        .returns<IComments[]>();
+      const updatedComments = await getComments();
 
       if (updatedComments) {
         const commentTree = makeCommentTree(updatedComments);
@@ -112,11 +117,7 @@ export function Comment({ comment, user, setComments }: CommentProps) {
     e.preventDefault();
     if (!replyContent.trim()) return;
 
-    const { data, error } = await supabase.rpc("add_translation_comment", {
-      p_link: decodeURIComponent(permalink),
-      new_content: replyContent,
-      parent_id: comment.id,
-    });
+    const data = await addComment(replyContent, comment.id);
     setReplyContent("");
     setIsReplying(false);
 

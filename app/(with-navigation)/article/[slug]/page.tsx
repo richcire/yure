@@ -35,13 +35,25 @@ export default function ArticlePage({ params }: Props) {
     return data;
   };
 
-  const addComment = async (newComment: string) => {
+  const addComment = async (new_content: string, parent_id?: string) => {
     "use server";
     const supabase = await createClient();
     const { data, error } = await supabase.rpc("add_article_comment", {
       s_input: decodeURIComponent(slug),
-      new_content: newComment,
+      new_content,
+      parent_id,
     });
+    return data;
+  };
+
+  const deleteComment = async (commentId: string) => {
+    "use server";
+    const supabase = await createClient();
+    const { data, error } = await supabase
+      .from("article_comments")
+      .delete()
+      .eq("id", commentId)
+      .select();
     return data;
   };
 
@@ -54,7 +66,11 @@ export default function ArticlePage({ params }: Props) {
         <ArticleContent slug={slug} />
         <BottomDisplayAdWrapper />
         <Suspense fallback={<div>Loading comments...</div>}>
-          <CommentSection getComments={getComments} addComment={addComment} />
+          <CommentSection
+            getComments={getComments}
+            addComment={addComment}
+            deleteComment={deleteComment}
+          />
         </Suspense>
       </div>
       <div className="sticky-side-ad">

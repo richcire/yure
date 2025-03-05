@@ -65,13 +65,25 @@ export default async function TranslationPage({ params }: Props) {
     return data;
   };
 
-  const addComment = async (newComment: string) => {
+  const addComment = async (new_content: string, parent_id?: string) => {
     "use server";
     const supabase = await createClient();
     const { data, error } = await supabase.rpc("add_translation_comment", {
       p_link: decodeURIComponent(permalink),
-      new_content: newComment,
+      new_content,
+      parent_id,
     });
+    return data;
+  };
+
+  const deleteComment = async (commentId: string) => {
+    "use server";
+    const supabase = await createClient();
+    const { data, error } = await supabase
+      .from("translation_comments")
+      .delete()
+      .eq("id", commentId)
+      .select();
     return data;
   };
 
@@ -86,7 +98,11 @@ export default async function TranslationPage({ params }: Props) {
         <BottomDisplayAdWrapper />
         {translation && (
           <Suspense fallback={<div>Loading comments...</div>}>
-            <CommentSection getComments={getComments} addComment={addComment} />
+            <CommentSection
+              getComments={getComments}
+              addComment={addComment}
+              deleteComment={deleteComment}
+            />
           </Suspense>
         )}
       </div>
