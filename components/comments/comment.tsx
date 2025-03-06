@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { formatDistanceToNow } from "date-fns";
 import type { IComments, IUserInfo } from "@/types/supabase-table";
-import { User } from "@supabase/supabase-js";
+import { PostgrestError, User } from "@supabase/supabase-js";
 import { CornerDownRight, MoreHorizontal } from "lucide-react";
 import { createClient } from "@/utils/supabase/client";
 import { useParams } from "next/navigation";
@@ -24,6 +24,21 @@ interface CommentProps {
   setComments: Dispatch<
     SetStateAction<(IComments & { replies: IComments[] })[]>
   >;
+  getComments: () => Promise<{
+    data: IComments[] | null;
+    error: PostgrestError | null;
+  }>;
+  addComment: (
+    new_content: string,
+    parent_id: string
+  ) => Promise<{
+    data: IComments[] | null;
+    error: PostgrestError | null;
+  }>;
+  deleteComment: (commentId: string) => Promise<{
+    data: IComments[] | null;
+    error: PostgrestError | null;
+  }>;
 }
 
 interface ReplyProps {
@@ -33,7 +48,7 @@ interface ReplyProps {
 }
 
 function Reply({ reply, user, onDelete }: ReplyProps) {
-  const canDelete = user?.id === reply.author_id;
+  // const canDelete = user?.id === reply.author_id;
 
   return (
     <div className="relative pl-8 py-4 border-t">
@@ -49,31 +64,38 @@ function Reply({ reply, user, onDelete }: ReplyProps) {
             })}
           </span>
         </div>
-        {canDelete && (
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="icon" className="h-8 w-8">
-                <MoreHorizontal className="h-4 w-4" />
-                <span className="sr-only">Open menu</span>
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuItem
-                className="text-destructive"
-                onClick={() => onDelete(reply.id)}
-              >
-                Delete
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        )}
+        {/* {canDelete && ( */}
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="ghost" size="icon" className="h-8 w-8">
+              <MoreHorizontal className="h-4 w-4" />
+              <span className="sr-only">Open menu</span>
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuItem
+              className="text-destructive"
+              onClick={() => onDelete(reply.id)}
+            >
+              Delete
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+        {/* )} */}
       </div>
       <p className="mt-2">{reply.content}</p>
     </div>
   );
 }
 
-export function Comment({ comment, user, setComments }: CommentProps) {
+export function Comment({
+  comment,
+  user,
+  setComments,
+  getComments,
+  addComment,
+  deleteComment,
+}: CommentProps) {
   const [isReplying, setIsReplying] = useState(false);
   const [replyContent, setReplyContent] = useState("");
   const supabase = createClient();
@@ -84,18 +106,10 @@ export function Comment({ comment, user, setComments }: CommentProps) {
   // const canDelete = user?.id === comment.author_id;
 
   const handleDelete = async (commentId: string) => {
-    const { data, error } = await supabase
-      .from("translation_comments")
-      .delete()
-      .eq("id", commentId)
-      .select();
+    const { data, error } = await deleteComment(commentId);
 
     if (data) {
-      const { data: updatedComments } = await supabase
-        .rpc("get_translation_comments", {
-          p_link: decodeURIComponent(permalink),
-        })
-        .returns<IComments[]>();
+      const { data: updatedComments } = await getComments();
 
       if (updatedComments) {
         const commentTree = makeCommentTree(updatedComments);
@@ -112,11 +126,7 @@ export function Comment({ comment, user, setComments }: CommentProps) {
     e.preventDefault();
     if (!replyContent.trim()) return;
 
-    const { data, error } = await supabase.rpc("add_translation_comment", {
-      p_link: decodeURIComponent(permalink),
-      new_content: replyContent,
-      parent_id: comment.id,
-    });
+    const { data, error } = await addComment(replyContent, comment.id);
     setReplyContent("");
     setIsReplying(false);
 

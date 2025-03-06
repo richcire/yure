@@ -5,12 +5,31 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Comment } from "./comment";
 import type { IComments } from "@/types/supabase-table";
-import { User } from "@supabase/supabase-js";
+import { PostgrestError, User } from "@supabase/supabase-js";
 import { createClient } from "@/utils/supabase/client";
 import { useRouter } from "next/navigation";
 import { makeCommentTree } from "@/lib/utils";
 
-export function CommentSection({ permalink }: { permalink: string }) {
+interface CommentSectionProps {
+  getComments: () => Promise<{
+    data: IComments[] | null;
+    error: PostgrestError | null;
+  }>;
+  addComment: (new_content: string) => Promise<{
+    data: IComments[] | null;
+    error: PostgrestError | null;
+  }>;
+  deleteComment: (commentId: string) => Promise<{
+    data: IComments[] | null;
+    error: PostgrestError | null;
+  }>;
+}
+
+export function CommentSection({
+  getComments,
+  addComment,
+  deleteComment,
+}: CommentSectionProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [newComment, setNewComment] = useState("");
   const [comments, setComments] = useState<
@@ -28,28 +47,22 @@ export function CommentSection({ permalink }: { permalink: string }) {
       }
       setUser(data.session?.user);
     };
-    const getComments = async () => {
-      const { data, error } = await supabase
-        .rpc("get_translation_comments", {
-          p_link: decodeURIComponent(permalink),
-        })
-        .returns<IComments[]>();
+    const fetchComments = async () => {
+      const { data, error } = await getComments();
       if (data) {
         const commentTree = makeCommentTree(data);
         setComments(commentTree);
       }
     };
-    getComments();
+
+    fetchComments();
     getSession();
   }, []);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!newComment.trim()) return;
-    const { data, error } = await supabase.rpc("add_translation_comment", {
-      p_link: decodeURIComponent(permalink),
-      new_content: newComment,
-    });
+    const { data, error } = await addComment(newComment);
     if (data) {
       const commentTree = makeCommentTree(data);
       setComments(commentTree);
@@ -106,6 +119,9 @@ export function CommentSection({ permalink }: { permalink: string }) {
                 comment={comment}
                 user={user}
                 setComments={setComments}
+                getComments={getComments}
+                addComment={addComment}
+                deleteComment={deleteComment}
               />
             ))}
           </div>
