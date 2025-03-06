@@ -10,6 +10,8 @@ import { createClient } from "@/utils/supabase/server";
 import { BottomDisplayAd } from "@/components/google-adsense/bottom-display-ad";
 import { SideVerticalDisplayAd } from "@/components/google-adsense/side-veritcal-display-ad";
 import { BottomDisplayAdWrapper } from "@/components/google-adsense/bottom-display-ad-wrapper";
+import { IComments } from "@/types/supabase-table";
+
 export async function generateMetadata({ params }: Props) {
   const { permalink } = await params;
   const supabase = await createClient();
@@ -55,6 +57,42 @@ export default async function TranslationPage({ params }: Props) {
     .eq("permalink", permalink)
     .single();
 
+  const getComments = async () => {
+    "use server";
+    const supabase = await createClient();
+    const { data, error } = await supabase
+      .rpc("get_translation_comments", {
+        p_link: decodeURIComponent(permalink),
+      })
+      .returns<IComments[]>();
+    return { data, error };
+  };
+
+  const addComment = async (new_content: string, parent_id?: string) => {
+    "use server";
+    const supabase = await createClient();
+    const { data, error } = await supabase
+      .rpc("add_translation_comment", {
+        p_link: decodeURIComponent(permalink),
+        new_content,
+        parent_id,
+      })
+      .returns<IComments[]>();
+    return { data, error };
+  };
+
+  const deleteComment = async (commentId: string) => {
+    "use server";
+    const supabase = await createClient();
+    const { data, error } = await supabase
+      .from("translation_comments")
+      .delete()
+      .eq("id", commentId)
+      .select()
+      .returns<IComments[]>();
+    return { data, error };
+  };
+
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="max-w-4xl mx-auto">
@@ -66,7 +104,11 @@ export default async function TranslationPage({ params }: Props) {
         <BottomDisplayAdWrapper />
         {translation && (
           <Suspense fallback={<div>Loading comments...</div>}>
-            <CommentSection permalink={permalink} />
+            <CommentSection
+              getComments={getComments}
+              addComment={addComment}
+              deleteComment={deleteComment}
+            />
           </Suspense>
         )}
       </div>
