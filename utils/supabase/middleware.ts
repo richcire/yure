@@ -51,7 +51,7 @@ export const updateSession = async (request: NextRequest) => {
           .select("role")
           .eq("user_id", user.data.user.id)
           .single<{ role: string }>();
-        if (error || role?.role !== "admin") {
+        if (error || (role?.role !== "admin" && role?.role !== "employee")) {
           return NextResponse.redirect(new URL("/", request.url));
         }
       } else {
