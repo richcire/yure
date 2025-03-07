@@ -1,5 +1,5 @@
-import KaraokeTableWrapper from "./karaoke-table-wrapper";
-import Search from "./search";
+import KaraokeTableWrapper from "../../../components/karaoke/karaoke-table-wrapper";
+import Search from "../../../components/karaoke/search";
 import {
   Table,
   TableBody,
@@ -9,7 +9,9 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Suspense } from "react";
-import ClientSideSearch from "./client-side-search";
+import ClientSideSearch from "../../../components/karaoke/client-side-search";
+import { MobileKaraokeTableSkeleton } from "../../../components/karaoke/mobile-karaoke-table";
+
 interface Props {
   searchParams: Promise<{
     search?: string; // 검색 키워드
@@ -19,46 +21,60 @@ interface Props {
 
 function KaraokeTableSkeleton() {
   return (
-    <div className="rounded-lg border overflow-hidden">
-      <Table>
-        <TableHeader>
-          <TableRow className="hover:bg-[#69140E]/5">
-            <TableHead className="py-4 px-6 font-medium w-[35%]">
-              곡명
-            </TableHead>
-            <TableHead className="py-4 px-6 font-medium w-[35%]">
-              가수
-            </TableHead>
-            <TableHead className="py-4 px-6 font-medium w-[10%]">TJ</TableHead>
-            <TableHead className="py-4 px-6 font-medium w-[10%]">KY</TableHead>
-            <TableHead className="py-4 px-6 font-medium w-[10%]">
-              JOYSOUND
-            </TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {[...Array(5)].map((_, i) => (
-            <TableRow key={i} className="hover:bg-[#69140E]/5">
-              <TableCell className="py-4 px-6">
-                <div className="h-4 bg-[#69140E]/20 rounded animate-pulse w-3/4 mb-2"></div>
-              </TableCell>
-              <TableCell className="py-4 px-6">
-                <div className="h-4 bg-[#69140E]/20 rounded animate-pulse w-2/3"></div>
-              </TableCell>
-              <TableCell className="py-4 px-6">
-                <div className="h-4 bg-[#69140E]/20 rounded animate-pulse w-12"></div>
-              </TableCell>
-              <TableCell className="py-4 px-6">
-                <div className="h-4 bg-[#69140E]/20 rounded animate-pulse w-12"></div>
-              </TableCell>
-              <TableCell className="py-4 px-6">
-                <div className="h-4 bg-[#69140E]/20 rounded animate-pulse w-12"></div>
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </div>
+    <>
+      {/* Desktop Skeleton */}
+      <div className="hidden md:block">
+        <div className="rounded-lg border overflow-hidden">
+          <Table>
+            <TableHeader>
+              <TableRow className="hover:bg-[#69140E]/5">
+                <TableHead className="py-4 px-6 font-medium w-[35%]">
+                  곡명
+                </TableHead>
+                <TableHead className="py-4 px-6 font-medium w-[35%]">
+                  가수
+                </TableHead>
+                <TableHead className="py-4 px-6 font-medium w-[10%]">
+                  TJ
+                </TableHead>
+                <TableHead className="py-4 px-6 font-medium w-[10%]">
+                  KY
+                </TableHead>
+                <TableHead className="py-4 px-6 font-medium w-[10%]">
+                  JOYSOUND
+                </TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {[...Array(5)].map((_, i) => (
+                <TableRow key={i} className="hover:bg-[#69140E]/5">
+                  <TableCell className="py-4 px-6">
+                    <div className="h-4 bg-[#69140E]/20 rounded animate-pulse w-3/4 mb-2"></div>
+                  </TableCell>
+                  <TableCell className="py-4 px-6">
+                    <div className="h-4 bg-[#69140E]/20 rounded animate-pulse w-2/3"></div>
+                  </TableCell>
+                  <TableCell className="py-4 px-6">
+                    <div className="h-4 bg-[#69140E]/20 rounded animate-pulse w-12"></div>
+                  </TableCell>
+                  <TableCell className="py-4 px-6">
+                    <div className="h-4 bg-[#69140E]/20 rounded animate-pulse w-12"></div>
+                  </TableCell>
+                  <TableCell className="py-4 px-6">
+                    <div className="h-4 bg-[#69140E]/20 rounded animate-pulse w-12"></div>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </div>
+      </div>
+
+      {/* Mobile Skeleton */}
+      <div className="md:hidden">
+        <MobileKaraokeTableSkeleton />
+      </div>
+    </>
   );
 }
 
