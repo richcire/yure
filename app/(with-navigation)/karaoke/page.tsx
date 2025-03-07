@@ -107,7 +107,7 @@ export default async function KaraokePage({ searchParams }: Props) {
       </div>
 
       <div className="mb-8">
-        <Search />
+        <Search defaultValue={parmas.search} />
         {/* <ClientSideSearch /> */}
       </div>
       {/* key 안주면 suspense 안됨 */}

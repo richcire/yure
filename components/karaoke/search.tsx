@@ -1,7 +1,7 @@
 import { Input } from "@/components/ui/input";
 import Form from "next/form";
 
-export default function Search() {
+export default function Search({ defaultValue }: { defaultValue?: string }) {
   return (
     <Form action="/karaoke" className="relative">
       <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
@@ -26,6 +26,7 @@ export default function Search() {
         placeholder="제목이나 가수를 입력하세요"
         className="pl-10 py-6 text-lg"
         name="search"
+        defaultValue={defaultValue}
       />
     </Form>
   );
