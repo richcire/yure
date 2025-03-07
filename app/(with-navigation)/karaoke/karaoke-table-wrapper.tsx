@@ -11,11 +11,10 @@ import { createClient } from "@/utils/supabase/server";
 import { PaginationControl } from "@/components/ui/pagination-control";
 
 interface Props {
-  searchParams: Promise<{
+  searchParams: {
     search?: string; // 검색 키워드
     page?: string;
-    sort?: string;
-  }>;
+  };
 }
 
 const ITEMS_PER_PAGE = 10;
@@ -40,7 +39,7 @@ async function getSongs(searchKeyword: string, currentPage: number) {
 }
 
 export default async function KaraokeTableWrapper({ searchParams }: Props) {
-  const { search: searchKeyword, page, sort } = await searchParams;
+  const { search: searchKeyword, page } = searchParams;
   if (!searchKeyword) {
     return <div>검색 키워드가 없습니다.</div>;
   }
@@ -67,7 +66,7 @@ export default async function KaraokeTableWrapper({ searchParams }: Props) {
       <div className="rounded-lg border overflow-hidden">
         <Table>
           <TableHeader>
-            <TableRow className="bg-gray-50">
+            <TableRow className="hover:bg-[#69140E]/5">
               <TableHead className="py-4 px-6 font-medium w-[35%]">
                 곡명
               </TableHead>
@@ -87,7 +86,7 @@ export default async function KaraokeTableWrapper({ searchParams }: Props) {
           </TableHeader>
           <TableBody>
             {karaokeSongs.map((song) => (
-              <TableRow key={song.id} className="hover:bg-gray-50">
+              <TableRow key={song.id} className="hover:bg-[#69140E]/5">
                 <TableCell className="py-4 px-6">
                   <div>{song.song_title}</div>
                 </TableCell>

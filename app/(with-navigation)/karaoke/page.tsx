@@ -14,7 +14,6 @@ interface Props {
   searchParams: Promise<{
     search?: string; // 검색 키워드
     page?: string;
-    sort?: string;
   }>;
 }
 
@@ -23,7 +22,7 @@ function KaraokeTableSkeleton() {
     <div className="rounded-lg border overflow-hidden">
       <Table>
         <TableHeader>
-          <TableRow className="bg-gray-50">
+          <TableRow className="hover:bg-[#69140E]/5">
             <TableHead className="py-4 px-6 font-medium w-[35%]">
               곡명
             </TableHead>
@@ -39,21 +38,21 @@ function KaraokeTableSkeleton() {
         </TableHeader>
         <TableBody>
           {[...Array(5)].map((_, i) => (
-            <TableRow key={i}>
+            <TableRow key={i} className="hover:bg-[#69140E]/5">
               <TableCell className="py-4 px-6">
-                <div className="h-4 bg-gray-200 rounded animate-pulse w-3/4 mb-2"></div>
+                <div className="h-4 bg-[#69140E]/20 rounded animate-pulse w-3/4 mb-2"></div>
               </TableCell>
               <TableCell className="py-4 px-6">
-                <div className="h-4 bg-gray-200 rounded animate-pulse w-2/3"></div>
+                <div className="h-4 bg-[#69140E]/20 rounded animate-pulse w-2/3"></div>
               </TableCell>
               <TableCell className="py-4 px-6">
-                <div className="h-4 bg-gray-200 rounded animate-pulse w-12"></div>
+                <div className="h-4 bg-[#69140E]/20 rounded animate-pulse w-12"></div>
               </TableCell>
               <TableCell className="py-4 px-6">
-                <div className="h-4 bg-gray-200 rounded animate-pulse w-12"></div>
+                <div className="h-4 bg-[#69140E]/20 rounded animate-pulse w-12"></div>
               </TableCell>
               <TableCell className="py-4 px-6">
-                <div className="h-4 bg-gray-200 rounded animate-pulse w-12"></div>
+                <div className="h-4 bg-[#69140E]/20 rounded animate-pulse w-12"></div>
               </TableCell>
             </TableRow>
           ))}
@@ -64,8 +63,9 @@ function KaraokeTableSkeleton() {
 }
 
 export default async function KaraokePage({ searchParams }: Props) {
+  const parmas = await searchParams;
   return (
-    <div className="container mx-auto py-8 px-4 min-h-screen">
+    <div className="container max-w-5xl mx-auto py-8 px-4 min-h-screen">
       <div className="text-center mb-8">
         <h1 className="text-3xl font-bold flex items-center justify-center gap-2">
           <svg
@@ -94,8 +94,12 @@ export default async function KaraokePage({ searchParams }: Props) {
         <Search />
         {/* <ClientSideSearch /> */}
       </div>
-      <Suspense fallback={<KaraokeTableSkeleton />}>
-        <KaraokeTableWrapper searchParams={searchParams} />
+      {/* key 안주면 suspense 안됨 */}
+      <Suspense
+        key={`${parmas.search}${parmas.page}`}
+        fallback={<KaraokeTableSkeleton />}
+      >
+        <KaraokeTableWrapper searchParams={parmas} />
       </Suspense>
     </div>
   );
