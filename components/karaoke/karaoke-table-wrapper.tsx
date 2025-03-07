@@ -10,6 +10,7 @@ import {
 import { createClient } from "@/utils/supabase/server";
 import { PaginationControl } from "@/components/ui/pagination-control";
 import MobileKaraokeTable from "./mobile-karaoke-table";
+import { BottomDisplayAdWrapper } from "../google-adsense/bottom-display-ad-wrapper";
 
 interface Props {
   searchParams: {
@@ -107,7 +108,7 @@ export default async function KaraokeTableWrapper({ searchParams }: Props) {
       <div className="md:hidden">
         <MobileKaraokeTable songs={karaokeSongs} />
       </div>
-
+      <BottomDisplayAdWrapper />
       <PaginationControl
         currentPage={page ? parseInt(page) : 1}
         totalPages={totalPages}
