@@ -19,7 +19,6 @@ const config = {
         "4xl": "1800px",
       },
     },
-
     extend: {
       typography: {
         DEFAULT: {

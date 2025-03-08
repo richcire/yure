@@ -70,6 +70,7 @@ const Navigation = () => {
                   width={32}
                   height={32}
                   className="object-contain"
+                  priority
                 />
                 <span className="hidden sm:inline">揺れ 유레</span>
               </Link>
