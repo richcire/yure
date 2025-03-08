@@ -188,12 +188,12 @@ export default function ArticleEditor({ id }: { id?: string }) {
     return slug;
   }
 
-  const uploadBannerImage = async () => {
+  const uploadBannerImage = async (storageFolder: string) => {
     if (!selectedBannerImage) return;
 
     const supabase = createClient();
 
-    const fileName = `article/banner-${Date.now()}-${Math.random().toString(36).substring(7)}.${selectedBannerImage.type.split("/")[1]}`;
+    const fileName = `${storageFolder}/banner-${Date.now()}-${Math.random().toString(36).substring(7)}.${selectedBannerImage.type.split("/")[1]}`;
     const { data: uploadData, error: uploadError } = await supabase.storage
       .from("images")
       .upload(fileName, selectedBannerImage);
@@ -212,7 +212,8 @@ export default function ArticleEditor({ id }: { id?: string }) {
 
   const deleteRemovedImagesInStorage = async (
     newContent: string,
-    oldContent: string
+    oldContent: string,
+    storageFolder: string
   ) => {
     const supabase = createClient();
     const oldContentWrapper = document.createElement("div");
@@ -234,7 +235,7 @@ export default function ArticleEditor({ id }: { id?: string }) {
     const imagePathsToDelete = imagesToDelete
       .map((imgUrl) => {
         const path = imgUrl?.split("/").pop();
-        return path ? `article/${path}` : undefined;
+        return path ? `${storageFolder}/${path}` : undefined;
       })
       .filter((url): url is string => url !== undefined);
 
@@ -243,7 +244,7 @@ export default function ArticleEditor({ id }: { id?: string }) {
     }
   };
 
-  const uploadImages = async (newContent: string) => {
+  const uploadImages = async (newContent: string, storageFolder: string) => {
     const supabase = createClient();
     const newContentWrapper = document.createElement("div");
     newContentWrapper.innerHTML = newContent;
@@ -262,7 +263,7 @@ export default function ArticleEditor({ id }: { id?: string }) {
       const blob = await response.blob();
 
       // Upload to Supabase storage
-      const fileName = `article/${Date.now()}-${Math.random().toString(36).substring(7)}.${blob.type.split("/")[1]}`;
+      const fileName = `${storageFolder}/${Date.now()}-${Math.random().toString(36).substring(7)}.${blob.type.split("/")[1]}`;
       const { data: uploadData, error: uploadError } = await supabase.storage
         .from("images")
         .upload(fileName, blob);
@@ -305,7 +306,7 @@ export default function ArticleEditor({ id }: { id?: string }) {
       }
 
       // Upload banner image if selected
-      const bannerUrl = await uploadBannerImage();
+      const bannerUrl = await uploadBannerImage("article");
 
       // Continue with the original save logic
       const supabase = createClient();
@@ -317,12 +318,19 @@ export default function ArticleEditor({ id }: { id?: string }) {
       // If updating, handle deleted images
 
       if (id && article) {
-        await deleteRemovedImagesInStorage(editor.getHTML(), article.content);
+        await deleteRemovedImagesInStorage(
+          editor.getHTML(),
+          article.content,
+          "article"
+        );
       }
 
       setProgressValue(30);
 
-      const { finalContentWrapper, uploadError } = await uploadImages(content);
+      const { finalContentWrapper, uploadError } = await uploadImages(
+        content,
+        "article"
+      );
 
       if (uploadError) {
         setIsSaving(false);
