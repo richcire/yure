@@ -24,8 +24,9 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
-
+import Link from "@tiptap/extension-link";
 export default function ArticleEditor({ id }: { id?: string }) {
+  const [article, setArticle] = useState<IArticles>();
   const [title, setTitle] = useState("");
   const [progressValue, setProgressValue] = useState(0);
   const [isSaving, setIsSaving] = useState(false);
@@ -53,6 +54,77 @@ export default function ArticleEditor({ id }: { id?: string }) {
       Highlight.configure({
         HTMLAttributes: {
           class: "bg-[#84894A] dark:bg-[#84894A]",
+        },
+      }),
+      Link.configure({
+        openOnClick: false,
+        autolink: true,
+        defaultProtocol: "https",
+        protocols: ["http", "https"],
+        isAllowedUri: (url, ctx) => {
+          try {
+            // construct URL
+            const parsedUrl = url.includes(":")
+              ? new URL(url)
+              : new URL(`${ctx.defaultProtocol}://${url}`);
+
+            // use default validation
+            if (!ctx.defaultValidate(parsedUrl.href)) {
+              return false;
+            }
+
+            // disallowed protocols
+            const disallowedProtocols = ["ftp", "file", "mailto"];
+            const protocol = parsedUrl.protocol.replace(":", "");
+
+            if (disallowedProtocols.includes(protocol)) {
+              return false;
+            }
+
+            // only allow protocols specified in ctx.protocols
+            const allowedProtocols = ctx.protocols.map((p) =>
+              typeof p === "string" ? p : p.scheme
+            );
+
+            if (!allowedProtocols.includes(protocol)) {
+              return false;
+            }
+
+            // disallowed domains
+            const disallowedDomains = [
+              "example-phishing.com",
+              "malicious-site.net",
+            ];
+            const domain = parsedUrl.hostname;
+
+            if (disallowedDomains.includes(domain)) {
+              return false;
+            }
+
+            // all checks have passed
+            return true;
+          } catch {
+            return false;
+          }
+        },
+        shouldAutoLink: (url) => {
+          try {
+            // construct URL
+            const parsedUrl = url.includes(":")
+              ? new URL(url)
+              : new URL(`https://${url}`);
+
+            // only auto-link if the domain is not in the disallowed list
+            const disallowedDomains = [
+              "example-no-autolink.com",
+              "another-no-autolink.com",
+            ];
+            const domain = parsedUrl.hostname;
+
+            return !disallowedDomains.includes(domain);
+          } catch {
+            return false;
+          }
         },
       }),
       //   FontSize,
@@ -83,6 +155,7 @@ export default function ArticleEditor({ id }: { id?: string }) {
         }
 
         setTitle(data.title);
+        setArticle(data);
         editor?.commands.setContent(data.content);
       }
     };
@@ -137,6 +210,85 @@ export default function ArticleEditor({ id }: { id?: string }) {
     return publicUrl;
   };
 
+  const deleteRemovedImagesInStorage = async (
+    newContent: string,
+    oldContent: string
+  ) => {
+    const supabase = createClient();
+    const oldContentWrapper = document.createElement("div");
+    oldContentWrapper.innerHTML = oldContent;
+    const oldImages = Array.from(oldContentWrapper.getElementsByTagName("img"))
+      .map((img) => img.getAttribute("src"))
+      .filter((src) => src?.includes("supabase.co"));
+
+    const newContentWrapper = document.createElement("div");
+    newContentWrapper.innerHTML = newContent;
+    const newImages = Array.from(newContentWrapper.getElementsByTagName("img"))
+      .map((img) => img.getAttribute("src"))
+      .filter((src) => src?.includes("supabase.co"));
+
+    const imagesToDelete = oldImages.filter(
+      (oldSrc) => !newImages.includes(oldSrc)
+    );
+
+    const imagePathsToDelete = imagesToDelete
+      .map((imgUrl) => {
+        const path = imgUrl?.split("/").pop();
+        return path ? `article/${path}` : undefined;
+      })
+      .filter((url): url is string => url !== undefined);
+
+    if (imagePathsToDelete.length > 0) {
+      await supabase.storage.from("images").remove(imagePathsToDelete);
+    }
+  };
+
+  const uploadImages = async (newContent: string) => {
+    const supabase = createClient();
+    const newContentWrapper = document.createElement("div");
+    newContentWrapper.innerHTML = newContent;
+    const images = Array.from(
+      newContentWrapper.getElementsByTagName("img")
+    ).filter((img) => {
+      const src = img.getAttribute("src");
+      return src?.startsWith("data:image");
+    });
+
+    // Upload each image to Supabase storage and get their URLs
+    const imagePromises = images.map(async (img, idx) => {
+      const base64Data = img.getAttribute("src");
+      // Convert base64 to blob
+      const response = await fetch(base64Data!);
+      const blob = await response.blob();
+
+      // Upload to Supabase storage
+      const fileName = `article/${Date.now()}-${Math.random().toString(36).substring(7)}.${blob.type.split("/")[1]}`;
+      const { data: uploadData, error: uploadError } = await supabase.storage
+        .from("images")
+        .upload(fileName, blob);
+
+      if (uploadError) {
+        return { finalContent: null, uploadError: uploadError };
+      }
+
+      const {
+        data: { publicUrl },
+      } = supabase.storage.from("images").getPublicUrl(fileName);
+
+      // Update the image src with the public URL
+      img.setAttribute("src", publicUrl);
+    });
+
+    await Promise.all(imagePromises);
+
+    return { finalContentWrapper: newContentWrapper, uploadError: null };
+  };
+
+  const getThumbnailImage = (finalContentWrapper: HTMLDivElement) => {
+    const firstImage = finalContentWrapper.querySelector("img");
+    return firstImage?.getAttribute("src") || "";
+  };
+
   const handleFinalSave = async () => {
     setIsSaving(true);
     if (!editor || !title) {
@@ -160,98 +312,33 @@ export default function ArticleEditor({ id }: { id?: string }) {
       const content = editor.getHTML();
       const tempDiv = document.createElement("div");
       tempDiv.innerHTML = content;
-      let thumbnailUrl = "";
       setProgressValue(20);
 
       // If updating, handle deleted images
-      if (id) {
-        const { data: existingArticle } = await supabase
-          .from("articles")
-          .select("content")
-          .eq("id", id)
-          .single();
 
-        if (existingArticle) {
-          const oldDiv = document.createElement("div");
-          oldDiv.innerHTML = existingArticle.content;
-          const oldImages = Array.from(oldDiv.getElementsByTagName("img"))
-            .map((img) => img.getAttribute("src"))
-            .filter((src) => src?.includes("supabase.co"));
-
-          // Get current images in the editor
-          const currentImages = Array.from(tempDiv.getElementsByTagName("img"))
-            .map((img) => img.getAttribute("src"))
-            .filter((src) => src?.includes("supabase.co"));
-
-          // Find images that were deleted (present in old but not in current)
-          const deletedImages = oldImages.filter(
-            (oldSrc) => !currentImages.includes(oldSrc)
-          );
-
-          // Delete only the removed images from storage
-          const imgUrlsToDelete = deletedImages
-            .map((imgUrl) => {
-              const path = imgUrl?.split("/").pop();
-              return path ? `article/${path}` : undefined;
-            })
-            .filter((url): url is string => url !== undefined);
-
-          if (imgUrlsToDelete.length > 0) {
-            await supabase.storage.from("images").remove(imgUrlsToDelete);
-          }
-        }
+      if (id && article) {
+        await deleteRemovedImagesInStorage(editor.getHTML(), article.content);
       }
 
-      // Handle new images
-      const images = Array.from(tempDiv.getElementsByTagName("img")).filter(
-        (img) => {
-          const src = img.getAttribute("src");
-          return src?.startsWith("data:image");
-        }
-      );
       setProgressValue(30);
 
-      // Upload each image to Supabase storage and get their URLs
-      const imagePromises = images.map(async (img, idx) => {
-        const base64Data = img.getAttribute("src");
-        // Convert base64 to blob
-        const response = await fetch(base64Data!);
-        const blob = await response.blob();
+      const { finalContentWrapper, uploadError } = await uploadImages(content);
 
-        // Upload to Supabase storage
-        const fileName = `article/${Date.now()}-${Math.random().toString(36).substring(7)}.${blob.type.split("/")[1]}`;
-        const { data: uploadData, error: uploadError } = await supabase.storage
-          .from("images")
-          .upload(fileName, blob);
+      if (uploadError) {
+        setIsSaving(false);
+        setProgressValue(0);
+        console.error("Error uploading images:", uploadError);
+        return;
+      }
 
-        if (uploadError) {
-          return;
-        }
-        setProgressValue(40);
-        // Get public URL
-        const {
-          data: { publicUrl },
-        } = supabase.storage.from("images").getPublicUrl(fileName);
+      setProgressValue(80);
 
-        // Update the image src with the public URL
-        img.setAttribute("src", publicUrl);
-      });
-
-      // Wait for all images to be uploaded
-      await Promise.all(imagePromises);
-      setProgressValue(70);
-
-      // Get the final HTML with updated image URLs
-      const finalContent = tempDiv.innerHTML;
-
-      // Find the first image in the final content for thumbnail
-      const firstImage = tempDiv.querySelector("img");
-      thumbnailUrl = firstImage?.getAttribute("src") || "";
+      const thumbnailUrl = getThumbnailImage(finalContentWrapper);
 
       // Prepare the data object
       const articleData: Partial<IArticles> = {
         title,
-        content: finalContent,
+        content: finalContentWrapper.innerHTML,
         thumbnail_url: thumbnailUrl,
         slug: slugifyLimited(title),
         banner_url: bannerUrl,
@@ -280,7 +367,7 @@ export default function ArticleEditor({ id }: { id?: string }) {
   const handleCancel = () => {
     setIsSaving(false);
     setProgressValue(0);
-    router.push("/admin/translation");
+    router.push("/admin/article");
   };
 
   if (!editor) {
@@ -328,6 +415,11 @@ export default function ArticleEditor({ id }: { id?: string }) {
               <div className="grid gap-4 py-4">
                 <div className="grid gap-2">
                   <Label htmlFor="banner">배너 이미지</Label>
+                  {id && (
+                    <p className="text-sm text-gray-500">
+                      배너 이미지를 다시 선택하면 기존 배너 이미지를 대체합니다.
+                    </p>
+                  )}
                   <Input
                     id="banner"
                     type="file"

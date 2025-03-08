@@ -19,6 +19,7 @@ import {
   Heading3,
   MinusSquare,
   Type,
+  Link,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -195,6 +196,25 @@ export function Toolbar({ editor }: ToolbarProps) {
           onClick={() => editor.chain().focus().toggleBlockquote().run()}
         >
           <TextQuote className="h-4 w-4" />
+        </Button>
+
+        <Button
+          size="sm"
+          variant={editor.isActive("link") ? "secondary" : "ghost"}
+          onClick={() => {
+            if (editor.isActive("link")) {
+              editor.chain().focus().unsetLink().run();
+              return;
+            }
+
+            const url = window.prompt("Enter URL:");
+
+            if (url) {
+              editor.chain().focus().setLink({ href: url }).run();
+            }
+          }}
+        >
+          <Link className="h-4 w-4" />
         </Button>
 
         <div className="w-px h-6 bg-border mx-2" />
