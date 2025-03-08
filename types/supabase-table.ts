@@ -51,3 +51,14 @@ export interface IUserInfo {
   role: string;
   created_at: string;
 }
+
+export interface IKaraokeSongs {
+  id: string;
+  song_title: string;
+  singer: string;
+  tj: string;
+  ky: string;
+  js: string;
+  created_at: string;
+  updated_at: string;
+}
