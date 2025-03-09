@@ -11,7 +11,7 @@ export default function NotFound() {
             Page Not Found
           </h2>
           <p className="text-gray-600 text-lg">
-            Oops! The page you're looking for doesn't exist.
+            앗! 찾으시는 페이지가 없습니다.
           </p>
         </div>
 
