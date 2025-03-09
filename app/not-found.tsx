@@ -8,7 +8,7 @@ export default function NotFound() {
         <div className="space-y-2">
           <h1 className="text-9xl font-bold text-gray-900">404</h1>
           <h2 className="text-3xl font-semibold text-gray-800">
-            Page Not Found
+            페이지를 찾을 수 없습니다.
           </h2>
           <p className="text-gray-600 text-lg">
             앗! 찾으시는 페이지가 없습니다.
