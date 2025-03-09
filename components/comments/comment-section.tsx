@@ -77,7 +77,7 @@ export function CommentSection({
         onClick={() => setIsOpen(!isOpen)}
         className="flex items-center gap-2"
       >
-        <span>{isOpen ? "Hide" : "Show"} Comments</span>
+        <span>댓글 {isOpen ? "숨기기" : "보기"}</span>
         <span className="text-sm text-muted-foreground">
           ({comments.length})
         </span>
@@ -107,7 +107,7 @@ export function CommentSection({
             )}
             {user && (
               <Button type="submit" disabled={!newComment.trim()}>
-                Post Comment
+                댓글 작성
               </Button>
             )}
           </form>
