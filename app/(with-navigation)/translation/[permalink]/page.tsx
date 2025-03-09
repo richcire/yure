@@ -21,6 +21,7 @@ export async function generateMetadata({ params }: Props) {
 
   return {
     title: `${data?.artist} - ${data?.title} [가사해석/발음] • 유레 揺れ`,
+    description: `${data?.title} J-POP 번역은 유레`,
   };
 }
 
