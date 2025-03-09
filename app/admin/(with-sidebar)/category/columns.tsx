@@ -1,6 +1,5 @@
 "use client";
 
-import { ITranslations } from "@/types/supabase-table";
 import { ColumnDef } from "@tanstack/react-table";
 import {
   DropdownMenu,
@@ -25,13 +24,29 @@ import {
 } from "@/components/ui/alert-dialog";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
+import {
+  Dialog,
+  DialogTrigger,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+  DialogClose,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+
+interface Category {
+  id: number;
+  name: string;
+}
+
 const DeleteAlert = ({
   onDelete,
-  title,
+  name,
 }: {
   onDelete: () => Promise<void>;
-  title: string;
+  name: string;
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
@@ -52,7 +67,7 @@ const DeleteAlert = ({
         <AlertDialogHeader>
           <AlertDialogTitle>정말 삭제하시겠습니까?</AlertDialogTitle>
           <AlertDialogDescription>
-            이 작업은 &quot;{title}&quot;을(를) 영구적으로 삭제합니다. 이 작업은
+            이 작업은 &quot;{name}&quot;을(를) 영구적으로 삭제합니다. 이 작업은
             취소할 수 없습니다.
           </AlertDialogDescription>
         </AlertDialogHeader>
@@ -65,54 +80,71 @@ const DeleteAlert = ({
   );
 };
 
-const deleteTranslation = async (id: string) => {
+const deleteCategory = async (id: number) => {
   const supabase = createClient();
 
-  // First fetch the translation to get content and image paths
-  const { data: translation } = await supabase
-    .from("translations")
-    .select("*")
-    .eq("id", id)
-    .single();
-
-  if (translation) {
-    // Create temporary div to parse HTML content
-    const tempDiv = document.createElement("div");
-    tempDiv.innerHTML = translation.content;
-
-    // Get all image URLs from the content
-    const contentImages = Array.from(tempDiv.getElementsByTagName("img"))
-      .map((img) => img.getAttribute("src"))
-      .filter((src) => src?.includes("supabase.co"))
-      .map((imgUrl) => {
-        const path = imgUrl?.split("/").pop();
-        return path ? `translation/${path}` : undefined;
-      })
-      .filter((url): url is string => url !== undefined);
-
-    // Delete all images from storage
-    if (contentImages.length > 0) {
-      await supabase.storage.from("images").remove(contentImages);
-    }
-
-    // Delete the translation record
-    await supabase.from("translations").delete().eq("id", id);
-  }
+  // Delete the category record
+  await supabase.from("categories").delete().eq("id", id);
 };
 
-export const columns: ColumnDef<ITranslations>[] = [
+const ModifyDialog = ({ id, name }: { id: number; name: string }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [categoryName, setCategoryName] = useState(name);
+  const router = useRouter();
+  const handleModify = async () => {
+    const supabase = createClient();
+    const { error } = await supabase
+      .from("categories")
+      .update({ name: categoryName })
+      .eq("id", id);
+
+    if (error) {
+      window.alert(error.message);
+      return;
+    } else {
+      setIsOpen(false);
+      router.refresh();
+    }
+  };
+
+  return (
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
+      <DialogTrigger asChild>
+        <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
+          수정
+        </DropdownMenuItem>
+      </DialogTrigger>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>카테고리 수정</DialogTitle>
+          <DialogDescription>카테고리의 이름을 수정하세요.</DialogDescription>
+        </DialogHeader>
+        <Input
+          value={categoryName}
+          onChange={(e) => setCategoryName(e.target.value)}
+        />
+        <DialogFooter>
+          <DialogClose>취소</DialogClose>
+          <Button onClick={handleModify}>저장</Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
+};
+
+export const columns: ColumnDef<Category>[] = [
   {
-    accessorKey: "title",
-    header: "Title",
+    accessorKey: "id",
+    header: "Id",
   },
   {
-    accessorKey: "artist",
-    header: "Artist",
+    accessorKey: "name",
+    header: "Name",
   },
   {
     id: "actions",
     cell: ({ row }) => {
-      const translation = row.original;
+      const category = row.original;
 
       return (
         <DropdownMenu>
@@ -123,13 +155,11 @@ export const columns: ColumnDef<ITranslations>[] = [
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <Link href={`/admin/translation-modify/${translation.id}`}>
-              <DropdownMenuItem>수정</DropdownMenuItem>
-            </Link>
+            <ModifyDialog id={category.id} name={category.name} />
             <DropdownMenuSeparator />
             <DeleteAlert
-              onDelete={() => deleteTranslation(translation.id)}
-              title={translation.title}
+              onDelete={() => deleteCategory(category.id)}
+              name={category.name}
             />
           </DropdownMenuContent>
         </DropdownMenu>

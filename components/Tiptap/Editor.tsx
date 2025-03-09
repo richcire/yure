@@ -409,7 +409,7 @@ export default function TiptapEditor({ id }: { id?: string }) {
                 className="shadow-lg"
               >
                 <Save className="w-4 h-4 mr-2" />
-                Save Translation
+                저장
               </Button>
             </DrawerTrigger>
             <DrawerContent>

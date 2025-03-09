@@ -77,7 +77,7 @@ function Reply({ reply, user, onDelete }: ReplyProps) {
               className="text-destructive"
               onClick={() => onDelete(reply.id)}
             >
-              Delete
+              삭제
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
@@ -154,7 +154,7 @@ export function Comment({
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" size="icon" className="h-8 w-8">
                   <MoreHorizontal className="h-4 w-4" />
-                  <span className="sr-only">Open menu</span>
+                  <span className="sr-only">메뉴 열기</span>
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
@@ -162,7 +162,7 @@ export function Comment({
                   className="text-destructive"
                   onClick={() => handleDelete(comment.id)}
                 >
-                  Delete
+                  삭제
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
@@ -175,7 +175,7 @@ export function Comment({
             className="mt-2"
             onClick={() => setIsReplying(!isReplying)}
           >
-            Reply
+            답글 달기
           </Button>
 
           {isReplying && (
@@ -186,7 +186,7 @@ export function Comment({
                   onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
                     setReplyContent(e.target.value)
                   }
-                  placeholder="Write a reply..."
+                  placeholder="답글을 달아보세요!"
                   className="w-full"
                 />
               ) : (
@@ -206,7 +206,7 @@ export function Comment({
                     size="sm"
                     disabled={!replyContent.trim()}
                   >
-                    Post Reply
+                    답글 작성
                   </Button>
                 )}
                 <Button
@@ -215,7 +215,7 @@ export function Comment({
                   size="sm"
                   onClick={() => setIsReplying(false)}
                 >
-                  Cancel
+                  취소
                 </Button>
               </div>
             </form>

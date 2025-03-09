@@ -101,7 +101,7 @@ export default async function TranslationPage({ params }: Props) {
 
         <BottomDisplayAdWrapper />
         {translation && (
-          <Suspense fallback={<div>Loading comments...</div>}>
+          <Suspense fallback={<div>댓글을 불러오는 중...</div>}>
             <CommentSection
               getComments={getComments}
               addComment={addComment}

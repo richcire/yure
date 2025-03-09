@@ -58,7 +58,7 @@ export default async function KaraokeTableWrapper({ searchParams }: Props) {
   }
 
   if (!karaokeSongs) {
-    return <div>No songs found</div>;
+    return <div>노래를 찾을 수 없습니다</div>;
   }
 
   const totalPages = Math.ceil((count || 0) / ITEMS_PER_PAGE);

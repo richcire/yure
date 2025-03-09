@@ -30,7 +30,7 @@ export function MobileKaraokeTableSkeleton() {
 
 export default function MobileKaraokeTable({ songs }: Props) {
   if (!songs.length) {
-    return <div>No songs found</div>;
+    return <div>노래를 찾을 수 없습니다</div>;
   }
 
   return (
