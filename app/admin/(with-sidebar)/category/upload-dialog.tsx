@@ -40,14 +40,14 @@ export const UploadDialog = () => {
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
         <Label className="bg-primary text-white p-2 rounded-md hover:bg-primary/80 hover:cursor-pointer">
-          Upload
+          생성
         </Label>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Upload Category</DialogTitle>
+          <DialogTitle>카테고리 생성</DialogTitle>
           <DialogDescription>
-            Enter the name of the new category.
+            새 카테고리의 이름을 입력하세요.
           </DialogDescription>
         </DialogHeader>
         <Input
