@@ -64,7 +64,7 @@ export default async function ArticleList({ searchParams }: Props) {
           )}
         </>
       ) : (
-        "Error occurred while fetching articles"
+        "게시물을 불러오는 중 오류가 발생했습니다."
       )}
     </>
   );

@@ -32,7 +32,7 @@ export default async function TranslationPage() {
       <div className="fixed bottom-4 right-4 flex gap-2">
         <Link href="/admin/translation-upload" className="shadow-lg">
           <Label className="bg-primary text-white p-2 rounded-md hover:bg-primary/80 hover:cursor-pointer">
-            Upload
+            생성
           </Label>
         </Link>
       </div>
