@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { createClient } from "@/utils/supabase/client";
 import {
   Dialog,
   DialogTrigger,
@@ -21,8 +22,18 @@ export const UploadDialog = () => {
   const [categoryName, setCategoryName] = useState("");
   const router = useRouter();
   const handleUpload = async () => {
-    setIsOpen(false);
-    router.refresh();
+    const supabase = createClient();
+    const { error } = await supabase
+      .from("categories")
+      .insert({ name: categoryName });
+
+    if (error) {
+      window.alert(error.message);
+      return;
+    } else {
+      setIsOpen(false);
+      router.refresh();
+    }
   };
 
   return (

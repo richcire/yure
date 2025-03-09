@@ -41,10 +41,17 @@ interface Category {
   name: string;
 }
 
-const DeleteAlert = ({ name }: { name: string }) => {
+const DeleteAlert = ({
+  onDelete,
+  name,
+}: {
+  onDelete: () => Promise<void>;
+  name: string;
+}) => {
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
   const handleDelete = async () => {
+    await onDelete();
     setIsOpen(false);
     router.refresh();
   };
@@ -73,13 +80,31 @@ const DeleteAlert = ({ name }: { name: string }) => {
   );
 };
 
-const ModifyDialog = ({ name }: { name: string }) => {
+const deleteCategory = async (id: number) => {
+  const supabase = createClient();
+
+  // Delete the category record
+  await supabase.from("categories").delete().eq("id", id);
+};
+
+const ModifyDialog = ({ id, name }: { id: number; name: string }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [categoryName, setCategoryName] = useState(name);
   const router = useRouter();
-  const handleSave = async () => {
-    setIsOpen(false);
-    router.refresh();
+  const handleModify = async () => {
+    const supabase = createClient();
+    const { error } = await supabase
+      .from("categories")
+      .update({ name: categoryName })
+      .eq("id", id);
+
+    if (error) {
+      window.alert(error.message);
+      return;
+    } else {
+      setIsOpen(false);
+      router.refresh();
+    }
   };
 
   return (
@@ -102,7 +127,7 @@ const ModifyDialog = ({ name }: { name: string }) => {
         />
         <DialogFooter>
           <DialogClose>취소</DialogClose>
-          <Button onClick={handleSave}>저장</Button>
+          <Button onClick={handleModify}>저장</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
@@ -132,9 +157,12 @@ export const columns: ColumnDef<Category>[] = [
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <ModifyDialog name={category.name} />
+            <ModifyDialog id={category.id} name={category.name} />
             <DropdownMenuSeparator />
-            <DeleteAlert name={category.name} />
+            <DeleteAlert
+              onDelete={() => deleteCategory(category.id)}
+              name={category.name}
+            />
           </DropdownMenuContent>
         </DropdownMenu>
       );
