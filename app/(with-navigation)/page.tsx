@@ -4,6 +4,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import FeaturedArticleWrapper from "@/components/home/featured-article-wrapper";
 import { BottomDisplayAd } from "@/components/google-adsense/bottom-display-ad";
 import Search from "@/components/karaoke/search";
+
 function CarouselLoading() {
   return (
     <section className="w-full relative overflow-hidden">
@@ -58,9 +59,7 @@ export default function Home() {
       </Suspense>
 
       <div className="max-w-5xl mx-auto my-12 px-4">
-        <h2 className="text-3xl font-bold mb-8 pt-12">
-          좋아하는 노래의 노래방 번호를 찾아보세요!
-        </h2>
+        <h2 className="text-3xl font-bold mb-8 pt-12">🔍 JPOP 노래방 검색기</h2>
         <Search />
       </div>
 

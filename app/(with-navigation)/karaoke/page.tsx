@@ -12,6 +12,11 @@ import { Suspense } from "react";
 import ClientSideSearch from "../../../components/karaoke/client-side-search";
 import { MobileKaraokeTableSkeleton } from "../../../components/karaoke/mobile-karaoke-table";
 
+export const metadata = {
+  title: "🔍 JPOP 노래방 검색기",
+  description: "부르고 싶은 JPOP 노래의 노래방 번호를 찾아보세요!",
+};
+
 interface Props {
   searchParams: Promise<{
     search?: string; // 검색 키워드
@@ -84,22 +89,7 @@ export default async function KaraokePage({ searchParams }: Props) {
     <div className="container max-w-5xl mx-auto py-8 px-4 min-h-screen">
       <div className="text-center mb-8">
         <h1 className="text-3xl font-bold flex items-center justify-center gap-2">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            className="w-8 h-8"
-          >
-            <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z" />
-            <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
-            <line x1="12" y1="19" x2="12" y2="23" />
-            <line x1="8" y1="23" x2="16" y2="23" />
-          </svg>
-          노래방 번호 찾기
+          🔍 JPOP 노래방 검색기
         </h1>
         <p className="text-gray-600 mt-2">
           부르고 싶은 노래의 노래방 번호를 찾아보세요!
