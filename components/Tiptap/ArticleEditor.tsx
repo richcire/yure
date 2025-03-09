@@ -188,9 +188,10 @@ export default function ArticleEditor({ id }: { id?: string }) {
     return slug;
   }
 
-  const uploadBannerImage = async (storageFolder: string) => {
-    if (!selectedBannerImage) return;
-
+  const uploadBannerImage = async (
+    storageFolder: string,
+    selectedBannerImage: File
+  ) => {
     const supabase = createClient();
 
     const fileName = `${storageFolder}/banner-${Date.now()}-${Math.random().toString(36).substring(7)}.${selectedBannerImage.type.split("/")[1]}`;
@@ -200,14 +201,14 @@ export default function ArticleEditor({ id }: { id?: string }) {
 
     if (uploadError) {
       console.error("Error uploading banner image:", uploadError);
-      return;
+      return { bannerUrl: null, uploadError: uploadError };
     }
 
     const {
       data: { publicUrl },
     } = supabase.storage.from("images").getPublicUrl(fileName);
 
-    return publicUrl;
+    return { bannerUrl: publicUrl, uploadError: null };
   };
 
   const deleteRemovedImagesInStorage = async (
@@ -290,7 +291,108 @@ export default function ArticleEditor({ id }: { id?: string }) {
     return firstImage?.getAttribute("src") || "";
   };
 
-  const handleFinalSave = async () => {
+  const updateArticle = async () => {
+    setIsSaving(true);
+
+    if (!editor || !title) {
+      setIsSaving(false);
+      console.error("Please fill in all required fields");
+      return;
+    }
+
+    if (!article) {
+      setIsSaving(false);
+      console.error("Article not found");
+      return;
+    }
+
+    const supabase = createClient();
+
+    let bannerUrl = "";
+
+    //delete old banner image and upload new one if selected
+    if (selectedBannerImage) {
+      const currentBannerPath = article?.banner_url.split("/").pop();
+
+      if (currentBannerPath) {
+        const { error: bannerDeleteError } = await supabase.storage
+          .from("images")
+          .remove([`article/${currentBannerPath}`]);
+
+        if (bannerDeleteError) {
+          setIsSaving(false);
+          console.error("Error deleting banner image:", bannerDeleteError);
+          return;
+        }
+      }
+      const { bannerUrl: newBannerUrl, uploadError } = await uploadBannerImage(
+        "article",
+        selectedBannerImage
+      );
+
+      if (uploadError) {
+        setIsSaving(false);
+        console.error("Error uploading banner image:", uploadError);
+        return;
+      }
+
+      bannerUrl = newBannerUrl;
+    }
+
+    const content = editor.getHTML();
+
+    setProgressValue(20);
+
+    // handle deleted images
+    await deleteRemovedImagesInStorage(
+      editor.getHTML(),
+      article.content,
+      "article"
+    );
+
+    setProgressValue(30);
+
+    const { finalContentWrapper, uploadError } = await uploadImages(
+      content,
+      "article"
+    );
+
+    if (uploadError) {
+      setIsSaving(false);
+      setProgressValue(0);
+      console.error("Error uploading images:", uploadError);
+    }
+
+    setProgressValue(80);
+
+    const thumbnailUrl = getThumbnailImage(finalContentWrapper);
+
+    const articleData: Partial<IArticles> = {
+      title,
+      content: finalContentWrapper.innerHTML,
+      thumbnail_url: thumbnailUrl,
+      slug: slugifyLimited(title),
+      banner_url: bannerUrl || article.banner_url,
+    };
+
+    const { error } = await supabase
+      .from("articles")
+      .update(articleData)
+      .eq("id", id);
+
+    setProgressValue(100);
+
+    if (error) {
+      setIsSaving(false);
+      setProgressValue(0);
+      console.error("Error saving article:", error);
+    } else {
+      setIsSaving(false);
+      router.push("/admin/article");
+    }
+  };
+
+  const saveArticle = async () => {
     setIsSaving(true);
     if (!editor || !title) {
       setIsSaving(false);
@@ -299,31 +401,28 @@ export default function ArticleEditor({ id }: { id?: string }) {
     }
 
     try {
+      const supabase = createClient();
+
       if (!selectedBannerImage) {
         setIsSaving(false);
         console.error("Please select a banner image");
         return;
       }
 
-      // Upload banner image if selected
-      const bannerUrl = await uploadBannerImage("article");
+      // Upload banner image
+      const { bannerUrl: newBannerUrl, uploadError: bannerUploadError } =
+        await uploadBannerImage("article", selectedBannerImage);
+
+      if (bannerUploadError) {
+        setIsSaving(false);
+        console.error("Error uploading banner image:", bannerUploadError);
+        return;
+      }
 
       // Continue with the original save logic
-      const supabase = createClient();
       const content = editor.getHTML();
-      const tempDiv = document.createElement("div");
-      tempDiv.innerHTML = content;
+
       setProgressValue(20);
-
-      // If updating, handle deleted images
-
-      if (id && article) {
-        await deleteRemovedImagesInStorage(
-          editor.getHTML(),
-          article.content,
-          "article"
-        );
-      }
 
       setProgressValue(30);
 
@@ -349,13 +448,11 @@ export default function ArticleEditor({ id }: { id?: string }) {
         content: finalContentWrapper.innerHTML,
         thumbnail_url: thumbnailUrl,
         slug: slugifyLimited(title),
-        banner_url: bannerUrl,
+        banner_url: newBannerUrl,
       };
 
       // Save or update the content in the translations table
-      const { error } = id
-        ? await supabase.from("articles").update(articleData).eq("id", id)
-        : await supabase.from("articles").insert([articleData]);
+      const { error } = await supabase.from("articles").insert([articleData]);
 
       setProgressValue(100);
       if (error) {
@@ -439,12 +536,13 @@ export default function ArticleEditor({ id }: { id?: string }) {
                 </div>
               </div>
               <div className="flex justify-end gap-2">
-                <Button
-                  onClick={handleFinalSave}
-                  disabled={!selectedBannerImage}
-                >
-                  저장
-                </Button>
+                {id ? (
+                  <Button onClick={updateArticle}>저장</Button>
+                ) : (
+                  <Button onClick={saveArticle} disabled={!selectedBannerImage}>
+                    저장
+                  </Button>
+                )}
               </div>
             </DialogContent>
           </Dialog>
