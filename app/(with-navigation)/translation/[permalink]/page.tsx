@@ -1,5 +1,4 @@
 import { Suspense } from "react";
-import { use } from "react";
 import {
   TranslationTitle,
   TranslationTitleSkeleton,
@@ -7,7 +6,6 @@ import {
 import TranslationContent from "@/components/translation/translation-content";
 import { CommentSection } from "@/components/comments/comment-section";
 import { createClient } from "@/utils/supabase/server";
-import { BottomDisplayAd } from "@/components/google-adsense/bottom-display-ad";
 import { SideVerticalDisplayAd } from "@/components/google-adsense/side-veritcal-display-ad";
 import { BottomDisplayAdWrapper } from "@/components/google-adsense/bottom-display-ad-wrapper";
 import { IComments } from "@/types/supabase-table";
@@ -17,12 +15,13 @@ export async function generateMetadata({ params }: Props) {
   const supabase = await createClient();
   const { data, error } = await supabase
     .from("translations")
-    .select("title")
+    .select("title, artist")
     .eq("permalink", permalink)
     .single();
 
   return {
-    title: `${data?.title} • 유레 揺れ`,
+    title: `${data?.artist} - ${data?.title} [가사해석/발음] • 유레 揺れ`,
+    description: `${data?.title} J-POP 번역은 유레`,
   };
 }
 

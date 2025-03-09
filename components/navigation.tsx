@@ -90,6 +90,12 @@ const Navigation = () => {
               >
                 유레 매거진
               </Link>
+              <Link
+                href="/karaoke"
+                className="hover:text-primary transition-colors whitespace-nowrap"
+              >
+                노래방 번호 검색
+              </Link>
             </div>
 
             {/* Auth Section */}
