@@ -41,7 +41,7 @@ export default function NewsGrid({ news }: NewsGridProps) {
         </p>
         <Link
           href={`/news/${featuredNews.id}`}
-          className="inline-block border-b-2 border-black font-medium hover:text-gray-600"
+          className="inline-block font-medium hover:text-gray-600"
         >
           계속 읽기 →
         </Link>
