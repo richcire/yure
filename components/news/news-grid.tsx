@@ -52,7 +52,7 @@ export default function NewsGrid({ news }: NewsGridProps) {
         {restOfNews.slice(0, 3).map((news) => (
           <div
             key={news.id}
-            className="border-b border-gray-200 pb-6 last:border-0"
+            className="border-b border-black pb-6 last:border-0"
           >
             <div className="mb-2">
               <span className="font-serif text-xs font-bold uppercase text-gray-700">
@@ -83,7 +83,7 @@ export default function NewsGrid({ news }: NewsGridProps) {
         {restOfNews.slice(3, 6).map((news) => (
           <div
             key={news.id}
-            className="border-r border-gray-200 pr-6 last:border-0"
+            className="border-r border-black pr-6 last:border-0"
           >
             <div className="mb-2">
               <span className="font-serif text-xs font-bold uppercase text-gray-700">
