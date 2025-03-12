@@ -7,14 +7,14 @@ interface NewsGridProps {
 }
 
 export default function NewsGrid({ news }: NewsGridProps) {
-  // Featured article is the first one
+  // Featured news is the first one
   const featuredNews = news[0];
-  // Rest of the articles
+  // Rest of the news
   const restOfNews = news.slice(1);
 
   return (
     <div className="grid gap-8 md:grid-cols-12">
-      {/* Featured Article - spans full width on mobile, 8 columns on desktop */}
+      {/* Featured News - spans full width on mobile, 8 columns on desktop */}
       <div className="border-b-2 border-black pb-8 md:col-span-8 md:border-b-0 md:border-r-2 md:pr-8">
         <div className="mb-4">
           <span className="inline-block bg-black px-3 py-1 font-serif text-sm font-bold uppercase text-white">
@@ -47,7 +47,7 @@ export default function NewsGrid({ news }: NewsGridProps) {
         </Link>
       </div>
 
-      {/* Sidebar Articles - spans full width on mobile, 4 columns on desktop */}
+      {/* Sidebar News - spans full width on mobile, 4 columns on desktop */}
       <div className="space-y-8 md:col-span-4">
         {restOfNews.slice(0, 3).map((news) => (
           <div
@@ -78,7 +78,7 @@ export default function NewsGrid({ news }: NewsGridProps) {
         ))}
       </div>
 
-      {/* Secondary Articles - spans full width, 3 columns layout on desktop */}
+      {/* Secondary News - spans full width, 3 columns layout on desktop */}
       <div className="grid gap-6 border-t-2 border-black pt-8 md:col-span-12 md:grid-cols-1 lg:grid-cols-3">
         {restOfNews.slice(3, 6).map((news) => (
           <div
@@ -107,7 +107,7 @@ export default function NewsGrid({ news }: NewsGridProps) {
         ))}
       </div>
 
-      {/* Bottom Articles - spans full width, 2 columns layout */}
+      {/* Bottom News - spans full width, 2 columns layout */}
       <div className="grid gap-8 border-t-2 border-black pt-8 md:col-span-12 md:grid-cols-2">
         {restOfNews.slice(6, 8).map((news) => (
           <div key={news.id} className="flex gap-4">

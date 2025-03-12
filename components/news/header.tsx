@@ -3,10 +3,10 @@ import { Input } from "../ui/input";
 
 export function Header() {
   const today = new Date().toLocaleDateString("ko-KR", {
-    weekday: "long",
     year: "numeric",
     month: "long",
     day: "numeric",
+    weekday: "long",
   });
 
   return (
