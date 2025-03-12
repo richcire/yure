@@ -2,11 +2,11 @@ import Link from "next/link";
 import Image from "next/image";
 import type { News } from "@/app/(with-navigation)/news/types";
 
-interface RelatedArticlesProps {
+interface RelatedNewsProps {
   news: News[];
 }
 
-export default function RelatedNews({ news }: RelatedArticlesProps) {
+export default function RelatedNews({ news }: RelatedNewsProps) {
   return (
     <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3">
       {news.map((newsArticle) => (

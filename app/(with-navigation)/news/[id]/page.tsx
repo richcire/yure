@@ -12,7 +12,9 @@ interface NewsPageProps {
 }
 
 export default async function NewsPage({ params }: NewsPageProps) {
-  const newsArticle = news.find((newsArticle) => newsArticle.id === params.id);
+  const { id } = await params;
+
+  const newsArticle = news.find((newsArticle) => newsArticle.id === id);
 
   if (!newsArticle) {
     notFound();
@@ -21,7 +23,7 @@ export default async function NewsPage({ params }: NewsPageProps) {
   // Generate some dummy paragraphs for the news content
   const paragraphs = generateNewsContent();
 
-  // Get related articles (excluding current one)
+  // Get related news (excluding current one)
   const related = news
     .filter((a) => a.id !== newsArticle.id)
     .filter((a) => a.category === newsArticle.category || Math.random() > 0.5)
@@ -154,7 +156,7 @@ export default async function NewsPage({ params }: NewsPageProps) {
   );
 }
 
-// Helper function to generate dummy article content
+// Helper function to generate dummy news content
 function generateNewsContent() {
   return [
     'The city council\'s decision marks a significant turning point for downtown development, with Mayor Eleanor Richards calling it "a historic moment for our community." The $42 million project will include renovations to historic buildings, new public spaces, and infrastructure improvements designed to attract businesses and residents alike.',
