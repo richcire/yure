@@ -96,6 +96,12 @@ const Navigation = () => {
               >
                 노래방 번호 검색
               </Link>
+              <Link
+                href="/news"
+                className="hover:text-primary transition-colors whitespace-nowrap"
+              >
+                뉴스
+              </Link>
             </div>
 
             {/* Auth Section */}
