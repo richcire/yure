@@ -18,6 +18,7 @@ export interface ITranslations {
   created_at: string;
   release_date: string;
   permalink: string;
+  keyword: string;
 }
 
 export interface IArticles {
