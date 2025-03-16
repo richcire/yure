@@ -26,40 +26,29 @@ export default async function TranslationList({ searchParams }: Props) {
   const currentPage = parseInt(page);
   const supabase = await createClient();
 
-  // Build the base query
-  const baseQuery = supabase.from("translations").select(
-    `
-          id,
-          title,
-          artist,
-          thumbnail_url,
-          permalink
-        `,
-    { count: "exact" }
-  );
-
-  if (search) {
-    baseQuery.or(`title.ilike.%${search}%,artist.ilike.%${search}%`);
-  }
-
-  if (category) {
-    baseQuery.eq("category_id", category);
-  }
-
-  // Get total count
-  const { count } = await baseQuery;
-  const totalPages = Math.ceil((count || 0) / ITEMS_PER_PAGE);
+  // Convert comma-separated category string to array
+  const categoryIds = category ? category.split(",") : [];
 
   // Determine sort column and direction
   const [column, direction] = sort.split("_");
   const sortColumn = column === "release" ? "release_date" : "created_at";
   const ascending = direction === "asc";
 
-  // Fetch paginated data with sorting
-  const { data: translations } = await baseQuery
+  const { data: translations, error } = await supabase
+    .rpc("search_translations", {
+      _search_keyword: search || "",
+      _category_ids: categoryIds,
+    })
     .order(sortColumn, { ascending })
-    .range((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE - 1)
-    .returns<ITranslations[]>();
+    .range(
+      (currentPage - 1) * ITEMS_PER_PAGE,
+      currentPage * ITEMS_PER_PAGE - 1
+    );
+
+  const totalPages =
+    translations.length > 0
+      ? Math.ceil((translations[0].count || 0) / ITEMS_PER_PAGE)
+      : 0;
 
   return (
     <>

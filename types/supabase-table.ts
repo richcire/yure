@@ -9,6 +9,11 @@ export interface ITranslations {
     name: string;
     created_at: string;
   };
+  category_ids: {
+    id: number;
+    name: string;
+    created_at: string;
+  }[];
   thumbnail_url: string;
   created_at: string;
   release_date: string;
@@ -25,6 +30,17 @@ export interface IArticles {
   slug: string;
   thumbnail_url: string;
   banner_url: string;
+}
+
+export interface ITranslationCategories {
+  translation_id: string;
+  category_id: number;
+}
+
+export interface ICategories {
+  id: number;
+  name: string;
+  created_at: string;
 }
 
 export interface IFeaturedArticles {

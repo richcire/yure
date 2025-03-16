@@ -3,6 +3,10 @@
 import { Badge } from "@/components/ui/badge";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { SortSelect } from "./sort-select";
+import { MultiSelect } from "../ui/multi-select";
+import { useState } from "react";
+import { Button } from "../ui/button";
+import { Search } from "lucide-react";
 
 interface Category {
   id: number;
@@ -11,42 +15,72 @@ interface Category {
 
 interface CategoryFilterProps {
   categories: Category[];
-  selectedCategoryId?: string;
+  selectedCategoryId?: string[];
 }
 
 export function CategoryFilter({
   categories,
-  selectedCategoryId,
+  selectedCategoryId = [],
 }: CategoryFilterProps) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
+  const categoryOptions = categories.map((category) => ({
+    label: category.name,
+    value: category.id.toString(),
+  }));
+
+  const [selectedCategories, setSelectedCategories] = useState<string[]>(
+    selectedCategoryId || []
+  );
 
   const handleCategoryClick = (categoryId: string) => {
     const params = new URLSearchParams(searchParams);
+    const currentCategories =
+      params.get("category")?.split(",").filter(Boolean) || [];
 
-    if (categoryId === selectedCategoryId) {
-      // If clicking the same category, remove the filter
-      params.delete("category");
+    if (currentCategories.includes(categoryId)) {
+      // Remove the category if it's already selected
+      const updatedCategories = currentCategories.filter(
+        (id) => id !== categoryId
+      );
+      if (updatedCategories.length === 0) {
+        params.delete("category");
+      } else {
+        params.set("category", updatedCategories.join(","));
+      }
     } else {
-      // Otherwise, apply the new category filter
-      params.set("category", categoryId);
+      // Add the new category to existing ones
+      currentCategories.push(categoryId);
+      params.set("category", currentCategories.join(","));
     }
+
     // Reset to page 1 when changing categories
     params.delete("page");
 
-    // Use replace instead of push to avoid adding to history stack
     router.replace(`${pathname}?${params.toString()}`, { scroll: false });
   };
 
+  const handleSearch = () => {
+    const params = new URLSearchParams(searchParams);
+
+    if (selectedCategories.length > 0) {
+      params.set("category", selectedCategories.join(","));
+    } else {
+      params.delete("category");
+    }
+
+    router.push(`?${params.toString()}`);
+  };
+
   return (
-    <div className="flex flex-wrap items-center justify-between gap-4 mb-6 mt-8">
-      <div className="flex flex-wrap gap-2">
+    <div className="md:flex flex-wrap items-center justify-between gap-4 mb-6 mt-8">
+      <div className="hidden md:flex flex-wrap gap-2">
         {categories.map((category) => (
           <Badge
             key={category.id}
             variant={
-              category.id.toString() === selectedCategoryId
+              selectedCategoryId?.includes(category.id.toString())
                 ? "default"
                 : "outline"
             }
@@ -56,6 +90,18 @@ export function CategoryFilter({
             {category.name}
           </Badge>
         ))}
+      </div>
+      <div className="flex md:hidden items-center gap-2 mb-4">
+        <MultiSelect
+          options={categoryOptions}
+          onValueChange={setSelectedCategories}
+          defaultValue={selectedCategories}
+          placeholder="카테고리 선택"
+          variant="inverted"
+        />
+        <Button variant="outline" size="icon" onClick={handleSearch}>
+          <Search />
+        </Button>
       </div>
       <SortSelect />
     </div>
