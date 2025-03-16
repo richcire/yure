@@ -23,12 +23,13 @@ async function fetchTranslation(permalink: string) {
   const supabase = await createClient();
   const { data, error } = await supabase
     .from("translations")
-    .select("*, categories(*)")
+    .select("*")
     .eq("permalink", decodeURIComponent(permalink))
     .single<ITranslations>();
 
   if (error || !data) {
     throw new Error("Translation not found");
+    // console.log(error);
   }
 
   return data;
@@ -45,7 +46,7 @@ export async function TranslationTitle({ permalink }: TranslationTitleProps) {
         {translation.artist}
       </h2>
       <div className=" w-full flex justify-between">
-        <Badge>{translation.categories.name}</Badge>
+        {/* <Badge>{translation.categories.name}</Badge> */}
         <h3 className="text-[#E4E0D5]">발매일: {translation.release_date}</h3>
       </div>
     </div>
