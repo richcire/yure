@@ -14,16 +14,9 @@ import { useState, useEffect } from "react";
 import { Save } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Progress } from "@/components/ui/progress";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { useRouter } from "next/navigation";
 import { DatePicker } from "@/components/date-picker";
-import { ITranslations } from "@/types/supabase-table";
+import { ICategories, ITranslations } from "@/types/supabase-table";
 import {
   Drawer,
   DrawerClose,
@@ -35,9 +28,11 @@ import {
   DrawerTrigger,
 } from "@/components/ui/drawer";
 import Link from "@tiptap/extension-link";
-interface Category {
-  id: string;
-  name: string;
+import { MultiSelect } from "../ui/multi-select";
+
+interface CategoryOption {
+  value: number;
+  label: string;
 }
 
 const formatDate = (date: Date | undefined) => {
@@ -55,9 +50,12 @@ const formatDate = (date: Date | undefined) => {
 export default function TiptapEditor({ id }: { id?: string }) {
   const [title, setTitle] = useState("");
   const [artist, setArtist] = useState("");
-  const [categoryId, setCategoryId] = useState<string>("");
+  const [categoryId, setCategoryId] = useState<string>("2");
   const [releaseDate, setReleaseDate] = useState<Date>();
-  const [categories, setCategories] = useState<Category[]>([]);
+  const [categories, setCategories] = useState<CategoryOption[]>([]);
+  const [selectedCategoriesIds, setSelectedCategoriesIds] = useState<number[]>(
+    []
+  );
   const [progressValue, setProgressValue] = useState(0);
   const [isSaving, setIsSaving] = useState(false);
   const [permalink, setPermalink] = useState("");
@@ -173,19 +171,25 @@ export default function TiptapEditor({ id }: { id?: string }) {
       const { data, error } = await supabase
         .from("categories")
         .select("id, name")
-        .order("name");
+        .order("name")
+        .returns<ICategories[]>();
 
       if (error) {
         console.error("Error fetching categories:", error);
         return;
       }
 
-      setCategories(data || []);
+      setCategories(
+        data?.map((category) => ({
+          label: category.name,
+          value: category.id,
+        })) || []
+      );
 
       if (id) {
         const { data: translation, error: translationError } = await supabase
           .from("translations")
-          .select("*, categories(*)")
+          .select("*")
           .eq("id", id)
           .single<ITranslations>();
 
@@ -196,7 +200,6 @@ export default function TiptapEditor({ id }: { id?: string }) {
 
         setTitle(translation.title);
         setArtist(translation.artist);
-        setCategoryId(translation.category_id);
         setReleaseDate(new Date(translation.release_date));
         setPermalink(translation.permalink);
         editor?.commands.setContent(translation.content);
@@ -312,12 +315,12 @@ export default function TiptapEditor({ id }: { id?: string }) {
       thumbnailUrl = firstImage?.getAttribute("src") || "";
 
       // Prepare the data object
-      const translationData: Partial<ITranslations> = {
+      const translationData = {
         content: finalContent,
         title,
         artist,
-        category_id: categoryId,
         release_date: formatDate(releaseDate),
+        category_ids: selectedCategoriesIds,
         thumbnail_url: thumbnailUrl,
         permalink,
       };
@@ -328,7 +331,15 @@ export default function TiptapEditor({ id }: { id?: string }) {
             .from("translations")
             .update(translationData)
             .eq("id", id)
-        : await supabase.from("translations").insert([translationData]);
+        : await supabase.rpc("insert_translation_with_categories", {
+            _content: finalContent,
+            _title: title,
+            _artist: artist,
+            _release_date: formatDate(releaseDate),
+            _categories_id: selectedCategoriesIds,
+            _thumbnail_url: thumbnailUrl,
+            _permalink: permalink,
+          });
 
       setProgressValue(100);
       if (error) {
@@ -377,20 +388,19 @@ export default function TiptapEditor({ id }: { id?: string }) {
               placeholder="아티스트 이름"
               value={artist}
               onChange={(e) => setArtist(e.target.value)}
+              className="h-10"
               required
             />
-            <Select value={categoryId} onValueChange={setCategoryId}>
-              <SelectTrigger>
-                <SelectValue placeholder="카테고리" />
-              </SelectTrigger>
-              <SelectContent>
-                {categories.map((category) => (
-                  <SelectItem key={category.id} value={category.id}>
-                    {category.name}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+
+            {id ? null : (
+              <MultiSelect
+                options={categories}
+                onValueChange={setSelectedCategoriesIds}
+                defaultValue={selectedCategoriesIds}
+                placeholder="카테고리 선택"
+                variant="inverted"
+              />
+            )}
             <DatePicker date={releaseDate} setDate={setReleaseDate} />
           </div>
           <div className="border rounded-md border-input">
