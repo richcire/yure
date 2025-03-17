@@ -1,164 +1,158 @@
+"use client";
+
+import { useEditor, EditorContent } from "@tiptap/react";
+import StarterKit from "@tiptap/starter-kit";
+import { TextAlign } from "@tiptap/extension-text-align";
+import { ImageExtension } from "@/components/Tiptap/extensions/ImageExtension";
+import { YouTubeExtension } from "@/components/Tiptap/extensions/YouTubeExtension";
+import { Highlight } from "@tiptap/extension-highlight";
+import { useEffect, useState } from "react";
+import { createClient } from "@/utils/supabase/client";
 import { INews } from "@/types/supabase-table";
-import { createClient } from "@/utils/supabase/server";
-import Image from "next/image";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
+import Link from "@tiptap/extension-link";
 
-export async function NewsContent() {
-  const supabase = await createClient();
-  const { data, error } = await supabase
-    .from("news")
-    .select("*, user_info(name)")
-    .order("created_at", { ascending: false })
-    .returns<INews[]>();
-  if (error || !data) {
-    throw new Error("News not found");
+interface NewsContentProps {
+  slug: string;
+}
+
+export default function NewsContent({ slug }: NewsContentProps) {
+  const router = useRouter();
+  const [news, setNews] = useState<INews | null>(null);
+
+  const editor = useEditor({
+    immediatelyRender: false,
+    extensions: [
+      StarterKit,
+      TextAlign.configure({
+        types: ["heading", "paragraph", "youtube"],
+      }),
+      ImageExtension.configure({
+        HTMLAttributes: {
+          class: "rounded-md max-w-full",
+        },
+      }),
+      YouTubeExtension.configure({
+        HTMLAttributes: {
+          class: "rounded-md",
+        },
+      }),
+      Highlight.configure({
+        HTMLAttributes: {
+          class: "bg-yellow-200 dark:bg-yellow-800",
+        },
+      }),
+      Link.configure({
+        openOnClick: false,
+        autolink: true,
+        defaultProtocol: "https",
+        protocols: ["http", "https"],
+        isAllowedUri: (url, ctx) => {
+          try {
+            // construct URL
+            const parsedUrl = url.includes(":")
+              ? new URL(url)
+              : new URL(`${ctx.defaultProtocol}://${url}`);
+
+            // use default validation
+            if (!ctx.defaultValidate(parsedUrl.href)) {
+              return false;
+            }
+
+            // disallowed protocols
+            const disallowedProtocols = ["ftp", "file", "mailto"];
+            const protocol = parsedUrl.protocol.replace(":", "");
+
+            if (disallowedProtocols.includes(protocol)) {
+              return false;
+            }
+
+            // only allow protocols specified in ctx.protocols
+            const allowedProtocols = ctx.protocols.map((p) =>
+              typeof p === "string" ? p : p.scheme
+            );
+
+            if (!allowedProtocols.includes(protocol)) {
+              return false;
+            }
+
+            // disallowed domains
+            const disallowedDomains = [
+              "example-phishing.com",
+              "malicious-site.net",
+            ];
+            const domain = parsedUrl.hostname;
+
+            if (disallowedDomains.includes(domain)) {
+              return false;
+            }
+
+            // all checks have passed
+            return true;
+          } catch {
+            return false;
+          }
+        },
+        shouldAutoLink: (url) => {
+          try {
+            // construct URL
+            const parsedUrl = url.includes(":")
+              ? new URL(url)
+              : new URL(`https://${url}`);
+
+            // only auto-link if the domain is not in the disallowed list
+            const disallowedDomains = [
+              "example-no-autolink.com",
+              "another-no-autolink.com",
+            ];
+            const domain = parsedUrl.hostname;
+
+            return !disallowedDomains.includes(domain);
+          } catch {
+            return false;
+          }
+        },
+      }),
+    ],
+    editable: false,
+    content: "",
+    editorProps: {
+      attributes: {
+        class:
+          "prose focus:outline-none prose-p:mt-0 prose-p:mb-0 prose-headings:mt-0 prose:max-w-none prose-sm:max-w-none max-w-none w-full",
+      },
+    },
+  });
+
+  useEffect(() => {
+    const fetchNews = async () => {
+      const supabase = createClient();
+      const { data, error } = await supabase
+        .from("news")
+        .select("*, user_info(name)")
+        .eq("slug", decodeURIComponent(slug))
+        .single<INews>();
+      if (error || !data) {
+        router.push("/404");
+        return;
+      }
+      setNews(data);
+
+      setTimeout(() => {
+        editor?.commands.setContent(data.content);
+      });
+    };
+    fetchNews();
+  }, [slug, editor, router]);
+
+  if (!editor || !news) {
+    return null;
   }
-  // Featured news is the first one
-  const featuredNews = data[0];
-  // Rest of the news
-  const restOfNews = data.slice(1);
+
   return (
-    <main>
-      <div className="grid gap-8 md:grid-cols-12">
-        {/* Featured News - spans full width on mobile, 8 columns on desktop */}
-        <div className="border-b-2 border-black pb-8 md:col-span-8 md:border-b-0 md:border-r-2 md:pr-8">
-          {/* <div className="mb-4">
-            <span className="inline-block bg-black px-3 py-1 font-serif text-sm font-bold uppercase text-white">
-              {featuredNews.category}
-            </span>
-          </div> */}
-          <h2 className="mb-4 text-3xl font-bold leading-tight md:text-4xl">
-            {featuredNews.title}
-          </h2>
-          <div className="mb-4 text-sm font-medium text-gray-600">
-            By {featuredNews.user_info.name} |{" "}
-            {new Date(featuredNews.created_at).toLocaleDateString()}
-          </div>
-          <div className="mb-6">
-            <Image
-              src={
-                featuredNews.thumbnail_url ||
-                "/placeholder.svg?height=400&width=800"
-              }
-              alt={featuredNews.title}
-              width={800}
-              height={400}
-              className="h-auto w-full rounded-sm object-cover"
-            />
-          </div>
-          <p className="mb-4 font-serif text-lg leading-relaxed">
-            {featuredNews.summary}
-          </p>
-          <Link
-            href={`/news/${featuredNews.slug}`}
-            className="inline-block font-medium hover:text-gray-600"
-          >
-            계속 읽기 →
-          </Link>
-        </div>
-
-        {/* Sidebar News - spans full width on mobile, 4 columns on desktop */}
-        <div className="space-y-8 md:col-span-4">
-          {restOfNews.slice(0, 3).map((news) => (
-            <div
-              key={news.id}
-              className="border-b border-black pb-6 last:border-0"
-            >
-              {/* <div className="mb-2">
-                <span className="font-serif text-xs font-bold uppercase text-gray-700">
-                  {news.category}
-                </span>
-              </div> */}
-              <h3 className="mb-2 text-xl font-bold leading-tight">
-                {news.title}
-              </h3>
-              <div className="mb-2 text-xs text-gray-600">
-                By {news.user_info.name} |{" "}
-                {new Date(news.created_at).toLocaleDateString()}
-              </div>
-              <p className="mb-3 font-serif text-sm leading-relaxed">
-                {news.summary}
-              </p>
-              <Link
-                href={`/news/${news.slug}`}
-                className="text-sm font-medium hover:text-gray-600"
-              >
-                더 읽기 →
-              </Link>
-            </div>
-          ))}
-        </div>
-
-        {/* Secondary News - spans full width, 3 columns layout on desktop */}
-        <div className="grid gap-6 border-t-2 border-black pt-8 md:col-span-12 md:grid-cols-1 lg:grid-cols-3">
-          {restOfNews.slice(3, 6).map((news) => (
-            <div
-              key={news.id}
-              className="border-r border-black pr-6 last:border-0"
-            >
-              {/* <div className="mb-2">
-                <span className="font-serif text-xs font-bold uppercase text-gray-700">
-                  {news.category}
-                </span>
-              </div> */}
-              <h3 className="mb-2 text-xl font-bold leading-tight">
-                {news.title}
-              </h3>
-              <div className="mb-2 text-xs text-gray-600">
-                By {news.user_info.name}
-              </div>
-              <p className="mb-3 font-serif text-sm leading-relaxed">
-                {news.summary}
-              </p>
-              <Link
-                href={`/news/${news.slug}`}
-                className="text-sm font-medium hover:text-gray-600"
-              >
-                더 읽기 →
-              </Link>
-            </div>
-          ))}
-        </div>
-
-        {/* Bottom News - spans full width, 2 columns layout */}
-        <div className="grid gap-8 border-t-2 border-black pt-8 md:col-span-12 md:grid-cols-2">
-          {restOfNews.slice(6, 8).map((news) => (
-            <div key={news.id} className="flex gap-4">
-              <div className="flex-shrink-0">
-                <Image
-                  src={
-                    news.thumbnail_url ||
-                    "/placeholder.svg?height=120&width=120"
-                  }
-                  alt={news.title}
-                  width={120}
-                  height={120}
-                  className="h-24 w-24 rounded-sm object-cover"
-                />
-              </div>
-              <div>
-                {/* <div className="mb-1">
-                  <span className="font-serif text-xs font-bold uppercase text-gray-700">
-                    {news.category}
-                  </span>
-                </div> */}
-                <h3 className="mb-1 text-lg font-bold leading-tight">
-                  {news.title}
-                </h3>
-                <div className="mb-1 text-xs text-gray-600">
-                  By {news.user_info.name}
-                </div>
-                <Link
-                  href={`/news/${news.slug}`}
-                  className="text-sm font-medium hover:text-gray-600"
-                >
-                  더 읽기 →
-                </Link>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </main>
+    <EditorContent
+      editor={editor}
+      className="prose dark:prose-invert max-w-none"
+    />
   );
 }
