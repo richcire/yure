@@ -541,9 +541,14 @@ export default function ArticleEditor({ id }: { id?: string }) {
               </div>
               <div className="flex justify-end gap-2">
                 {id ? (
-                  <Button onClick={updateArticle}>저장</Button>
+                  <Button onClick={updateArticle} disabled={isSaving}>
+                    저장
+                  </Button>
                 ) : (
-                  <Button onClick={saveArticle} disabled={!selectedBannerImage}>
+                  <Button
+                    onClick={saveArticle}
+                    disabled={!selectedBannerImage || isSaving}
+                  >
                     저장
                   </Button>
                 )}

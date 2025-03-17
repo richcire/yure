@@ -442,9 +442,11 @@ export default function TiptapEditor({ id }: { id?: string }) {
                   />
                 </div>
                 <DrawerFooter>
-                  <Button onClick={handleSave}>Submit</Button>
+                  <Button onClick={handleSave} disabled={isSaving}>
+                    저장
+                  </Button>
                   <DrawerClose asChild>
-                    <Button variant="outline">Cancel</Button>
+                    <Button variant="outline">취소</Button>
                   </DrawerClose>
                 </DrawerFooter>
               </div>
