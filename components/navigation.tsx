@@ -243,6 +243,20 @@ const Navigation = () => {
               >
                 유레 매거진
               </Link>
+              <Link
+                href="karaoke"
+                className="px-4 py-2 hover:bg-gray-50 rounded-md transition-colors"
+                onClick={() => setIsSidebarOpen(false)}
+              >
+                노래방 번호 검색
+              </Link>
+              <Link
+                href="/karaoke/application"
+                className="px-4 py-2 hover:bg-gray-50 rounded-md transition-colors"
+                onClick={() => setIsSidebarOpen(false)}
+              >
+                노래방 번호 신청
+              </Link>
             </div>
           </div>
         </div>
