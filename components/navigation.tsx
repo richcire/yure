@@ -13,6 +13,7 @@ const Navigation = () => {
   const [user, setUser] = useState<User | undefined>();
   const [name, setName] = useState<string | undefined>();
   const [showDropdown, setShowDropdown] = useState(false);
+  const [showKaraokeDropdown, setShowKaraokeDropdown] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const supabase = createClient();
   const router = useRouter();
@@ -90,12 +91,36 @@ const Navigation = () => {
               >
                 유레 매거진
               </Link>
-              <Link
-                href="/karaoke"
-                className="hover:text-primary transition-colors whitespace-nowrap"
+              <div
+                className="relative"
+                onMouseEnter={() => setShowKaraokeDropdown(true)}
+                onMouseLeave={() => setShowKaraokeDropdown(false)}
               >
-                노래방 번호 검색
-              </Link>
+                <Link
+                  href="/karaoke"
+                  className="hover:text-primary transition-colors whitespace-nowrap"
+                >
+                  노래방 번호 검색
+                </Link>
+                {showKaraokeDropdown && (
+                  <div className="absolute left-0 top-full pt-1">
+                    <div className="w-48 bg-white/80 backdrop-blur-sm shadow-sm border rounded-md">
+                      <Link
+                        href="/karaoke"
+                        className="block px-4 py-2 text-sm hover:bg-red-50 transition-colors rounded-md"
+                      >
+                        노래방 번호 검색
+                      </Link>
+                      <Link
+                        href="/karaoke/application"
+                        className="block px-4 py-2 text-sm hover:bg-red-50 transition-colors rounded-md"
+                      >
+                        노래방 번호 신청
+                      </Link>
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
 
             {/* Auth Section */}
