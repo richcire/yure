@@ -24,8 +24,8 @@ interface Props {
   }>;
 }
 
-export default function ArticlePage({ params }: Props) {
-  const { slug } = use(params);
+export default async function ArticlePage({ params }: Props) {
+  const { slug } = await params;
 
   const getComments = async () => {
     "use server";
