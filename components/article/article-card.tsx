@@ -13,7 +13,7 @@ export function ArticleCard({ article }: ArticleCardProps) {
       <Card className="flex flex-col h-[400px] overflow-hidden transition-all duration-300 hover:shadow-lg group bg-background text-foreground border-2 border-[#69140E]/50 hover:bg-[#69140E]/5">
         <div className="relative aspect-video m-3">
           <Image
-            src={article.thumbnail_url || "/assets/logos/square.jpeg"}
+            src={article.thumbnail_url || "/assets/logos/square_high.jpeg"}
             alt={article.title}
             fill
             className="object-cover rounded-lg"
