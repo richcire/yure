@@ -1,5 +1,6 @@
 import { KaraokeCommentSection } from "@/components/karaoke/karaoke-comment-section";
-
+import { SideVerticalDisplayAdWrapper } from "@/components/google-adsense/side-vertical-display-ad-wrapper";
+import { BottomDisplayAdWrapper } from "@/components/google-adsense/bottom-display-ad-wrapper";
 export default function KaraokeApplicationPage() {
   return (
     <div className="container max-w-5xl mx-auto py-8 px-4 min-h-screen">
@@ -11,6 +12,8 @@ export default function KaraokeApplicationPage() {
         <p className="text-gray-600">최대한 빨리 추가해드릴게요.</p>
       </div>
       <KaraokeCommentSection useHideFeature={false} />
+      <BottomDisplayAdWrapper />
+      <SideVerticalDisplayAdWrapper />
     </div>
   );
 }
