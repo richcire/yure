@@ -6,9 +6,9 @@ import {
 import TranslationContent from "@/components/translation/translation-content";
 import { CommentSection } from "@/components/comments/comment-section";
 import { createClient } from "@/utils/supabase/server";
-import { SideVerticalDisplayAd } from "@/components/google-adsense/side-veritcal-display-ad";
 import { BottomDisplayAdWrapper } from "@/components/google-adsense/bottom-display-ad-wrapper";
 import { IComments } from "@/types/supabase-table";
+import { SideVerticalDisplayAdWrapper } from "@/components/google-adsense/side-vertical-display-ad-wrapper";
 
 export async function generateMetadata({ params }: Props) {
   const { permalink } = await params;
@@ -132,9 +132,7 @@ export default async function TranslationPage({ params }: Props) {
           </Suspense>
         )}
       </div>
-      <div className="sticky-side-ad">
-        <SideVerticalDisplayAd />
-      </div>
+      <SideVerticalDisplayAdWrapper />
     </div>
   );
 }
