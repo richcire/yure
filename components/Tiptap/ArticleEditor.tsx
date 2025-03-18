@@ -486,7 +486,11 @@ export default function ArticleEditor({ id }: { id?: string }) {
           isSaving ? "block" : "hidden"
         }`}
       >
-        <Progress value={progressValue} className="w-1/3" />
+        <Progress
+          value={progressValue}
+          className="w-1/3"
+          indicatorClassName="bg-white"
+        />
       </div>
       <div className="w-full relative min-h-screen pb-16">
         <div className="flex flex-col gap-6 max-w-5xl mx-auto w-full p-4">
@@ -537,9 +541,14 @@ export default function ArticleEditor({ id }: { id?: string }) {
               </div>
               <div className="flex justify-end gap-2">
                 {id ? (
-                  <Button onClick={updateArticle}>저장</Button>
+                  <Button onClick={updateArticle} disabled={isSaving}>
+                    저장
+                  </Button>
                 ) : (
-                  <Button onClick={saveArticle} disabled={!selectedBannerImage}>
+                  <Button
+                    onClick={saveArticle}
+                    disabled={!selectedBannerImage || isSaving}
+                  >
                     저장
                   </Button>
                 )}

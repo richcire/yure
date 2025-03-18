@@ -56,7 +56,7 @@ export function FeaturedArticle({
                     src={
                       article.banner_url ||
                       article.thumbnail_url ||
-                      "/assets/logos/square.jpeg"
+                      "/assets/logos/square_high.jpeg"
                     }
                     alt={`${article.title} thumbnail`}
                     fill

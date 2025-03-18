@@ -11,6 +11,7 @@ import { createClient } from "@/utils/supabase/server";
 import { PaginationControl } from "@/components/ui/pagination-control";
 import MobileKaraokeTable from "./mobile-karaoke-table";
 import { BottomDisplayAdWrapper } from "../google-adsense/bottom-display-ad-wrapper";
+import Link from "next/link";
 
 interface Props {
   searchParams: {
@@ -108,6 +109,17 @@ export default async function KaraokeTableWrapper({ searchParams }: Props) {
       <div className="md:hidden">
         <MobileKaraokeTable songs={karaokeSongs} />
       </div>
+
+      {karaokeSongs.length === 0 && (
+        <div className="mt-8">
+          <p className="text-center">검색 결과가 없습니다.</p>
+          <div className="flex justify-center">
+            <Link href="/karaoke/application" className="text-center underline">
+              이곳에서 노래방 번호 신청하기!
+            </Link>
+          </div>
+        </div>
+      )}
       <BottomDisplayAdWrapper />
       <PaginationControl
         currentPage={page ? parseInt(page) : 1}

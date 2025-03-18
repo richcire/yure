@@ -12,9 +12,37 @@ import { IComments } from "@/types/supabase-table";
 
 export async function generateMetadata({ params }: Props) {
   const { slug } = await params;
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("articles")
+    .select("title, thumbnail_url")
+    .eq("slug", slug)
+    .single();
 
   return {
-    title: `${decodeURIComponent(slug)} • 유레 揺れ`,
+    title: `${decodeURIComponent(slug)} [유레 매거진] • 유레 揺れ`,
+    description: `최신 J-POP 뉴스, 트렌드, 그리고 심층 분석을 만나보세요! J-POP 문화, 아티스트 인터뷰, 업계 소식을 유레 매거진에서 빠르게 확인하세요.`,
+    openGraph: {
+      title: `${decodeURIComponent(slug)} [유레 매거진] • 유레 揺れ`,
+      description: `최신 J-POP 뉴스, 트렌드, 그리고 심층 분석을 만나보세요! J-POP 문화, 아티스트 인터뷰, 업계 소식을 유레 매거진에서 빠르게 확인하세요.`,
+      images: [
+        {
+          url: data?.thumbnail_url,
+          width: 1200,
+          height: 630,
+          alt: `${decodeURIComponent(slug)}`,
+        },
+        {
+          url: "/assets/logos/square_high.jpeg",
+          width: 1200,
+          height: 630,
+          alt: `${decodeURIComponent(slug)}`,
+        },
+      ],
+      locale: "ko_KR",
+      type: "article",
+      siteName: "유레 揺れ",
+    },
   };
 }
 

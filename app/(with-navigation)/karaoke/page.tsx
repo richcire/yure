@@ -11,10 +11,28 @@ import {
 import { Suspense } from "react";
 import ClientSideSearch from "../../../components/karaoke/client-side-search";
 import { MobileKaraokeTableSkeleton } from "../../../components/karaoke/mobile-karaoke-table";
+import { Metadata } from "next";
 
-export const metadata = {
-  title: "🔍 JPOP 노래방 검색기",
-  description: "부르고 싶은 JPOP 노래의 노래방 번호를 찾아보세요!",
+export const metadata: Metadata = {
+  title: "JPOP 노래방 검색기 • 유레 揺れ",
+  description:
+    "부르고 싶은 노래의 노래방 번호를 찾아보세요! J-POP 노래부터 애니메이션 노래, 보컬로이드 노래까지 다양한 노래를 한곳에서 쉽게 찾을 수 있습니다.",
+  openGraph: {
+    title: "JPOP 노래방 검색기 • 유레 揺れ",
+    description:
+      "부르고 싶은 노래의 노래방 번호를 찾아보세요! J-POP 노래부터 애니메이션 노래, 보컬로이드 노래까지 다양한 노래를 한곳에서 쉽게 찾을 수 있습니다.",
+    images: [
+      {
+        url: "/assets/logos/square_high.jpeg",
+        width: 1200,
+        height: 630,
+        alt: "유레 揺れ",
+      },
+    ],
+    locale: "ko_KR",
+    type: "website",
+    siteName: "유레 揺れ",
+  },
 };
 
 interface Props {
