@@ -63,7 +63,6 @@ export function KaraokeCommentSection({
       console.error("Error adding comment:", error);
       return;
     }
-    console.log(data);
     setComments(data);
     setNewComment("");
   };

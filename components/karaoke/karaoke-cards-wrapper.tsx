@@ -66,9 +66,6 @@ export default function KaraokeCardsWrapper() {
       setHasMore(false);
     }
 
-    console.log(data);
-    console.log(data.length);
-
     setSongs((prev) => [...prev, ...data]);
     setOffset((prev) => prev + 20);
     setIsLoading(false);
