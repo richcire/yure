@@ -12,6 +12,9 @@ import { Suspense } from "react";
 import ClientSideSearch from "../../../components/karaoke/client-side-search";
 import { MobileKaraokeTableSkeleton } from "../../../components/karaoke/mobile-karaoke-table";
 import { Metadata } from "next";
+import KaraokeCardsWrapper from "../../../components/karaoke/karaoke-cards-wrapper";
+import { KaraokeCardsSkeleton } from "../../../components/karaoke/karaoke-cards-skeleton";
+import KaraokeSongs from "@/components/karaoke/karaoke-songs";
 
 export const metadata: Metadata = {
   title: "JPOP 노래방 검색기 • 유레 揺れ",
@@ -102,7 +105,9 @@ function KaraokeTableSkeleton() {
 }
 
 export default async function KaraokePage({ searchParams }: Props) {
-  const parmas = await searchParams;
+  const params = await searchParams;
+  const useCards = true; // You can make this dynamic based on user preference
+
   return (
     <div className="container max-w-5xl mx-auto py-8 px-4 min-h-screen">
       <div className="text-center mb-8">
@@ -115,16 +120,10 @@ export default async function KaraokePage({ searchParams }: Props) {
       </div>
 
       <div className="mb-8">
-        <Search defaultValue={parmas.search} />
-        {/* <ClientSideSearch /> */}
+        <Search defaultValue={params.search} />
       </div>
-      {/* key 안주면 suspense 안됨 */}
-      <Suspense
-        key={`${parmas.search}${parmas.page}`}
-        fallback={<KaraokeTableSkeleton />}
-      >
-        <KaraokeTableWrapper searchParams={parmas} />
-      </Suspense>
+
+      <KaraokeSongs />
     </div>
   );
 }
