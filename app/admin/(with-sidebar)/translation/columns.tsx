@@ -160,7 +160,6 @@ const ModifyCategoriesAlert = ({
   };
 
   const handleSave = async () => {
-    console.log(translationId);
     await supabase
       .from("translation_categories")
       .delete()

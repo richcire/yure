@@ -29,7 +29,6 @@ async function fetchTranslation(permalink: string) {
 
   if (error || !data) {
     throw new Error("Translation not found");
-    // console.log(error);
   }
 
   return data;
