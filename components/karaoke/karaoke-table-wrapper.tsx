@@ -88,7 +88,7 @@ export default async function KaraokeTableWrapper({ searchParams }: Props) {
                 </TableHead>
               </TableRow>
             </TableHeader>
-            <TableBody>
+            <TableBody className="overflow-auto h-[500px]">
               {karaokeSongs.map((song) => (
                 <TableRow key={song.id} className="hover:bg-[#69140E]/5">
                   <TableCell className="py-4 px-6">
