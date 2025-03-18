@@ -1,12 +1,35 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 export const SideVerticalDisplayAd = () => {
-  if (process.env.NODE_ENV !== "production") return null;
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    // Check if window is defined (client-side)
+    if (typeof window !== "undefined") {
+      // Initial check
+      setIsMobile(window.innerWidth < 768);
+
+      // Add resize listener
+      const handleResize = () => {
+        setIsMobile(window.innerWidth < 768);
+      };
+
+      window.addEventListener("resize", handleResize);
+
+      // Cleanup
+      return () => window.removeEventListener("resize", handleResize);
+    }
+  }, []);
+
+  // Don't render on mobile or in development
+  if (process.env.NODE_ENV !== "production" || isMobile) return null;
+
   useEffect(() => {
     (window.adsbygoogle = window.adsbygoogle || []).push({});
   }, []);
+
   return (
     <ins
       className="adsbygoogle"
