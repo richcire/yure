@@ -7,6 +7,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { KaraokeCard } from "./karaoke-card";
 import { useVirtualizer } from "@tanstack/react-virtual";
 import { cn } from "@/lib/utils";
+import { Checkbox } from "../ui/checkbox";
 
 export const LoadingSpinner = ({ className }: { className?: string }) => {
   return (
@@ -35,6 +36,11 @@ export default function KaraokeCardsWrapper() {
   const [offset, setOffset] = useState(0);
   const [hasMore, setHasMore] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
+  const [filters, setFilters] = useState({
+    tj: true,
+    ky: true,
+    joysound: false,
+  });
   const loaderRef = useRef<HTMLDivElement | null>(null);
   const parentRef = useRef<HTMLDivElement | null>(null);
 
@@ -45,13 +51,23 @@ export default function KaraokeCardsWrapper() {
     setHasMore(true);
   }, [searchQuery]);
 
+  useEffect(() => {
+    // Reset state when filters change
+    setSongs([]);
+    setOffset(0);
+    setHasMore(true);
+  }, [filters]);
+
   const fetchSongs = useCallback(async () => {
     if (!hasMore || isLoading) return;
 
     const supabase = createClient();
     const { data, error } = await supabase
-      .rpc("search_karaoke_songs", {
+      .rpc("search_karaoke_songs_2", {
         _keyword: searchQuery,
+        _tj_exists: filters.tj,
+        _ky_exists: filters.ky,
+        _js_exists: filters.joysound,
       })
       .range(offset, offset + 19)
       .returns<IKaraokeSongs[]>();
@@ -69,7 +85,7 @@ export default function KaraokeCardsWrapper() {
     setSongs((prev) => [...prev, ...data]);
     setOffset((prev) => prev + 20);
     setIsLoading(false);
-  }, [searchQuery, offset, hasMore]);
+  }, [searchQuery, offset, hasMore, filters]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -103,6 +119,56 @@ export default function KaraokeCardsWrapper() {
 
   return (
     <>
+      <div className="flex items-center justify-between p-4">
+        <div className="flex items-center gap-6">
+          <div className="flex items-center space-x-2">
+            <Checkbox
+              id="tj"
+              checked={filters.tj}
+              onCheckedChange={(checked) =>
+                setFilters((prev) => ({ ...prev, tj: checked === true }))
+              }
+            />
+            <label
+              htmlFor="tj"
+              className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+            >
+              TJ 노래방
+            </label>
+          </div>
+          <div className="flex items-center space-x-2">
+            <Checkbox
+              id="ky"
+              checked={filters.ky}
+              onCheckedChange={(checked) =>
+                setFilters((prev) => ({ ...prev, ky: checked === true }))
+              }
+            />
+            <label
+              htmlFor="ky"
+              className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+            >
+              KY 노래방
+            </label>
+          </div>
+          <div className="flex items-center space-x-2">
+            <Checkbox
+              id="joysound"
+              checked={filters.joysound}
+              onCheckedChange={(checked) =>
+                setFilters((prev) => ({ ...prev, joysound: checked === true }))
+              }
+            />
+            <label
+              htmlFor="joysound"
+              className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+            >
+              JOYSOUND
+            </label>
+          </div>
+        </div>
+      </div>
+
       {/* Column Headers */}
       <div className="flex items-center p-4 font-medium border rounded-lg mb-2">
         <div className="w-[35%]">곡명</div>
