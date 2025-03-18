@@ -15,13 +15,34 @@ export async function generateMetadata({ params }: Props) {
   const supabase = await createClient();
   const { data, error } = await supabase
     .from("translations")
-    .select("title, artist")
+    .select("title, artist, thumbnail_url")
     .eq("permalink", permalink)
     .single();
 
   return {
     title: `${data?.artist} - ${data?.title} [가사해석/발음] • 유레 揺れ`,
     description: `${data?.title} J-POP 번역은 유레`,
+    openGraph: {
+      title: `${data?.artist} - ${data?.title} [가사해석/발음] • 유레 揺れ`,
+      description: `${data?.title} - J-POP 번역은 유레`,
+      images: [
+        {
+          url: data?.thumbnail_url,
+          width: 1200,
+          height: 630,
+          alt: `${data?.artist} - ${data?.title}`,
+        },
+        {
+          url: "/assets/logos/square_high.jpeg",
+          width: 1200,
+          height: 630,
+          alt: `${data?.artist} - ${data?.title}`,
+        },
+      ],
+      locale: "ko_KR",
+      type: "article",
+      siteName: "유레 揺れ",
+    },
   };
 }
 

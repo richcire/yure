@@ -13,7 +13,7 @@ export function SongCard({ song }: SongCardProps) {
       <Card className="w-full cursor-pointer relative group overflow-hidden aspect-video">
         <div className="absolute inset-0">
           <Image
-            src={song.thumbnail_url || "/assets/logos/square.jpeg"}
+            src={song.thumbnail_url || "/assets/logos/square_high.jpeg"}
             alt={`${song.title} album cover`}
             fill
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"

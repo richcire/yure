@@ -3,33 +3,17 @@
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { Comment } from "./comment";
 import type { IComments } from "@/types/supabase-table";
-import { PostgrestError, User } from "@supabase/supabase-js";
+import { User } from "@supabase/supabase-js";
 import { createClient } from "@/utils/supabase/client";
 import { useRouter } from "next/navigation";
-import { makeCommentTree } from "@/lib/utils";
+import { KaraokeComment } from "./karaoke-comment";
 
 interface CommentSectionProps {
-  getComments: () => Promise<{
-    data: IComments[] | null;
-    error: PostgrestError | null;
-  }>;
-  addComment: (new_content: string) => Promise<{
-    data: IComments[] | null;
-    error: PostgrestError | null;
-  }>;
-  deleteComment: (commentId: string) => Promise<{
-    data: IComments[] | null;
-    error: PostgrestError | null;
-  }>;
   useHideFeature?: boolean;
 }
 
-export function CommentSection({
-  getComments,
-  addComment,
-  deleteComment,
+export function KaraokeCommentSection({
   useHideFeature = true,
 }: CommentSectionProps) {
   const [isOpen, setIsOpen] = useState(useHideFeature ? false : true);
@@ -41,36 +25,53 @@ export function CommentSection({
   const supabase = createClient();
   const router = useRouter();
 
-  useEffect(() => {
-    const getSession = async () => {
-      const { data } = await supabase.auth.getSession();
-      if (!data.session) {
-        return;
-      }
-      setUser(data.session?.user);
-    };
-    const fetchComments = async () => {
-      const { data, error } = await getComments();
-      if (data) {
-        const commentTree = makeCommentTree(data);
-        setComments(commentTree);
-      }
-    };
+  const getSession = async () => {
+    const { data } = await supabase.auth.getSession();
+    if (!data.session) {
+      return;
+    }
+    setUser(data.session?.user);
+  };
 
-    fetchComments();
-    getSession();
-  }, []);
+  const getComments = async () => {
+    const { data, error, count } = await supabase.rpc(
+      "get_karaoke_comments_with_replies",
+      {},
+      { count: "exact" }
+    );
+    if (error) {
+      console.error("Error fetching comments:", error);
+      return;
+    }
+    setComments(data);
+  };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!newComment.trim()) return;
-    const { data, error } = await addComment(newComment);
-    if (data) {
-      const commentTree = makeCommentTree(data);
-      setComments(commentTree);
+    const { data, error, count } = await supabase.rpc(
+      "add_karaoke_comment",
+      {
+        _content: newComment,
+        _parent_id: null,
+      },
+      {
+        count: "exact",
+      }
+    );
+    if (error) {
+      console.error("Error adding comment:", error);
+      return;
     }
+    console.log(data);
+    setComments(data);
     setNewComment("");
   };
+
+  useEffect(() => {
+    getSession();
+    getComments();
+  }, []);
 
   return (
     <div className="mt-8">
@@ -118,14 +119,11 @@ export function CommentSection({
 
           <div className="space-y-4">
             {comments.map((comment) => (
-              <Comment
+              <KaraokeComment
                 key={comment.id}
                 comment={comment}
                 user={user}
                 setComments={setComments}
-                getComments={getComments}
-                addComment={addComment}
-                deleteComment={deleteComment}
               />
             ))}
           </div>

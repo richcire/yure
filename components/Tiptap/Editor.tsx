@@ -373,7 +373,11 @@ export default function TiptapEditor({ id }: { id?: string }) {
           isSaving ? "block" : "hidden"
         }`}
       >
-        <Progress value={progressValue} className="w-1/3 " />
+        <Progress
+          value={progressValue}
+          className="w-1/3"
+          indicatorClassName="bg-white"
+        />
       </div>
       <div className="w-full relative min-h-screen pb-16">
         <div className="flex flex-col gap-6 max-w-5xl mx-auto w-full p-4">
@@ -438,9 +442,11 @@ export default function TiptapEditor({ id }: { id?: string }) {
                   />
                 </div>
                 <DrawerFooter>
-                  <Button onClick={handleSave}>Submit</Button>
+                  <Button onClick={handleSave} disabled={isSaving}>
+                    저장
+                  </Button>
                   <DrawerClose asChild>
-                    <Button variant="outline">Cancel</Button>
+                    <Button variant="outline">취소</Button>
                   </DrawerClose>
                 </DrawerFooter>
               </div>
