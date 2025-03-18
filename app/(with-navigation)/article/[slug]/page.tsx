@@ -6,7 +6,7 @@ import {
 import ArticleContent from "../../../../components/article/article-content";
 import { CommentSection } from "@/components/comments/comment-section";
 import { BottomDisplayAdWrapper } from "@/components/google-adsense/bottom-display-ad-wrapper";
-import { SideVerticalDisplayAd } from "@/components/google-adsense/side-veritcal-display-ad";
+import { SideVerticalDisplayAdWrapper } from "@/components/google-adsense/side-vertical-display-ad-wrapper";
 import { createClient } from "@/utils/supabase/server";
 import { IComments } from "@/types/supabase-table";
 
@@ -107,9 +107,7 @@ export default function ArticlePage({ params }: Props) {
           />
         </Suspense>
       </div>
-      <div className="sticky-side-ad">
-        <SideVerticalDisplayAd />
-      </div>
+      <SideVerticalDisplayAdWrapper />
     </div>
   );
 }
