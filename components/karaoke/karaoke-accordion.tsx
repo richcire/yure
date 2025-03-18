@@ -55,8 +55,8 @@ export default function KaraokeAccordion() {
     setIsLoading(true);
     const supabase = createClient();
     const { data, error } = await supabase
-      .rpc("get_karaoke_songs", {
-        search_keyword: searchQuery,
+      .rpc("search_karaoke_songs", {
+        _keyword: searchQuery,
       })
       .range(offset, offset + 19)
       .returns<IKaraokeSongs[]>();

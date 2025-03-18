@@ -50,8 +50,8 @@ export default function KaraokeCardsWrapper() {
 
     const supabase = createClient();
     const { data, error } = await supabase
-      .rpc("get_karaoke_songs", {
-        search_keyword: searchQuery,
+      .rpc("search_karaoke_songs", {
+        _keyword: searchQuery,
       })
       .range(offset, offset + 19)
       .returns<IKaraokeSongs[]>();
@@ -65,6 +65,9 @@ export default function KaraokeCardsWrapper() {
     if (data.length < 20) {
       setHasMore(false);
     }
+
+    console.log(data);
+    console.log(data.length);
 
     setSongs((prev) => [...prev, ...data]);
     setOffset((prev) => prev + 20);
