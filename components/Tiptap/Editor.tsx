@@ -333,7 +333,7 @@ export default function TiptapEditor({ id }: { id?: string }) {
             .from("translations")
             .update(translationData)
             .eq("id", id)
-        : await supabase.rpc("insert_translation_with_categories2", {
+        : await supabase.rpc("insert_translation_with_categories", {
             _content: finalContent,
             _title: title,
             _artist: artist,
