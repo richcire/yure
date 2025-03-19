@@ -60,7 +60,6 @@ export default function AdminKaraokePage() {
       setIsLoading(false);
       return;
     }
-    console.log(data);
 
     if (data.length < 40) {
       setHasMore(false);
