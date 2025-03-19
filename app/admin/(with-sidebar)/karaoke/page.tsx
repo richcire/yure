@@ -1,16 +1,16 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { cn } from "@/lib/utils";
 import { IKaraokeSongs } from "@/types/supabase-table";
 import { createClient } from "@/utils/supabase/client";
-import { useSearchParams } from "next/navigation";
-import { useCallback, useEffect, useRef, useState } from "react";
-import { KaraokeCard } from "./karaoke-card";
 import { useVirtualizer } from "@tanstack/react-virtual";
-import { cn } from "@/lib/utils";
-import { Checkbox } from "../ui/checkbox";
-import { BottomDisplayAdWrapper } from "../google-adsense/bottom-display-ad-wrapper";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { SongUploadDialog } from "./song-upload-dialog";
+import { AdminKaraokeCard } from "./admin-karaoke-card";
 
-export const LoadingSpinner = ({ className }: { className?: string }) => {
+const LoadingSpinner = ({ className }: { className?: string }) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -29,48 +29,30 @@ export const LoadingSpinner = ({ className }: { className?: string }) => {
   );
 };
 
-export default function KaraokeCardsWrapper() {
-  const searchParams = useSearchParams();
-  const searchQuery = searchParams.get("search");
-
+export default function AdminKaraokePage() {
+  const [search, setSearch] = useState("");
   const [songs, setSongs] = useState<IKaraokeSongs[]>([]);
   const [offset, setOffset] = useState(0);
   const [hasMore, setHasMore] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
-  const [filters, setFilters] = useState({
-    tj: true,
-    ky: true,
-    joysound: false,
-  });
   const loaderRef = useRef<HTMLDivElement | null>(null);
   const parentRef = useRef<HTMLDivElement | null>(null);
 
-  useEffect(() => {
-    // Reset state when search query changes
+  const handleSearch = () => {
     setSongs([]);
     setOffset(0);
     setHasMore(true);
-  }, [searchQuery]);
-
-  useEffect(() => {
-    // Reset state when filters change
-    setSongs([]);
-    setOffset(0);
-    setHasMore(true);
-  }, [filters]);
+  };
 
   const fetchSongs = useCallback(async () => {
     if (!hasMore || isLoading) return;
 
     const supabase = createClient();
     const { data, error } = await supabase
-      .rpc("search_karaoke_songs_2", {
-        _keyword: searchQuery,
-        _tj_exists: filters.tj,
-        _ky_exists: filters.ky,
-        _js_exists: filters.joysound,
+      .rpc("search_karaoke_songs", {
+        _keyword: search,
       })
-      .range(offset, offset + 19)
+      .range(offset, offset + 39)
       .returns<IKaraokeSongs[]>();
 
     if (error) {
@@ -79,14 +61,14 @@ export default function KaraokeCardsWrapper() {
       return;
     }
 
-    if (data.length < 20) {
+    if (data.length < 40) {
       setHasMore(false);
     }
 
     setSongs((prev) => [...prev, ...data]);
-    setOffset((prev) => prev + 20);
+    setOffset((prev) => prev + 40);
     setIsLoading(false);
-  }, [searchQuery, offset, hasMore, filters]);
+  }, [search, offset, hasMore]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -114,64 +96,22 @@ export default function KaraokeCardsWrapper() {
     estimateSize: () => 60,
   });
 
-  if (!searchQuery) {
-    return <div>검색 키워드가 없습니다.</div>;
-  }
-
   return (
-    <>
-      <div className="flex items-center justify-between p-4">
-        <div className="flex items-center gap-6">
-          <div className="flex items-center space-x-2">
-            <Checkbox
-              id="tj"
-              checked={filters.tj}
-              onCheckedChange={(checked) =>
-                setFilters((prev) => ({ ...prev, tj: checked === true }))
-              }
-            />
-            <label
-              htmlFor="tj"
-              className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-            >
-              TJ 노래방
-            </label>
-          </div>
-          <div className="flex items-center space-x-2">
-            <Checkbox
-              id="ky"
-              checked={filters.ky}
-              onCheckedChange={(checked) =>
-                setFilters((prev) => ({ ...prev, ky: checked === true }))
-              }
-            />
-            <label
-              htmlFor="ky"
-              className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-            >
-              KY 노래방
-            </label>
-          </div>
-          <div className="flex items-center space-x-2">
-            <Checkbox
-              id="joysound"
-              checked={filters.joysound}
-              onCheckedChange={(checked) =>
-                setFilters((prev) => ({ ...prev, joysound: checked === true }))
-              }
-            />
-            <label
-              htmlFor="joysound"
-              className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-            >
-              JOYSOUND
-            </label>
-          </div>
-        </div>
+    <div className="container max-w-5xl w-full mx-auto py-8 px-4 min-h-screen">
+      <div className="flex items-center gap-2">
+        <Input
+          type="search"
+          placeholder="제목이나 가수를 입력하세요"
+          className="pl-10 py-6 text-lg"
+          name="search"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
+        <Button onClick={handleSearch}>검색</Button>
       </div>
 
       {/* Column Headers */}
-      <div className="flex items-center p-4 font-medium border rounded-lg mb-2">
+      <div className="flex items-center p-4 font-medium border rounded-lg mb-2 w-full">
         <div className="w-[35%]">곡명</div>
         <div className="w-[35%]">가수</div>
         <div className="w-[10%] text-center">TJ</div>
@@ -199,13 +139,15 @@ export default function KaraokeCardsWrapper() {
             }}
           >
             {rowVirtualizer.getVirtualItems().map((virtualItem) => (
-              <KaraokeCard
+              <AdminKaraokeCard
                 key={virtualItem.key}
+                id={songs[virtualItem.index].id}
                 title={songs[virtualItem.index].song_title}
                 artist={songs[virtualItem.index].singer}
                 tjNumber={songs[virtualItem.index].tj}
                 kyNumber={songs[virtualItem.index].ky}
                 joyNumber={songs[virtualItem.index].js}
+                keyword={songs[virtualItem.index].keyword}
               />
             ))}
           </div>
@@ -220,7 +162,9 @@ export default function KaraokeCardsWrapper() {
         )}
       </div>
 
-      <BottomDisplayAdWrapper />
-    </>
+      <div className="fixed bottom-4 right-4 flex gap-2">
+        <SongUploadDialog />
+      </div>
+    </div>
   );
 }

@@ -34,8 +34,8 @@ const items = [
     icon: Tag,
   },
   {
-    title: "Search",
-    url: "#",
+    title: "Karaoke",
+    url: "/admin/karaoke",
     icon: Search,
   },
   {

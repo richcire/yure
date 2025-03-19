@@ -29,6 +29,7 @@ import {
 } from "@/components/ui/drawer";
 import Link from "@tiptap/extension-link";
 import { MultiSelect } from "../ui/multi-select";
+import { Label } from "../ui/label";
 
 interface CategoryOption {
   value: number;
@@ -56,6 +57,7 @@ export default function TiptapEditor({ id }: { id?: string }) {
   const [selectedCategoriesIds, setSelectedCategoriesIds] = useState<number[]>(
     []
   );
+  const [keyword, setKeyword] = useState("");
   const [progressValue, setProgressValue] = useState(0);
   const [isSaving, setIsSaving] = useState(false);
   const [permalink, setPermalink] = useState("");
@@ -339,6 +341,7 @@ export default function TiptapEditor({ id }: { id?: string }) {
             _categories_id: selectedCategoriesIds,
             _thumbnail_url: thumbnailUrl,
             _permalink: permalink,
+            _keyword: keyword,
           });
 
       setProgressValue(100);
@@ -407,6 +410,19 @@ export default function TiptapEditor({ id }: { id?: string }) {
             )}
             <DatePicker date={releaseDate} setDate={setReleaseDate} />
           </div>
+          {id ? null : (
+            <div className="grid w-full max-w-sm items-center gap-1.5">
+              <Label htmlFor="picture">
+                "제목+아티스트"는 키워드에 기본적으로 포함됩니다. 추가적으로
+                포함할 키워드만 입력하세요
+              </Label>
+              <Input
+                placeholder="키워드 입력"
+                value={keyword}
+                onChange={(e) => setKeyword(e.target.value)}
+              />
+            </div>
+          )}
           <div className="border rounded-md border-input">
             <Toolbar editor={editor} />
             <EditorContent editor={editor} className="p-4" />
