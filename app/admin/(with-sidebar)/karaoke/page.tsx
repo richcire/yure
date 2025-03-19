@@ -1,6 +1,5 @@
 "use client";
 
-import { KaraokeCard } from "@/components/karaoke/karaoke-card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
@@ -9,6 +8,7 @@ import { createClient } from "@/utils/supabase/client";
 import { useVirtualizer } from "@tanstack/react-virtual";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { SongUploadDialog } from "./song-upload-dialog";
+import { AdminKaraokeCard } from "./admin-karaoke-card";
 
 const LoadingSpinner = ({ className }: { className?: string }) => {
   return (
@@ -140,13 +140,15 @@ export default function AdminKaraokePage() {
             }}
           >
             {rowVirtualizer.getVirtualItems().map((virtualItem) => (
-              <KaraokeCard
+              <AdminKaraokeCard
                 key={virtualItem.key}
+                id={songs[virtualItem.index].id}
                 title={songs[virtualItem.index].song_title}
                 artist={songs[virtualItem.index].singer}
                 tjNumber={songs[virtualItem.index].tj}
                 kyNumber={songs[virtualItem.index].ky}
                 joyNumber={songs[virtualItem.index].js}
+                keyword={songs[virtualItem.index].keyword}
               />
             ))}
           </div>
