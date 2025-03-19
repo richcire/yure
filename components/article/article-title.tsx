@@ -40,9 +40,7 @@ export async function ArticleTitle({ slug }: ArticleTitleProps) {
       <h1 className="text-3xl text-[#E4E0D5] font-bold mb-2">
         {article.title}
       </h1>
-      <h2 className="text-xl text-[#E4E0D5] text-muted-foreground mb-8">
-        {article.user_info.name}
-      </h2>
+      <h2 className="text-xl text-[#E4E0D5] mb-8">{article.user_info.name}</h2>
       <div className="w-full flex justify-between">
         <h3 className="text-[#E4E0D5]">
           작성일: {new Date(article.created_at).toLocaleDateString()}
