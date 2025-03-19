@@ -96,7 +96,6 @@ export const SongModifyDialog = ({
   const handleArtistChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const artist = e.target.value;
     const defaultKeyword = cleanAndLowercase(songData.title, artist);
-    console.log(defaultKeyword);
     setSongData((prev) => ({
       ...prev,
       artist,
