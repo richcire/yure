@@ -142,13 +142,11 @@ export default function AdminKaraokePage() {
             {rowVirtualizer.getVirtualItems().map((virtualItem) => (
               <KaraokeCard
                 key={virtualItem.key}
-                id={songs[virtualItem.index].id}
                 title={songs[virtualItem.index].song_title}
                 artist={songs[virtualItem.index].singer}
                 tjNumber={songs[virtualItem.index].tj}
                 kyNumber={songs[virtualItem.index].ky}
                 joyNumber={songs[virtualItem.index].js}
-                keyword={songs[virtualItem.index].keyword}
               />
             ))}
           </div>
