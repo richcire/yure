@@ -76,6 +76,7 @@ export interface IKaraokeSongs {
   tj: string;
   ky: string;
   js: string;
+  keyword: string;
   created_at: string;
   updated_at: string;
 }
