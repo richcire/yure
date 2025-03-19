@@ -10,10 +10,10 @@ interface TranslationTitleProps {
 export function TranslationTitleSkeleton() {
   return (
     <div className="bg-[#214E34] backdrop-blur-sm shadow-sm p-4 rounded-md mb-8">
-      <Skeleton className="h-9 w-3/4 mb-2" />
-      <Skeleton className="h-7 w-1/2 mb-8" />
+      <Skeleton className="h-9 w-3/4 mb-2 animate-pulse bg-gray-300/10" />
+      <Skeleton className="h-7 w-1/2 mb-8 animate-pulse bg-gray-300/10" />
       <div className="w-full flex justify-between">
-        <Skeleton className="h-6 w-40" />
+        <Skeleton className="h-6 w-40 animate-pulse bg-gray-300/10" />
       </div>
     </div>
   );
@@ -22,9 +22,9 @@ export function TranslationTitleSkeleton() {
 async function fetchTranslation(permalink: string) {
   const supabase = await createClient();
   const { data, error } = await supabase
-    .from("translations")
-    .select("*")
-    .eq("permalink", decodeURIComponent(permalink))
+    .rpc("get_single_translation_header", {
+      _permalink: decodeURIComponent(permalink),
+    })
     .single<ITranslations>();
 
   if (error || !data) {

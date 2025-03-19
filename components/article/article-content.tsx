@@ -6,31 +6,12 @@ import { TextAlign } from "@tiptap/extension-text-align";
 import { ImageExtension } from "@/components/Tiptap/extensions/ImageExtension";
 import { YouTubeExtension } from "@/components/Tiptap/extensions/YouTubeExtension";
 import { Highlight } from "@tiptap/extension-highlight";
-import { useEffect, useState } from "react";
-import { createClient } from "@/utils/supabase/client";
-import { IArticles } from "@/types/supabase-table";
-import { useRouter } from "next/navigation";
 import Link from "@tiptap/extension-link";
 interface ArticleContentProps {
-  slug: string;
+  content: string;
 }
 
-// export function ArticleContentSkeleton() {
-//   return (
-//     <div className="space-y-4">
-//       <Skeleton className="h-24 w-full" />
-//       <Skeleton className="h-32 w-full" />
-//       <Skeleton className="h-16 w-3/4" />
-//       <Skeleton className="h-24 w-full" />
-//       <Skeleton className="h-32 w-full" />
-//     </div>
-//   );
-// }
-
-export default function ArticleContent({ slug }: ArticleContentProps) {
-  const router = useRouter();
-  const [article, setArticle] = useState<IArticles | null>(null);
-
+export default function ArticleContent({ content }: ArticleContentProps) {
   const editor = useEditor({
     immediatelyRender: false,
     extensions: [
@@ -126,7 +107,7 @@ export default function ArticleContent({ slug }: ArticleContentProps) {
       }),
     ],
     editable: false,
-    content: "",
+    content: content,
     editorProps: {
       attributes: {
         class:
@@ -135,28 +116,7 @@ export default function ArticleContent({ slug }: ArticleContentProps) {
     },
   });
 
-  useEffect(() => {
-    const fetchArticle = async () => {
-      const supabase = createClient();
-      const { data, error } = await supabase
-        .from("articles")
-        .select("*, user_info(name)")
-        .eq("slug", decodeURIComponent(slug))
-        .single<IArticles>();
-      if (error || !data) {
-        router.push("/404");
-        return;
-      }
-      setArticle(data);
-
-      setTimeout(() => {
-        editor?.commands.setContent(data.content);
-      });
-    };
-    fetchArticle();
-  }, [slug, editor, router]);
-
-  if (!editor || !article) {
+  if (!editor || !content) {
     return null;
   }
 

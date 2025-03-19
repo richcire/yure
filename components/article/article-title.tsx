@@ -9,10 +9,10 @@ interface ArticleTitleProps {
 export function ArticleTitleSkeleton() {
   return (
     <div className="bg-[#214E34] backdrop-blur-sm shadow-sm p-4 rounded-md mb-8">
-      <Skeleton className="h-9 w-3/4 mb-2" />
-      <Skeleton className="h-7 w-1/2 mb-8" />
+      <Skeleton className="h-9 w-3/4 mb-2 animate-pulse bg-gray-300/10" />
+      <Skeleton className="h-7 w-1/2 mb-8 animate-pulse bg-gray-300/10" />
       <div className="w-full flex justify-between">
-        <Skeleton className="h-6 w-40" />
+        <Skeleton className="h-6 w-40 animate-pulse bg-gray-300/10" />
       </div>
     </div>
   );
@@ -22,7 +22,7 @@ async function fetchArticle(slug: string) {
   const supabase = await createClient();
   const { data, error } = await supabase
     .from("articles")
-    .select("*, user_info(name)")
+    .select("title, user_info(name), created_at")
     .eq("slug", decodeURIComponent(slug))
     .single<IArticles>();
 
