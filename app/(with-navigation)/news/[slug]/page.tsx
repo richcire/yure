@@ -1,9 +1,10 @@
 import Link from "next/link";
-import { ArrowLeft, Calendar, User, Share2 } from "lucide-react";
+import { ArrowLeft, Calendar, User } from "lucide-react";
 // import RelatedNews from "@/components/news/related-news";
 import { createClient } from "@/utils/supabase/server";
 import { INews } from "@/types/supabase-table";
 import NewsContent from "@/components/news/news-content";
+import NewsActions from "@/components/news/news-actions";
 
 interface Props {
   params: Promise<{
@@ -80,12 +81,7 @@ export default async function NewsPage({ params }: Props) {
         </div>
 
         {/* News actions */}
-        <div className="mb-12 flex justify-center gap-4 border-t border-b border-gray-300 py-4">
-          <button className="flex items-center gap-2 text-sm font-medium hover:text-gray-600">
-            <Share2 className="h-4 w-4" />
-            공유하기
-          </button>
-        </div>
+        <NewsActions />
 
         {/* Related news */}
         {/* <div className="mb-12">

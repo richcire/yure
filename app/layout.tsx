@@ -4,6 +4,7 @@ import "./globals.css";
 import localFont from "next/font/local";
 import { WebVitals } from "@/components/web-vitals";
 import { AdSenseCodeSnippet } from "@/components/google-adsense/adsense-code-snippet";
+import { Toaster } from "@/components/ui/sonner";
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
   : "http://localhost:3000";
@@ -49,6 +50,7 @@ export default function RootLayout({
         >
           {children}
         </ThemeProvider>
+        <Toaster />
       </body>
     </html>
   );
