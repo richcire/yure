@@ -83,8 +83,8 @@ const ModifyKeywordAlert = ({
         <AlertDialogHeader>
           <AlertDialogTitle>키워드 수정</AlertDialogTitle>
           <AlertDialogDescription>
-            '제목+아티스트 이름'은 기본적으로 포함이 됩니다. 현재 키워드는{" "}
-            {translationKeyword} 입니다. 뒤에 덧붙일 키워드를 입력해주세요.
+            '제목+아티스트 이름'은 기본적으로 포함이 됩니다. 현재 키워드는 "
+            {translationKeyword}" 입니다. 뒤에 덧붙일 키워드를 입력해주세요.
             공백은 구분하지 않습니다.
             <Input
               type="text"
