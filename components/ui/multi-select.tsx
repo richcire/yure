@@ -117,6 +117,12 @@ interface MultiSelectProps
    * Optional, can be used to add custom styles.
    */
   className?: string;
+
+  /**
+   * If true, renders the input component as a child of the multi-select component.
+   * Optional, defaults to true.
+   */
+  useCommandInput?: boolean;
 }
 
 export const MultiSelect = React.forwardRef<
@@ -135,6 +141,7 @@ export const MultiSelect = React.forwardRef<
       modalPopover = false,
       asChild = false,
       className,
+      useCommandInput = true,
       ...props
     },
     ref
@@ -285,15 +292,17 @@ export const MultiSelect = React.forwardRef<
           </Button>
         </PopoverTrigger>
         <PopoverContent
-          className="w-auto p-0"
+          className="w-[--radix-popover-trigger-width] p-0"
           align="start"
           onEscapeKeyDown={() => setIsPopoverOpen(false)}
         >
           <Command>
-            <CommandInput
-              placeholder="Search..."
-              onKeyDown={handleInputKeyDown}
-            />
+            {useCommandInput && (
+              <CommandInput
+                placeholder="Search..."
+                onKeyDown={handleInputKeyDown}
+              />
+            )}
             <CommandList>
               <CommandEmpty>No results found.</CommandEmpty>
               <CommandGroup>
