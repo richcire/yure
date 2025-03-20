@@ -3,12 +3,13 @@ import {
   ArticleTitle,
   ArticleTitleSkeleton,
 } from "../../../../components/article/article-title";
-import ArticleContent from "../../../../components/article/article-content";
 import { CommentSection } from "@/components/comments/comment-section";
 import { BottomDisplayAdWrapper } from "@/components/google-adsense/bottom-display-ad-wrapper";
 import { SideVerticalDisplayAdWrapper } from "@/components/google-adsense/side-vertical-display-ad-wrapper";
 import { createClient } from "@/utils/supabase/server";
 import { IComments } from "@/types/supabase-table";
+import { TipTapContentSkeleton } from "@/components/Tiptap/TipTapContentSkeleton";
+import ArticleContentWrapper from "@/components/article/article-content-wrapper";
 
 export async function generateMetadata({ params }: Props) {
   const { slug } = await params;
@@ -97,7 +98,9 @@ export default function ArticlePage({ params }: Props) {
         <Suspense fallback={<ArticleTitleSkeleton />}>
           <ArticleTitle slug={slug} />
         </Suspense>
-        <ArticleContent slug={slug} />
+        <Suspense fallback={<TipTapContentSkeleton />}>
+          <ArticleContentWrapper slug={slug} />
+        </Suspense>
         <BottomDisplayAdWrapper />
         <Suspense fallback={<div>Loading comments...</div>}>
           <CommentSection
