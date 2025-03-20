@@ -17,11 +17,11 @@ export function CDCarousel({ translations }: CDCarouselProps) {
 
   return (
     <div className="overflow-hidden" ref={emblaRef}>
-      <div className="flex gap-8 md:gap-12">
+      <div className="flex gap-4 md:gap-8">
         {translations.map((song, index) => (
           <div
             key={song.id}
-            className="flex-[0_0_40%] min-w-0 md:flex-[0_0_25%]"
+            className="flex-[0_0_50%] min-w-0 md:flex-[0_0_25%]"
           >
             <CDCard song={song} index={index} />
           </div>

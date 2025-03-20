@@ -11,26 +11,88 @@ export default function WithNavigationLayout({
   return (
     <>
       <Navigation />
-      <main className="min-h-screen flex flex-col items-center pt-12">
+      <main className="min-h-screen flex flex-col items-center pt-[60px]">
         <div className="flex-1 w-full flex flex-col items-center">
           {children}
 
-          <footer className="w-full flex items-center justify-center border-t mx-auto text-center text-xs gap-8 py-16">
-            <Link
-              href="https://www.youtube.com/@yure.music12"
-              target="_blank"
-              aria-label="Youtube"
-            >
-              <Youtube />
-            </Link>
-            <Link
-              href="https://www.instagram.com/yure.music?igsh=a2FwdXljc3hweTl3"
-              aria-label="Instagram"
-            >
-              <Instagram />
-            </Link>
+          <footer className="w-full border-t mx-auto text-md py-16">
+            {/* Social Icons Section */}
+            <div className="flex items-center justify-center gap-8 mb-8">
+              <Link
+                href="https://www.youtube.com/@yure.music12"
+                target="_blank"
+                aria-label="Youtube"
+                className="hover:text-primary transition-colors"
+              >
+                <Youtube />
+              </Link>
+              <Link
+                href="https://www.instagram.com/yure.music?igsh=a2FwdXljc3hweTl3"
+                aria-label="Instagram"
+                className="hover:text-primary transition-colors"
+              >
+                <Instagram />
+              </Link>
+            </div>
 
-            <p>
+            {/* Navigation Links - Desktop */}
+            <div className="hidden md:flex justify-center gap-8 mb-8">
+              <Link
+                href="/translation"
+                className="hover:text-primary transition-colors"
+              >
+                J-POP 가사번역
+              </Link>
+              <Link
+                href="/article"
+                className="hover:text-primary transition-colors"
+              >
+                유레 매거진
+              </Link>
+              <Link
+                href="/karaoke"
+                className="hover:text-primary transition-colors"
+              >
+                노래방 번호 검색
+              </Link>
+              <Link
+                href="/karaoke/application"
+                className="hover:text-primary transition-colors"
+              >
+                노래방 번호 신청
+              </Link>
+            </div>
+
+            {/* Navigation Links - Mobile */}
+            <div className="flex md:hidden flex-col items-center gap-4 mb-8">
+              <Link
+                href="/translation"
+                className="hover:text-primary transition-colors"
+              >
+                J-POP 가사번역
+              </Link>
+              <Link
+                href="/article"
+                className="hover:text-primary transition-colors"
+              >
+                유레 매거진
+              </Link>
+              <Link
+                href="/karaoke"
+                className="hover:text-primary transition-colors"
+              >
+                노래방 번호 검색
+              </Link>
+              <Link
+                href="/karaoke/application"
+                className="hover:text-primary transition-colors"
+              >
+                노래방 번호 신청
+              </Link>
+            </div>
+
+            {/* Copyright */}
+            <p className="text-center">
               Powered by <span className="font-bold hover:underline">YURE</span>
             </p>
             {/* <ThemeSwitcher /> */}

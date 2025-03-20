@@ -13,14 +13,16 @@ const LoginPage = () => {
       {/* Logo Section */}
       <div className="flex flex-col items-center mb-8">
         <div className="w-16 h-16 relative mb-4">
-          {/* <Image
-            src="/logo.png" // Make sure to add your logo
+          <Image
+            src="/assets/logos/round.png" // Make sure to add your logo
             alt="Logo"
             fill
             className="object-contain"
-          /> */}
+          />
         </div>
-        <h1 className="text-2xl font-bold text-gray-800 mb-6">로그인하기</h1>
+        <h1 className="text-2xl font-bold text-foreground mb-6">
+          유레에 가입 또는 로그인하기
+        </h1>
       </div>
 
       {/* Social Login Buttons */}
@@ -54,15 +56,6 @@ const LoginPage = () => {
           </div>
           <span className="mx-auto">카카오톡으로 계속하기</span>
         </Button> */}
-      </div>
-      {/* Footer Links */}
-      <div className="mt-6 text-center">
-        <div className="mt-4">
-          <span className="text-gray-600">계정이 없으신가요? </span>
-          <a href="sign-up" className="text-emerald-600 hover:underline">
-            가입하기
-          </a>
-        </div>
       </div>
     </div>
   );
