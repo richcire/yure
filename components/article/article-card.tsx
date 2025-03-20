@@ -11,7 +11,7 @@ export function ArticleCard({ article }: ArticleCardProps) {
   return (
     <Link href={`/article/${article.slug}`}>
       <Card className="flex flex-col h-[400px] overflow-hidden transition-all duration-300 hover:shadow-lg group bg-background text-foreground border-2 border-[#69140E]/50 hover:bg-[#69140E]/5">
-        <div className="relative aspect-video m-3">
+        <div className="relative aspect-video m-3 max-h-[200px]">
           <Image
             src={article.thumbnail_url || "/assets/logos/square_high.jpeg"}
             alt={article.title}

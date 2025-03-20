@@ -4,7 +4,6 @@ import { Suspense } from "react";
 import TranslationList from "@/components/translation/translation-list";
 import TranslationFilter from "@/components/translation/translation-filter";
 import { Metadata } from "next";
-import { SideVerticalDisplayAd } from "@/components/google-adsense/side-veritcal-display-ad";
 import { SideVerticalDisplayAdWrapper } from "@/components/google-adsense/side-vertical-display-ad-wrapper";
 
 export const metadata: Metadata = {

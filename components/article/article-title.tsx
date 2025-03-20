@@ -36,12 +36,10 @@ async function fetchArticle(slug: string) {
 export async function ArticleTitle({ slug }: ArticleTitleProps) {
   const article = await fetchArticle(slug);
   return (
-    <div className="bg-[#214E34] backdrop-blur-sm shadow-sm p-4 rounded-md mb-8">
-      <h1 className="text-3xl text-[#E4E0D5] font-bold mb-2">
-        {article.title}
-      </h1>
-      <h2 className="text-xl text-[#E4E0D5] mb-8">{article.user_info.name}</h2>
-      <div className="w-full flex justify-between">
+    <div className="bg-[#214E34] backdrop-blur-sm shadow-sm p-4 rounded-md mb-8 h-40 flex flex-col">
+      <h1 className="text-3xl text-[#E4E0D5] font-bold">{article.title}</h1>
+      <div className="w-full flex justify-between mt-auto">
+        <h2 className="text-l text-[#E4E0D5]">{article.user_info.name}</h2>
         <h3 className="text-[#E4E0D5]">
           작성일: {new Date(article.created_at).toLocaleDateString()}
         </h3>
