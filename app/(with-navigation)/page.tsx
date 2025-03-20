@@ -59,7 +59,12 @@ export default function Home() {
       </Suspense>
 
       <div className="max-w-5xl mx-auto my-12 px-4">
-        <h2 className="text-3xl font-bold mb-8 pt-12">🔍 JPOP 노래방 검색기</h2>
+        <h2 className="text-3xl font-bold mb-4 pt-12 text-center">
+          🔍 JPOP 노래방 검색기
+        </h2>
+        <p className="text-center mb-8">
+          부르고 싶은 J-POP 노래방 번호를 한 번에 찾아보세요!
+        </p>
         <Search />
       </div>
 

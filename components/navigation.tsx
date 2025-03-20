@@ -7,9 +7,8 @@ import { User } from "@supabase/supabase-js";
 import Image from "next/image";
 import { IUserInfo } from "@/types/supabase-table";
 import { useRouter } from "next/navigation";
-
+import { User as UserIcon, ChevronRight } from "lucide-react";
 const Navigation = () => {
-  const [isScrolled, setIsScrolled] = useState(false);
   const [user, setUser] = useState<User | undefined>();
   const [name, setName] = useState<string | undefined>();
   const [showDropdown, setShowDropdown] = useState(false);
@@ -43,22 +42,10 @@ const Navigation = () => {
     router.refresh();
   };
 
-  useEffect(() => {
-    const handleScroll = () => {
-      // Check if page is scrolled past navigation height (assuming 48px)
-      const scrolled = window.scrollY > 48;
-      setIsScrolled(scrolled);
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
   return (
     <>
       <nav
-        className={`fixed top-0 left-0 right-0 h-12 transition-all duration-300 z-50 
-        ${isScrolled ? "bg-white/20 backdrop-blur-sm shadow-sm" : "bg-white/20"}`}
+        className={`fixed top-0 left-0 right-0 h-[60px] transition-all duration-300 z-50 bg-background border-b border-border`}
       >
         <div className="container mx-auto h-full px-4">
           <div className="grid grid-cols-3 sm:grid-cols-6 lg:grid-cols-3 items-center h-full">
@@ -68,12 +55,12 @@ const Navigation = () => {
                 <Image
                   src="/assets/logos/round.png"
                   alt="Logo"
-                  width={32}
-                  height={32}
+                  width={40}
+                  height={40}
                   className="object-contain"
                   priority
                 />
-                <span className="hidden sm:inline">揺れ 유레</span>
+                <span className="hidden sm:inline">유레 揺れ</span>
               </Link>
             </div>
 
@@ -130,19 +117,21 @@ const Navigation = () => {
                   className="relative"
                   onMouseEnter={() => setShowDropdown(true)}
                   onMouseLeave={() => setShowDropdown(false)}
+                  onClick={() => setShowDropdown((prev) => !prev)}
                 >
                   <div className="text-sm hover:text-primary transition-colors cursor-pointer truncate max-w-[120px] sm:max-w-none">
                     안녕하세요, {name}님!
                   </div>
                   {showDropdown && (
-                    <div className="absolute right-0 top-full pt-1">
-                      <div className="w-48 bg-white/80 backdrop-blur-sm shadow-sm border rounded-md">
+                    <div className="absolute right-0 top-full pt-2">
+                      <div className="w-32 bg-[#F5F5F5] backdrop-blur-sm shadow-sm border rounded-md py-2">
                         <button
                           onClick={() => router.push("/protected/myPage")}
                           className="w-full text-left px-4 py-2 text-sm hover:bg-red-50 transition-colors rounded-md"
                         >
                           마이 페이지
                         </button>
+                        <div className="h-[1px] bg-border my-2 mx-4" />
                         <button
                           onClick={handleSignOut}
                           className="w-full text-left px-4 py-2 text-sm text-red-500 hover:bg-red-50 transition-colors rounded-md"
@@ -154,20 +143,12 @@ const Navigation = () => {
                   )}
                 </div>
               ) : (
-                <>
-                  <Link
-                    href="/sign-in"
-                    className="hover:text-primary transition-colors text-sm sm:text-base whitespace-nowrap"
-                  >
-                    로그인
-                  </Link>
-                  <Link
-                    href="/sign-up"
-                    className="bg-primary text-white px-3 py-1.5 sm:px-4 sm:py-2 rounded-md hover:bg-primary/90 transition-colors text-sm sm:text-base whitespace-nowrap"
-                  >
-                    회원가입
-                  </Link>
-                </>
+                <Link
+                  href="/sign-in"
+                  className="hover:text-primary transition-colors text-sm sm:text-base whitespace-nowrap"
+                >
+                  <UserIcon size={20} />
+                </Link>
               )}
 
               {/* Mobile Menu Button */}
@@ -203,12 +184,12 @@ const Navigation = () => {
         onClick={() => setIsSidebarOpen(false)}
       >
         <div
-          className={`fixed right-0 top-0 h-full w-64 bg-white shadow-lg transition-transform duration-300 ${
+          className={`fixed right-0 top-0 h-full w-[20rem] bg-[#F5F5F5] shadow-lg transition-transform duration-300 ${
             isSidebarOpen ? "translate-x-0" : "translate-x-full"
           }`}
           onClick={(e) => e.stopPropagation()}
         >
-          <div className="p-4">
+          <div className="p-4 flex flex-col h-full">
             <button
               className="absolute top-3 right-3 p-1"
               onClick={() => setIsSidebarOpen(false)}
@@ -228,36 +209,56 @@ const Navigation = () => {
                 />
               </svg>
             </button>
-            <div className="flex flex-col gap-4 mt-8">
+            <div className="flex flex-col gap-4 mt-8 flex-1">
               <Link
                 href="/translation"
-                className="px-4 py-2 hover:bg-gray-50 rounded-md transition-colors"
+                className="px-4 py-2 hover:bg-gray-50 rounded-md transition-colors flex items-center justify-between"
                 onClick={() => setIsSidebarOpen(false)}
               >
-                J-POP 가사번역
+                <span>J-POP 가사번역</span>
+                <ChevronRight size={16} />
               </Link>
               <Link
                 href="/article"
-                className="px-4 py-2 hover:bg-gray-50 rounded-md transition-colors"
+                className="px-4 py-2 hover:bg-gray-50 rounded-md transition-colors flex items-center justify-between"
                 onClick={() => setIsSidebarOpen(false)}
               >
-                유레 매거진
+                <span>유레 매거진</span>
+                <ChevronRight size={16} />
               </Link>
               <Link
                 href="karaoke"
-                className="px-4 py-2 hover:bg-gray-50 rounded-md transition-colors"
+                className="px-4 py-2 hover:bg-gray-50 rounded-md transition-colors flex items-center justify-between"
                 onClick={() => setIsSidebarOpen(false)}
               >
-                노래방 번호 검색
+                <span>노래방 번호 검색</span>
+                <ChevronRight size={16} />
               </Link>
               <Link
                 href="/karaoke/application"
-                className="px-4 py-2 hover:bg-gray-50 rounded-md transition-colors"
+                className="px-4 py-2 hover:bg-gray-50 rounded-md transition-colors flex items-center justify-between"
                 onClick={() => setIsSidebarOpen(false)}
               >
-                노래방 번호 신청
+                <span>노래방 번호 신청</span>
+                <ChevronRight size={16} />
               </Link>
             </div>
+
+            {/* Login section at bottom */}
+            {!user && (
+              <div className="mt-auto border-t border-border pt-4">
+                <div className="text-sm text-center mb-3">
+                  로그인하고 더 많은 기능을 사용해보세요!
+                </div>
+                <Link
+                  href="/sign-in"
+                  className="block w-full bg-foreground text-white py-2 px-4 rounded-md text-center text-sm hover:bg-primary/90 transition-colors"
+                  onClick={() => setIsSidebarOpen(false)}
+                >
+                  로그인하기
+                </Link>
+              </div>
+            )}
           </div>
         </div>
       </div>
