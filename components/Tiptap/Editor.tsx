@@ -322,7 +322,6 @@ export default function TiptapEditor({ id }: { id?: string }) {
         title,
         artist,
         release_date: formatDate(releaseDate),
-        category_ids: selectedCategoriesIds,
         thumbnail_url: thumbnailUrl,
         permalink,
       };
