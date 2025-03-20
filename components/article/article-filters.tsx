@@ -36,11 +36,11 @@ export function ArticleFilters() {
   };
 
   return (
-    <div className="flex gap-4 items-center">
-      <form onSubmit={handleSubmit} className="flex-1">
+    <div className="flex gap-4 items-center flex-col sm:flex-row">
+      <form onSubmit={handleSubmit} className="flex-1 w-full">
         <Input
           placeholder="검색어를 입력해주세요"
-          className="max-w-sm"
+          className="sm:max-w-sm "
           name="search"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
@@ -51,7 +51,7 @@ export function ArticleFilters() {
         defaultValue={currentSort}
         onValueChange={handleSortChange}
       >
-        <SelectTrigger className="w-[180px]" aria-label="Sort by">
+        <SelectTrigger className="w-full sm:w-[160px]" aria-label="Sort by">
           <SelectValue placeholder="Sort by" />
         </SelectTrigger>
         <SelectContent>

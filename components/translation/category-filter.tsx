@@ -74,7 +74,7 @@ export function CategoryFilter({
   };
 
   return (
-    <div className="md:flex flex-wrap items-center justify-between gap-4 mb-6 mt-8">
+    <div className="md:flex flex-wrap items-center justify-between gap-4 mb-6 mt-8 px-4">
       <div className="hidden md:flex flex-wrap gap-2">
         {categories.map((category) => (
           <Badge
@@ -98,8 +98,14 @@ export function CategoryFilter({
           defaultValue={selectedCategories}
           placeholder="카테고리 선택"
           variant="inverted"
+          useCommandInput={false}
         />
-        <Button variant="outline" size="icon" onClick={handleSearch}>
+        <Button
+          variant="outline"
+          size="icon"
+          onClick={handleSearch}
+          className="h-10 w-10"
+        >
           <Search />
         </Button>
       </div>

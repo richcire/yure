@@ -30,7 +30,6 @@ async function fetchTranslation(permalink: string) {
   if (error || !data) {
     throw new Error("Translation not found");
   }
-  console.log(data);
   return data;
 }
 
@@ -45,7 +44,9 @@ export async function TranslationTitle({ permalink }: TranslationTitleProps) {
       <div className="w-full flex justify-between items-end">
         <div className="flex gap-2">
           {translation.categories.map((category) => (
-            <Badge key={category.id}>{category.name}</Badge>
+            <Badge key={category.id} className="font-bold">
+              {category.name}
+            </Badge>
           ))}
         </div>
         <h3 className="text-[#E4E0D5]">발매일: {translation.release_date}</h3>
