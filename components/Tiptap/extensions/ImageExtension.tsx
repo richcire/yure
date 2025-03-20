@@ -1,7 +1,7 @@
 import { mergeAttributes, Node } from "@tiptap/core";
 import { ReactNodeViewRenderer } from "@tiptap/react";
 import { Plugin, PluginKey } from "@tiptap/pm/state";
-import Image from "../nodes/Image";
+import ImageNode from "../nodes/Image";
 
 export interface ImageOptions {
   HTMLAttributes: Record<string, any>;
@@ -43,7 +43,7 @@ export const ImageExtension = Node.create<ImageOptions>({
   },
 
   addNodeView() {
-    return ReactNodeViewRenderer(Image);
+    return ReactNodeViewRenderer(ImageNode);
   },
 
   addProseMirrorPlugins() {
