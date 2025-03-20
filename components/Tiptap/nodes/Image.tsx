@@ -123,21 +123,20 @@ export default function ImageNode({
           <div
             className="relative w-full"
             style={{
-              width: node.attrs.width,
-              paddingTop: aspectRatio ? `${(1 / aspectRatio) * 100}%` : "75%", // Default padding if aspect ratio is not yet calculated
+              width: "100%",
+              aspectRatio: aspectRatio || "auto",
             }}
           >
-            {aspectRatio && (
-              <Image
-                src={node.attrs.src || ""}
-                alt={node.attrs.alt || ""}
-                title={node.attrs.title}
-                fill
-                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                className="object-contain rounded-md"
-                priority={false}
-              />
-            )}
+            {/* 이미지를 nextjs/image로 렌더링 > 작동안함. renderHTML할때 Image로 보여주는 방법을 찾아야함 */}
+            <Image
+              src={node.attrs.src || ""}
+              alt={node.attrs.alt || ""}
+              title={node.attrs.title}
+              fill
+              sizes="(max-width: 1200px) 100vw, 50vw"
+              className="object-contain rounded-md m-0"
+              priority={false}
+            />
           </div>
         </div>
       </div>
