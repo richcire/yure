@@ -1,10 +1,5 @@
 "use client";
 
-import { useEffect } from "react";
-import { ITranslations } from "@/types/supabase-table";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
-import { createClient } from "@/utils/supabase/client";
 import { EditorContent, useEditor } from "@tiptap/react";
 import { ImageExtension } from "../Tiptap/extensions/ImageExtension";
 import StarterKit from "@tiptap/starter-kit";
@@ -12,14 +7,7 @@ import { TextAlign } from "@tiptap/extension-text-align";
 import { YouTubeExtension } from "../Tiptap/extensions/YouTubeExtension";
 import { Highlight } from "@tiptap/extension-highlight";
 import Link from "@tiptap/extension-link";
-export default function TranslationContent({
-  permalink,
-}: {
-  permalink: string;
-}) {
-  const router = useRouter();
-  const [translation, setTranslation] = useState<ITranslations | null>(null);
-
+export default function TranslationContent({ content }: { content: string }) {
   const editor = useEditor({
     immediatelyRender: false,
     extensions: [
@@ -115,7 +103,7 @@ export default function TranslationContent({
       }),
     ],
     editable: false,
-    content: "",
+    content: content,
     editorProps: {
       attributes: {
         class:
@@ -124,29 +112,7 @@ export default function TranslationContent({
     },
   });
 
-  useEffect(() => {
-    const fetchTranslation = async () => {
-      const supabase = createClient();
-      const { data, error } = await supabase
-        .from("translations")
-        .select("*")
-        .eq("permalink", decodeURIComponent(permalink))
-        .single<ITranslations>();
-      if (error || !data) {
-        router.push("/404");
-        return;
-      }
-
-      setTranslation(data);
-
-      setTimeout(() => {
-        editor?.commands.setContent(data.content);
-      });
-    };
-    fetchTranslation();
-  }, [permalink, router, editor]);
-
-  if (!editor || !translation) {
+  if (!editor || !content) {
     return null;
   }
 

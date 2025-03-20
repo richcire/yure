@@ -7,12 +7,6 @@ export interface ITranslations {
   categories: {
     id: number;
     name: string;
-    created_at: string;
-  };
-  category_ids: {
-    id: number;
-    name: string;
-    created_at: string;
   }[];
   thumbnail_url: string;
   created_at: string;

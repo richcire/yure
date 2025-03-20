@@ -3,13 +3,13 @@ import {
   TranslationTitle,
   TranslationTitleSkeleton,
 } from "@/components/translation/translation-title";
-import TranslationContent from "@/components/translation/translation-content";
 import { CommentSection } from "@/components/comments/comment-section";
 import { createClient } from "@/utils/supabase/server";
 import { BottomDisplayAdWrapper } from "@/components/google-adsense/bottom-display-ad-wrapper";
 import { IComments } from "@/types/supabase-table";
 import { SideVerticalDisplayAdWrapper } from "@/components/google-adsense/side-vertical-display-ad-wrapper";
-
+import TranslationContentWrapper from "@/components/translation/translation-content-wrapper";
+import { TipTapContentSkeleton } from "@/components/Tiptap/TipTapContentSkeleton";
 export async function generateMetadata({ params }: Props) {
   const { permalink } = await params;
   const supabase = await createClient();
@@ -46,20 +46,6 @@ export async function generateMetadata({ params }: Props) {
   };
 }
 
-// export async function generateStaticParams() {
-//   const supabase = await createClient();
-//   const { data, error } = await supabase
-//     .from("translations")
-//     .select("permalink")
-//     .returns<string[]>();
-
-//   if (error) {
-//     console.error(error);
-//     return [];
-//   }
-//   return data ?? [];
-// }
-
 interface Props {
   params: Promise<{
     permalink: string;
@@ -68,14 +54,6 @@ interface Props {
 
 export default async function TranslationPage({ params }: Props) {
   const { permalink } = await params;
-  const supabase = await createClient();
-
-  // Fetch translation ID for the comment section
-  const { data: translation } = await supabase
-    .from("translations")
-    .select("id")
-    .eq("permalink", permalink)
-    .single();
 
   const getComments = async () => {
     "use server";
@@ -119,18 +97,18 @@ export default async function TranslationPage({ params }: Props) {
         <Suspense fallback={<TranslationTitleSkeleton />}>
           <TranslationTitle permalink={permalink} />
         </Suspense>
-        <TranslationContent permalink={permalink} />
+        <Suspense fallback={<TipTapContentSkeleton />}>
+          <TranslationContentWrapper permalink={permalink} />
+        </Suspense>
 
         <BottomDisplayAdWrapper />
-        {translation && (
-          <Suspense fallback={<div>댓글을 불러오는 중...</div>}>
-            <CommentSection
-              getComments={getComments}
-              addComment={addComment}
-              deleteComment={deleteComment}
-            />
-          </Suspense>
-        )}
+        <Suspense fallback={<div>댓글을 불러오는 중...</div>}>
+          <CommentSection
+            getComments={getComments}
+            addComment={addComment}
+            deleteComment={deleteComment}
+          />
+        </Suspense>
       </div>
       <SideVerticalDisplayAdWrapper />
     </div>
