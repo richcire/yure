@@ -2,6 +2,7 @@ import { ITranslations } from "@/types/supabase-table";
 import { createClient } from "@/utils/supabase/server";
 import { Badge } from "../ui/badge";
 import { Skeleton } from "../ui/skeleton";
+import { redirect, notFound } from "next/navigation";
 
 interface TranslationTitleProps {
   permalink: string;
@@ -28,13 +29,18 @@ async function fetchTranslation(permalink: string) {
     .single<ITranslations>();
 
   if (error || !data) {
-    throw new Error("Translation not found");
+    return null;
   }
   return data;
 }
 
 export async function TranslationTitle({ permalink }: TranslationTitleProps) {
   const translation = await fetchTranslation(permalink);
+
+  if (!translation) {
+    notFound();
+  }
+
   return (
     <div className="bg-[#214E34] backdrop-blur-sm shadow-sm p-4 rounded-md mb-8">
       <h1 className="text-3xl text-[#E4E0D5] font-bold mb-2">

@@ -18,7 +18,7 @@ export default async function TranslationContentWrapper({
 }) {
   const content = await getTranslationContent(permalink);
   if (!content) {
-    redirect("/404");
+    return null;
   }
   return <TranslationContent content={content} />;
 }
