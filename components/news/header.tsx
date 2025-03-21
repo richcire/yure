@@ -1,5 +1,6 @@
 import { Newspaper } from "lucide-react";
-import { Input } from "../ui/input";
+import NewsFilters from "./news-filters";
+import { Suspense } from "react";
 
 export default function Header() {
   return (
@@ -18,9 +19,9 @@ export default function Header() {
           <Newspaper className="h-5 w-5" />
           <span className="font-medium">Latest Edition</span>
         </div>
-        <div>
-          <Input placeholder="뉴스 검색" className="sm:w-64" />
-        </div>
+        <Suspense>
+          <NewsFilters />
+        </Suspense>
       </div>
     </header>
   );
