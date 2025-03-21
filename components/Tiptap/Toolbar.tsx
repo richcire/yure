@@ -77,18 +77,24 @@ export function Toolbar({ editor }: ToolbarProps) {
         return `https://www.youtube.com/embed/${match[1]}`;
       }
     }
-    return url;
+    return null;
   };
 
   const handleYoutubeEmbed = () => {
     if (youtubeUrl) {
+      const embedUrl = getEmbedUrl(youtubeUrl);
+      if (!embedUrl) {
+        alert("Please enter a valid YouTube URL");
+        return;
+      }
+
       editor
         .chain()
         .focus()
         .insertContent({
           type: "youtube",
           attrs: {
-            src: getEmbedUrl(youtubeUrl),
+            src: embedUrl,
             aspectRatio: youtubeUrl.includes("shorts") ? "9/16" : "16/9",
           },
         })

@@ -3,18 +3,47 @@ import {
   ArticleTitle,
   ArticleTitleSkeleton,
 } from "../../../../components/article/article-title";
-import ArticleContent from "../../../../components/article/article-content";
 import { CommentSection } from "@/components/comments/comment-section";
 import { BottomDisplayAdWrapper } from "@/components/google-adsense/bottom-display-ad-wrapper";
-import { SideVerticalDisplayAd } from "@/components/google-adsense/side-veritcal-display-ad";
+import { SideVerticalDisplayAdWrapper } from "@/components/google-adsense/side-vertical-display-ad-wrapper";
 import { createClient } from "@/utils/supabase/server";
 import { IComments } from "@/types/supabase-table";
+import { TipTapContentSkeleton } from "@/components/Tiptap/TipTapContentSkeleton";
+import ArticleContentWrapper from "@/components/article/article-content-wrapper";
 
 export async function generateMetadata({ params }: Props) {
   const { slug } = await params;
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("articles")
+    .select("title, thumbnail_url")
+    .eq("slug", slug)
+    .single();
 
   return {
-    title: `${decodeURIComponent(slug)} • 유레 揺れ`,
+    title: `${decodeURIComponent(slug)} [유레 매거진] • 유레 揺れ`,
+    description: `최신 J-POP 뉴스, 트렌드, 그리고 심층 분석을 만나보세요! J-POP 문화, 아티스트 인터뷰, 업계 소식을 유레 매거진에서 빠르게 확인하세요.`,
+    openGraph: {
+      title: `${decodeURIComponent(slug)} [유레 매거진] • 유레 揺れ`,
+      description: `최신 J-POP 뉴스, 트렌드, 그리고 심층 분석을 만나보세요! J-POP 문화, 아티스트 인터뷰, 업계 소식을 유레 매거진에서 빠르게 확인하세요.`,
+      images: [
+        {
+          url: data?.thumbnail_url,
+          width: 1200,
+          height: 630,
+          alt: `${decodeURIComponent(slug)}`,
+        },
+        {
+          url: "/assets/logos/square_high.jpeg",
+          width: 1200,
+          height: 630,
+          alt: `${decodeURIComponent(slug)}`,
+        },
+      ],
+      locale: "ko_KR",
+      type: "article",
+      siteName: "유레 揺れ",
+    },
   };
 }
 
@@ -69,7 +98,9 @@ export default async function ArticlePage({ params }: Props) {
         <Suspense fallback={<ArticleTitleSkeleton />}>
           <ArticleTitle slug={slug} />
         </Suspense>
-        <ArticleContent slug={slug} />
+        <Suspense fallback={<TipTapContentSkeleton />}>
+          <ArticleContentWrapper slug={slug} />
+        </Suspense>
         <BottomDisplayAdWrapper />
         <Suspense fallback={<div>댓글을 불러오는 중...</div>}>
           <CommentSection
@@ -79,9 +110,7 @@ export default async function ArticlePage({ params }: Props) {
           />
         </Suspense>
       </div>
-      <div className="sticky-side-ad">
-        <SideVerticalDisplayAd />
-      </div>
+      <SideVerticalDisplayAdWrapper />
     </div>
   );
 }

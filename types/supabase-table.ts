@@ -7,12 +7,12 @@ export interface ITranslations {
   categories: {
     id: number;
     name: string;
-    created_at: string;
-  };
+  }[];
   thumbnail_url: string;
   created_at: string;
   release_date: string;
   permalink: string;
+  keyword: string;
 }
 
 export interface IArticles {
@@ -25,6 +25,17 @@ export interface IArticles {
   slug: string;
   thumbnail_url: string;
   banner_url: string;
+}
+
+export interface ITranslationCategories {
+  translation_id: string;
+  category_id: number;
+}
+
+export interface ICategories {
+  id: number;
+  name: string;
+  created_at: string;
 }
 
 export interface IFeaturedArticles {
@@ -59,6 +70,7 @@ export interface IKaraokeSongs {
   tj: string;
   ky: string;
   js: string;
+  keyword: string;
   created_at: string;
   updated_at: string;
 }

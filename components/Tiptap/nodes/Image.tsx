@@ -1,5 +1,5 @@
 import { NodeViewProps, NodeViewWrapper } from "@tiptap/react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   AlignLeft,
   AlignCenter,
@@ -9,8 +9,9 @@ import {
   Maximize2,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import Image from "next/image";
 
-export default function Image({
+export default function ImageNode({
   node,
   updateAttributes,
   editor,
@@ -20,6 +21,7 @@ export default function Image({
   );
   const textAlign = node.attrs.textAlign as "left" | "center" | "right";
   const float = node.attrs.float as "none" | "left" | "right";
+  const [aspectRatio, setAspectRatio] = useState<number | null>(null);
 
   // Don't show controls if editor is not editable
   const showControls = editor?.isEditable;
@@ -61,106 +63,17 @@ export default function Image({
     right: "right-0",
   };
 
+  useEffect(() => {
+    if (node.attrs.src) {
+      const img = new window.Image();
+      img.src = node.attrs.src;
+      img.onload = () => {
+        setAspectRatio(img.width / img.height);
+      };
+    }
+  }, [node.attrs.src]);
+
   return (
-    // <NodeViewWrapper
-    //   className={`${
-    //     float !== "none" ? "clear-both" : "flex " + alignmentClasses[textAlign]
-    //   }`}
-    // >
-    //   <div
-    //     className={`relative group ${
-    //       float !== "none" ? `float-${float} mr-4 mb-4` : "w-full"
-    //     }`}
-    //     style={{ width: `${width}%` }}
-    //   >
-    //     {showControls && (
-    //       <div
-    //         className={`absolute -top-12 ${
-    //           float === "none" ? controlsAlignment[textAlign] : "left-0"
-    //         } opacity-0 group-hover:opacity-100 transition-opacity flex gap-1`}
-    //       >
-    //         <div className="flex bg-background/80 backdrop-blur-sm rounded-md p-1 gap-1 border border-border">
-    //           <Button
-    //             size="icon"
-    //             variant={float === "left" ? "secondary" : "ghost"}
-    //             className="h-8 w-8"
-    //             onClick={() =>
-    //               updateAttributes({
-    //                 float: float === "left" ? "none" : "left",
-    //               })
-    //             }
-    //           >
-    //             <PanelLeft className="h-4 w-4" />
-    //           </Button>
-
-    //           <Button
-    //             size="icon"
-    //             variant={float === "right" ? "secondary" : "ghost"}
-    //             className="h-8 w-8"
-    //             onClick={() =>
-    //               updateAttributes({
-    //                 float: float === "right" ? "none" : "right",
-    //               })
-    //             }
-    //           >
-    //             <PanelRight className="h-4 w-4" />
-    //           </Button>
-    //         </div>
-    //         <div className="flex bg-background/80 backdrop-blur-sm rounded-md p-1 gap-1 border border-border">
-    //           <Button
-    //             size="icon"
-    //             variant={textAlign === "left" ? "secondary" : "ghost"}
-    //             className="h-8 w-8"
-    //             onClick={() =>
-    //               updateAttributes({ textAlign: "left", float: "none" })
-    //             }
-    //           >
-    //             <AlignLeft className="h-4 w-4" />
-    //           </Button>
-    //           <Button
-    //             size="icon"
-    //             variant={textAlign === "center" ? "secondary" : "ghost"}
-    //             className="h-8 w-8"
-    //             onClick={() =>
-    //               updateAttributes({ textAlign: "center", float: "none" })
-    //             }
-    //           >
-    //             <AlignCenter className="h-4 w-4" />
-    //           </Button>
-    //           <Button
-    //             size="icon"
-    //             variant={textAlign === "right" ? "secondary" : "ghost"}
-    //             className="h-8 w-8"
-    //             onClick={() =>
-    //               updateAttributes({ textAlign: "right", float: "none" })
-    //             }
-    //           >
-    //             <AlignRight className="h-4 w-4" />
-    //           </Button>
-    //         </div>
-    //         <div className="bg-background/80 backdrop-blur-sm rounded-md p-1 flex items-center border border-border">
-    //           <input
-    //             type="text"
-    //             value={inputWidth}
-    //             onChange={(e) => setInputWidth(e.target.value)}
-    //             onKeyDown={handleKeyDown}
-    //             className="w-16 h-8 px-2 bg-background rounded-md text-sm"
-    //             placeholder="100"
-    //           />
-    //           <span className="ml-1">%</span>
-    //         </div>
-    //       </div>
-    //     )}
-    //     <img
-    //       src={node.attrs.src || ""}
-    //       alt={node.attrs.alt || ""}
-    //       title={node.attrs.title}
-    //       style={{ width: "100%" }}
-    //       className="max-w-full rounded-md"
-    //     />
-    //   </div>
-    // </NodeViewWrapper>
-
     <NodeViewWrapper>
       <div className={`flex ${alignmentClasses[textAlign]}`}>
         <div className="relative group" style={{ width: node.attrs.width }}>
@@ -214,6 +127,24 @@ export default function Image({
             style={{ width: "100%" }}
             className="max-w-full rounded-md"
           />
+          {/* 이미지를 nextjs/image로 렌더링 > 작동안함. renderHTML할때 Image로 보여주는 방법을 찾아야함 */}
+          {/* <div
+            className="relative w-full"
+            style={{
+              width: "100%",
+              aspectRatio: aspectRatio || "auto",
+            }}
+          >
+            <Image
+              src={node.attrs.src || ""}
+              alt={node.attrs.alt || ""}
+              title={node.attrs.title}
+              fill
+              sizes="(max-width: 1200px) 100vw, 50vw"
+              className="object-contain rounded-md m-0"
+              priority={false}
+            />
+          </div> */}
         </div>
       </div>
     </NodeViewWrapper>

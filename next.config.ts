@@ -17,6 +17,21 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+
+  //폰트 파일은 인덱스 안되게
+  async headers() {
+    return [
+      {
+        source: "/_next/static/media/:path*",
+        headers: [
+          {
+            key: "X-Robots-Tag",
+            value: "noindex, nofollow",
+          },
+        ],
+      },
+    ];
+  },
 };
 
 export default nextConfig;

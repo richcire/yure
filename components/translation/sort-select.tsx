@@ -32,7 +32,7 @@ export function SortSelect() {
 
   return (
     <Select value={currentSort} onValueChange={handleSortChange}>
-      <SelectTrigger className="w-[160px]" aria-label="Sort select">
+      <SelectTrigger className="`w-full sm:w-[160px]" aria-label="Sort select">
         <SelectValue placeholder="정렬" />
       </SelectTrigger>
       <SelectContent>

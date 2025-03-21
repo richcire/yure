@@ -3,41 +3,48 @@ import {
   TranslationTitle,
   TranslationTitleSkeleton,
 } from "@/components/translation/translation-title";
-import TranslationContent from "@/components/translation/translation-content";
 import { CommentSection } from "@/components/comments/comment-section";
 import { createClient } from "@/utils/supabase/server";
-import { SideVerticalDisplayAd } from "@/components/google-adsense/side-veritcal-display-ad";
 import { BottomDisplayAdWrapper } from "@/components/google-adsense/bottom-display-ad-wrapper";
 import { IComments } from "@/types/supabase-table";
-
+import { SideVerticalDisplayAdWrapper } from "@/components/google-adsense/side-vertical-display-ad-wrapper";
+import TranslationContentWrapper from "@/components/translation/translation-content-wrapper";
+import { TipTapContentSkeleton } from "@/components/Tiptap/TipTapContentSkeleton";
 export async function generateMetadata({ params }: Props) {
   const { permalink } = await params;
   const supabase = await createClient();
   const { data, error } = await supabase
     .from("translations")
-    .select("title, artist")
+    .select("title, artist, thumbnail_url")
     .eq("permalink", permalink)
     .single();
 
   return {
     title: `${data?.artist} - ${data?.title} [가사해석/발음] • 유레 揺れ`,
     description: `${data?.title} J-POP 번역은 유레`,
+    openGraph: {
+      title: `${data?.artist} - ${data?.title} [가사해석/발음] • 유레 揺れ`,
+      description: `${data?.title} - J-POP 번역은 유레`,
+      images: [
+        {
+          url: data?.thumbnail_url,
+          width: 1200,
+          height: 630,
+          alt: `${data?.artist} - ${data?.title}`,
+        },
+        {
+          url: "/assets/logos/square_high.jpeg",
+          width: 1200,
+          height: 630,
+          alt: `${data?.artist} - ${data?.title}`,
+        },
+      ],
+      locale: "ko_KR",
+      type: "article",
+      siteName: "유레 揺れ",
+    },
   };
 }
-
-// export async function generateStaticParams() {
-//   const supabase = await createClient();
-//   const { data, error } = await supabase
-//     .from("translations")
-//     .select("permalink")
-//     .returns<string[]>();
-
-//   if (error) {
-//     console.error(error);
-//     return [];
-//   }
-//   return data ?? [];
-// }
 
 interface Props {
   params: Promise<{
@@ -47,14 +54,6 @@ interface Props {
 
 export default async function TranslationPage({ params }: Props) {
   const { permalink } = await params;
-  const supabase = await createClient();
-
-  // Fetch translation ID for the comment section
-  const { data: translation } = await supabase
-    .from("translations")
-    .select("id")
-    .eq("permalink", permalink)
-    .single();
 
   const getComments = async () => {
     "use server";
@@ -98,22 +97,20 @@ export default async function TranslationPage({ params }: Props) {
         <Suspense fallback={<TranslationTitleSkeleton />}>
           <TranslationTitle permalink={permalink} />
         </Suspense>
-        <TranslationContent permalink={permalink} />
+        <Suspense fallback={<TipTapContentSkeleton />}>
+          <TranslationContentWrapper permalink={permalink} />
+        </Suspense>
 
         <BottomDisplayAdWrapper />
-        {translation && (
-          <Suspense fallback={<div>댓글을 불러오는 중...</div>}>
-            <CommentSection
-              getComments={getComments}
-              addComment={addComment}
-              deleteComment={deleteComment}
-            />
-          </Suspense>
-        )}
+        <Suspense fallback={<div>댓글을 불러오는 중...</div>}>
+          <CommentSection
+            getComments={getComments}
+            addComment={addComment}
+            deleteComment={deleteComment}
+          />
+        </Suspense>
       </div>
-      <div className="sticky-side-ad">
-        <SideVerticalDisplayAd />
-      </div>
+      <SideVerticalDisplayAdWrapper />
     </div>
   );
 }

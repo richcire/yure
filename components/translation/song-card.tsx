@@ -13,18 +13,20 @@ export function SongCard({ song }: SongCardProps) {
       <Card className="w-full cursor-pointer relative group overflow-hidden aspect-video">
         <div className="absolute inset-0">
           <Image
-            src={song.thumbnail_url || "/assets/logos/square.jpeg"}
+            src={song.thumbnail_url || "/assets/logos/square_high.jpeg"}
             alt={`${song.title} album cover`}
             fill
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             className="object-cover transition-transform duration-300 group-hover:scale-110"
             priority={true}
           />
-          <div className="absolute inset-0 bg-black/40 transition-opacity duration-300 " />
+          <div className="absolute inset-0 bg-black/05 transition-opacity duration-300 " />
         </div>
         <div className="relative z-10 h-full flex flex-col justify-end p-4">
-          <CardTitle className="text-white/80 mb-2">{song.title}</CardTitle>
-          <p className="text-sm text-white/80">{song.artist}</p>
+          <CardTitle className="text-[#F5F5F5] mb-2 font-bold">
+            {song.title}
+          </CardTitle>
+          <p className="text-sm text-[#F5F5F5] font-bold">{song.artist}</p>
         </div>
       </Card>
     </Link>

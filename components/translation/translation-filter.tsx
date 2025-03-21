@@ -25,7 +25,10 @@ export default async function TranslationFilter({ searchParams }: Props) {
   return (
     <>
       {categories && (
-        <CategoryFilter categories={categories} selectedCategoryId={category} />
+        <CategoryFilter
+          categories={categories}
+          selectedCategoryId={category ? category.split(",") : undefined}
+        />
       )}
     </>
   );

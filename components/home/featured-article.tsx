@@ -56,7 +56,7 @@ export function FeaturedArticle({
                     src={
                       article.banner_url ||
                       article.thumbnail_url ||
-                      "/assets/logos/square.jpeg"
+                      "/assets/logos/square_high.jpeg"
                     }
                     alt={`${article.title} thumbnail`}
                     fill
@@ -64,7 +64,7 @@ export function FeaturedArticle({
                     sizes="(max-width: 1500px) 100vw, 50vw"
                     priority={index === 0}
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent">
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent">
                     <div className="absolute bottom-0 left-0 right-0 p-8">
                       <div className="max-w-5xl mx-auto">
                         <h2 className="text-2xl sm:text-4xl font-bold text-white mb-4">

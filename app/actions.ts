@@ -55,8 +55,6 @@ export const signUpWithGoogleAction = async () => {
     return encodedRedirect("error", "/sign-up", error.message);
   }
 
-  console.log("approach end");
-
   return redirect(data.url);
 };
 

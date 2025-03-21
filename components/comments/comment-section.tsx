@@ -23,14 +23,16 @@ interface CommentSectionProps {
     data: IComments[] | null;
     error: PostgrestError | null;
   }>;
+  useHideFeature?: boolean;
 }
 
 export function CommentSection({
   getComments,
   addComment,
   deleteComment,
+  useHideFeature = true,
 }: CommentSectionProps) {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(useHideFeature ? false : true);
   const [newComment, setNewComment] = useState("");
   const [comments, setComments] = useState<
     (IComments & { replies: IComments[] })[]
@@ -72,16 +74,18 @@ export function CommentSection({
 
   return (
     <div className="mt-8">
-      <Button
-        variant="ghost"
-        onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-2"
-      >
-        <span>댓글 {isOpen ? "숨기기" : "보기"}</span>
-        <span className="text-sm text-muted-foreground">
-          ({comments.length})
-        </span>
-      </Button>
+      {useHideFeature && (
+        <Button
+          variant="ghost"
+          onClick={() => setIsOpen(!isOpen)}
+          className="flex items-center gap-2"
+        >
+          <span>댓글 {isOpen ? "숨기기" : "보기"}</span>
+          <span className="text-sm text-muted-foreground">
+            ({comments.length})
+          </span>
+        </Button>
+      )}
 
       {isOpen && (
         <div className="mt-4 space-y-6">

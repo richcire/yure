@@ -18,20 +18,19 @@ export function CDCard({ song, index }: CDCardProps) {
         {/* CD Container */}
         <div className="relative w-full pt-[100%] rounded-full overflow-hidden group">
           {/* CD Border - creates the outer ring effect */}
-          <div className="absolute inset-0 rounded-full  border-4 border-[#69140E]/60" />
+          <div className="absolute inset-0 rounded-full  border-2 border-border" />
 
           {/* CD Image */}
-          <div className="absolute inset-[3%] rounded-full overflow-hidden transition-transform duration-1000 ease-in-out group-hover:rotate-[360deg]">
+          <div className="absolute inset-[1%] rounded-full overflow-hidden transition-transform duration-1000 ease-in-out group-hover:rotate-[360deg]">
             <Image
-              src={song.thumbnail_url || "/assets/logos/square.jpeg"}
+              src={song.thumbnail_url || "/assets/logos/square_high.jpeg"}
               alt={`${song.title} album cover`}
               fill
               className="object-cover"
-              sizes="25vw"
-              quality={50}
+              sizes="(min-width: 768px) 25vw, 50vw"
             />
             {/* CD Center Hole */}
-            <div className="absolute inset-[40%] bg-black/80 rounded-full border-4 border-white/20" />
+            <div className="absolute inset-[42%] bg-background/80 rounded-full border-2 border-border" />
           </div>
         </div>
 
@@ -40,6 +39,9 @@ export function CDCard({ song, index }: CDCardProps) {
           <h3 className="font-semibold text-lg mb-1 line-clamp-1 text-center">
             {song.title}
           </h3>
+          <p className="text-sm text-center text-muted-foreground">
+            {song.artist}
+          </p>
         </div>
       </div>
     </Link>
