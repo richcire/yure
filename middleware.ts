@@ -25,6 +25,35 @@ export async function middleware(request: NextRequest) {
   //   }
   // }
 
+  const { pathname } = request.nextUrl;
+
+  //redirect old wordpress url to new url
+  // Define routes to ignore (not to be redirected)
+  const excludePaths = [
+    "/translation",
+    "/article",
+    "/karaoke",
+    "/admin",
+    "/api",
+    "/_next",
+    "/favicon.ico",
+    "/sitemap-index.xml",
+    "/sitemap.xml",
+    "/sign-in",
+    "/auth",
+    "/protected",
+  ];
+
+  const isExcluded = excludePaths.some((path) => pathname.startsWith(path));
+
+  // If it's a root-level path like /some-slug (e.g. no other slashes)
+  const isSlugOnly = pathname.split("/").filter(Boolean).length === 1;
+
+  if (!isExcluded && isSlugOnly) {
+    const newUrl = new URL(`/translation/${pathname}`, request.url);
+    return NextResponse.redirect(newUrl, 301);
+  }
+
   return await updateSession(request);
 }
 
