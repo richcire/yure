@@ -7,18 +7,24 @@ import { CommentSection } from "@/components/comments/comment-section";
 import { BottomDisplayAdWrapper } from "@/components/google-adsense/bottom-display-ad-wrapper";
 import { SideVerticalDisplayAdWrapper } from "@/components/google-adsense/side-vertical-display-ad-wrapper";
 import { createClient } from "@/utils/supabase/server";
-import { IComments } from "@/types/supabase-table";
+import { IArticles, IComments } from "@/types/supabase-table";
 import { TipTapContentSkeleton } from "@/components/Tiptap/TipTapContentSkeleton";
 import ArticleContentWrapper from "@/components/article/article-content-wrapper";
+import { NewsArticle } from "schema-dts";
 
-export async function generateMetadata({ params }: Props) {
-  const { slug } = await params;
+const getArticle = async (slug: string) => {
   const supabase = await createClient();
   const { data, error } = await supabase
     .from("articles")
-    .select("title, thumbnail_url")
+    .select("title, user_info(name), thumbnail_url, created_at, updated_at")
     .eq("slug", slug)
-    .single();
+    .single<IArticles>();
+  return { data, error };
+};
+
+export async function generateMetadata({ params }: Props) {
+  const { slug } = await params;
+  const { data, error } = await getArticle(decodeURIComponent(slug));
 
   return {
     title: `${decodeURIComponent(slug)} [유레 매거진] • 유레 揺れ`,
@@ -53,8 +59,29 @@ interface Props {
   }>;
 }
 
-export default function ArticlePage({ params }: Props) {
-  const { slug } = use(params);
+export default async function ArticlePage({ params }: Props) {
+  const { slug } = await params;
+
+  const { data, error } = await getArticle(decodeURIComponent(slug));
+  if (error) {
+    return <div>Error: {error.message}</div>;
+  }
+
+  const structuredData = data
+    ? {
+        "@context": "https://schema.org",
+        "@type": "Article",
+        headline: data.title,
+        image: [data.thumbnail_url],
+        datePublished: data.created_at,
+        dateModified: data.updated_at,
+        author: {
+          "@type": "Person",
+          name: data.user_info.name,
+          url: `https://yure.me`,
+        },
+      }
+    : null;
 
   const getComments = async () => {
     "use server";
@@ -93,24 +120,32 @@ export default function ArticlePage({ params }: Props) {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="max-w-4xl mx-auto">
-        <Suspense fallback={<ArticleTitleSkeleton />}>
-          <ArticleTitle slug={slug} />
-        </Suspense>
-        <Suspense fallback={<TipTapContentSkeleton />}>
-          <ArticleContentWrapper slug={slug} />
-        </Suspense>
-        <BottomDisplayAdWrapper />
-        <Suspense fallback={<div>Loading comments...</div>}>
-          <CommentSection
-            getComments={getComments}
-            addComment={addComment}
-            deleteComment={deleteComment}
-          />
-        </Suspense>
+    <>
+      <section>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+        />
+      </section>
+      <div className="container mx-auto px-4 py-8">
+        <div className="max-w-4xl mx-auto">
+          <Suspense fallback={<ArticleTitleSkeleton />}>
+            <ArticleTitle slug={slug} />
+          </Suspense>
+          <Suspense fallback={<TipTapContentSkeleton />}>
+            <ArticleContentWrapper slug={slug} />
+          </Suspense>
+          <BottomDisplayAdWrapper />
+          <Suspense fallback={<div>Loading comments...</div>}>
+            <CommentSection
+              getComments={getComments}
+              addComment={addComment}
+              deleteComment={deleteComment}
+            />
+          </Suspense>
+        </div>
+        <SideVerticalDisplayAdWrapper />
       </div>
-      <SideVerticalDisplayAdWrapper />
-    </div>
+    </>
   );
 }
