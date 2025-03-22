@@ -1,9 +1,7 @@
-import { ITranslations } from "@/types/supabase-table";
 import { createClient } from "@/utils/supabase/server";
 import { SongGrid } from "./song-grid";
 import { PaginationControl } from "../ui/pagination-control";
 import { BottomDisplayAdWrapper } from "../google-adsense/bottom-display-ad-wrapper";
-import { BottomDisplayAd } from "../google-adsense/bottom-display-ad";
 const ITEMS_PER_PAGE = 8;
 
 interface Props {

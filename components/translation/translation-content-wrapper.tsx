@@ -1,5 +1,4 @@
 import { createClient } from "@/utils/supabase/server";
-import { redirect } from "next/navigation";
 import TranslationContent from "./translation-content";
 async function getTranslationContent(permalink: string) {
   const supabase = await createClient();
