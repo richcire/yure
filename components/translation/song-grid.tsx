@@ -1,6 +1,5 @@
 import { ITranslations } from "@/types/supabase-table";
 import { SongCard } from "./song-card";
-import { SideVerticalDisplayAd } from "../google-adsense/side-veritcal-display-ad";
 
 interface SongGridProps {
   songs: ITranslations[];

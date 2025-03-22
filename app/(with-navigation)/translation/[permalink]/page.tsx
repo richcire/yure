@@ -10,6 +10,7 @@ import { IComments } from "@/types/supabase-table";
 import { SideVerticalDisplayAdWrapper } from "@/components/google-adsense/side-vertical-display-ad-wrapper";
 import TranslationContentWrapper from "@/components/translation/translation-content-wrapper";
 import { TipTapContentSkeleton } from "@/components/Tiptap/TipTapContentSkeleton";
+
 export async function generateMetadata({ params }: Props) {
   const { permalink } = await params;
   const supabase = await createClient();
