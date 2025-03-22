@@ -4,11 +4,11 @@ import KaraokeSongs from "@/components/karaoke/karaoke-songs";
 import { SideVerticalDisplayAdWrapper } from "@/components/google-adsense/side-vertical-display-ad-wrapper";
 
 export const metadata: Metadata = {
-  title: "JPOP 노래방 검색기 • 유레 揺れ",
+  title: "JPOP 일본 노래 노래방 번호 검색기 • 유레 揺れ",
   description:
     "부르고 싶은 노래의 노래방 번호를 찾아보세요! J-POP 노래부터 애니메이션 노래, 보컬로이드 노래까지 다양한 노래를 한곳에서 쉽게 찾을 수 있습니다.",
   openGraph: {
-    title: "JPOP 노래방 검색기 • 유레 揺れ",
+    title: "JPOP 일본 노래 노래방 번호 검색기 • 유레 揺れ",
     description:
       "부르고 싶은 노래의 노래방 번호를 찾아보세요! J-POP 노래부터 애니메이션 노래, 보컬로이드 노래까지 다양한 노래를 한곳에서 쉽게 찾을 수 있습니다.",
     images: [
