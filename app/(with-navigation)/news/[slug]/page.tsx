@@ -5,6 +5,9 @@ import { createClient } from "@/utils/supabase/server";
 import { INews } from "@/types/supabase-table";
 import NewsContent from "@/components/news/news-content";
 import NewsActions from "@/components/news/news-actions";
+import { NewsCommentSection } from "@/components/news/news-comment-section";
+import { Suspense } from "react";
+import { BottomDisplayAdWrapper } from "@/components/google-adsense/bottom-display-ad-wrapper";
 
 interface Props {
   params: Promise<{
@@ -90,6 +93,10 @@ export default async function NewsPage({ params }: Props) {
           </h2>
           <RelatedNews news={related} />
         </div> */}
+        <BottomDisplayAdWrapper />
+        <Suspense fallback={<div>댓글을 불러오는 중...</div>}>
+          <NewsCommentSection news={news} useHideFeature={true} />
+        </Suspense>
       </div>
     </div>
   );
