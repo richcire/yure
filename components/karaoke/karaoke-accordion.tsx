@@ -15,6 +15,7 @@ import { useVirtualizer } from "@tanstack/react-virtual";
 import { cn } from "@/lib/utils";
 import { Checkbox } from "../ui/checkbox";
 import { BottomDisplayAdWrapper } from "../google-adsense/bottom-display-ad-wrapper";
+
 export const LoadingSpinner = ({ className }: { className?: string }) => {
   return (
     <svg

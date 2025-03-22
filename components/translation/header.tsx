@@ -4,7 +4,6 @@ import { MusicIcon, X } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
-import _ from "lodash";
 
 export function Header() {
   const router = useRouter();
