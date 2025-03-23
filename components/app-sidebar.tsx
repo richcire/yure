@@ -1,4 +1,12 @@
-import { Calendar, Home, Inbox, Search, Settings, Tag } from "lucide-react";
+import {
+  Calendar,
+  Home,
+  Inbox,
+  Search,
+  Settings,
+  Tag,
+  Newspaper,
+} from "lucide-react";
 
 import {
   Sidebar,
@@ -37,6 +45,11 @@ const items = [
     title: "Karaoke",
     url: "/admin/karaoke",
     icon: Search,
+  },
+  {
+    title: "News",
+    url: "/admin/news",
+    icon: Newspaper,
   },
   {
     title: "Settings",
