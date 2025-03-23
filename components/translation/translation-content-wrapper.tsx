@@ -9,7 +9,6 @@ async function getTranslationContent(permalink: string) {
     .select("content, created_at, updated_at")
     .eq("permalink", permalink)
     .single<ITranslations>();
-  console.log(data);
   return data;
 }
 
@@ -19,7 +18,6 @@ export default async function TranslationContentWrapper({
   permalink: string;
 }) {
   const data = await getTranslationContent(permalink);
-  console.log(data);
   if (!data) {
     return null;
   }
