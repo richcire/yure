@@ -31,7 +31,7 @@ export default async function NewsGrid({ news }: NewsGridProps) {
         </div>
         <div className="mb-6">
           <Image
-            src={featuredNews.thumbnail_url}
+            src={featuredNews.thumbnail_url || "/assets/logos/square_high.jpeg"}
             alt={featuredNews.title}
             width={800}
             height={400}
@@ -105,7 +105,7 @@ export default async function NewsGrid({ news }: NewsGridProps) {
           <div key={news.id} className="flex gap-4">
             <div className="flex-shrink-0">
               <Image
-                src={news.thumbnail_url}
+                src={news.thumbnail_url || "/assets/logos/square.jpeg"}
                 alt={news.title}
                 width={120}
                 height={120}
