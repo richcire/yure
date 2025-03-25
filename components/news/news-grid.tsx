@@ -10,43 +10,42 @@ export default async function NewsGrid({ news }: NewsGridProps) {
   // Featured news is the first one
   const featuredNews = news[0];
 
-  // 뉴스가 없을 경우
-  if (!featuredNews) {
-    return;
-  }
-
   // Rest of the news
   const restOfNews = news.slice(1);
 
   return (
     <div className="grid gap-8 md:grid-cols-12">
       {/* Featured News - spans full width on mobile, 8 columns on desktop */}
-      <div className="border-b-2 border-black pb-8 md:col-span-8 md:border-b-0 md:border-r-2 md:pr-8">
-        <h2 className="mb-4 text-3xl font-bold leading-tight md:text-4xl">
-          {featuredNews.title}
-        </h2>
-        <div className="mb-4 text-sm font-medium text-gray-600">
-          By {featuredNews.user_info.name} |{" "}
-          {new Date(featuredNews.created_at).toLocaleDateString()}
-        </div>
-        <div className="mb-6">
-          <Image
-            src={featuredNews.thumbnail_url || "/assets/logos/square_high.jpeg"}
-            alt={featuredNews.title}
-            width={800}
-            height={400}
-            className="h-auto w-full rounded-sm object-cover"
-          />
-        </div>
-        <Link href={`/news/${featuredNews.slug}`}>
-          <p className="pb-4 font-serif text-lg leading-relaxed">
-            {featuredNews.summary}
-          </p>
-          <div className="inline-block font-medium hover:text-gray-600">
-            계속 읽기 →
+      {news.length > 0 && (
+        <div className="border-b-2 border-black pb-8 md:col-span-8 md:border-b-0 md:border-r-2 md:pr-8">
+          <h2 className="mb-4 text-3xl font-bold leading-tight md:text-4xl">
+            {featuredNews.title}
+          </h2>
+          <div className="mb-4 text-sm font-medium text-gray-600">
+            By {featuredNews.user_info.name} |{" "}
+            {new Date(featuredNews.created_at).toLocaleDateString()}
           </div>
-        </Link>
-      </div>
+          <div className="mb-6">
+            <Image
+              src={
+                featuredNews.thumbnail_url || "/assets/logos/square_high.jpeg"
+              }
+              alt={featuredNews.title}
+              width={800}
+              height={400}
+              className="h-auto w-full rounded-sm object-cover"
+            />
+          </div>
+          <Link href={`/news/${featuredNews.slug}`}>
+            <p className="pb-4 font-serif text-lg leading-relaxed">
+              {featuredNews.summary}
+            </p>
+            <div className="inline-block font-medium hover:text-gray-600">
+              계속 읽기 →
+            </div>
+          </Link>
+        </div>
+      )}
 
       {/* Sidebar News - spans full width on mobile, 4 columns on desktop */}
       <div className="space-y-8 md:col-span-4">
