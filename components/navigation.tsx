@@ -112,7 +112,7 @@ const Navigation = () => {
                 href="/news"
                 className="hover:text-primary transition-colors whitespace-nowrap"
               >
-                뉴스
+                유레 뉴스
               </Link>
             </div>
 
@@ -246,6 +246,14 @@ const Navigation = () => {
                 onClick={() => setIsSidebarOpen(false)}
               >
                 <span>노래방 번호 신청</span>
+                <ChevronRight size={16} />
+              </Link>
+              <Link
+                href="/news"
+                className="px-4 py-2 hover:bg-gray-50 rounded-md transition-colors flex items-center justify-between"
+                onClick={() => setIsSidebarOpen(false)}
+              >
+                <span>유레 뉴스</span>
                 <ChevronRight size={16} />
               </Link>
             </div>
