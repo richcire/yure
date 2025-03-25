@@ -9,7 +9,7 @@ async function getData(): Promise<ITranslations[]> {
   const supabase = await createClient();
   const { data, error } = await supabase
     .from("translations")
-    .select("*")
+    .select("id, title, artist, keyword")
     .order("created_at", { ascending: false })
     .returns<ITranslations[]>();
 

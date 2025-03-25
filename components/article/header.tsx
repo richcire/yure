@@ -1,4 +1,3 @@
-import _ from "lodash";
 import { ArticleFilters } from "./article-filters";
 import { Suspense } from "react";
 export function Header() {

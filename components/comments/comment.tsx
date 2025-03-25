@@ -173,7 +173,6 @@ export function Comment({
           <p className="mt-2">{comment.content}</p>
 
           <Button
-            variant="ghost"
             size="sm"
             className="mt-2"
             onClick={() => setIsReplying(!isReplying)}

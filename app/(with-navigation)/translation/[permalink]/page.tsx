@@ -5,11 +5,11 @@ import {
 } from "@/components/translation/translation-title";
 import { CommentSection } from "@/components/comments/comment-section";
 import { createClient } from "@/utils/supabase/server";
-import { BottomDisplayAdWrapper } from "@/components/google-adsense/bottom-display-ad-wrapper";
 import { IComments } from "@/types/supabase-table";
 import { SideVerticalDisplayAdWrapper } from "@/components/google-adsense/side-vertical-display-ad-wrapper";
 import TranslationContentWrapper from "@/components/translation/translation-content-wrapper";
 import { TipTapContentSkeleton } from "@/components/Tiptap/TipTapContentSkeleton";
+
 export async function generateMetadata({ params }: Props) {
   const { permalink } = await params;
   const supabase = await createClient();
@@ -101,7 +101,6 @@ export default async function TranslationPage({ params }: Props) {
           <TranslationContentWrapper permalink={permalink} />
         </Suspense>
 
-        <BottomDisplayAdWrapper />
         <Suspense fallback={<div>댓글을 불러오는 중...</div>}>
           <CommentSection
             getComments={getComments}
