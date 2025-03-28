@@ -26,6 +26,8 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import Link from "@tiptap/extension-link";
+import { InstagramExtension } from "./extensions/InstagramExtension";
+import { InstagramExtension2 } from "./extensions/InstagramExtension2";
 
 export default function NewsEditor({ id }: { id?: string }) {
   const [news, setNews] = useState<INews>();
@@ -47,6 +49,16 @@ export default function NewsEditor({ id }: { id?: string }) {
         },
       }),
       YouTubeExtension.configure({
+        HTMLAttributes: {
+          class: "rounded-md",
+        },
+      }),
+      InstagramExtension.configure({
+        HTMLAttributes: {
+          class: "rounded-md",
+        },
+      }),
+      InstagramExtension2.configure({
         HTMLAttributes: {
           class: "rounded-md",
         },

@@ -11,6 +11,8 @@ import { createClient } from "@/utils/supabase/client";
 import { INews } from "@/types/supabase-table";
 import { useRouter } from "next/navigation";
 import Link from "@tiptap/extension-link";
+import { InstagramExtension } from "../Tiptap/extensions/InstagramExtension";
+import { InstagramExtension2 } from "../Tiptap/extensions/InstagramExtension2";
 
 interface NewsContentProps {
   slug: string;
@@ -33,6 +35,16 @@ export default function NewsContent({ slug }: NewsContentProps) {
         },
       }),
       YouTubeExtension.configure({
+        HTMLAttributes: {
+          class: "rounded-md",
+        },
+      }),
+      InstagramExtension.configure({
+        HTMLAttributes: {
+          class: "rounded-md",
+        },
+      }),
+      InstagramExtension2.configure({
         HTMLAttributes: {
           class: "rounded-md",
         },
