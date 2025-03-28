@@ -135,7 +135,7 @@ export default async function ArticlePage({ params }: Props) {
             <ArticleContentWrapper slug={slug} />
           </Suspense>
           <BottomDisplayAdWrapper />
-          <Suspense fallback={<div>Loading comments...</div>}>
+          <Suspense fallback={<div>댓글을 불러오는 중...</div>}>
             <CommentSection
               getComments={getComments}
               addComment={addComment}
