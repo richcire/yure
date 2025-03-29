@@ -1,7 +1,6 @@
 // import RelatedNews from "@/components/news/related-news";
 import { createClient } from "@/utils/supabase/server";
 import { INews } from "@/types/supabase-table";
-import NewsContent from "@/components/news/news-content";
 import NewsActions from "@/components/news/news-actions";
 import { NewsCommentSection } from "@/components/news/news-comment-section";
 import { Suspense } from "react";
@@ -9,6 +8,7 @@ import { BottomDisplayAdWrapper } from "@/components/google-adsense/bottom-displ
 import { TipTapContentSkeleton } from "@/components/Tiptap/TipTapContentSkeleton";
 import { SideVerticalDisplayAdWrapper } from "@/components/google-adsense/side-vertical-display-ad-wrapper";
 import { NewsTitle, NewsTitleSkeleton } from "@/components/news/news-title";
+import NewsContentWrapper from "@/components/news/news-content-wrapper";
 
 interface Props {
   params: Promise<{
@@ -48,7 +48,7 @@ export default async function NewsPage({ params }: Props) {
           <NewsTitle slug={slug} />
         </Suspense>
         <Suspense fallback={<TipTapContentSkeleton />}>
-          <NewsContent slug={slug} />
+          <NewsContentWrapper slug={slug} />
         </Suspense>
         <NewsActions />
         {/* <div className="mb-12">

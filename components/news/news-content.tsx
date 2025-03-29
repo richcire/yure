@@ -6,22 +6,15 @@ import { TextAlign } from "@tiptap/extension-text-align";
 import { ImageExtension } from "@/components/Tiptap/extensions/ImageExtension";
 import { YouTubeExtension } from "@/components/Tiptap/extensions/YouTubeExtension";
 import { Highlight } from "@tiptap/extension-highlight";
-import { useEffect, useState } from "react";
-import { createClient } from "@/utils/supabase/client";
-import { INews } from "@/types/supabase-table";
-import { useRouter } from "next/navigation";
 import Link from "@tiptap/extension-link";
 import { InstagramExtension } from "../Tiptap/extensions/InstagramExtension";
 import { InstagramExtension2 } from "../Tiptap/extensions/InstagramExtension2";
 
 interface NewsContentProps {
-  slug: string;
+  content: string;
 }
 
-export default function NewsContent({ slug }: NewsContentProps) {
-  const router = useRouter();
-  const [news, setNews] = useState<INews | null>(null);
-
+export default function NewsContent({ content }: NewsContentProps) {
   const editor = useEditor({
     immediatelyRender: false,
     extensions: [
@@ -127,7 +120,7 @@ export default function NewsContent({ slug }: NewsContentProps) {
       }),
     ],
     editable: false,
-    content: "",
+    content: content,
     editorProps: {
       attributes: {
         class:
@@ -136,28 +129,7 @@ export default function NewsContent({ slug }: NewsContentProps) {
     },
   });
 
-  useEffect(() => {
-    const fetchNews = async () => {
-      const supabase = createClient();
-      const { data, error } = await supabase
-        .from("news")
-        .select("*, user_info(name)")
-        .eq("slug", decodeURIComponent(slug))
-        .single<INews>();
-      if (error || !data) {
-        router.push("/404");
-        return;
-      }
-      setNews(data);
-
-      setTimeout(() => {
-        editor?.commands.setContent(data.content);
-      });
-    };
-    fetchNews();
-  }, [slug, editor, router]);
-
-  if (!editor || !news) {
+  if (!editor || !content) {
     return null;
   }
 
