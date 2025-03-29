@@ -1,15 +1,17 @@
 import { NodeViewProps, NodeViewWrapper } from "@tiptap/react";
 import { Button } from "@/components/ui/button";
-import { Trash2 } from "lucide-react";
+import { AlignLeft, AlignCenter, AlignRight, Trash2 } from "lucide-react";
 import { useEffect, useRef } from "react";
 
 export default function Instagram2({
   node,
   deleteNode,
+  updateAttributes,
   editor,
 }: NodeViewProps) {
   const showControls = editor?.isEditable;
   const embedCode = node.attrs.embedCode || "";
+  const alignment = node.attrs.alignment || "center";
   const embedContainerRef = useRef<HTMLDivElement>(null);
 
   // Function to directly inject the embed code
@@ -72,8 +74,10 @@ export default function Instagram2({
 
   return (
     <NodeViewWrapper>
-      <div className="flex justify-center">
-        <div className="relative group w-full">
+      <div
+        className={`flex ${alignment === "left" ? "justify-start" : alignment === "right" ? "justify-end" : "justify-center"}`}
+      >
+        <div className="relative group w-full max-w-md">
           {showControls && (
             <div className="absolute -top-12 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity z-10">
               <div className="flex bg-background/80 backdrop-blur-sm rounded-md p-1 gap-1">
@@ -85,10 +89,33 @@ export default function Instagram2({
                 >
                   <Trash2 className="h-4 w-4" />
                 </Button>
+                <Button
+                  size="icon"
+                  variant={alignment === "left" ? "secondary" : "ghost"}
+                  className="h-8 w-8"
+                  onClick={() => updateAttributes({ alignment: "left" })}
+                >
+                  <AlignLeft className="h-4 w-4" />
+                </Button>
+                <Button
+                  size="icon"
+                  variant={alignment === "center" ? "secondary" : "ghost"}
+                  className="h-8 w-8"
+                  onClick={() => updateAttributes({ alignment: "center" })}
+                >
+                  <AlignCenter className="h-4 w-4" />
+                </Button>
+                <Button
+                  size="icon"
+                  variant={alignment === "right" ? "secondary" : "ghost"}
+                  className="h-8 w-8"
+                  onClick={() => updateAttributes({ alignment: "right" })}
+                >
+                  <AlignRight className="h-4 w-4" />
+                </Button>
               </div>
             </div>
           )}
-
           <div
             ref={embedContainerRef}
             className="instagram-embed-container w-full min-h-[360px] rounded-md"

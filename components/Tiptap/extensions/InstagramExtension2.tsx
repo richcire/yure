@@ -23,6 +23,9 @@ export const InstagramExtension2 = Node.create<InstagramOptions2>({
       embedCode: {
         default: null,
       },
+      alignment: {
+        default: "center",
+      },
     };
   },
 
@@ -35,6 +38,8 @@ export const InstagramExtension2 = Node.create<InstagramOptions2>({
 
           return {
             embedCode: element.getAttribute("data-instagram-embed-code"),
+            alignment:
+              element.getAttribute("data-instagram-alignment") || "center",
           };
         },
       },
@@ -45,6 +50,7 @@ export const InstagramExtension2 = Node.create<InstagramOptions2>({
     const cleanAttrs = {
       ...this.options.HTMLAttributes,
       "data-instagram-embed-code": HTMLAttributes.embedCode,
+      "data-instagram-alignment": HTMLAttributes.alignment,
     };
 
     // Remove any undefined or null values
