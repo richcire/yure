@@ -2,8 +2,17 @@
 
 import { Clipboard } from "lucide-react";
 import { toast } from "sonner";
+import { Skeleton } from "@/components/ui/skeleton";
 
-export default function NewsActions() {
+export function NewsActionsSkeleton() {
+  return (
+    <div className="mb-12 flex justify-center gap-4 border-t border-b border-gray-300 py-4">
+      <Skeleton className="h-8 w-28 animate-pulse" />
+    </div>
+  );
+}
+
+export function NewsActions() {
   const handleCopy = () => {
     const url = window.location.href;
     navigator.clipboard

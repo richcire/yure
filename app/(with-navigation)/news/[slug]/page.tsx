@@ -1,7 +1,10 @@
 // import RelatedNews from "@/components/news/related-news";
 import { createClient } from "@/utils/supabase/server";
 import { INews } from "@/types/supabase-table";
-import NewsActions from "@/components/news/news-actions";
+import {
+  NewsActions,
+  NewsActionsSkeleton,
+} from "@/components/news/news-actions";
 import { NewsCommentSection } from "@/components/news/news-comment-section";
 import { Suspense } from "react";
 import { BottomDisplayAdWrapper } from "@/components/google-adsense/bottom-display-ad-wrapper";
@@ -50,7 +53,9 @@ export default async function NewsPage({ params }: Props) {
         <Suspense fallback={<TipTapContentSkeleton />}>
           <NewsContentWrapper slug={slug} />
         </Suspense>
-        <NewsActions />
+        <Suspense fallback={<NewsActionsSkeleton />}>
+          <NewsActions />
+        </Suspense>
         {/* <div className="mb-12">
           <h2 className="mb-6 border-b-2 border-black pb-2 text-2xl font-bold">
             관련 뉴스
