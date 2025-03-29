@@ -8,6 +8,7 @@ import NewsActions from "@/components/news/news-actions";
 import { NewsCommentSection } from "@/components/news/news-comment-section";
 import { Suspense } from "react";
 import { BottomDisplayAdWrapper } from "@/components/google-adsense/bottom-display-ad-wrapper";
+import { TipTapContentSkeleton } from "@/components/Tiptap/TipTapContentSkeleton";
 
 interface Props {
   params: Promise<{
@@ -79,9 +80,9 @@ export default async function NewsPage({ params }: Props) {
         </header>
 
         {/* News content */}
-        <div className="article-content mb-12">
+        <Suspense fallback={<TipTapContentSkeleton />}>
           <NewsContent slug={slug} />
-        </div>
+        </Suspense>
 
         {/* News actions */}
         <NewsActions />
