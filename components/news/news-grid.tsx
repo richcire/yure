@@ -37,7 +37,7 @@ export default async function NewsGrid({ news }: NewsGridProps) {
             />
           </div>
           <Link href={`/news/${featuredNews.slug}`}>
-            <p className="pb-4 font-serif text-lg leading-relaxed">
+            <p className="pb-4 text-lg leading-relaxed">
               {featuredNews.summary}
             </p>
             <div className="inline-block font-medium hover:text-gray-600">
@@ -62,9 +62,7 @@ export default async function NewsGrid({ news }: NewsGridProps) {
               {new Date(news.created_at).toLocaleDateString()}
             </div>
             <Link href={`/news/${news.slug}`}>
-              <p className="pb-3 font-serif text-sm leading-relaxed">
-                {news.summary}
-              </p>
+              <p className="pb-3 text-sm leading-relaxed">{news.summary}</p>
               <div className="text-sm font-medium hover:text-gray-600">
                 더 읽기 →
               </div>
@@ -88,9 +86,7 @@ export default async function NewsGrid({ news }: NewsGridProps) {
                 By {news.user_info.name}
               </div>
               <Link href={`/news/${news.slug}`}>
-                <p className="pb-3 font-serif text-sm leading-relaxed">
-                  {news.summary}
-                </p>
+                <p className="pb-3 text-sm leading-relaxed">{news.summary}</p>
                 <div className="text-sm font-medium hover:text-gray-600">
                   더 읽기 →
                 </div>
