@@ -1,4 +1,4 @@
-import { SideVerticalDisplayAd } from "@/components/google-adsense/side-veritcal-display-ad";
+import { SideVerticalDisplayAdWrapper } from "@/components/google-adsense/side-vertical-display-ad-wrapper";
 import Header from "@/components/news/header";
 import NewsList from "@/components/news/news-list";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -65,9 +65,7 @@ export default async function NewsHomePage({ searchParams }: Props) {
           <NewsList searchParams={searchParams} />
         </Suspense>
       </main>
-      <div className="sticky-side-ad">
-        <SideVerticalDisplayAd />
-      </div>
+      <SideVerticalDisplayAdWrapper />
     </div>
   );
 }

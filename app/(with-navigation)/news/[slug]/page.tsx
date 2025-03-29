@@ -9,6 +9,7 @@ import { NewsCommentSection } from "@/components/news/news-comment-section";
 import { Suspense } from "react";
 import { BottomDisplayAdWrapper } from "@/components/google-adsense/bottom-display-ad-wrapper";
 import { TipTapContentSkeleton } from "@/components/Tiptap/TipTapContentSkeleton";
+import { SideVerticalDisplayAdWrapper } from "@/components/google-adsense/side-vertical-display-ad-wrapper";
 
 interface Props {
   params: Promise<{
@@ -99,6 +100,7 @@ export default async function NewsPage({ params }: Props) {
           <NewsCommentSection news={news} useHideFeature={true} />
         </Suspense>
       </div>
+      <SideVerticalDisplayAdWrapper />
     </div>
   );
 }
