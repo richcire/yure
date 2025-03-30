@@ -20,38 +20,26 @@ export const InstagramExtension = Node.create<InstagramOptions>({
 
   addAttributes() {
     return {
-      src: {
+      embedCode: {
         default: null,
       },
-      width: {
-        default: "100%",
+      alignment: {
+        default: "center",
       },
     };
-  },
-
-  getEmbedUrl(url: string) {
-    if (!url) return null;
-
-    const match = url.match(
-      /(?:https?:\/\/)?(?:www\.)?instagram\.com\/p\/([^/?#&]+)/
-    );
-    if (match) {
-      return `https://www.instagram.com/p/${match[1]}/embed`;
-    }
-
-    return url;
   },
 
   parseHTML() {
     return [
       {
-        tag: 'iframe[src*="instagram.com"]',
+        tag: "div[data-instagram-embed-code]",
         getAttrs: (element) => {
           if (!(element instanceof HTMLElement)) return {};
 
           return {
-            src: element.getAttribute("src"),
-            width: element.getAttribute("width"),
+            embedCode: element.getAttribute("data-instagram-embed-code"),
+            alignment:
+              element.getAttribute("data-instagram-alignment") || "center",
           };
         },
       },
@@ -61,11 +49,8 @@ export const InstagramExtension = Node.create<InstagramOptions>({
   renderHTML({ HTMLAttributes }) {
     const cleanAttrs = {
       ...this.options.HTMLAttributes,
-      src: HTMLAttributes.src,
-      width: HTMLAttributes.width,
-      frameborder: "0",
-      allow: "autoplay; clipboard-write; encrypted-media; picture-in-picture",
-      allowfullscreen: "true",
+      "data-instagram-embed-code": HTMLAttributes.embedCode,
+      "data-instagram-alignment": HTMLAttributes.alignment,
     };
 
     // Remove any undefined or null values
@@ -76,7 +61,10 @@ export const InstagramExtension = Node.create<InstagramOptions>({
         : {}
     );
 
-    return ["iframe", mergeAttributes(cleanAttrs)];
+    return [
+      "div",
+      mergeAttributes(cleanAttrs, { class: "instagram-embed-code" }),
+    ];
   },
 
   addNodeView() {

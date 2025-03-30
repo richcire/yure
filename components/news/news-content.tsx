@@ -7,8 +7,7 @@ import { ImageExtension } from "@/components/Tiptap/extensions/ImageExtension";
 import { YouTubeExtension } from "@/components/Tiptap/extensions/YouTubeExtension";
 import { Highlight } from "@tiptap/extension-highlight";
 import Link from "@tiptap/extension-link";
-import { InstagramExtension } from "../Tiptap/extensions/InstagramExtension";
-import { InstagramExtension2 } from "../Tiptap/extensions/InstagramExtension2";
+import { InstagramExtension } from "@/components/Tiptap/extensions/InstagramExtension";
 
 interface NewsContentProps {
   content: string;
@@ -33,11 +32,6 @@ export default function NewsContent({ content }: NewsContentProps) {
         },
       }),
       InstagramExtension.configure({
-        HTMLAttributes: {
-          class: "rounded-md",
-        },
-      }),
-      InstagramExtension2.configure({
         HTMLAttributes: {
           class: "rounded-md",
         },
