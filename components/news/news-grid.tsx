@@ -17,7 +17,15 @@ export default async function NewsGrid({ news }: NewsGridProps) {
     <div className="grid gap-8 md:grid-cols-12">
       {/* Featured News - spans full width on mobile, 8 columns on desktop */}
       {news.length > 0 && (
-        <div className="border-b-2 border-black pb-8 md:col-span-8 md:border-b-0 md:border-r-2 md:pr-8">
+        <div className="relative border-b-2 border-black pb-8 md:col-span-8 md:border-b-0 md:border-r-2 md:pr-8">
+          <Link
+            href={`/news/${featuredNews.slug}`}
+            className="absolute inset-0 z-10"
+          >
+            <span className="sr-only">
+              {featuredNews.title}에 대한 내용 더 읽기
+            </span>
+          </Link>
           <h2 className="mb-4 text-3xl font-bold leading-tight md:text-4xl">
             {featuredNews.title}
           </h2>
@@ -36,14 +44,10 @@ export default async function NewsGrid({ news }: NewsGridProps) {
               className="h-auto w-full rounded-sm object-cover"
             />
           </div>
-          <Link href={`/news/${featuredNews.slug}`}>
-            <p className="pb-4 text-lg leading-relaxed">
-              {featuredNews.summary}
-            </p>
-            <div className="inline-block font-medium hover:text-gray-600">
-              계속 읽기 →
-            </div>
-          </Link>
+          <p className="pb-4 text-lg leading-relaxed">{featuredNews.summary}</p>
+          <div className="inline-block font-medium hover:text-gray-600">
+            더 읽기 →
+          </div>
         </div>
       )}
 
@@ -52,8 +56,11 @@ export default async function NewsGrid({ news }: NewsGridProps) {
         {restOfNews.slice(0, 3).map((news) => (
           <div
             key={news.id}
-            className="border-b border-gray-300 pb-6 last:border-0"
+            className="relative border-b border-gray-300 pb-6 last:border-0"
           >
+            <Link href={`/news/${news.slug}`} className="absolute inset-0 z-10">
+              <span className="sr-only">{news.title}에 대한 내용 더 읽기</span>
+            </Link>
             <h3 className="mb-2 text-xl font-bold leading-tight">
               {news.title}
             </h3>
@@ -61,12 +68,10 @@ export default async function NewsGrid({ news }: NewsGridProps) {
               By {news.user_info.name} |{" "}
               {new Date(news.created_at).toLocaleDateString()}
             </div>
-            <Link href={`/news/${news.slug}`}>
-              <p className="pb-3 text-sm leading-relaxed">{news.summary}</p>
-              <div className="text-sm font-medium hover:text-gray-600">
-                더 읽기 →
-              </div>
-            </Link>
+            <p className="pb-3 text-sm leading-relaxed">{news.summary}</p>
+            <div className="text-sm font-medium hover:text-gray-600">
+              더 읽기 →
+            </div>
           </div>
         ))}
       </div>
@@ -77,20 +82,26 @@ export default async function NewsGrid({ news }: NewsGridProps) {
           {restOfNews.slice(3, 6).map((news) => (
             <div
               key={news.id}
-              className="border-r border-gray-300 pr-6 last:border-0"
+              className="relative border-r border-gray-300 pr-6 last:border-0"
             >
+              <Link
+                href={`/news/${news.slug}`}
+                className="absolute inset-0 z-10"
+              >
+                <span className="sr-only">
+                  {news.title}에 대한 내용 더 읽기
+                </span>
+              </Link>
               <h3 className="mb-2 text-xl font-bold leading-tight">
                 {news.title}
               </h3>
               <div className="mb-2 text-xs text-gray-600">
                 By {news.user_info.name}
               </div>
-              <Link href={`/news/${news.slug}`}>
-                <p className="pb-3 text-sm leading-relaxed">{news.summary}</p>
-                <div className="text-sm font-medium hover:text-gray-600">
-                  더 읽기 →
-                </div>
-              </Link>
+              <p className="pb-3 text-sm leading-relaxed">{news.summary}</p>
+              <div className="text-sm font-medium hover:text-gray-600">
+                더 읽기 →
+              </div>
             </div>
           ))}
         </div>
@@ -100,7 +111,15 @@ export default async function NewsGrid({ news }: NewsGridProps) {
       {restOfNews.length > 6 && (
         <div className="grid gap-8 border-t-2 border-black pt-8 md:col-span-12 md:grid-cols-2">
           {restOfNews.slice(6, 8).map((news) => (
-            <div key={news.id} className="flex gap-4">
+            <div key={news.id} className="relative flex gap-4">
+              <Link
+                href={`/news/${news.slug}`}
+                className="absolute inset-0 z-10"
+              >
+                <span className="sr-only">
+                  {news.title}에 대한 내용 더 읽기
+                </span>
+              </Link>
               <div className="flex-shrink-0">
                 <Image
                   src={news.thumbnail_url || "/assets/logos/square.jpeg"}
@@ -117,12 +136,9 @@ export default async function NewsGrid({ news }: NewsGridProps) {
                 <div className="mb-1 text-xs text-gray-600">
                   By {news.user_info.name}
                 </div>
-                <Link
-                  href={`/news/${news.slug}`}
-                  className="text-sm font-medium hover:text-gray-600"
-                >
+                <div className="text-sm font-medium hover:text-gray-600">
                   더 읽기 →
-                </Link>
+                </div>
               </div>
             </div>
           ))}
