@@ -71,7 +71,7 @@ const deleteArticle = async (id: string) => {
   // First fetch the translation to get content and image paths
   const { data: article } = await supabase
     .from("articles")
-    .select("*")
+    .select("content, banner_url")
     .eq("id", id)
     .single<IArticles>();
 
