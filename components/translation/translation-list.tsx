@@ -29,7 +29,12 @@ export default async function TranslationList({ searchParams }: Props) {
 
   // Determine sort column and direction
   const [column, direction] = sort.split("_");
-  const sortColumn = column === "release" ? "release_date" : "created_at";
+  const sortColumn =
+    column === "views"
+      ? "views"
+      : column === "release"
+        ? "release_date"
+        : "created_at";
   const ascending = direction === "asc";
 
   const { data: translations, error } = await supabase
