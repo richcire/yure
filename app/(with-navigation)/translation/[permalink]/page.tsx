@@ -9,6 +9,7 @@ import { IComments } from "@/types/supabase-table";
 import { SideVerticalDisplayAdWrapper } from "@/components/google-adsense/side-vertical-display-ad-wrapper";
 import TranslationContentWrapper from "@/components/translation/translation-content-wrapper";
 import { TipTapContentSkeleton } from "@/components/Tiptap/TipTapContentSkeleton";
+import TranslationRelatedPosts from "@/components/translation/translation-related-posts";
 
 export async function generateMetadata({ params }: Props) {
   const { permalink } = await params;
@@ -99,6 +100,10 @@ export default async function TranslationPage({ params }: Props) {
         </Suspense>
         <Suspense fallback={<TipTapContentSkeleton />}>
           <TranslationContentWrapper permalink={permalink} />
+        </Suspense>
+
+        <Suspense fallback={<div>관련 포스트를 불러오는 중...</div>}>
+          <TranslationRelatedPosts permalink={permalink} />
         </Suspense>
 
         <Suspense fallback={<div>댓글을 불러오는 중...</div>}>
