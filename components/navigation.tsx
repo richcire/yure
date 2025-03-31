@@ -112,7 +112,7 @@ const Navigation = () => {
                 href="/news"
                 className="hover:text-primary transition-colors whitespace-nowrap"
               >
-                유레 뉴스
+                NEWS
               </Link>
             </div>
 
@@ -253,7 +253,7 @@ const Navigation = () => {
                 className="px-4 py-2 hover:bg-gray-50 rounded-md transition-colors flex items-center justify-between"
                 onClick={() => setIsSidebarOpen(false)}
               >
-                <span>유레 뉴스</span>
+                <span>NEWS</span>
                 <ChevronRight size={16} />
               </Link>
             </div>

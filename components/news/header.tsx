@@ -7,7 +7,7 @@ export default function Header() {
     <header className="mb-6 border-b-2 border-black pb-4">
       <div className="my-6 text-center">
         <h1 className="font-serif text-5xl font-bold uppercase tracking-tight sm:text-6xl md:text-7xl">
-          Yure News
+          News
         </h1>
         <p className="mt-2 font-serif italic text-gray-600">
           "All the News That's Fit to Print"

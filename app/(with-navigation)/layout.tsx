@@ -65,7 +65,7 @@ export default function WithNavigationLayout({
                 href="/news"
                 className="hover:text-primary transition-colors"
               >
-                유레 뉴스
+                NEWS
               </Link>
             </div>
 
@@ -99,7 +99,7 @@ export default function WithNavigationLayout({
                 href="/news"
                 className="hover:text-primary transition-colors"
               >
-                유레 뉴스
+                NEWS
               </Link>
             </div>
 
