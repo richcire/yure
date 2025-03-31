@@ -87,3 +87,13 @@ export interface INews {
   created_at: string;
   updated_at: string;
 }
+
+export interface INotifications {
+  id: string;
+  recipient_user_id: string;
+  message: string;
+  type: string;
+  relevant_url: string;
+  is_read: boolean;
+  created_at: string;
+}

@@ -2,15 +2,16 @@ import { createClient } from "@/utils/supabase/server";
 import Link from "next/link";
 import { ArrowRightIcon } from "lucide-react";
 import { CDCarousel } from "./cd-carousel";
-
+import { ITranslations } from "@/types/supabase-table";
 export async function FeaturedTranslations() {
   const supabase = await createClient();
 
   const { data: translations } = await supabase
     .from("translations")
-    .select("*")
+    .select("id, title, artist, permalink, thumbnail_url")
     .order("created_at", { ascending: false })
-    .limit(8);
+    .limit(8)
+    .returns<ITranslations[]>();
 
   if (!translations) {
     return null;
