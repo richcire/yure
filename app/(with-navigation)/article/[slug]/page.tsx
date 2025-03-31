@@ -10,7 +10,7 @@ import { createClient } from "@/utils/supabase/server";
 import { IArticles, IComments } from "@/types/supabase-table";
 import { TipTapContentSkeleton } from "@/components/Tiptap/TipTapContentSkeleton";
 import ArticleContentWrapper from "@/components/article/article-content-wrapper";
-
+import ArticleRelatedPosts from "@/components/article/article-related-posts";
 const getArticle = async (slug: string) => {
   const supabase = await createClient();
   const { data, error } = await supabase
@@ -135,6 +135,9 @@ export default async function ArticlePage({ params }: Props) {
             <ArticleContentWrapper slug={slug} />
           </Suspense>
           <BottomDisplayAdWrapper />
+          <Suspense fallback={<div>관련 포스트를 불러오는 중...</div>}>
+            <ArticleRelatedPosts slug={slug} />
+          </Suspense>
           <Suspense fallback={<div>댓글을 불러오는 중...</div>}>
             <CommentSection
               getComments={getComments}

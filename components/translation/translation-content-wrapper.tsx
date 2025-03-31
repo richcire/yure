@@ -7,7 +7,7 @@ async function getTranslationContent(permalink: string) {
   const { data, error } = await supabase
     .from("translations")
     .select("content, created_at, updated_at")
-    .eq("permalink", permalink)
+    .eq("permalink", decodeURIComponent(permalink))
     .single<ITranslations>();
   return data;
 }
