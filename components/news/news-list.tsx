@@ -3,6 +3,7 @@ import { PaginationControl } from "@/components/ui/pagination-control";
 import { INews } from "@/types/supabase-table";
 import { createClient } from "@/utils/supabase/server";
 import { BottomDisplayAdWrapper } from "../google-adsense/bottom-display-ad-wrapper";
+import NewsCard from "@/components/news/news-card";
 
 const ITEMS_PER_PAGE = 9;
 
@@ -52,7 +53,11 @@ export default async function NewsList({ searchParams }: Props) {
     <>
       {news ? (
         <>
-          <NewsGrid news={news} />
+          {currentPage === 1 ? (
+            <NewsGrid news={news} />
+          ) : (
+            <NewsCard news={news} />
+          )}
           <BottomDisplayAdWrapper />
           {totalPages > 1 && (
             <PaginationControl
