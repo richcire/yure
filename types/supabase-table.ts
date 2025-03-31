@@ -13,6 +13,7 @@ export interface ITranslations {
   release_date: string;
   permalink: string;
   keyword: string;
+  views: number;
   updated_at: string;
 }
 

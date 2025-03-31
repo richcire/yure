@@ -10,6 +10,7 @@ import { SideVerticalDisplayAdWrapper } from "@/components/google-adsense/side-v
 import TranslationContentWrapper from "@/components/translation/translation-content-wrapper";
 import { TipTapContentSkeleton } from "@/components/Tiptap/TipTapContentSkeleton";
 import TranslationRelatedPosts from "@/components/translation/translation-related-posts";
+import ViewCounter from "@/components/translation/ViewCounter";
 
 export async function generateMetadata({ params }: Props) {
   const { permalink } = await params;
@@ -53,6 +54,13 @@ interface Props {
   }>;
 }
 
+const incrementViews = async (permalink: string) => {
+  const supabase = await createClient();
+  await supabase.rpc("increment_translation_views", {
+    _permalink: decodeURIComponent(permalink),
+  });
+};
+
 export default async function TranslationPage({ params }: Props) {
   const { permalink } = await params;
 
@@ -94,6 +102,7 @@ export default async function TranslationPage({ params }: Props) {
 
   return (
     <div className="container mx-auto px-4 py-8">
+      <ViewCounter permalink={permalink} />
       <div className="max-w-4xl mx-auto">
         <Suspense fallback={<TranslationTitleSkeleton />}>
           <TranslationTitle permalink={permalink} />
