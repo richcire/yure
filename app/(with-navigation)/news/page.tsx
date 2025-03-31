@@ -1,5 +1,6 @@
 import { SideVerticalDisplayAdWrapper } from "@/components/google-adsense/side-vertical-display-ad-wrapper";
 import Header from "@/components/news/header";
+import NewsBanner from "@/components/news/news-banner";
 import NewsList from "@/components/news/news-list";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Suspense } from "react";
@@ -60,6 +61,7 @@ export default async function NewsHomePage({ searchParams }: Props) {
   return (
     <div className="w-full max-w-5xl mx-auto min-h-screen bg-background px-4 py-8">
       <Header />
+      <NewsBanner />
       <main>
         <Suspense fallback={<NewsListSkeleton />}>
           <NewsList searchParams={searchParams} />

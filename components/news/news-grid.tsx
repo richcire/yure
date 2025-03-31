@@ -26,6 +26,11 @@ export default async function NewsGrid({ news }: NewsGridProps) {
               {featuredNews.title}에 대한 내용 더 읽기
             </span>
           </Link>
+          <div className="mb-4">
+            <span className="inline-block bg-black px-3 py-1 font-serif text-sm font-bold uppercase text-white">
+              Latest News
+            </span>
+          </div>
           <h2 className="mb-4 text-3xl font-bold leading-tight md:text-4xl">
             {featuredNews.title}
           </h2>
