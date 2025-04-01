@@ -54,13 +54,6 @@ interface Props {
   }>;
 }
 
-const incrementViews = async (permalink: string) => {
-  const supabase = await createClient();
-  await supabase.rpc("increment_translation_views", {
-    _permalink: decodeURIComponent(permalink),
-  });
-};
-
 export default async function TranslationPage({ params }: Props) {
   const { permalink } = await params;
 
