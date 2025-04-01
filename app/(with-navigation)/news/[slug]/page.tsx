@@ -13,6 +13,16 @@ import { SideVerticalDisplayAdWrapper } from "@/components/google-adsense/side-v
 import { NewsTitle, NewsTitleSkeleton } from "@/components/news/news-title";
 import NewsContentWrapper from "@/components/news/news-content-wrapper";
 
+export async function generateMetadata({ params }: Props) {
+  const { slug } = await params;
+  const data = await fetchNews(slug);
+
+  return {
+    title: `${data?.title} - [J-POP 뉴스] • 유레 揺れ`,
+    description: data?.summary,
+  };
+}
+
 interface Props {
   params: Promise<{
     slug: string;

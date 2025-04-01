@@ -3,7 +3,14 @@ import Header from "@/components/news/header";
 import NewsBanner from "@/components/news/news-banner";
 import NewsList from "@/components/news/news-list";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Metadata } from "next";
 import { Suspense } from "react";
+
+export const metadata: Metadata = {
+  title: "유레 揺れ • J-POP 뉴스",
+  description:
+    "아티스트 컴백, 신곡 발매, 뮤직비디오, 콘서트 정보, 업계 소식 등 최신 J-POP 뉴스를 한눈에 확인하세요.",
+};
 
 interface Props {
   searchParams: Promise<{
