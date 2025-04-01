@@ -2,6 +2,7 @@ import Search from "../../../components/karaoke/search";
 import { Metadata } from "next";
 import KaraokeSongs from "@/components/karaoke/karaoke-songs";
 import { SideVerticalDisplayAdWrapper } from "@/components/google-adsense/side-vertical-display-ad-wrapper";
+import { BottomDisplayAdWrapper } from "@/components/google-adsense/bottom-display-ad-wrapper";
 
 export const metadata: Metadata = {
   title: "JPOP 일본 노래 노래방 번호 검색기 • 유레 揺れ",
@@ -52,6 +53,7 @@ export default async function KaraokePage({ searchParams }: Props) {
 
       <KaraokeSongs />
       <SideVerticalDisplayAdWrapper />
+      <BottomDisplayAdWrapper />
     </div>
   );
 }
