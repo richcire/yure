@@ -35,6 +35,7 @@ export async function middleware(request: NextRequest) {
     "/karaoke",
     "/admin",
     "/api",
+    "/terms",
     "/_next",
     "/favicon.ico",
     "/sitemap-index.xml",
