@@ -12,6 +12,7 @@ import { TipTapContentSkeleton } from "@/components/Tiptap/TipTapContentSkeleton
 import { SideVerticalDisplayAdWrapper } from "@/components/google-adsense/side-vertical-display-ad-wrapper";
 import { NewsTitle, NewsTitleSkeleton } from "@/components/news/news-title";
 import NewsContentWrapper from "@/components/news/news-content-wrapper";
+import NewsRelatedPosts from "@/components/news/news-related-posts";
 
 export async function generateMetadata({ params }: Props) {
   const { slug } = await params;
@@ -66,13 +67,10 @@ export default async function NewsPage({ params }: Props) {
         <Suspense fallback={<NewsActionsSkeleton />}>
           <NewsActions />
         </Suspense>
-        {/* <div className="mb-12">
-          <h2 className="mb-6 border-b-2 border-black pb-2 text-2xl font-bold">
-            관련 뉴스
-          </h2>
-          <RelatedNews news={related} />
-        </div> */}
         <BottomDisplayAdWrapper />
+        <Suspense fallback={<div>관련 포스트를 불러오는 중...</div>}>
+          <NewsRelatedPosts slug={slug} />
+        </Suspense>
         <Suspense fallback={<div>댓글을 불러오는 중...</div>}>
           <NewsCommentSection news={news} useHideFeature={true} />
         </Suspense>
