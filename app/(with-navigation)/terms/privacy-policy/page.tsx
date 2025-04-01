@@ -8,7 +8,7 @@ import {
 
 export default function PrivacyPolicy() {
   return (
-    <div className="min-h-screen p-4 my-12">
+    <div className="min-h-screen p-4 my-12 max-w-3xl mx-auto">
       <Breadcrumb className="mb-6">
         <BreadcrumbList>
           <BreadcrumbItem>
@@ -20,11 +20,11 @@ export default function PrivacyPolicy() {
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>
-      <h1 className="text-2xl font-bold mb-4">서비스 약관</h1>
+      <h1 className="text-2xl font-bold mb-4">개인 정보 처리 방침</h1>
       <div className="prose prose-sm max-w-none">
         <section>
           <h2 className="text-xl font-semibold mt-6 mb-3">
-            제5조 (개인정보의 수집 및 처리)
+            개인정보의 수집 및 처리
           </h2>
 
           <h3 className="text-lg font-medium mt-4 mb-2">
