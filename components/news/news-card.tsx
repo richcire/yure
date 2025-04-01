@@ -48,14 +48,9 @@ export default function NewsCard({ news }: NewsCardProps) {
               <p className="mb-3 text-gray-700 line-clamp-2 sm:line-clamp-3">
                 {newsItem.summary}
               </p>
-              <div className="flex items-center justify-between">
-                <span className="text-sm font-medium text-gray-600">
-                  By {newsItem.user_info.name}
-                </span>
-                <div className="text-sm font-medium hover:underline">
-                  더 읽기 →
-                </div>
-              </div>
+              <span className="text-sm font-medium text-gray-600">
+                By {newsItem.user_info.name}
+              </span>
             </div>
           </div>
         </div>

@@ -17,7 +17,7 @@ export default async function NewsGrid({ news }: NewsGridProps) {
     <div className="grid gap-8 md:grid-cols-12">
       {/* Featured News - spans full width on mobile, 8 columns on desktop */}
       {news.length > 0 && (
-        <div className="relative border-b-2 border-black pb-8 md:col-span-8 md:border-b-0 md:border-r-2 md:pr-8">
+        <div className="relative group border-b-2 border-black pb-8 md:col-span-8 md:border-b-0 md:border-r-2 md:pr-8">
           <Link
             href={`/news/${featuredNews.slug}`}
             className="absolute inset-0 z-10"
@@ -31,7 +31,7 @@ export default async function NewsGrid({ news }: NewsGridProps) {
               Latest News
             </span>
           </div>
-          <h2 className="mb-4 text-3xl font-bold leading-tight md:text-4xl">
+          <h2 className="mb-4 text-3xl font-bold leading-tight md:text-4xl transition-colors group-hover:text-gray-700">
             {featuredNews.title}
           </h2>
           <div className="mb-4 text-sm font-medium text-gray-600">
@@ -46,13 +46,12 @@ export default async function NewsGrid({ news }: NewsGridProps) {
               alt={featuredNews.title}
               width={800}
               height={400}
-              className="h-auto w-full rounded-sm object-cover"
+              className="h-auto w-full rounded-sm object-cover transition-opacity group-hover:opacity-90"
             />
           </div>
-          <p className="pb-4 text-lg leading-relaxed">{featuredNews.summary}</p>
-          <div className="inline-block font-medium hover:text-gray-600">
-            더 읽기 →
-          </div>
+          <p className="pb-4 text-lg leading-relaxed transition-colors group-hover:text-gray-700">
+            {featuredNews.summary}
+          </p>
         </div>
       )}
 
@@ -61,22 +60,21 @@ export default async function NewsGrid({ news }: NewsGridProps) {
         {restOfNews.slice(0, 3).map((news) => (
           <div
             key={news.id}
-            className="relative border-b border-gray-300 pb-6 last:border-0"
+            className="relative group border-b border-gray-300 pb-6 last:border-0"
           >
             <Link href={`/news/${news.slug}`} className="absolute inset-0 z-10">
               <span className="sr-only">{news.title}에 대한 내용 더 읽기</span>
             </Link>
-            <h3 className="mb-2 text-xl font-bold leading-tight">
+            <h3 className="mb-2 text-xl font-bold leading-tight transition-colors group-hover:text-gray-700">
               {news.title}
             </h3>
             <div className="mb-2 text-xs text-gray-600">
               By {news.user_info.name} |{" "}
               {new Date(news.created_at).toLocaleDateString()}
             </div>
-            <p className="pb-3 text-sm leading-relaxed">{news.summary}</p>
-            <div className="text-sm font-medium hover:text-gray-600">
-              더 읽기 →
-            </div>
+            <p className="pb-3 text-sm leading-relaxed transition-colors group-hover:text-gray-700">
+              {news.summary}
+            </p>
           </div>
         ))}
       </div>
@@ -87,7 +85,7 @@ export default async function NewsGrid({ news }: NewsGridProps) {
           {restOfNews.slice(3, 6).map((news) => (
             <div
               key={news.id}
-              className="relative border-r border-gray-300 pr-6 last:border-0"
+              className="relative group border-r border-gray-300 pr-6 last:border-0"
             >
               <Link
                 href={`/news/${news.slug}`}
@@ -97,16 +95,15 @@ export default async function NewsGrid({ news }: NewsGridProps) {
                   {news.title}에 대한 내용 더 읽기
                 </span>
               </Link>
-              <h3 className="mb-2 text-xl font-bold leading-tight">
+              <h3 className="mb-2 text-xl font-bold leading-tight transition-colors group-hover:text-gray-700">
                 {news.title}
               </h3>
               <div className="mb-2 text-xs text-gray-600">
                 By {news.user_info.name}
               </div>
-              <p className="pb-3 text-sm leading-relaxed">{news.summary}</p>
-              <div className="text-sm font-medium hover:text-gray-600">
-                더 읽기 →
-              </div>
+              <p className="pb-3 text-sm leading-relaxed transition-colors group-hover:text-gray-700">
+                {news.summary}
+              </p>
             </div>
           ))}
         </div>
@@ -116,7 +113,7 @@ export default async function NewsGrid({ news }: NewsGridProps) {
       {restOfNews.length > 6 && (
         <div className="grid gap-8 border-t-2 border-black pt-8 md:col-span-12 md:grid-cols-2">
           {restOfNews.slice(6, 8).map((news) => (
-            <div key={news.id} className="relative flex gap-4">
+            <div key={news.id} className="relative group flex gap-4">
               <Link
                 href={`/news/${news.slug}`}
                 className="absolute inset-0 z-10"
@@ -131,18 +128,15 @@ export default async function NewsGrid({ news }: NewsGridProps) {
                   alt={news.title}
                   width={120}
                   height={120}
-                  className="h-24 w-24 rounded-sm object-cover"
+                  className="h-24 w-24 rounded-sm object-cover transition-opacity group-hover:opacity-90"
                 />
               </div>
               <div>
-                <h3 className="mb-1 text-lg font-bold leading-tight">
+                <h3 className="mb-1 text-lg font-bold leading-tight transition-colors group-hover:text-gray-700">
                   {news.title}
                 </h3>
                 <div className="mb-1 text-xs text-gray-600">
                   By {news.user_info.name}
-                </div>
-                <div className="text-sm font-medium hover:text-gray-600">
-                  더 읽기 →
                 </div>
               </div>
             </div>
