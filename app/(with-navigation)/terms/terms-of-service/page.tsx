@@ -8,7 +8,7 @@ import {
 
 export default function TermsOfService() {
   return (
-    <div className="min-h-screen p-4 my-12">
+    <div className="min-h-screen p-4 my-12 max-w-3xl mx-auto">
       <Breadcrumb className="mb-6">
         <BreadcrumbList>
           <BreadcrumbItem>
@@ -24,15 +24,15 @@ export default function TermsOfService() {
       <h1 className="text-2xl font-bold mb-4">서비스 약관</h1>
       <div className="prose prose-sm max-w-none">
         <section>
-          <h2>제1조 (목적)</h2>
-          <p>
+          <h2 className="text-xl font-semibold mt-6 mb-3">제1조 (목적)</h2>
+          <p className="mb-3">
             본 약관은 유레(이하 "사이트")가 제공하는 서비스의 이용과 관련하여,
             사이트와 회원 간의 권리, 의무 및 책임사항, 기타 필요한 사항을
             규정함을 목적으로 합니다.
           </p>
 
-          <h2>제2조 (정의)</h2>
-          <ul>
+          <h2 className="text-xl font-semibold mt-6 mb-3">제2조 (정의)</h2>
+          <ul className="list-disc pl-5 mb-4 space-y-2">
             <li>
               ① "회원"이라 함은 본 약관에 동의하고 사이트가 제공하는 서비스를
               이용하는 자를 의미합니다.
@@ -47,8 +47,10 @@ export default function TermsOfService() {
             </li>
           </ul>
 
-          <h2>제3조 (약관의 효력 및 변경)</h2>
-          <ul>
+          <h2 className="text-xl font-semibold mt-6 mb-3">
+            제3조 (약관의 효력 및 변경)
+          </h2>
+          <ul className="list-disc pl-5 mb-4 space-y-2">
             <li>① 본 약관은 사이트에 게시함으로써 효력이 발생합니다.</li>
             <li>
               ② 사이트는 필요한 경우 관련 법령을 위반하지 않는 범위 내에서 본
@@ -62,8 +64,10 @@ export default function TermsOfService() {
             </li>
           </ul>
 
-          <h2>제4조 (서비스의 제공 및 변경)</h2>
-          <ul>
+          <h2 className="text-xl font-semibold mt-6 mb-3">
+            제4조 (서비스의 제공 및 변경)
+          </h2>
+          <ul className="list-disc pl-5 mb-4 space-y-2">
             <li>
               ① 사이트는 회원에게 다양한 기능, 콘텐츠, 커뮤니티 공간 등을
               제공합니다.
@@ -75,37 +79,41 @@ export default function TermsOfService() {
             </li>
           </ul>
 
-          <h2>제5조 (개인정보의 수집 및 처리)</h2>
-          <p>
+          <h2 className="text-xl font-semibold mt-6 mb-3">
+            제5조 (개인정보의 수집 및 처리)
+          </h2>
+          <p className="mb-3">
             본 사이트는 서비스 제공을 위하여 다음의 최소한의 정보를 수집 및
             저장합니다:
           </p>
-          <ul>
+          <ul className="list-disc pl-5 mb-4 space-y-2">
             <li>① 이메일 주소</li>
             <li>② 사용자가 설정한 닉네임</li>
             <li>③ 사이트 내에서 부여된 역할(Role)</li>
           </ul>
 
-          <p>
+          <p className="mb-3">
             또한, 사이트는 Supabase를 통해 서비스를 운영하며, Supabase는 별도로
             사용자의 IP 주소, 쿠키, 브라우저 정보 등을 수집할 수 있습니다.
             이러한 정보는 사이트가 직접 수집하거나 저장하지 않으며, 해당 정보
             처리에 대해서는 Supabase의 방침에 따릅니다.
           </p>
 
-          <p>
+          <p className="mb-3">
             그 외 개인정보의 처리에 관한 자세한 사항은
             <strong>개인정보처리방침</strong>에서 별도로 정하며, 본 약관과
             동일한 효력을 갖습니다.
           </p>
 
-          <h2>제6조 (회원의 의무)</h2>
-          <ul>
+          <h2 className="text-xl font-semibold mt-6 mb-3">
+            제6조 (회원의 의무)
+          </h2>
+          <ul className="list-disc pl-5 mb-4 space-y-2">
             <li>
               ① 회원은 본 약관 및 관계 법령을 준수하여야 하며, 다음 행위를
               하여서는 안 됩니다:
             </li>
-            <ul>
+            <ul className="list-disc pl-5 mb-4 space-y-2">
               <li>1. 허위 정보의 등록</li>
               <li>2. 타인의 개인정보 도용 또는 명의 도용</li>
               <li>3. 사이트의 운영을 방해하는 행위</li>
@@ -117,8 +125,10 @@ export default function TermsOfService() {
             </li>
           </ul>
 
-          <h2>제7조 (사이트의 면책)</h2>
-          <ul>
+          <h2 className="text-xl font-semibold mt-6 mb-3">
+            제7조 (사이트의 면책)
+          </h2>
+          <ul className="list-disc pl-5 mb-4 space-y-2">
             <li>
               ① 사이트는 천재지변, 해킹 등 불가항력적인 사유로 인한 서비스
               중단에 대하여 책임을 지지 않습니다.
@@ -135,8 +145,10 @@ export default function TermsOfService() {
             </li>
           </ul>
 
-          <h2>제8조 (지식재산권)</h2>
-          <ul>
+          <h2 className="text-xl font-semibold mt-6 mb-3">
+            제8조 (지식재산권)
+          </h2>
+          <ul className="list-disc pl-5 mb-4 space-y-2">
             <li>
               ① 사이트에 게시된 모든 콘텐츠 및 저작물의 지식재산권은 사이트 또는
               정당한 권리자에게 귀속됩니다.
@@ -148,8 +160,10 @@ export default function TermsOfService() {
             </li>
           </ul>
 
-          <h2>제9조 (약관의 해석 및 준거법)</h2>
-          <ul>
+          <h2 className="text-xl font-semibold mt-6 mb-3">
+            제9조 (약관의 해석 및 준거법)
+          </h2>
+          <ul className="list-disc pl-5 mb-4 space-y-2">
             <li>
               ① 본 약관의 해석 및 적용에 관하여는 대한민국 법령을 따릅니다.
             </li>
