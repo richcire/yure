@@ -20,11 +20,11 @@ export function KaraokeCard({
           <h3 className=" font-semibold truncate">{title}</h3>
         </div>
         <div className="w-[35%]">
-          <span className="text-gray-600">{artist}</span>
+          <span className="">{artist}</span>
         </div>
-        <div className="w-[10%] text-center">{tjNumber}</div>
-        <div className="w-[10%] text-center">{kyNumber}</div>
-        <div className="w-[10%] text-center">{joyNumber}</div>
+        <div className="w-[10%] text-center">{tjNumber || "-"}</div>
+        <div className="w-[10%] text-center">{kyNumber || "-"}</div>
+        <div className="w-[10%] text-center">{joyNumber || "-"}</div>
       </div>
     </div>
   );
