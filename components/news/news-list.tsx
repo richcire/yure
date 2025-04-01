@@ -53,8 +53,15 @@ export default async function NewsList({ searchParams }: Props) {
     <>
       {news ? (
         <>
-          {currentPage === 1 ? (
-            <NewsGrid news={news} />
+          {currentPage === 1 && !search ? (
+            <>
+              <div className="block md:hidden">
+                <NewsCard news={news} />
+              </div>
+              <div className="hidden md:block">
+                <NewsGrid news={news} />
+              </div>
+            </>
           ) : (
             <NewsCard news={news} />
           )}
