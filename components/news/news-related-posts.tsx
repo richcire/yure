@@ -54,7 +54,9 @@ export default async function NewsRelatedPosts({ slug }: { slug: string }) {
           <div className="text-sm text-gray-600 mb-2">이전 게시물</div>
           <div className="relative aspect-video mb-3 w-full">
             <Image
-              src={previousPost.thumbnail_url || "/default-thumbnail.jpg"}
+              src={
+                previousPost.thumbnail_url || "/assets/logos/square_high.jpeg"
+              }
               alt={previousPost.title}
               fill
               className="rounded object-cover"
@@ -78,7 +80,7 @@ export default async function NewsRelatedPosts({ slug }: { slug: string }) {
           </div>
           <div className="relative aspect-video mb-3 w-full">
             <Image
-              src={nextPost.thumbnail_url || "/default-thumbnail.jpg"}
+              src={nextPost.thumbnail_url || "/assets/logos/square_high.jpeg"}
               alt={nextPost.title}
               fill
               className="rounded object-cover"
