@@ -86,3 +86,10 @@ export interface INotifications {
   is_read: boolean;
   created_at: string;
 }
+
+export interface ITest {
+  id: string;
+  content: string;
+  thumbnail_url: string;
+  created_at: string;
+}

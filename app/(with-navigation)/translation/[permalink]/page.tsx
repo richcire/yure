@@ -11,6 +11,7 @@ import TranslationContentWrapper from "@/components/translation/translation-cont
 import { TipTapContentSkeleton } from "@/components/Tiptap/TipTapContentSkeleton";
 import TranslationRelatedPosts from "@/components/translation/translation-related-posts";
 import ViewCounter from "@/components/translation/ViewCounter";
+import TranslationRelatedPostsSkeleton from "@/components/translation/translation-related-posts-skeleton";
 
 export async function generateMetadata({ params }: Props) {
   const { permalink } = await params;
@@ -104,7 +105,9 @@ export default async function TranslationPage({ params }: Props) {
           <TranslationContentWrapper permalink={permalink} />
         </Suspense>
 
-        <Suspense fallback={<div>관련 포스트를 불러오는 중...</div>}>
+        {/* <TipTapContentSkeleton /> */}
+
+        <Suspense fallback={<TranslationRelatedPostsSkeleton />}>
           <TranslationRelatedPosts permalink={permalink} />
         </Suspense>
 
