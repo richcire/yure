@@ -74,7 +74,7 @@ export function CategoryFilter({
   };
 
   return (
-    <div className="md:flex flex-wrap items-center justify-between gap-4 mb-6 mt-8 px-4">
+    <div className="md:flex flex-wrap items-center justify-between gap-4 mb-6 mt-8">
       <div className="hidden md:flex flex-wrap gap-2">
         {categories.map((category) => (
           <Badge

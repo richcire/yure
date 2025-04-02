@@ -28,13 +28,21 @@ interface Props {
 function TranslationListSkeleton() {
   return (
     <>
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 relative">
         {[...Array(ITEMS_PER_PAGE)].map((_, i) => (
-          <div key={i} className="flex flex-col space-y-3">
-            <Skeleton className="w-full aspect-video rounded-lg" />{" "}
-            {/* Thumbnail */}
-            <Skeleton className="w-3/4 h-5" /> {/* Title */}
-            <Skeleton className="w-1/2 h-4" /> {/* Artist */}
+          <div
+            key={i}
+            className="w-full relative aspect-video bg-gray-300 animate-pulse rounded-lg"
+          >
+            <Skeleton className="absolute inset-0 rounded-lg" />
+            <div className="absolute top-2 left-2 z-20 flex items-center gap-1 bg-gray-400 rounded-md px-2 py-1">
+              <Skeleton className="w-4 h-4" />
+              <Skeleton className="w-8 h-4" />
+            </div>
+            <div className="absolute z-10 h-full flex flex-col justify-end p-4">
+              <Skeleton className="h-6 w-3/4 mb-2" />
+              <Skeleton className="h-4 w-1/2" />
+            </div>
           </div>
         ))}
       </div>

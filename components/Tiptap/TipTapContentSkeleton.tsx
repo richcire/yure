@@ -4,6 +4,9 @@ export const TipTapContentSkeleton = () => {
       {/* Thumbnail image skeleton */}
       <div className="w-full h-64 bg-gray-300 animate-pulse rounded-lg" />
 
+      {/* Video skeleton */}
+      <div className="w-full aspect-video bg-gray-300 animate-pulse rounded-lg" />
+
       {/* Title and text content skeletons */}
       <div className="space-y-4">
         <div className="h-6 bg-gray-300 animate-pulse rounded w-3/4" />
@@ -13,9 +16,6 @@ export const TipTapContentSkeleton = () => {
           <div className="h-4 bg-gray-300 animate-pulse rounded w-4/6" />
         </div>
       </div>
-
-      {/* Video skeleton */}
-      <div className="w-full aspect-video bg-gray-300 animate-pulse rounded-lg" />
 
       {/* Additional text content skeletons */}
       <div className="space-y-4">
