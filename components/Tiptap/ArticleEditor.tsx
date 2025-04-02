@@ -28,6 +28,7 @@ import Link from "@tiptap/extension-link";
 export default function ArticleEditor({ id }: { id?: string }) {
   const [article, setArticle] = useState<IArticles>();
   const [title, setTitle] = useState("");
+  const [slug, setSlug] = useState("");
   const [progressValue, setProgressValue] = useState(0);
   const [isSaving, setIsSaving] = useState(false);
   const router = useRouter();
@@ -156,37 +157,13 @@ export default function ArticleEditor({ id }: { id?: string }) {
 
         setTitle(data.title);
         setArticle(data);
+        setSlug(data.slug);
         editor?.commands.setContent(data.content);
       }
     };
 
     fetchArticle();
   }, [editor]);
-
-  function slugifyLimited(text: string, maxLength = 20) {
-    // 문자열로 변환하고, 앞뒤 공백 제거 및 영어의 경우 소문자 변환
-    text = text.toString().trim().toLowerCase();
-    // Remove URL special characters
-    text = text.replace(/[%&?=/#]/g, "");
-    const words = text.split(/\s+/);
-    let slug = "";
-
-    for (const word of words) {
-      // 현재 slug에 단어를 추가했을 때의 후보 문자열 (단어 사이에 '-' 삽입)
-      const candidate = slug ? `${slug}-${word}` : word;
-
-      if (candidate.length <= maxLength) {
-        slug = candidate;
-      } else {
-        // slug가 아직 비어있다면, 첫 단어가 maxLength보다 긴 경우
-        if (!slug) {
-          slug = word.slice(0, maxLength);
-        }
-        break;
-      }
-    }
-    return slug;
-  }
 
   const uploadBannerImage = async (
     storageFolder: string,
@@ -292,6 +269,10 @@ export default function ArticleEditor({ id }: { id?: string }) {
   };
 
   const updateArticle = async () => {
+    if (slug.includes("/")) {
+      alert("퍼마링크에 슬래시(/)는 포함될 수 없습니다.");
+      return;
+    }
     setIsSaving(true);
 
     if (!editor || !title) {
@@ -371,7 +352,7 @@ export default function ArticleEditor({ id }: { id?: string }) {
       title,
       content: finalContentWrapper.innerHTML,
       thumbnail_url: thumbnailUrl,
-      slug: slugifyLimited(title),
+      slug,
       banner_url: bannerUrl || article.banner_url,
     };
 
@@ -393,6 +374,10 @@ export default function ArticleEditor({ id }: { id?: string }) {
   };
 
   const saveArticle = async () => {
+    if (slug.includes("/")) {
+      alert("퍼마링크에 슬래시(/)는 포함될 수 없습니다.");
+      return;
+    }
     setIsSaving(true);
     if (!editor || !title) {
       setIsSaving(false);
@@ -447,7 +432,7 @@ export default function ArticleEditor({ id }: { id?: string }) {
         title,
         content: finalContentWrapper.innerHTML,
         thumbnail_url: thumbnailUrl,
-        slug: slugifyLimited(title),
+        slug,
         banner_url: newBannerUrl,
       };
 
@@ -519,7 +504,7 @@ export default function ArticleEditor({ id }: { id?: string }) {
             </DialogTrigger>
             <DialogContent>
               <DialogHeader>
-                <DialogTitle>배너 이미지 선택</DialogTitle>
+                <DialogTitle>배너 이미지 선택 및 퍼마링크 입력</DialogTitle>
               </DialogHeader>
               <div className="grid gap-4 py-4">
                 <div className="grid gap-2">
@@ -538,16 +523,25 @@ export default function ArticleEditor({ id }: { id?: string }) {
                     }
                   />
                 </div>
+                <div className="grid gap-2">
+                  <Label htmlFor="slug">퍼마링크</Label>
+                  <Input
+                    id="slug"
+                    value={slug}
+                    onChange={(e) => setSlug(e.target.value)}
+                    placeholder="퍼마링크를 입력해주세요"
+                  />
+                </div>
               </div>
               <div className="flex justify-end gap-2">
                 {id ? (
-                  <Button onClick={updateArticle} disabled={isSaving}>
+                  <Button onClick={updateArticle} disabled={isSaving || !slug}>
                     저장
                   </Button>
                 ) : (
                   <Button
                     onClick={saveArticle}
-                    disabled={!selectedBannerImage || isSaving}
+                    disabled={!selectedBannerImage || isSaving || !slug}
                   >
                     저장
                   </Button>
