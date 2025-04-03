@@ -18,20 +18,20 @@ import { useRouter } from "next/navigation";
 import { INews } from "@/types/supabase-table";
 import {
   Dialog,
-  DialogClose,
   DialogContent,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
 import Link from "@tiptap/extension-link";
 import { InstagramExtension } from "./extensions/InstagramExtension";
+import { Label } from "@/components/ui/label";
 
 export default function NewsEditor({ id }: { id?: string }) {
   const [news, setNews] = useState<INews>();
   const [title, setTitle] = useState("");
   const [summary, setSummary] = useState("");
+  const [slug, setSlug] = useState("");
   const [progressValue, setProgressValue] = useState(0);
   const [isSaving, setIsSaving] = useState(false);
   const router = useRouter();
@@ -163,37 +163,13 @@ export default function NewsEditor({ id }: { id?: string }) {
         setTitle(data.title);
         setSummary(data.summary);
         setNews(data);
+        setSlug(data.slug);
         editor?.commands.setContent(data.content);
       }
     };
 
     fetchNews();
   }, [editor]);
-
-  function slugifyLimited(text: string, maxLength = 20) {
-    // 문자열로 변환하고, 앞뒤 공백 제거 및 영어의 경우 소문자 변환
-    text = text.toString().trim().toLowerCase();
-    // Remove URL special characters
-    text = text.replace(/[%&?=/#]/g, "");
-    const words = text.split(/\s+/);
-    let slug = "";
-
-    for (const word of words) {
-      // 현재 slug에 단어를 추가했을 때의 후보 문자열 (단어 사이에 '-' 삽입)
-      const candidate = slug ? `${slug}-${word}` : word;
-
-      if (candidate.length <= maxLength) {
-        slug = candidate;
-      } else {
-        // slug가 아직 비어있다면, 첫 단어가 maxLength보다 긴 경우
-        if (!slug) {
-          slug = word.slice(0, maxLength);
-        }
-        break;
-      }
-    }
-    return slug;
-  }
 
   const deleteRemovedImagesInStorage = async (
     newContent: string,
@@ -276,6 +252,10 @@ export default function NewsEditor({ id }: { id?: string }) {
   };
 
   const updateNews = async () => {
+    if (slug.includes("/")) {
+      alert("퍼마링크에 슬래시(/)는 포함될 수 없습니다.");
+      return;
+    }
     setIsSaving(true);
 
     if (!editor || !title || !summary) {
@@ -321,7 +301,7 @@ export default function NewsEditor({ id }: { id?: string }) {
       summary,
       content: finalContentWrapper.innerHTML,
       thumbnail_url: thumbnailUrl,
-      slug: slugifyLimited(title),
+      slug,
     };
 
     const { error } = await supabase.from("news").update(newsData).eq("id", id);
@@ -339,6 +319,10 @@ export default function NewsEditor({ id }: { id?: string }) {
   };
 
   const saveNews = async () => {
+    if (slug.includes("/")) {
+      alert("퍼마링크에 슬래시(/)는 포함될 수 없습니다.");
+      return;
+    }
     setIsSaving(true);
     if (!editor || !title || !summary) {
       setIsSaving(false);
@@ -378,7 +362,7 @@ export default function NewsEditor({ id }: { id?: string }) {
         summary,
         content: finalContentWrapper.innerHTML,
         thumbnail_url: thumbnailUrl,
-        slug: slugifyLimited(title),
+        slug,
       };
 
       // Save or update the content in the news table
@@ -455,20 +439,28 @@ export default function NewsEditor({ id }: { id?: string }) {
             </DialogTrigger>
             <DialogContent>
               <DialogHeader>
-                <DialogTitle>정말 저장하시겠습니까?</DialogTitle>
+                <DialogTitle>퍼마링크 입력</DialogTitle>
               </DialogHeader>
-              <DialogFooter>
-                <DialogClose>취소</DialogClose>
+              <div className="grid gap-2">
+                <Label htmlFor="slug">퍼마링크</Label>
+                <Input
+                  id="slug"
+                  value={slug}
+                  onChange={(e) => setSlug(e.target.value)}
+                  placeholder="퍼마링크를 입력해주세요"
+                />
+              </div>
+              <div className="flex justify-end gap-2">
                 {id ? (
-                  <Button onClick={updateNews} disabled={isSaving}>
+                  <Button onClick={updateNews} disabled={isSaving || !slug}>
                     저장
                   </Button>
                 ) : (
-                  <Button onClick={saveNews} disabled={isSaving}>
+                  <Button onClick={saveNews} disabled={isSaving || !slug}>
                     저장
                   </Button>
                 )}
-              </DialogFooter>
+              </div>
             </DialogContent>
           </Dialog>
         </div>
