@@ -42,10 +42,10 @@ export default function NewsCard({ news }: NewsCardProps) {
                   </span>
                 </div>
               </div>
-              <h2 className="mb-2 text-xl font-bold leading-tight transition-colors group-hover:text-gray-700 sm:text-2xl">
+              <h2 className="mb-2 text-xl font-bold leading-tight transition-colors group-hover:text-gray-700 sm:text-2xl line-clamp-2 lg:line-clamp-1">
                 {newsItem.title}
               </h2>
-              <p className="mb-3 text-gray-700 line-clamp-2 sm:line-clamp-3">
+              <p className="mb-3 text-gray-700 line-clamp-3 lg:line-clamp-2">
                 {newsItem.summary}
               </p>
               <span className="text-sm font-medium text-gray-600">

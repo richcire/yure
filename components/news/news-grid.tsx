@@ -17,7 +17,7 @@ export default async function NewsGrid({ news }: NewsGridProps) {
     <div className="grid gap-8 md:grid-cols-12">
       {/* Featured News - spans full width on mobile, 8 columns on desktop */}
       {news.length > 0 && (
-        <div className="relative group border-b-2 border-black pb-8 md:col-span-8 md:border-b-0 md:border-r-2 md:pr-8">
+        <div className="relative group border-b-2 border-black pb-8 md:col-span-8 md:border-b-0 md:border-r-2 md:pr-8 md:h-[664px]">
           <Link
             href={`/news/${featuredNews.slug}`}
             className="absolute inset-0 z-10"
@@ -31,7 +31,7 @@ export default async function NewsGrid({ news }: NewsGridProps) {
               Latest News
             </span>
           </div>
-          <h2 className="mb-4 text-3xl font-bold leading-tight md:text-4xl transition-colors group-hover:text-gray-700">
+          <h2 className="mb-4 text-3xl font-bold leading-tight md:text-4xl transition-colors group-hover:text-gray-700 line-clamp-2">
             {featuredNews.title}
           </h2>
           <div className="mb-4 text-sm font-medium text-gray-600">
@@ -49,30 +49,30 @@ export default async function NewsGrid({ news }: NewsGridProps) {
               className="h-auto w-full rounded-sm object-cover transition-opacity group-hover:opacity-90"
             />
           </div>
-          <p className="pb-4 text-lg leading-relaxed transition-colors group-hover:text-gray-700">
+          <p className="mb-4 text-lg leading-relaxed transition-colors group-hover:text-gray-700 line-clamp-4">
             {featuredNews.summary}
           </p>
         </div>
       )}
 
       {/* Sidebar News - spans full width on mobile, 4 columns on desktop */}
-      <div className="space-y-8 md:col-span-4">
+      <div className="space-y-8 md:col-span-4 md:h-[664px]">
         {restOfNews.slice(0, 3).map((news) => (
           <div
             key={news.id}
-            className="relative group border-b border-gray-300 pb-6 last:border-0"
+            className="relative group border-b border-gray-300 pb-6 last:border-0 md:h-[200px]"
           >
             <Link href={`/news/${news.slug}`} className="absolute inset-0 z-10">
               <span className="sr-only">{news.title}에 대한 내용 더 읽기</span>
             </Link>
-            <h3 className="mb-2 text-xl font-bold leading-tight transition-colors group-hover:text-gray-700">
+            <h3 className="mb-2 text-xl font-bold leading-tight transition-colors group-hover:text-gray-700 line-clamp-2">
               {news.title}
             </h3>
             <div className="mb-2 text-xs text-gray-600">
               By {news.user_info.name} |{" "}
               {new Date(news.created_at).toLocaleDateString()}
             </div>
-            <p className="pb-3 text-sm leading-relaxed transition-colors group-hover:text-gray-700">
+            <p className="mb-3 text-sm leading-relaxed transition-colors group-hover:text-gray-700 line-clamp-4">
               {news.summary}
             </p>
           </div>
@@ -85,7 +85,7 @@ export default async function NewsGrid({ news }: NewsGridProps) {
           {restOfNews.slice(3, 6).map((news) => (
             <div
               key={news.id}
-              className="relative group border-r border-gray-300 pr-6 last:border-0"
+              className="relative group border-r border-gray-300 pr-6 last:border-0 md:h-[200px]"
             >
               <Link
                 href={`/news/${news.slug}`}
@@ -95,13 +95,13 @@ export default async function NewsGrid({ news }: NewsGridProps) {
                   {news.title}에 대한 내용 더 읽기
                 </span>
               </Link>
-              <h3 className="mb-2 text-xl font-bold leading-tight transition-colors group-hover:text-gray-700">
+              <h3 className="mb-2 text-xl font-bold leading-tight transition-colors group-hover:text-gray-700 line-clamp-3">
                 {news.title}
               </h3>
               <div className="mb-2 text-xs text-gray-600">
                 By {news.user_info.name}
               </div>
-              <p className="pb-3 text-sm leading-relaxed transition-colors group-hover:text-gray-700">
+              <p className="mb-3 text-sm leading-relaxed transition-colors group-hover:text-gray-700 line-clamp-4">
                 {news.summary}
               </p>
             </div>
@@ -113,7 +113,10 @@ export default async function NewsGrid({ news }: NewsGridProps) {
       {restOfNews.length > 6 && (
         <div className="grid gap-8 border-t-2 border-black pt-8 md:col-span-12 md:grid-cols-2">
           {restOfNews.slice(6, 8).map((news) => (
-            <div key={news.id} className="relative group flex gap-4">
+            <div
+              key={news.id}
+              className="relative group border-r border-gray-300 pr-6 last:border-0 flex gap-4"
+            >
               <Link
                 href={`/news/${news.slug}`}
                 className="absolute inset-0 z-10"
@@ -132,12 +135,15 @@ export default async function NewsGrid({ news }: NewsGridProps) {
                 />
               </div>
               <div>
-                <h3 className="mb-1 text-lg font-bold leading-tight transition-colors group-hover:text-gray-700">
+                <h3 className="mb-1 text-lg font-bold leading-tight transition-colors group-hover:text-gray-700 line-clamp-1">
                   {news.title}
                 </h3>
                 <div className="mb-1 text-xs text-gray-600">
                   By {news.user_info.name}
                 </div>
+                <p className="mb-2 text-sm leading-relaxed transition-colors group-hover:text-gray-700 line-clamp-2">
+                  {news.summary}
+                </p>
               </div>
             </div>
           ))}
