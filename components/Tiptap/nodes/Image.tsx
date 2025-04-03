@@ -75,7 +75,7 @@ export default function ImageNode({
 
   return (
     <NodeViewWrapper>
-      <div className={`flex ${alignmentClasses[textAlign]}`}>
+      <div className={`flex my-8 ${alignmentClasses[textAlign]}`}>
         <div className="relative group" style={{ width: node.attrs.width }}>
           {showControls && (
             <div
@@ -120,15 +120,15 @@ export default function ImageNode({
               </div>
             </div>
           )}
-          <img
+          {/* <img
             src={node.attrs.src || ""}
             alt={node.attrs.alt || ""}
             title={node.attrs.title}
             style={{ width: "100%" }}
             className="max-w-full rounded-md"
-          />
-          {/* 이미지를 nextjs/image로 렌더링 > 작동안함. renderHTML할때 Image로 보여주는 방법을 찾아야함 */}
-          {/* <div
+          /> */}
+          {/* 이미지를 nextjs/image로 렌더링  */}
+          <div
             className="relative w-full"
             style={{
               width: "100%",
@@ -142,9 +142,9 @@ export default function ImageNode({
               fill
               sizes="(max-width: 1200px) 100vw, 50vw"
               className="object-contain rounded-md m-0"
-              priority={false}
+              priority={true}
             />
-          </div> */}
+          </div>
         </div>
       </div>
     </NodeViewWrapper>

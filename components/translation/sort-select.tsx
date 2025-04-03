@@ -12,6 +12,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 const sortOptions = [
   { value: "created_desc", label: "최신순" },
   { value: "created_asc", label: "오래된순" },
+  { value: "views_desc", label: "인기순" },
   { value: "release_desc", label: "발매일 최신순" },
   { value: "release_asc", label: "발매일 오래된순" },
 ];

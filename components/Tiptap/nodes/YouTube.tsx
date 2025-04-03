@@ -67,13 +67,13 @@ export default function YouTube({
 
   return (
     <NodeViewWrapper>
-      <div className="flex justify-center" ref={videoRef}>
+      <div ref={videoRef}>
         <div
           className={`relative group ${
             !isInitialRender && isSticky
               ? `sticky-video ${isFolded ? "folded" : ""}`
               : ""
-          }`}
+          } aspect-[${aspectRatio}]`}
           style={{ width: "100%" }}
         >
           {showControls && (

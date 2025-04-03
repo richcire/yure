@@ -3,7 +3,6 @@
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import { TextAlign } from "@tiptap/extension-text-align";
-// import FontSize from "@tiptap/extension-font-size";
 import { Toolbar } from "./Toolbar";
 import { ImageExtension } from "./extensions/ImageExtension";
 import { YouTubeExtension } from "./extensions/YouTubeExtension";
@@ -12,29 +11,16 @@ import { Button } from "@/components/ui/button";
 import { createClient } from "@/utils/supabase/client";
 import { useState, useEffect } from "react";
 import { Save } from "lucide-react";
-import { Input } from "@/components/ui/input";
 import { Progress } from "@/components/ui/progress";
 import { useRouter } from "next/navigation";
-import { IArticles } from "@/types/supabase-table";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import { Label } from "@/components/ui/label";
+import { ITest } from "@/types/supabase-table";
 import Link from "@tiptap/extension-link";
-export default function ArticleEditor({ id }: { id?: string }) {
-  const [article, setArticle] = useState<IArticles>();
-  const [title, setTitle] = useState("");
-  const [slug, setSlug] = useState("");
+
+export default function TestEditor({ id }: { id?: string }) {
+  const [test, setTest] = useState<ITest>();
   const [progressValue, setProgressValue] = useState(0);
   const [isSaving, setIsSaving] = useState(false);
   const router = useRouter();
-  const [selectedBannerImage, setSelectedBannerImage] = useState<File | null>(
-    null
-  );
 
   const editor = useEditor({
     extensions: [
@@ -141,52 +127,27 @@ export default function ArticleEditor({ id }: { id?: string }) {
   });
 
   useEffect(() => {
-    const fetchArticle = async () => {
+    const fetchTest = async () => {
       if (id) {
         const supabase = createClient();
         const { data, error } = await supabase
-          .from("articles")
+          .from("test")
           .select("*")
           .eq("id", id)
           .single();
 
         if (error) {
-          console.error("Error fetching article:", error);
+          console.error("Error fetching test:", error);
           return;
         }
 
-        setTitle(data.title);
-        setArticle(data);
-        setSlug(data.slug);
+        setTest(data);
         editor?.commands.setContent(data.content);
       }
     };
 
-    fetchArticle();
+    fetchTest();
   }, [editor]);
-
-  const uploadBannerImage = async (
-    storageFolder: string,
-    selectedBannerImage: File
-  ) => {
-    const supabase = createClient();
-
-    const fileName = `${storageFolder}/banner-${Date.now()}-${Math.random().toString(36).substring(7)}.${selectedBannerImage.type.split("/")[1]}`;
-    const { data: uploadData, error: uploadError } = await supabase.storage
-      .from("images")
-      .upload(fileName, selectedBannerImage);
-
-    if (uploadError) {
-      console.error("Error uploading banner image:", uploadError);
-      return { bannerUrl: null, uploadError: uploadError };
-    }
-
-    const {
-      data: { publicUrl },
-    } = supabase.storage.from("images").getPublicUrl(fileName);
-
-    return { bannerUrl: publicUrl, uploadError: null };
-  };
 
   const deleteRemovedImagesInStorage = async (
     newContent: string,
@@ -268,74 +229,35 @@ export default function ArticleEditor({ id }: { id?: string }) {
     return firstImage?.getAttribute("src") || "";
   };
 
-  const updateArticle = async () => {
-    if (slug.includes("/")) {
-      alert("퍼마링크에 슬래시(/)는 포함될 수 없습니다.");
-      return;
-    }
+  const updateTest = async () => {
     setIsSaving(true);
 
-    if (!editor || !title) {
+    if (!editor) {
       setIsSaving(false);
       console.error("Please fill in all required fields");
       return;
     }
 
-    if (!article) {
+    if (!test) {
       setIsSaving(false);
-      console.error("Article not found");
+      console.error("Test not found");
       return;
     }
 
     const supabase = createClient();
-
-    let bannerUrl = "";
-
-    //delete old banner image and upload new one if selected
-    if (selectedBannerImage) {
-      const currentBannerPath = article?.banner_url.split("/").pop();
-
-      if (currentBannerPath) {
-        const { error: bannerDeleteError } = await supabase.storage
-          .from("images")
-          .remove([`article/${currentBannerPath}`]);
-
-        if (bannerDeleteError) {
-          setIsSaving(false);
-          console.error("Error deleting banner image:", bannerDeleteError);
-          return;
-        }
-      }
-      const { bannerUrl: newBannerUrl, uploadError } = await uploadBannerImage(
-        "article",
-        selectedBannerImage
-      );
-
-      if (uploadError) {
-        setIsSaving(false);
-        console.error("Error uploading banner image:", uploadError);
-        return;
-      }
-
-      bannerUrl = newBannerUrl;
-    }
 
     const content = editor.getHTML();
 
     setProgressValue(20);
 
     // handle deleted images
-    await deleteRemovedImagesInStorage(
-      editor.getHTML(),
-      article.content,
-      "article"
-    );
+    await deleteRemovedImagesInStorage(editor.getHTML(), test.content, "test");
 
     setProgressValue(30);
 
     const { finalContentWrapper, uploadError } = await uploadImages(
       content,
-      "article"
+      "test"
     );
 
     if (uploadError) {
@@ -348,38 +270,28 @@ export default function ArticleEditor({ id }: { id?: string }) {
 
     const thumbnailUrl = getThumbnailImage(finalContentWrapper);
 
-    const articleData: Partial<IArticles> = {
-      title,
+    const testData: Partial<ITest> = {
       content: finalContentWrapper.innerHTML,
       thumbnail_url: thumbnailUrl,
-      slug,
-      banner_url: bannerUrl || article.banner_url,
     };
 
-    const { error } = await supabase
-      .from("articles")
-      .update(articleData)
-      .eq("id", id);
+    const { error } = await supabase.from("test").update(testData).eq("id", id);
 
     setProgressValue(100);
 
     if (error) {
       setIsSaving(false);
       setProgressValue(0);
-      console.error("Error saving article:", error);
+      console.error("Error saving test:", error);
     } else {
       setIsSaving(false);
-      router.push("/admin/article");
+      router.push("/admin/test");
     }
   };
 
-  const saveArticle = async () => {
-    if (slug.includes("/")) {
-      alert("퍼마링크에 슬래시(/)는 포함될 수 없습니다.");
-      return;
-    }
+  const saveTest = async () => {
     setIsSaving(true);
-    if (!editor || !title) {
+    if (!editor) {
       setIsSaving(false);
       console.error("Please fill in all required fields");
       return;
@@ -387,22 +299,6 @@ export default function ArticleEditor({ id }: { id?: string }) {
 
     try {
       const supabase = createClient();
-
-      if (!selectedBannerImage) {
-        setIsSaving(false);
-        console.error("Please select a banner image");
-        return;
-      }
-
-      // Upload banner image
-      const { bannerUrl: newBannerUrl, uploadError: bannerUploadError } =
-        await uploadBannerImage("article", selectedBannerImage);
-
-      if (bannerUploadError) {
-        setIsSaving(false);
-        console.error("Error uploading banner image:", bannerUploadError);
-        return;
-      }
 
       // Continue with the original save logic
       const content = editor.getHTML();
@@ -413,7 +309,7 @@ export default function ArticleEditor({ id }: { id?: string }) {
 
       const { finalContentWrapper, uploadError } = await uploadImages(
         content,
-        "article"
+        "test"
       );
 
       if (uploadError) {
@@ -428,16 +324,13 @@ export default function ArticleEditor({ id }: { id?: string }) {
       const thumbnailUrl = getThumbnailImage(finalContentWrapper);
 
       // Prepare the data object
-      const articleData: Partial<IArticles> = {
-        title,
+      const testData: Partial<ITest> = {
         content: finalContentWrapper.innerHTML,
         thumbnail_url: thumbnailUrl,
-        slug,
-        banner_url: newBannerUrl,
       };
 
       // Save or update the content in the translations table
-      const { error } = await supabase.from("articles").insert([articleData]);
+      const { error } = await supabase.from("test").insert([testData]);
 
       setProgressValue(100);
       if (error) {
@@ -445,7 +338,7 @@ export default function ArticleEditor({ id }: { id?: string }) {
         setProgressValue(0);
         console.error("Error saving translation:", error);
       } else {
-        router.push("/admin/article");
+        router.push("/admin/test");
       }
     } catch (error) {
       setIsSaving(false);
@@ -457,7 +350,7 @@ export default function ArticleEditor({ id }: { id?: string }) {
   const handleCancel = () => {
     setIsSaving(false);
     setProgressValue(0);
-    router.push("/admin/article");
+    router.push("/admin/test");
   };
 
   if (!editor) {
@@ -479,13 +372,6 @@ export default function ArticleEditor({ id }: { id?: string }) {
       </div>
       <div className="w-full relative min-h-screen pb-16">
         <div className="flex flex-col gap-6 max-w-5xl mx-auto w-full p-4">
-          <Input
-            placeholder="글 제목"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            required
-          />
-
           <div className="border rounded-md border-input">
             <Toolbar editor={editor} />
             <EditorContent editor={editor} className="p-4" />
@@ -495,60 +381,10 @@ export default function ArticleEditor({ id }: { id?: string }) {
           <Button onClick={handleCancel} className="shadow-lg">
             취소
           </Button>
-          <Dialog>
-            <DialogTrigger asChild>
-              <Button disabled={!title} className="shadow-lg">
-                <Save className="w-4 h-4 mr-2" />
-                저장
-              </Button>
-            </DialogTrigger>
-            <DialogContent>
-              <DialogHeader>
-                <DialogTitle>배너 이미지 선택 및 퍼마링크 입력</DialogTitle>
-              </DialogHeader>
-              <div className="grid gap-4 py-4">
-                <div className="grid gap-2">
-                  <Label htmlFor="banner">배너 이미지</Label>
-                  {id && (
-                    <p className="text-sm text-gray-500">
-                      배너 이미지를 다시 선택하면 기존 배너 이미지를 대체합니다.
-                    </p>
-                  )}
-                  <Input
-                    id="banner"
-                    type="file"
-                    accept="image/*"
-                    onChange={(e) =>
-                      setSelectedBannerImage(e.target.files?.[0] || null)
-                    }
-                  />
-                </div>
-                <div className="grid gap-2">
-                  <Label htmlFor="slug">퍼마링크</Label>
-                  <Input
-                    id="slug"
-                    value={slug}
-                    onChange={(e) => setSlug(e.target.value)}
-                    placeholder="퍼마링크를 입력해주세요"
-                  />
-                </div>
-              </div>
-              <div className="flex justify-end gap-2">
-                {id ? (
-                  <Button onClick={updateArticle} disabled={isSaving || !slug}>
-                    저장
-                  </Button>
-                ) : (
-                  <Button
-                    onClick={saveArticle}
-                    disabled={!selectedBannerImage || isSaving || !slug}
-                  >
-                    저장
-                  </Button>
-                )}
-              </div>
-            </DialogContent>
-          </Dialog>
+          <Button className="shadow-lg" onClick={id ? updateTest : saveTest}>
+            <Save className="w-4 h-4 mr-2" />
+            저장
+          </Button>
         </div>
       </div>
     </>

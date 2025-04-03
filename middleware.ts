@@ -36,6 +36,7 @@ export async function middleware(request: NextRequest) {
     "/news",
     "/admin",
     "/api",
+    "/terms",
     "/_next",
     "/favicon.ico",
     "/sitemap-index.xml",

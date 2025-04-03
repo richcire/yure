@@ -13,6 +13,7 @@ export interface ITranslations {
   release_date: string;
   permalink: string;
   keyword: string;
+  views: number;
   updated_at: string;
 }
 
@@ -95,5 +96,12 @@ export interface INotifications {
   type: string;
   relevant_url: string;
   is_read: boolean;
+  created_at: string;
+}
+
+export interface ITest {
+  id: string;
+  content: string;
+  thumbnail_url: string;
   created_at: string;
 }

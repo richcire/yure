@@ -244,7 +244,15 @@ export default function KaraokeAccordion() {
         )}
       </div>
 
-      <BottomDisplayAdWrapper />
+      <div className="flex flex-col items-center justify-center gap-4 p-8">
+        <p>찾으시는 노래가 없으신가요?</p>
+        <a
+          href="/karaoke/application"
+          className="text-[#003844] hover:text-[#214E34] underline"
+        >
+          노래방 곡 추가 신청하기
+        </a>
+      </div>
     </>
   );
 }
