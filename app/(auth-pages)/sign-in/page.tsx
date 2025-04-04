@@ -4,6 +4,7 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { signInWithGoogleAction } from "@/app/actions";
 import { useSearchParams } from "next/navigation";
+
 const LoginPage = () => {
   const searchParams = useSearchParams();
   const redirectTo = searchParams.get("redirectTo") || "/";
