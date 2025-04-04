@@ -1,7 +1,6 @@
-import { Geist } from "next/font/google";
+import { Gothic_A1 } from "next/font/google";
 import { ThemeProvider } from "next-themes";
 import "./globals.css";
-import localFont from "next/font/local";
 import { WebVitals } from "@/components/web-vitals";
 import { AdSenseCodeSnippet } from "@/components/google-adsense/adsense-code-snippet";
 const defaultUrl = process.env.VERCEL_URL
@@ -31,14 +30,11 @@ export const metadata = {
   },
 };
 
-// const geistSans = Geist({
-//   display: "swap",
-//   subsets: ["latin"],
-// });
-
-const taeMovieFont = localFont({
-  src: "../public/fonts/TaeMovie.ttf",
+const gothicFont = Gothic_A1({
+  subsets: ["latin"],
+  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
   display: "swap",
+  adjustFontFallback: false,
 });
 
 export default function RootLayout({
@@ -47,7 +43,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ko" className={taeMovieFont.className} suppressHydrationWarning>
+    <html lang="ko" className={gothicFont.className} suppressHydrationWarning>
       <head>
         {/* 구글 애드센스 코드 스니펫 */}
         <AdSenseCodeSnippet />
