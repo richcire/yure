@@ -16,17 +16,28 @@ function ArticleListSkeleton() {
   return (
     <>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {[...Array(9)].map((_, i) => (
-          <div key={i} className="flex flex-col space-y-3">
-            <Skeleton className="w-full h-48 rounded-lg" /> {/* Thumbnail */}
-            <Skeleton className="w-3/4 h-6" /> {/* Title */}
-            <Skeleton className="w-1/2 h-4" /> {/* Author/Date */}
-            <Skeleton className="w-full h-20" /> {/* Content preview */}
+        {[...Array(6)].map((_, i) => (
+          <div
+            key={i}
+            className="flex flex-col h-[450px] border-2 border-[#69140E]/50 bg-background rounded-lg"
+          >
+            <div className="relative m-2 mb-3 max-h-[200px] aspect-square">
+              <Skeleton className="w-full h-full rounded-lg bg-gray-200" />
+            </div>
+            <div className="p-4 pt-0 flex-1">
+              <div className="flex flex-col h-full">
+                <Skeleton className="w-full h-7 mb-2 bg-gray-200" />{" "}
+                {/* Title */}
+                <Skeleton className="w-full h-20 mb-4 bg-gray-200" />{" "}
+                {/* Content */}
+                <div className="flex justify-between items-center mt-auto">
+                  <Skeleton className="w-24 h-4 bg-gray-200" /> {/* Author */}
+                  <Skeleton className="w-24 h-4 bg-gray-200" /> {/* Date */}
+                </div>
+              </div>
+            </div>
           </div>
         ))}
-      </div>
-      <div className="mt-8 flex justify-center">
-        <Skeleton className="w-96 h-10" /> {/* Pagination */}
       </div>
     </>
   );
