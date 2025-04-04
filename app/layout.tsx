@@ -34,7 +34,6 @@ const gothicFont = Gothic_A1({
   subsets: ["latin"],
   weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
   display: "swap",
-  adjustFontFallback: false,
 });
 
 export default function RootLayout({
