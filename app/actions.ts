@@ -58,14 +58,14 @@ export const signUpWithGoogleAction = async () => {
   return redirect(data.url);
 };
 
-export const signInWithGoogleAction = async () => {
+export const signInWithGoogleAction = async (redirectTo?: string) => {
   const supabase = await createClient();
   const origin = (await headers()).get("origin");
 
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: "google",
     options: {
-      redirectTo: `${origin}/auth/callback`,
+      redirectTo: `${origin}/auth/callback${redirectTo ? `?redirect_to=${encodeURIComponent(redirectTo)}` : ""}`,
     },
   });
 
@@ -117,14 +117,12 @@ export const deleteUserAction = async (userId: string) => {
   }
 
   await supabase.auth.signOut();
-  console.log("signed out");
   const supabase_service_role = await createClient("service_role");
   const { error } = await supabase_service_role.auth.admin.deleteUser(userId);
   if (error) {
     console.error(error.message);
     return encodedRedirect("error", "/protected/myPage", error.message);
   }
-  console.log("user deleted");
   return encodedRedirect("success", "/", "User deleted");
 };
 
