@@ -7,7 +7,7 @@ import { Metadata } from "next";
 import { SideVerticalDisplayAdWrapper } from "@/components/google-adsense/side-vertical-display-ad-wrapper";
 
 export const metadata: Metadata = {
-  title: "유레 揺れ • 당신의 마음을 흔들 음악을 번역해드려요.",
+  title: "당신의 마음을 흔들 음악을 번역해드려요 • 유레 揺れ.",
   description: "J-POP 등 일본 음악/문화 위주로 소개합니다.",
   icons: {
     icon: "/assets/logos/round.png",

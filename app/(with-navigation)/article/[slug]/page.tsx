@@ -11,6 +11,7 @@ import { IArticles, IComments } from "@/types/supabase-table";
 import { TipTapContentSkeleton } from "@/components/Tiptap/TipTapContentSkeleton";
 import ArticleContentWrapper from "@/components/article/article-content-wrapper";
 import ArticleRelatedPosts from "@/components/article/article-related-posts";
+
 const getArticle = async (slug: string) => {
   const supabase = await createClient();
   const { data, error } = await supabase
