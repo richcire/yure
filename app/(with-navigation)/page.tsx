@@ -4,6 +4,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import FeaturedArticleWrapper from "@/components/home/featured-article-wrapper";
 import { BottomDisplayAd } from "@/components/google-adsense/bottom-display-ad";
 import Search from "@/components/karaoke/search";
+import FeaturedNewsWrapper from "@/components/home/featured-news-wrapper";
 
 function CarouselLoading() {
   return (
@@ -51,6 +52,34 @@ function TranslationsLoading() {
   );
 }
 
+function NewsLoading() {
+  return (
+    <section>
+      <h2 className="text-2xl sm:text-2xl font-bold mb-8">NEWS</h2>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        {[1, 2].map((i) => (
+          <div
+            key={i}
+            className="border border-gray-200 rounded-lg overflow-hidden shadow-sm"
+          >
+            <div className="relative h-48 w-full">
+              <Skeleton className="h-full w-full" />
+            </div>
+            <div className="p-5 space-y-4">
+              <Skeleton className="h-6 w-3/4" />
+              <div className="space-y-2">
+                <Skeleton className="h-4 w-full" />
+                <Skeleton className="h-4 w-full" />
+                <Skeleton className="h-4 w-2/3" />
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
 export default function Home() {
   return (
     <main className="w-full min-h-screen bg-background">
@@ -71,6 +100,12 @@ export default function Home() {
       <div className="max-w-5xl mx-auto my-12">
         <Suspense fallback={<TranslationsLoading />}>
           <FeaturedTranslations />
+        </Suspense>
+      </div>
+
+      <div className="max-w-5xl mx-auto my-12 px-4">
+        <Suspense fallback={<NewsLoading />}>
+          <FeaturedNewsWrapper />
         </Suspense>
       </div>
 

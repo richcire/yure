@@ -89,6 +89,14 @@ export interface INews {
   updated_at: string;
 }
 
+export interface IFeaturedNews {
+  id: string;
+  thumbnail_url: string;
+  title: string;
+  summary: string;
+  slug: string;
+}
+
 export interface INotifications {
   id: string;
   recipient_user_id: string;
