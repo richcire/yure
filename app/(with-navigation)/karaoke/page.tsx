@@ -51,12 +51,7 @@ export default async function KaraokePage({ searchParams }: Props) {
         <Search defaultValue={params.search} />
       </div>
 
-      <div className="relative">
-        <KaraokeSongs />
-        <div className="mt-8">
-          <BottomDisplayAdWrapper />
-        </div>
-      </div>
+      <KaraokeSongs />
       <SideVerticalDisplayAdWrapper />
     </div>
   );
