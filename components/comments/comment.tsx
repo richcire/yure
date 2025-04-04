@@ -4,12 +4,10 @@ import { Dispatch, SetStateAction, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { formatDistanceToNow } from "date-fns";
-import type { IComments, IUserInfo } from "@/types/supabase-table";
+import type { IComments } from "@/types/supabase-table";
 import { PostgrestError, User } from "@supabase/supabase-js";
 import { CornerDownRight, MoreHorizontal } from "lucide-react";
-import { createClient } from "@/utils/supabase/client";
-import { useParams } from "next/navigation";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { makeCommentTree } from "@/lib/utils";
 import {
   DropdownMenu,
@@ -98,10 +96,8 @@ export function Comment({
 }: CommentProps) {
   const [isReplying, setIsReplying] = useState(false);
   const [replyContent, setReplyContent] = useState("");
-  const supabase = createClient();
   const router = useRouter();
-  const { permalink } = useParams<{ permalink: string }>();
-
+  const pathname = usePathname();
   //웹에서 사전에 삭제기능을 검증하고 싶을때 사용. 현재는 db에서 author_id를 안 돌려줌
   // const canDelete = user?.id === comment.author_id;
 
@@ -193,7 +189,7 @@ export function Comment({
                   placeholder="로그인 후 댓글을 달아보세요!"
                   className="w-full"
                   onClick={() => {
-                    router.push("/sign-in");
+                    router.push(`/sign-in?redirectTo=${pathname}`);
                   }}
                   readOnly
                 />

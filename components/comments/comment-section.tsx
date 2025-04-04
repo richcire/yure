@@ -7,7 +7,7 @@ import { Comment } from "./comment";
 import type { IComments } from "@/types/supabase-table";
 import { PostgrestError, User } from "@supabase/supabase-js";
 import { createClient } from "@/utils/supabase/client";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { makeCommentTree } from "@/lib/utils";
 
 interface CommentSectionProps {
@@ -40,7 +40,7 @@ export function CommentSection({
   const [user, setUser] = useState<User | undefined>();
   const supabase = createClient();
   const router = useRouter();
-
+  const pathname = usePathname();
   useEffect(() => {
     const getSession = async () => {
       const { data } = await supabase.auth.getSession();
@@ -104,7 +104,7 @@ export function CommentSection({
                 placeholder="로그인 후 댓글을 달아보세요!"
                 className="w-full"
                 onClick={() => {
-                  router.push("/sign-in");
+                  router.push(`/sign-in?redirectTo=${pathname}`);
                 }}
                 readOnly
               />
