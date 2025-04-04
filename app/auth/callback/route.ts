@@ -49,5 +49,11 @@ export async function GET(request: Request) {
   // }
 
   // URL to redirect to after sign up process completes
+  if (redirectTo) {
+    return NextResponse.redirect(
+      redirectTo.startsWith("http") ? redirectTo : `${origin}${redirectTo}`
+    );
+  }
+
   return NextResponse.redirect(`${origin}`);
 }
