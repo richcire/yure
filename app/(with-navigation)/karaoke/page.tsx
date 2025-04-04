@@ -34,7 +34,6 @@ interface Props {
 }
 
 export default async function KaraokePage({ searchParams }: Props) {
-  throw new Error("test");
   const params = await searchParams;
 
   return (
