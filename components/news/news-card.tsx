@@ -10,7 +10,7 @@ interface NewsCardProps {
 export default function NewsCard({ news }: NewsCardProps) {
   return (
     <div className="space-y-6">
-      {news.map((newsItem) => (
+      {news.map((newsItem, index) => (
         <div
           key={newsItem.id}
           className="relative group border-b border-gray-300 pb-6 last:border-b-0"
@@ -31,6 +31,7 @@ export default function NewsCard({ news }: NewsCardProps) {
                 width={300}
                 height={200}
                 className="h-auto w-full rounded-sm object-cover transition-opacity group-hover:opacity-90"
+                priority={index === 0}
               />
             </div>
             <div className="flex-1 sm:w-3/4">

@@ -47,6 +47,7 @@ export default async function NewsGrid({ news }: NewsGridProps) {
               width={800}
               height={400}
               className="h-auto w-full rounded-sm object-cover transition-opacity group-hover:opacity-90"
+              priority
             />
           </div>
           <p className="mb-4 text-lg leading-relaxed transition-colors group-hover:text-gray-700 line-clamp-4">
