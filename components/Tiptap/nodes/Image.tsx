@@ -1,13 +1,6 @@
 import { NodeViewProps, NodeViewWrapper } from "@tiptap/react";
-import { useState, useEffect } from "react";
-import {
-  AlignLeft,
-  AlignCenter,
-  AlignRight,
-  PanelLeft,
-  PanelRight,
-  Maximize2,
-} from "lucide-react";
+import { useState } from "react";
+import { AlignLeft, AlignCenter, AlignRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 
@@ -20,8 +13,6 @@ export default function ImageNode({
     node.attrs.width.replace("%", "") || "100"
   );
   const textAlign = node.attrs.textAlign as "left" | "center" | "right";
-  const float = node.attrs.float as "none" | "left" | "right";
-  const [aspectRatio, setAspectRatio] = useState<number | null>(null);
 
   // Don't show controls if editor is not editable
   const showControls = editor?.isEditable;
@@ -62,16 +53,6 @@ export default function ImageNode({
     center: "left-1/2 -translate-x-1/2",
     right: "right-0",
   };
-
-  useEffect(() => {
-    if (node.attrs.src) {
-      const img = new window.Image();
-      img.src = node.attrs.src;
-      img.onload = () => {
-        setAspectRatio(img.width / img.height);
-      };
-    }
-  }, [node.attrs.src]);
 
   return (
     <NodeViewWrapper>
@@ -128,20 +109,15 @@ export default function ImageNode({
             className="max-w-full rounded-md"
           /> */}
           {/* 이미지를 nextjs/image로 렌더링  */}
-          <div
-            className="relative w-full"
-            style={{
-              width: "100%",
-              aspectRatio: aspectRatio || "auto",
-            }}
-          >
+          <div className="relative w-full" style={{ width: "100%" }}>
             <Image
               src={node.attrs.src || ""}
               alt={node.attrs.alt || ""}
               title={node.attrs.title}
-              fill
+              width={1200}
+              height={800}
               sizes="(max-width: 1200px) 100vw, 50vw"
-              className="object-contain rounded-md m-0"
+              className="object-contain rounded-md m-0 w-full h-auto"
               priority={true}
             />
           </div>
