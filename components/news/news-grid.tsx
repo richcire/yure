@@ -17,7 +17,7 @@ export default async function NewsGrid({ news }: NewsGridProps) {
     <div className="grid gap-8 md:grid-cols-12">
       {/* Featured News - spans full width on mobile, 8 columns on desktop */}
       {news.length > 0 && (
-        <div className="relative group border-b-2 border-black pb-8 md:col-span-8 md:border-b-0 md:border-r-2 md:pr-8 md:h-[664px]">
+        <div className="relative group border-b-2 pb-8 md:col-span-8 md:border-b-0 md:border-r-2 md:pr-8 md:h-[664px]">
           <Link
             href={`/news/${featuredNews.slug}`}
             className="absolute inset-0 z-10"
@@ -27,7 +27,7 @@ export default async function NewsGrid({ news }: NewsGridProps) {
             </span>
           </Link>
           <div className="mb-4">
-            <span className="inline-block bg-black px-3 py-1 font-serif text-sm font-bold uppercase text-white">
+            <span className="inline-block bg-primary px-3 py-1 font-serif text-sm font-bold uppercase text-white">
               Latest News
             </span>
           </div>
@@ -81,7 +81,7 @@ export default async function NewsGrid({ news }: NewsGridProps) {
 
       {/* Secondary News - spans full width, 3 columns layout on desktop */}
       {restOfNews.length > 3 && (
-        <div className="grid gap-6 border-t-2 border-black pt-8 md:col-span-12 md:grid-cols-1 lg:grid-cols-3">
+        <div className="grid gap-6 border-t-2 pt-8 md:col-span-12 md:grid-cols-1 lg:grid-cols-3">
           {restOfNews.slice(3, 6).map((news) => (
             <div
               key={news.id}
@@ -111,7 +111,7 @@ export default async function NewsGrid({ news }: NewsGridProps) {
 
       {/* Bottom News - spans full width, 2 columns layout */}
       {restOfNews.length > 6 && (
-        <div className="grid gap-8 border-t-2 border-black pt-8 md:col-span-12 md:grid-cols-2">
+        <div className="grid gap-8 border-t-2 pt-8 md:col-span-12 md:grid-cols-2">
           {restOfNews.slice(6, 8).map((news) => (
             <div
               key={news.id}

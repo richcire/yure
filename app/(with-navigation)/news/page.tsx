@@ -22,7 +22,7 @@ interface Props {
 function NewsGridSkeleton() {
   return (
     <div className="grid gap-8 md:grid-cols-12">
-      <div className="border-b-2 border-black pb-8 md:col-span-8 md:border-b-0 md:border-r-2 md:pr-8">
+      <div className="border-b-2 pb-8 md:col-span-8 md:border-b-0 md:border-r-2 md:pr-8">
         <Skeleton className="mb-4 h-10 w-1/4 bg-gray-300" />
         <Skeleton className="mb-4 h-10 w-3/4 bg-gray-300" />
         <Skeleton className="mb-4 h-4 w-48 bg-gray-300" />
