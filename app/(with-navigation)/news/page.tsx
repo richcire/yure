@@ -7,7 +7,7 @@ import { Metadata } from "next";
 import { Suspense } from "react";
 
 export const metadata: Metadata = {
-  title: "유레 揺れ • J-POP 뉴스",
+  title: "J-POP 뉴스 • 유레 揺れ",
   description:
     "아티스트 컴백, 신곡 발매, 뮤직비디오, 콘서트 정보, 업계 소식 등 최신 J-POP 뉴스를 한눈에 확인하세요.",
 };
@@ -23,6 +23,7 @@ function NewsGridSkeleton() {
   return (
     <div className="grid gap-8 md:grid-cols-12">
       <div className="border-b-2 border-black pb-8 md:col-span-8 md:border-b-0 md:border-r-2 md:pr-8">
+        <Skeleton className="mb-4 h-10 w-1/4 bg-gray-300" />
         <Skeleton className="mb-4 h-10 w-3/4 bg-gray-300" />
         <Skeleton className="mb-4 h-4 w-48 bg-gray-300" />
         <Skeleton className="mb-6 h-[300px] w-full rounded-sm animate-pulse bg-gray-300" />
