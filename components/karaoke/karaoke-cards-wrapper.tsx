@@ -8,6 +8,7 @@ import { KaraokeCard } from "./karaoke-card";
 import { useVirtualizer } from "@tanstack/react-virtual";
 import { cn } from "@/lib/utils";
 import { Checkbox } from "../ui/checkbox";
+import { BottomDisplayAdWrapper } from "../google-adsense/bottom-display-ad-wrapper";
 
 export const LoadingSpinner = ({ className }: { className?: string }) => {
   return (
@@ -228,6 +229,8 @@ export default function KaraokeCardsWrapper() {
           노래방 곡 추가 신청하기
         </a>
       </div>
+
+      <BottomDisplayAdWrapper />
     </>
   );
 }

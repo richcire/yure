@@ -6,8 +6,9 @@ import { createClient } from "@/utils/supabase/client";
 import { User } from "@supabase/supabase-js";
 import Image from "next/image";
 import { INotifications, IUserInfo } from "@/types/supabase-table";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { User as UserIcon, ChevronRight, BellIcon } from "lucide-react";
+
 const Navigation = () => {
   const [user, setUser] = useState<User | undefined>();
   const [name, setName] = useState<string | undefined>();
@@ -18,6 +19,7 @@ const Navigation = () => {
   const [notifications, setNotifications] = useState<INotifications[]>([]);
   const supabase = createClient();
   const router = useRouter();
+  const pathname = usePathname();
 
   const markAsReadAll = async () => {
     if (notifications.length === 0) {
@@ -165,7 +167,7 @@ const Navigation = () => {
 
             {/* Auth Section */}
 
-            <div className="flex items-center justify-end gap-2 sm:gap-4 col-span-1 sm:col-span-2 lg:col-span-1">
+            <div className="flex items-center justify-end gap-3 sm:gap-4 col-span-1 sm:col-span-2 lg:col-span-1">
               {/* Notifications Section */}
               <div>
                 <button
@@ -255,7 +257,7 @@ const Navigation = () => {
                 </div>
               ) : (
                 <Link
-                  href="/sign-in"
+                  href={`/sign-in?redirectTo=${pathname}`}
                   className="hover:text-primary transition-colors text-sm sm:text-base whitespace-nowrap"
                 >
                   <UserIcon size={20} />
@@ -370,7 +372,7 @@ const Navigation = () => {
                   로그인하고 더 많은 기능을 사용해보세요!
                 </div>
                 <Link
-                  href="/sign-in"
+                  href={`/sign-in?redirectTo=${pathname}`}
                   className="block w-full bg-foreground text-white py-2 px-4 rounded-md text-center text-sm hover:bg-primary/90 transition-colors"
                   onClick={() => setIsSidebarOpen(false)}
                 >

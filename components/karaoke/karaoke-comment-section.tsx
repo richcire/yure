@@ -6,7 +6,7 @@ import { Textarea } from "@/components/ui/textarea";
 import type { IComments } from "@/types/supabase-table";
 import { User } from "@supabase/supabase-js";
 import { createClient } from "@/utils/supabase/client";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { KaraokeComment } from "./karaoke-comment";
 
 interface CommentSectionProps {
@@ -24,7 +24,7 @@ export function KaraokeCommentSection({
   const [user, setUser] = useState<User | undefined>();
   const supabase = createClient();
   const router = useRouter();
-
+  const pathname = usePathname();
   const getSession = async () => {
     const { data } = await supabase.auth.getSession();
     if (!data.session) {
@@ -104,7 +104,7 @@ export function KaraokeCommentSection({
                 placeholder="로그인 후 댓글을 달아보세요!"
                 className="w-full"
                 onClick={() => {
-                  router.push("/sign-in");
+                  router.push(`/sign-in?redirectTo=${pathname}`);
                 }}
                 readOnly
               />

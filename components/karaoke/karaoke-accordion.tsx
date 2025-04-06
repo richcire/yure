@@ -253,6 +253,8 @@ export default function KaraokeAccordion() {
           노래방 곡 추가 신청하기
         </a>
       </div>
+
+      <BottomDisplayAdWrapper />
     </>
   );
 }

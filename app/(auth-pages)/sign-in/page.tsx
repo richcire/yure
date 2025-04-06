@@ -1,12 +1,17 @@
 "use client";
 
-import { useState } from "react";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { signInWithGoogleAction } from "@/app/actions";
+import { useSearchParams } from "next/navigation";
 
 const LoginPage = () => {
-  const [showPassword, setShowPassword] = useState(false);
+  const searchParams = useSearchParams();
+  const redirectTo = searchParams.get("redirectTo") || "/";
+
+  const handleGoogleSignIn = async () => {
+    await signInWithGoogleAction(redirectTo);
+  };
 
   return (
     <div className="w-full max-w-lg mx-auto p-8 rounded-lg backdrop-blur-sm shadow-lg">
@@ -30,7 +35,7 @@ const LoginPage = () => {
         <Button
           variant="outline"
           className="w-full relative h-12 border-2"
-          onClick={signInWithGoogleAction}
+          onClick={handleGoogleSignIn}
         >
           <div className="absolute left-4">
             <Image

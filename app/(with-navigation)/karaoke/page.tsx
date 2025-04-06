@@ -53,7 +53,6 @@ export default async function KaraokePage({ searchParams }: Props) {
 
       <KaraokeSongs />
       <SideVerticalDisplayAdWrapper />
-      <BottomDisplayAdWrapper />
     </div>
   );
 }
