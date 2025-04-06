@@ -256,6 +256,12 @@ export default function NewsEditor({ id }: { id?: string }) {
       alert("퍼마링크에 슬래시(/)는 포함될 수 없습니다.");
       return;
     }
+
+    if (title.length > 60) {
+      alert("제목은 60자를 초과할 수 없습니다.");
+      return;
+    }
+
     setIsSaving(true);
 
     if (!editor || !title || !summary) {
@@ -323,6 +329,12 @@ export default function NewsEditor({ id }: { id?: string }) {
       alert("퍼마링크에 슬래시(/)는 포함될 수 없습니다.");
       return;
     }
+
+    if (title.length > 60) {
+      alert("제목은 60자를 초과할 수 없습니다.");
+      return;
+    }
+
     setIsSaving(true);
     if (!editor || !title || !summary) {
       setIsSaving(false);
@@ -408,12 +420,21 @@ export default function NewsEditor({ id }: { id?: string }) {
       </div>
       <div className="w-full relative min-h-screen pb-16">
         <div className="flex flex-col gap-6 max-w-5xl mx-auto w-full p-4">
-          <Input
-            placeholder="글 제목"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            required
-          />
+          <div className="relative">
+            <Input
+              placeholder="글 제목"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              required
+              className={title.length > 60 ? "border-red-500 text-red-500" : ""}
+              maxLength={60}
+            />
+            <div
+              className={`text-xs text-right mt-1 ${title.length > 60 ? "text-red-500" : "text-gray-500"}`}
+            >
+              {title.length} / 60
+            </div>
+          </div>
           <Input
             placeholder="글 요약"
             value={summary}
@@ -432,7 +453,10 @@ export default function NewsEditor({ id }: { id?: string }) {
           </Button>
           <Dialog>
             <DialogTrigger asChild>
-              <Button disabled={!title} className="shadow-lg">
+              <Button
+                disabled={!title || title.length > 60}
+                className="shadow-lg"
+              >
                 <Save className="w-4 h-4 mr-2" />
                 저장
               </Button>
