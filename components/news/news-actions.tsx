@@ -29,7 +29,7 @@ export function NewsActions() {
     <div className="mb-12 flex justify-center gap-4 border-t border-b border-gray-300 py-4">
       <button
         onClick={handleCopy}
-        className="flex items-center gap-2 text-sm font-medium hover:text-gray-600"
+        className="flex items-center gap-2 text-sm font-medium transition-colors hover:text-muted-foreground"
       >
         <Clipboard className="h-4 w-4" />
         복사하기

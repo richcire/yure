@@ -13,7 +13,7 @@ export default function NewsCard({ news }: NewsCardProps) {
       {news.map((newsItem, index) => (
         <div
           key={newsItem.id}
-          className="relative group border-b border-gray-300 pb-6 last:border-b-0"
+          className="relative group border-b border-gray-300 pb-6 last:border-b-0 transition-colors hover:text-muted-foreground"
         >
           <Link
             href={`/news/${newsItem.slug}`}
@@ -43,7 +43,7 @@ export default function NewsCard({ news }: NewsCardProps) {
                   </span>
                 </div>
               </div>
-              <h2 className="mb-2 text-xl font-bold leading-tight transition-colors group-hover:text-gray-700 sm:text-2xl line-clamp-2 lg:line-clamp-1">
+              <h2 className="mb-2 text-xl font-bold leading-tight sm:text-2xl line-clamp-2 lg:line-clamp-1">
                 {newsItem.title}
               </h2>
               <p className="mb-3 text-gray-700 line-clamp-3 lg:line-clamp-2">

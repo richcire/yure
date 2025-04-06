@@ -1,4 +1,3 @@
-// import RelatedNews from "@/components/news/related-news";
 import { createClient } from "@/utils/supabase/server";
 import { INews } from "@/types/supabase-table";
 import {
@@ -48,12 +47,6 @@ async function fetchNews(slug: string) {
 export default async function NewsPage({ params }: Props) {
   const { slug } = await params;
   const news = await fetchNews(slug);
-
-  // Get related news (excluding current one)
-  // const related = news
-  //   .filter((a) => a.id !== newsArticle.id)
-  // .filter((a) => a.category === newsArticle.category || Math.random() > 0.5)
-  // .slice(0, 3);
 
   return (
     <div className="container mx-auto px-4 py-8">
