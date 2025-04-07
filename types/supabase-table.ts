@@ -77,6 +77,26 @@ export interface IKaraokeSongs {
   updated_at: string;
 }
 
+export interface INews {
+  id: string;
+  title: string;
+  slug: string;
+  content: string;
+  summary: string;
+  thumbnail_url: string;
+  user_info: IUserInfo;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface IFeaturedNews {
+  id: string;
+  thumbnail_url: string;
+  title: string;
+  summary: string;
+  slug: string;
+}
+
 export interface INotifications {
   id: string;
   recipient_user_id: string;

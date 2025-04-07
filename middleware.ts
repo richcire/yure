@@ -33,6 +33,7 @@ export async function middleware(request: NextRequest) {
     "/translation",
     "/article",
     "/karaoke",
+    "/news",
     "/admin",
     "/api",
     "/terms",

@@ -17,6 +17,7 @@ import { createClient } from "@/utils/supabase/client";
 import { useRouter, usePathname } from "next/navigation";
 import { useParams } from "next/navigation";
 import { Dispatch, SetStateAction, useState } from "react";
+import { ko } from "date-fns/locale";
 
 interface ReplyProps {
   reply: IComments;
@@ -38,6 +39,7 @@ function Reply({ reply, user, onDelete }: ReplyProps) {
           <span className="text-sm text-muted-foreground">
             {formatDistanceToNow(new Date(reply.created_at), {
               addSuffix: true,
+              locale: ko,
             })}
           </span>
         </div>
@@ -133,6 +135,7 @@ export function KaraokeComment({ comment, user, setComments }: CommentProps) {
               <span className="text-sm text-muted-foreground">
                 {formatDistanceToNow(new Date(comment.created_at), {
                   addSuffix: true,
+                  locale: ko,
                 })}
               </span>
             </div>
