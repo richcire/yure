@@ -20,6 +20,7 @@ import {
   MinusSquare,
   Type,
   Link,
+  Instagram,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -42,6 +43,7 @@ export function Toolbar({ editor }: ToolbarProps) {
   }
 
   const [youtubeUrl, setYoutubeUrl] = useState("");
+  const [instagramEmbedCode, setInstagramEmbedCode] = useState("");
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files?.length) {
@@ -65,7 +67,7 @@ export function Toolbar({ editor }: ToolbarProps) {
     }
   };
 
-  const getEmbedUrl = (url: string) => {
+  const getYoutubeEmbedUrl = (url: string) => {
     const patterns = [
       /(?:https?:\/\/)?(?:www\.)?youtube\.com\/watch\?v=([^&]+)/,
       /(?:https?:\/\/)?(?:www\.)?youtube\.com\/embed\/([^?]+)/,
@@ -82,7 +84,7 @@ export function Toolbar({ editor }: ToolbarProps) {
 
   const handleYoutubeEmbed = () => {
     if (youtubeUrl) {
-      const embedUrl = getEmbedUrl(youtubeUrl);
+      const embedUrl = getYoutubeEmbedUrl(youtubeUrl);
       if (!embedUrl) {
         alert("Please enter a valid YouTube URL");
         return;
@@ -100,6 +102,22 @@ export function Toolbar({ editor }: ToolbarProps) {
         })
         .run();
       setYoutubeUrl("");
+    }
+  };
+
+  const handleInstagramEmbedCode = () => {
+    if (instagramEmbedCode) {
+      editor
+        .chain()
+        .focus()
+        .insertContent({
+          type: "instagram",
+          attrs: {
+            embedCode: instagramEmbedCode,
+          },
+        })
+        .run();
+      setInstagramEmbedCode("");
     }
   };
 
@@ -288,6 +306,29 @@ export function Toolbar({ editor }: ToolbarProps) {
                 onChange={(e) => setYoutubeUrl(e.target.value)}
               />
               <Button onClick={handleYoutubeEmbed}>Embed</Button>
+            </div>
+          </DialogContent>
+        </Dialog>
+
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button size="sm" variant="ghost">
+              <Instagram className="h-4 w-4" />
+            </Button>
+          </DialogTrigger>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle className="text-lg font-bold">
+                Embed Instagram Code
+              </DialogTitle>
+            </DialogHeader>
+            <div className="flex gap-2">
+              <Input
+                placeholder={'<blockquote class="instagram-media" ...>'}
+                value={instagramEmbedCode}
+                onChange={(e) => setInstagramEmbedCode(e.target.value)}
+              />
+              <Button onClick={handleInstagramEmbedCode}>Insert Code</Button>
             </div>
           </DialogContent>
         </Dialog>

@@ -14,6 +14,9 @@ export async function GET(request: Request) {
         <sitemap>
             <loc>${baseUrl}/article/sitemap.xml</loc>
         </sitemap>
+        <sitemap>
+            <loc>${baseUrl}/news/sitemap.xml</loc>
+        </sitemap>
     </sitemapindex>`;
 
   return new Response(xml, {

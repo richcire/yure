@@ -61,6 +61,12 @@ export default function WithNavigationLayout({
               >
                 노래방 번호 신청
               </Link>
+              <Link
+                href="/news"
+                className="hover:text-primary transition-colors"
+              >
+                NEWS
+              </Link>
             </div>
 
             {/* Navigation Links - Mobile */}
@@ -88,6 +94,12 @@ export default function WithNavigationLayout({
                 className="hover:text-primary transition-colors"
               >
                 노래방 번호 신청
+              </Link>
+              <Link
+                href="/news"
+                className="hover:text-primary transition-colors"
+              >
+                NEWS
               </Link>
             </div>
 

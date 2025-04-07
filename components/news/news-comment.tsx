@@ -1,44 +1,24 @@
 "use client";
 
-import { Dispatch, SetStateAction, useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
+import { MoreHorizontal } from "lucide-react";
+import { IComments, INews } from "@/types/supabase-table";
+import { User } from "@supabase/supabase-js";
 import { formatDistanceToNow } from "date-fns";
-import type { IComments } from "@/types/supabase-table";
-import { PostgrestError, User } from "@supabase/supabase-js";
-import { CornerDownRight, MoreHorizontal } from "lucide-react";
-import { useRouter, usePathname } from "next/navigation";
-import { makeCommentTree } from "@/lib/utils";
+import { CornerDownRight } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
+import { createClient } from "@/utils/supabase/client";
+import { useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
+import { Dispatch, SetStateAction, useState } from "react";
+import _ from "lodash";
 import { ko } from "date-fns/locale";
-
-interface CommentProps {
-  comment: IComments & { replies: IComments[] };
-  user: User | undefined;
-  setComments: Dispatch<
-    SetStateAction<(IComments & { replies: IComments[] })[]>
-  >;
-  getComments: () => Promise<{
-    data: IComments[] | null;
-    error: PostgrestError | null;
-  }>;
-  addComment: (
-    new_content: string,
-    parent_id: string
-  ) => Promise<{
-    data: IComments[] | null;
-    error: PostgrestError | null;
-  }>;
-  deleteComment: (commentId: string) => Promise<{
-    data: IComments[] | null;
-    error: PostgrestError | null;
-  }>;
-}
 
 interface ReplyProps {
   reply: IComments;
@@ -88,50 +68,70 @@ function Reply({ reply, user, onDelete }: ReplyProps) {
   );
 }
 
-export function Comment({
+interface CommentProps {
+  comment: IComments & { replies: IComments[] };
+  user: User | undefined;
+  setComments: Dispatch<
+    SetStateAction<(IComments & { replies: IComments[] })[]>
+  >;
+  news: INews;
+}
+
+export function NewsComment({
   comment,
   user,
   setComments,
-  getComments,
-  addComment,
-  deleteComment,
+  news,
 }: CommentProps) {
   const [isReplying, setIsReplying] = useState(false);
   const [replyContent, setReplyContent] = useState("");
+  const supabase = createClient();
   const router = useRouter();
-  const pathname = usePathname();
+  const { slug } = useParams<{ slug: string }>();
+
   //웹에서 사전에 삭제기능을 검증하고 싶을때 사용. 현재는 db에서 author_id를 안 돌려줌
   // const canDelete = user?.id === comment.author_id;
 
   const handleDelete = async (commentId: string) => {
-    const { data, error } = await deleteComment(commentId);
-
-    if (data) {
-      const { data: updatedComments } = await getComments();
-
-      if (updatedComments) {
-        const commentTree = makeCommentTree(updatedComments);
-        setComments(commentTree);
+    const { data, error, count } = await supabase.rpc(
+      "delete_news_comment",
+      {
+        _id: commentId,
+        _news_id: news.id,
+      },
+      {
+        count: "exact",
       }
+    );
+    if (error) {
+      console.error("Error deleting comment:", error);
+      return;
     }
-  };
-
-  const handleDeleteReply = async (replyId: string) => {
-    await handleDelete(replyId);
+    setComments(data);
   };
 
   const handleSubmitReply = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!replyContent.trim()) return;
 
-    const { data, error } = await addComment(replyContent, comment.id);
-    setReplyContent("");
-    setIsReplying(false);
-
-    if (data) {
-      const commentTree = makeCommentTree(data);
-      setComments(commentTree);
+    const { data, error } = await supabase.rpc(
+      "add_news_comment",
+      {
+        _content: replyContent,
+        _news_id: news.id,
+        _parent_id: comment.id,
+      },
+      {
+        count: "exact",
+      }
+    );
+    if (error) {
+      console.error("Error adding reply:", error);
+      return;
     }
+    setIsReplying(false);
+    setComments(data);
+    setReplyContent("");
   };
 
   return (
@@ -169,6 +169,7 @@ export function Comment({
           <p className="mt-2">{comment.content}</p>
 
           <Button
+            variant="ghost"
             size="sm"
             className="mt-2"
             onClick={() => setIsReplying(!isReplying)}
@@ -192,7 +193,7 @@ export function Comment({
                   placeholder="로그인 후 댓글을 달아보세요!"
                   className="w-full"
                   onClick={() => {
-                    router.push(`/sign-in?redirectTo=${pathname}`);
+                    router.push("/sign-in");
                   }}
                   readOnly
                 />
@@ -228,7 +229,7 @@ export function Comment({
               key={reply.id}
               reply={reply}
               user={user}
-              onDelete={handleDeleteReply}
+              onDelete={handleDelete}
             />
           ))}
         </div>

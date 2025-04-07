@@ -1,4 +1,4 @@
-import { IArticles } from "@/types/supabase-table";
+import { INews } from "@/types/supabase-table";
 import { createClient } from "@/utils/supabase/server";
 import Link from "next/link";
 import Image from "next/image";
@@ -6,29 +6,29 @@ import Image from "next/image";
 async function getRelatedPosts(slug: string) {
   const supabase = await createClient();
   const { data, error } = await supabase
-    .from("articles")
+    .from("news")
     .select("created_at")
     .eq("slug", decodeURIComponent(slug))
-    .single<IArticles>();
+    .single<INews>();
 
   if (error) return null;
   if (!data) return null;
 
   const previousPost = supabase
-    .from("articles")
+    .from("news")
     .select("title, slug, thumbnail_url")
     .lt("created_at", data.created_at)
     .order("created_at", { ascending: false })
     .limit(1)
-    .single<IArticles>();
+    .single<INews>();
 
   const nextPost = supabase
-    .from("articles")
+    .from("news")
     .select("title, slug, thumbnail_url")
     .gt("created_at", data.created_at)
     .order("created_at", { ascending: true })
     .limit(1)
-    .single<IArticles>();
+    .single<INews>();
 
   const [
     { data: previousPostData, error: previousPostError },
@@ -38,7 +38,7 @@ async function getRelatedPosts(slug: string) {
   return { previousPost: previousPostData, nextPost: nextPostData };
 }
 
-export default async function ArticleRelatedPosts({ slug }: { slug: string }) {
+export default async function NewsRelatedPosts({ slug }: { slug: string }) {
   const relatedPosts = await getRelatedPosts(slug);
   if (!relatedPosts) return null;
 
@@ -48,7 +48,7 @@ export default async function ArticleRelatedPosts({ slug }: { slug: string }) {
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 my-12">
       {previousPost && (
         <Link
-          href={`/article/${previousPost.slug}`}
+          href={`/news/${previousPost.slug}`}
           className="group flex flex-col rounded-lg shadow-md hover:shadow-lg transition-shadow p-4"
         >
           <div className="text-sm text-gray-600 mb-2">이전 게시물</div>
@@ -72,7 +72,7 @@ export default async function ArticleRelatedPosts({ slug }: { slug: string }) {
 
       {nextPost && (
         <Link
-          href={`/article/${nextPost.slug}`}
+          href={`/news/${nextPost.slug}`}
           className="group flex flex-col rounded-lg shadow-md hover:shadow-lg transition-shadow p-4"
         >
           <div className="text-sm text-gray-600 mb-2 text-right">
