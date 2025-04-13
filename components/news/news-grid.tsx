@@ -38,14 +38,15 @@ export default async function NewsGrid({ news }: NewsGridProps) {
             By {featuredNews.user_info.name} |{" "}
             {new Date(featuredNews.created_at).toLocaleDateString()}
           </div>
-          <div className="relative w-full min-h-[400px] mb-6">
+          <div className="mb-6">
             <Image
               src={
                 featuredNews.thumbnail_url || "/assets/logos/square_high.jpeg"
               }
               alt={featuredNews.title}
-              fill
-              className="rounded-sm object-cover transition-opacity group-hover:opacity-90"
+              width={800}
+              height={400}
+              className="rounded-sm object-cover max-h-[400px] transition-opacity group-hover:opacity-90"
               priority
             />
           </div>
@@ -125,12 +126,13 @@ export default async function NewsGrid({ news }: NewsGridProps) {
                   {news.title}에 대한 내용 더 읽기
                 </span>
               </Link>
-              <div className="relative w-[120px] min-h-[120px] flex-shrink-0">
+              <div className="flex-shrink-0">
                 <Image
                   src={news.thumbnail_url || "/assets/logos/square.jpeg"}
                   alt={news.title}
-                  fill
-                  className="rounded-sm object-cover transition-opacity group-hover:opacity-90"
+                  width={120}
+                  height={120}
+                  className="rounded-sm object-cover max-h-[120px] transition-opacity group-hover:opacity-90"
                 />
               </div>
               <div className="flex-1">
