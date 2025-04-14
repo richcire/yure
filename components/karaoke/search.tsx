@@ -24,7 +24,7 @@ export default function Search({ defaultValue }: { defaultValue?: string }) {
       <Input
         type="search"
         placeholder="제목이나 가수를 입력하세요"
-        className="pl-10 py-6 text-lg"
+        className="pl-10 py-6 text-md"
         name="search"
         defaultValue={defaultValue}
       />

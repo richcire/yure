@@ -31,7 +31,7 @@ export function SongCard({ song }: SongCardProps) {
           <CardTitle className="text-[#F5F5F5] mb-2 font-bold">
             {song.title}
           </CardTitle>
-          <p className="text-sm text-[#F5F5F5] font-bold">{song.artist}</p>
+          <p className="text-sm text-[#F5F5F5] font-medium">{song.artist}</p>
         </div>
       </Card>
     </Link>
