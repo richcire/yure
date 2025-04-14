@@ -84,7 +84,7 @@ export function CategoryFilter({
                 ? "default"
                 : "outline"
             }
-            className={`cursor-pointer`}
+            className={`cursor-pointer font-normal`}
             onClick={() => handleCategoryClick(category.id.toString())}
           >
             {category.name}
@@ -99,6 +99,7 @@ export function CategoryFilter({
           placeholder="카테고리 선택"
           variant="inverted"
           useCommandInput={false}
+          className="font-normal text-sm"
         />
         <Button
           variant="outline"

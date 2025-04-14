@@ -37,12 +37,12 @@ export default async function KaraokePage({ searchParams }: Props) {
   const params = await searchParams;
 
   return (
-    <div className="container max-w-5xl mx-auto py-8 px-4 min-h-screen">
+    <div className="container max-w-5xl mx-auto py-12 px-4 min-h-screen">
       <div className="text-center mb-8">
         <h1 className="text-3xl font-bold flex items-center justify-center gap-2">
           🔍 JPOP 노래방 검색기
         </h1>
-        <p className="text-gray-600 mt-2">
+        <p className="text-muted-foreground mt-2">
           부르고 싶은 노래의 노래방 번호를 찾아보세요!
         </p>
       </div>
