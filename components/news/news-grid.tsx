@@ -46,7 +46,7 @@ export default async function NewsGrid({ news }: NewsGridProps) {
               alt={featuredNews.title}
               width={800}
               height={400}
-              className="h-auto w-full rounded-sm object-cover transition-opacity group-hover:opacity-90"
+              className="rounded-sm object-cover max-h-[400px] transition-opacity group-hover:opacity-90"
               priority
             />
           </div>
@@ -132,7 +132,7 @@ export default async function NewsGrid({ news }: NewsGridProps) {
                   alt={news.title}
                   width={120}
                   height={120}
-                  className="h-24 w-24 rounded-sm object-cover transition-opacity group-hover:opacity-90"
+                  className="rounded-sm object-cover max-h-[120px] transition-opacity group-hover:opacity-90"
                 />
               </div>
               <div className="flex-1">
