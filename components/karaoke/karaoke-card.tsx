@@ -17,7 +17,7 @@ export function KaraokeCard({
     <div className="p-4 bg-transparent border-b text-md">
       <div className="flex items-center">
         <div className="w-[35%]">
-          <h3 className=" font-semibold truncate">{title}</h3>
+          <h3 className="font-medium truncate">{title}</h3>
         </div>
         <div className="w-[35%]">
           <span className="">{artist}</span>

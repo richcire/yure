@@ -109,12 +109,14 @@ const Navigation = () => {
                   className="object-contain"
                   priority
                 />
-                <span className="hidden sm:inline">유레 揺れ</span>
+                <span className="hidden sm:inline font-semibold">
+                  유레 揺れ
+                </span>
               </Link>
             </div>
 
             {/* Navigation Links - Centered */}
-            <div className="hidden md:flex items-center justify-center gap-8 col-span-1">
+            <div className="hidden md:flex items-center justify-center gap-8 col-span-1 font-medium">
               <Link
                 href="/translation"
                 className="hover:text-primary transition-colors whitespace-nowrap"
@@ -339,7 +341,7 @@ const Navigation = () => {
                 <ChevronRight size={16} />
               </Link>
               <Link
-                href="karaoke"
+                href="/karaoke"
                 className="px-4 py-2 hover:bg-gray-50 rounded-md transition-colors flex items-center justify-between"
                 onClick={() => setIsSidebarOpen(false)}
               >

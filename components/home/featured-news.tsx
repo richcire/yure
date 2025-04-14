@@ -30,7 +30,7 @@ export default async function FeaturedNews({
                 <h3 className="text-xl font-bold mb-2 line-clamp-2">
                   {news.title}
                 </h3>
-                <p className="text-gray-600 line-clamp-4">{news.summary}</p>
+                <p className="text-foreground line-clamp-4">{news.summary}</p>
               </div>
             </div>
           </Link>
