@@ -454,7 +454,7 @@ export default function NewsEditor({ id }: { id?: string }) {
           <Dialog>
             <DialogTrigger asChild>
               <Button
-                disabled={!title || title.length > 60}
+                disabled={!title || title.length > 60 || !summary}
                 className="shadow-lg"
               >
                 <Save className="w-4 h-4 mr-2" />
