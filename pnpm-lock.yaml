@@ -7,6 +7,18 @@ settings:
 importers:
   .:
     dependencies:
+      "@fullcalendar/core":
+        specifier: ^6.1.17
+        version: 6.1.17
+      "@fullcalendar/daygrid":
+        specifier: ^6.1.17
+        version: 6.1.17(@fullcalendar/core@6.1.17)
+      "@fullcalendar/interaction":
+        specifier: ^6.1.17
+        version: 6.1.17(@fullcalendar/core@6.1.17)
+      "@fullcalendar/react":
+        specifier: ^6.1.17
+        version: 6.1.17(@fullcalendar/core@6.1.17)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       "@radix-ui/react-accordion":
         specifier: ^1.2.3
         version: 1.2.3(@types/react-dom@19.0.2(@types/react@19.0.8))(@types/react@19.0.8)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
@@ -127,12 +139,12 @@ importers:
       react-dom:
         specifier: 19.0.0
         version: 19.0.0(react@19.0.0)
-      sonner:
-        specifier: ^2.0.1
-        version: 2.0.1(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       schema-dts:
         specifier: ^1.1.5
         version: 1.1.5
+      sonner:
+        specifier: ^2.0.1
+        version: 2.0.1(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       vaul:
         specifier: ^1.1.2
         version: 1.1.2(@types/react-dom@19.0.2(@types/react@19.0.8))(@types/react@19.0.8)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
@@ -212,6 +224,38 @@ packages:
       {
         integrity: sha512-MDWhGtE+eHw5JW7lq4qhc5yRLS11ERl1c7Z6Xd0a58DozHES6EnNNwUWbMiG4J9Cgj053Bhk8zvlhFYKVhULwg==,
       }
+
+  "@fullcalendar/core@6.1.17":
+    resolution:
+      {
+        integrity: sha512-0W7lnIrv18ruJ5zeWBeNZXO8qCWlzxDdp9COFEsZnyNjiEhUVnrW/dPbjRKYpL0edGG0/Lhs0ghp1z/5ekt8ZA==,
+      }
+
+  "@fullcalendar/daygrid@6.1.17":
+    resolution:
+      {
+        integrity: sha512-K7m+pd7oVJ9fW4h7CLDdDGJbc9szJ1xDU1DZ2ag+7oOo1aCNLv44CehzkkknM6r8EYlOOhgaelxQpKAI4glj7A==,
+      }
+    peerDependencies:
+      "@fullcalendar/core": ~6.1.17
+
+  "@fullcalendar/interaction@6.1.17":
+    resolution:
+      {
+        integrity: sha512-AudvQvgmJP2FU89wpSulUUjeWv24SuyCx8FzH2WIPVaYg+vDGGYarI7K6PcM3TH7B/CyaBjm5Rqw9lXgnwt5YA==,
+      }
+    peerDependencies:
+      "@fullcalendar/core": ~6.1.17
+
+  "@fullcalendar/react@6.1.17":
+    resolution:
+      {
+        integrity: sha512-AA8soHhlfRH5dUeqHnfAtzDiXa2vrgWocJSK/F5qzw/pOxc9MqpuoS/nQBROWtHHg6yQUg3DoGqOOhi7dmylXQ==,
+      }
+    peerDependencies:
+      "@fullcalendar/core": ~6.1.17
+      react: ^16.7.0 || ^17 || ^18 || ^19
+      react-dom: ^16.7.0 || ^17 || ^18 || ^19
 
   "@img/sharp-darwin-arm64@0.33.5":
     resolution:
@@ -2561,6 +2605,12 @@ packages:
       }
     engines: { node: ^10 || ^12 || >=14 }
 
+  preact@10.12.1:
+    resolution:
+      {
+        integrity: sha512-l8386ixSsBdbreOAkqtrwqHwdvR35ID8c3rKPa8lCWuO86dBi32QWHV4vfsZK1utLLFMvw+Z5Ad4XLkZzchscg==,
+      }
+
   prettier@3.4.2:
     resolution:
       {
@@ -3194,6 +3244,24 @@ snapshots:
       react-dom: 19.0.0(react@19.0.0)
 
   "@floating-ui/utils@0.2.9": {}
+
+  "@fullcalendar/core@6.1.17":
+    dependencies:
+      preact: 10.12.1
+
+  "@fullcalendar/daygrid@6.1.17(@fullcalendar/core@6.1.17)":
+    dependencies:
+      "@fullcalendar/core": 6.1.17
+
+  "@fullcalendar/interaction@6.1.17(@fullcalendar/core@6.1.17)":
+    dependencies:
+      "@fullcalendar/core": 6.1.17
+
+  "@fullcalendar/react@6.1.17(@fullcalendar/core@6.1.17)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)":
+    dependencies:
+      "@fullcalendar/core": 6.1.17
+      react: 19.0.0
+      react-dom: 19.0.0(react@19.0.0)
 
   "@img/sharp-darwin-arm64@0.33.5":
     optionalDependencies:
@@ -4658,6 +4726,8 @@ snapshots:
       nanoid: 3.3.8
       picocolors: 1.1.1
       source-map-js: 1.2.1
+
+  preact@10.12.1: {}
 
   prettier@3.4.2: {}
 
