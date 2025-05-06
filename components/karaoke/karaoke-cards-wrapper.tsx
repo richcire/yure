@@ -230,8 +230,6 @@ export default function KaraokeCardsWrapper() {
           노래방 곡 추가 신청하기
         </Link>
       </div>
-
-      <BottomDisplayAdWrapper />
     </>
   );
 }

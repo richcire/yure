@@ -8,6 +8,7 @@ import Image from "next/image";
 import { INotifications, IUserInfo } from "@/types/supabase-table";
 import { useRouter, usePathname } from "next/navigation";
 import { User as UserIcon, ChevronRight, BellIcon } from "lucide-react";
+import roundLogo from "@/public/assets/logos/round.png";
 
 const Navigation = () => {
   const [user, setUser] = useState<User | undefined>();
@@ -102,7 +103,7 @@ const Navigation = () => {
             <div className="flex-shrink-0 col-span-1">
               <Link href="/" className="flex items-center gap-2">
                 <Image
-                  src="/assets/logos/round.png"
+                  src={roundLogo}
                   alt="Logo"
                   width={40}
                   height={40}

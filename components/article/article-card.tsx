@@ -2,6 +2,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import Link from "next/link";
 import Image from "next/image";
 import { IArticles } from "@/types/supabase-table";
+import squareLogo from "@/public/assets/logos/square_high.jpeg";
 
 interface ArticleCardProps {
   article: IArticles;
@@ -13,7 +14,7 @@ export function ArticleCard({ article }: ArticleCardProps) {
       <Card className="flex flex-col h-[450px] overflow-hidden transition-all duration-300 hover:shadow-lg group bg-background text-foreground border-2 border-[#69140E]/50 hover:bg-[#69140E]/5">
         <div className="relative aspect-square m-2 mb-3 max-h-[200px]">
           <Image
-            src={article.thumbnail_url || "/assets/logos/square_high.jpeg"}
+            src={article.thumbnail_url || squareLogo}
             alt={article.title}
             fill
             className="object-cover rounded-lg"

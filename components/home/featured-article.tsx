@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils";
 import { IFeaturedArticles } from "@/types/supabase-table";
 import Image from "next/image";
 import Link from "next/link";
-
+import squareLogo from "@/public/assets/logos/square_high.jpeg";
 export function FeaturedArticle({
   articles,
 }: {
@@ -54,9 +54,7 @@ export function FeaturedArticle({
                 <div className="w-full h-full relative">
                   <Image
                     src={
-                      article.banner_url ||
-                      article.thumbnail_url ||
-                      "/assets/logos/square_high.jpeg"
+                      article.banner_url || article.thumbnail_url || squareLogo
                     }
                     alt={`${article.title} thumbnail`}
                     fill

@@ -12,6 +12,7 @@ import { TipTapContentSkeleton } from "@/components/Tiptap/TipTapContentSkeleton
 import TranslationRelatedPosts from "@/components/translation/translation-related-posts";
 import ViewCounter from "@/components/translation/ViewCounter";
 import TranslationRelatedPostsSkeleton from "@/components/translation/translation-related-posts-skeleton";
+import squareLogo from "@/public/assets/logos/square_high.jpeg";
 
 export async function generateMetadata({ params }: Props) {
   const { permalink } = await params;
@@ -36,7 +37,7 @@ export async function generateMetadata({ params }: Props) {
           alt: `${data?.artist} - ${data?.title}`,
         },
         {
-          url: "/assets/logos/square_high.jpeg",
+          url: squareLogo.src,
           width: 1200,
           height: 630,
           alt: `${data?.artist} - ${data?.title}`,
