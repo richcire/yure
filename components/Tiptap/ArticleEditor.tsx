@@ -25,6 +25,8 @@ import {
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import Link from "@tiptap/extension-link";
+import { InstagramExtension } from "./extensions/InstagramExtension";
+
 export default function ArticleEditor({ id }: { id?: string }) {
   const [article, setArticle] = useState<IArticles>();
   const [title, setTitle] = useState("");
@@ -48,6 +50,11 @@ export default function ArticleEditor({ id }: { id?: string }) {
         },
       }),
       YouTubeExtension.configure({
+        HTMLAttributes: {
+          class: "rounded-md",
+        },
+      }),
+      InstagramExtension.configure({
         HTMLAttributes: {
           class: "rounded-md",
         },
