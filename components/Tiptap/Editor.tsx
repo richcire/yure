@@ -30,6 +30,7 @@ import {
 import Link from "@tiptap/extension-link";
 import { MultiSelect } from "../ui/multi-select";
 import { Label } from "../ui/label";
+import { InstagramExtension } from "./extensions/InstagramExtension";
 
 interface CategoryOption {
   value: number;
@@ -75,6 +76,11 @@ export default function TiptapEditor({ id }: { id?: string }) {
         },
       }),
       YouTubeExtension.configure({
+        HTMLAttributes: {
+          class: "rounded-md",
+        },
+      }),
+      InstagramExtension.configure({
         HTMLAttributes: {
           class: "rounded-md",
         },
