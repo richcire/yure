@@ -16,6 +16,8 @@ const nextConfig: NextConfig = {
         hostname: "**",
       },
     ],
+    //1달 캐시
+    minimumCacheTTL: 2678400,
   },
 
   //폰트 파일은 인덱스 안되게
