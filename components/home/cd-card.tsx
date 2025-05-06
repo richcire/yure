@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ITranslations } from "@/types/supabase-table";
-
+import squareLogo from "@/public/assets/logos/square_high.jpeg";
 interface CDCardProps {
   song: ITranslations;
   index?: number;
@@ -23,7 +23,7 @@ export function CDCard({ song, index }: CDCardProps) {
           {/* CD Image */}
           <div className="absolute inset-[1%] rounded-full overflow-hidden transition-transform duration-1000 ease-in-out group-hover:rotate-[360deg]">
             <Image
-              src={song.thumbnail_url || "/assets/logos/square_high.jpeg"}
+              src={song.thumbnail_url || squareLogo}
               alt={`${song.title} album cover`}
               fill
               className="object-cover"

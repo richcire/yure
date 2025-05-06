@@ -2,6 +2,7 @@ import { IArticles } from "@/types/supabase-table";
 import { createClient } from "@/utils/supabase/server";
 import Link from "next/link";
 import Image from "next/image";
+import squareLogo from "@/public/assets/logos/square_high.jpeg";
 
 async function getRelatedPosts(slug: string) {
   const supabase = await createClient();
@@ -54,9 +55,7 @@ export default async function ArticleRelatedPosts({ slug }: { slug: string }) {
           <div className="text-sm text-gray-600 mb-2">이전 게시물</div>
           <div className="relative aspect-video mb-3 w-full">
             <Image
-              src={
-                previousPost.thumbnail_url || "/assets/logos/square_high.jpeg"
-              }
+              src={previousPost.thumbnail_url || squareLogo}
               alt={previousPost.title}
               fill
               className="rounded object-cover"
@@ -80,7 +79,7 @@ export default async function ArticleRelatedPosts({ slug }: { slug: string }) {
           </div>
           <div className="relative aspect-video mb-3 w-full">
             <Image
-              src={nextPost.thumbnail_url || "/assets/logos/square_high.jpeg"}
+              src={nextPost.thumbnail_url || squareLogo}
               alt={nextPost.title}
               fill
               className="rounded object-cover"
