@@ -4,6 +4,7 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { signInWithGoogleAction } from "@/app/actions";
 import { useSearchParams } from "next/navigation";
+import roundLogo from "@/public/assets/logos/round.png";
 
 const LoginPage = () => {
   const searchParams = useSearchParams();
@@ -18,12 +19,7 @@ const LoginPage = () => {
       {/* Logo Section */}
       <div className="flex flex-col items-center mb-8">
         <div className="w-16 h-16 relative mb-4">
-          <Image
-            src="/assets/logos/round.png" // Make sure to add your logo
-            alt="Logo"
-            fill
-            className="object-contain"
-          />
+          <Image src={roundLogo} alt="Logo" fill className="object-contain" />
         </div>
         <h1 className="text-2xl font-bold text-foreground mb-6">
           유레에 가입 또는 로그인하기

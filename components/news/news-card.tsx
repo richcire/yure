@@ -2,7 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Calendar } from "lucide-react";
 import { INews } from "@/types/supabase-table";
-
+import squareLogo from "@/public/assets/logos/square_high.jpeg";
 interface NewsCardProps {
   news: INews[];
 }
@@ -26,7 +26,7 @@ export default function NewsCard({ news }: NewsCardProps) {
           <div className="flex flex-col gap-4 sm:flex-row">
             <div className="sm:w-1/4">
               <Image
-                src={newsItem.thumbnail_url || "/assets/logos/square_high.jpeg"}
+                src={newsItem.thumbnail_url || squareLogo}
                 alt={newsItem.title}
                 width={300}
                 height={200}

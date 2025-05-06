@@ -2,7 +2,7 @@ import Search from "../../../components/karaoke/search";
 import { Metadata } from "next";
 import KaraokeSongs from "@/components/karaoke/karaoke-songs";
 import { SideVerticalDisplayAdWrapper } from "@/components/google-adsense/side-vertical-display-ad-wrapper";
-import { BottomDisplayAdWrapper } from "@/components/google-adsense/bottom-display-ad-wrapper";
+import squareLogo from "@/public/assets/logos/square_high.jpeg";
 
 export const metadata: Metadata = {
   title: "JPOP 일본 노래 노래방 번호 검색기 • 유레 揺れ",
@@ -14,7 +14,7 @@ export const metadata: Metadata = {
       "부르고 싶은 노래의 노래방 번호를 찾아보세요! J-POP 노래부터 애니메이션 노래, 보컬로이드 노래까지 다양한 노래를 한곳에서 쉽게 찾을 수 있습니다.",
     images: [
       {
-        url: "/assets/logos/square_high.jpeg",
+        url: squareLogo.src,
         width: 1200,
         height: 630,
         alt: "유레 揺れ",
