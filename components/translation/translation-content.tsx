@@ -7,6 +7,8 @@ import { TextAlign } from "@tiptap/extension-text-align";
 import { YouTubeExtension } from "../Tiptap/extensions/YouTubeExtension";
 import { Highlight } from "@tiptap/extension-highlight";
 import Link from "@tiptap/extension-link";
+import { InstagramExtension } from "../Tiptap/extensions/InstagramExtension";
+
 export default function TranslationContent({ content }: { content: string }) {
   const editor = useEditor({
     immediatelyRender: false,
@@ -21,6 +23,11 @@ export default function TranslationContent({ content }: { content: string }) {
         },
       }),
       YouTubeExtension.configure({
+        HTMLAttributes: {
+          class: "rounded-md",
+        },
+      }),
+      InstagramExtension.configure({
         HTMLAttributes: {
           class: "rounded-md",
         },

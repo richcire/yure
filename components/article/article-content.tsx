@@ -7,6 +7,7 @@ import { ImageExtension } from "@/components/Tiptap/extensions/ImageExtension";
 import { YouTubeExtension } from "@/components/Tiptap/extensions/YouTubeExtension";
 import { Highlight } from "@tiptap/extension-highlight";
 import Link from "@tiptap/extension-link";
+import { InstagramExtension } from "@/components/Tiptap/extensions/InstagramExtension";
 interface ArticleContentProps {
   content: string;
 }
@@ -25,6 +26,11 @@ export default function ArticleContent({ content }: ArticleContentProps) {
         },
       }),
       YouTubeExtension.configure({
+        HTMLAttributes: {
+          class: "rounded-md",
+        },
+      }),
+      InstagramExtension.configure({
         HTMLAttributes: {
           class: "rounded-md",
         },
