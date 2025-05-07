@@ -107,7 +107,7 @@ interface CalendarProps {
 function transformEvents(dbEvents: IEvents[]): EventData[] {
   return dbEvents.map((event) => ({
     id: event.id.toString(),
-    groupId: event.event_type_id || "기타",
+    groupId: event.event_types.name || "기타",
     title: event.title,
     start: event.start_date,
     end: event.end_date,

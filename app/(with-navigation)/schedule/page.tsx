@@ -1,10 +1,5 @@
 import Header from "@/components/schedule/schedule-header";
 import ScheduleList from "@/components/schedule/schedule-list";
-// import interactionPlugin from "@fullcalendar/interaction";
-
-// const handleDateClick = () => {
-//   alert("날짜 선택됨");
-// };
 
 interface Props {
   searchParams: Promise<{

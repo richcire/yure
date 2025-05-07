@@ -116,10 +116,15 @@ export interface ITest {
 
 export interface IEvents {
   id: string;
-  event_type_id: string;
+  event_types: IEventTypes;
   title: string;
   description: string;
   start_date: string;
   end_date: string;
   created_at: string;
+}
+
+export interface IEventTypes {
+  id: string;
+  name: string;
 }
