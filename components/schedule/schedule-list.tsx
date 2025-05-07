@@ -1,100 +1,39 @@
-"use client";
+import { PaginationControl } from "@/components/ui/pagination-control";
+import { IEvents } from "@/types/supabase-table";
+import { createClient } from "@/utils/supabase/server";
+// import { BottomDisplayAdWrapper } from "../google-adsense/bottom-display-ad-wrapper";
+import ScheduleCard from "@/components/schedule/schedule-card";
+import Calendar from "@/components/schedule/calendar";
 
-import { Calendar } from "lucide-react";
-import {
-  Dialog,
-  DialogTitle,
-  DialogDescription,
-  DialogContent,
-} from "@/components/ui/dialog";
-import { useState } from "react";
+const ITEMS_PER_PAGE = 9;
 
-export default function ScheduleList() {
-  const [isOpen, setIsOpen] = useState(false);
+interface Props {
+  searchParams: Promise<{
+    search?: string; // 검색 키워드
+    page?: string;
+  }>;
+}
 
-  const eventsData = [
-    {
-      id: "1",
-      groupId: "콘서트",
-      title: "요네즈 켄시",
-      start: "2025-04-10T10:00:00",
-      end: "2025-04-10T11:00:00",
-      extendedProps: {
-        content: "abc",
-      },
-    },
-    {
-      id: "2",
-      groupId: "팬미팅",
-      title: "아이묭",
-      start: "2025-04-11",
-      end: "2025-04-11",
-      extendedProps: {
-        content: "def",
-      },
-    },
-    {
-      id: "3",
-      groupId: "콘서트",
-      title: "나",
-      start: "2025-04-11",
-      end: "2025-04-11",
-      extendedProps: {
-        content: "def",
-      },
-    },
-    {
-      id: "4",
-      groupId: "팬미팅",
-      title: "미세스 그린 애플",
-      start: "2025-04-11",
-      end: "2025-04-11",
-      extendedProps: {
-        content: "def",
-      },
-    },
-  ];
+export default async function ScheduleList({ searchParams }: Props) {
+  const { search, page = "1" } = await searchParams;
+  const currentPage = parseInt(page);
+  const supabase = await createClient();
+
+  const { data: events } = await supabase.from("events").select("*");
+
+  console.log(events);
 
   return (
-    <div className="space-y-6">
-      {eventsData.map((eventItem, index) => (
-        <div
-          key={eventItem.id}
-          className="relative group border-b border-gray-300 pb-6 last:border-b-0 transition-colors hover:text-muted-foreground"
-        >
-          <div
-            className="flex flex-col gap-4 sm:flex-row"
-            onClick={() => {
-              setIsOpen(true);
-            }}
-          >
-            <div className="flex-1 sm:w-3/4">
-              <div className="mb-1 flex items-center gap-3">
-                <div className="flex items-center gap-1 text-xs text-gray-600">
-                  <Calendar className="h-3 w-3" />
-                  <span>{new Date(eventItem.start).toLocaleDateString()}</span>
-                </div>
-              </div>
-              <h2 className="mb-2 text-xl font-bold leading-tight sm:text-2xl line-clamp-2 lg:line-clamp-1">
-                {eventItem.title}
-              </h2>
-              <p className="mb-3 text-gray-700 line-clamp-3 lg:line-clamp-2">
-                {eventItem.groupId}
-              </p>
-              <span className="text-sm font-medium text-gray-600">
-                예매하기
-              </span>
-            </div>
-          </div>
-          <Dialog open={isOpen} onOpenChange={setIsOpen}>
-            <DialogContent>
-              <DialogTitle>{eventItem.title}</DialogTitle>
-              <DialogDescription>Event Details</DialogDescription>
-              <div>{eventItem.extendedProps?.content}</div>
-            </DialogContent>
-          </Dialog>
-        </div>
-      ))}
-    </div>
+    <>
+      {events ? (
+        search ? (
+          <ScheduleCard events={events} />
+        ) : (
+          <Calendar events={events} />
+        )
+      ) : (
+        ""
+      )}
+    </>
   );
 }

@@ -10,6 +10,7 @@ import {
   DialogDescription,
   DialogContent,
 } from "@/components/ui/dialog";
+import { IEvents } from "@/types/supabase-table";
 
 // 이벤트 유형 정의
 type EventGroupId = "콘서트" | "팬미팅" | string;
@@ -99,11 +100,29 @@ const eventsData: EventData[] = [
   },
 ];
 
-export default function Calendar() {
+interface CalendarProps {
+  events: IEvents[];
+}
+
+function transformEvents(dbEvents: IEvents[]): EventData[] {
+  return dbEvents.map((event) => ({
+    id: event.id.toString(),
+    groupId: event.event_type_id || "기타",
+    title: event.title,
+    start: event.start_date,
+    end: event.end_date,
+    extendedProps: {
+      content: event.description || "",
+    },
+  }));
+}
+
+export default function Calendar({ events }: CalendarProps) {
   const [selectedEvent, setSelectedEvent] = useState<EventApi | null>(null);
   const [isOpen, setIsOpen] = useState(false);
   // 색상이 적용된 이벤트 데이터 생성
-  const coloredEvents = applyEventColors(eventsData);
+  // const coloredEvents = applyEventColors(events);
+  const transformedEvents = applyEventColors(transformEvents(events));
 
   // 범례에 사용할 컬러맵 정의 - applyEventColors의 colorMap과 동일하게 유지
   const legendColorMap: Record<EventGroupId, ColorSet> = {
@@ -116,7 +135,7 @@ export default function Calendar() {
       <FullCalendar
         plugins={[dayGridPlugin]}
         initialView="dayGridMonth"
-        events={coloredEvents}
+        events={transformedEvents}
         eventTextColor="#000000"
         locale="ko"
         height={"80vh"}
