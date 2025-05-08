@@ -16,7 +16,7 @@ interface Props {
 }
 
 export default async function ScheduleList({ searchParams }: Props) {
-  const { search, page = "1", sort = "created_desc" } = await searchParams;
+  const { search, page = "1", sort = "전체" } = await searchParams;
   const currentPage = parseInt(page);
   const supabase = await createClient();
 
