@@ -5,6 +5,7 @@ interface Props {
   searchParams: Promise<{
     search?: string;
     page?: string;
+    sort?: string;
   }>;
 }
 

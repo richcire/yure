@@ -19,7 +19,7 @@ export function ScheduleFilters() {
     searchParams.get("search")?.toString() || ""
   );
 
-  const currentSort = searchParams.get("sort") || "concert";
+  const currentSort = searchParams.get("sort") || "전체";
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -55,8 +55,9 @@ export function ScheduleFilters() {
           <SelectValue placeholder="Sort by" />
         </SelectTrigger>
         <SelectContent>
-          <SelectItem value="concert">콘서트</SelectItem>
-          <SelectItem value="fan_meeting">팬미팅</SelectItem>
+          <SelectItem value="전체">전체</SelectItem>
+          <SelectItem value="콘서트">콘서트</SelectItem>
+          <SelectItem value="팬미팅">팬미팅</SelectItem>
         </SelectContent>
       </Select>
     </div>

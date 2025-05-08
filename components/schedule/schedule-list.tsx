@@ -5,6 +5,8 @@ import { BottomDisplayAdWrapper } from "../google-adsense/bottom-display-ad-wrap
 import ScheduleCard from "@/components/schedule/schedule-card";
 import Calendar from "@/components/schedule/calendar";
 
+const ITEMS_PER_PAGE = 9;
+
 interface Props {
   searchParams: Promise<{
     search?: string; // 검색 키워드
@@ -28,7 +30,8 @@ export default async function ScheduleList({ searchParams }: Props) {
       start_date,
       end_date,
       created_at
-    `
+    `,
+    { count: "exact" }
   );
 
   if (search) {
@@ -37,15 +40,18 @@ export default async function ScheduleList({ searchParams }: Props) {
     query = query.or(`title.ilike.%${searchTerm}%`);
   }
 
-  // Determine sort direction
-  const ascending = sort === "created_asc";
+  // 이벤트 타입으로 필터링 (콘서트 또는 팬미팅)
+  if (sort === "콘서트" || sort === "팬미팅") {
+    query = query.eq("event_types.name", sort);
+  }
 
   // Fetch paginated data with sorting
-  const { data: events } = await query
-    .order("created_at", { ascending })
+  const { data: events, count } = await query
+    .order("created_at", { ascending: false })
+    .range((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE - 1)
     .returns<IEvents[]>();
 
-  console.log(events);
+  const totalPages = Math.ceil((count || 0) / ITEMS_PER_PAGE);
 
   return (
     <>
@@ -59,6 +65,9 @@ export default async function ScheduleList({ searchParams }: Props) {
         ""
       )}
       <BottomDisplayAdWrapper />
+      {totalPages > 1 && (
+        <PaginationControl currentPage={currentPage} totalPages={totalPages} />
+      )}
     </>
   );
 }
