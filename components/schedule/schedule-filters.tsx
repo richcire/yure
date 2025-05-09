@@ -31,7 +31,14 @@ export function ScheduleFilters() {
 
   const handleSortChange = (value: string) => {
     const params = new URLSearchParams(searchParams.toString());
-    params.set("sort", value);
+
+    // 전체 선택시 sort 파라미터 삭제
+    if (value === "전체") {
+      params.delete("sort");
+    } else {
+      params.set("sort", value);
+    }
+
     router.push(`${pathname}?${params.toString()}`);
   };
 

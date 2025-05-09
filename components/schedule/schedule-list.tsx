@@ -16,7 +16,7 @@ interface Props {
 }
 
 export default async function ScheduleList({ searchParams }: Props) {
-  const { search, page = "1", sort = "전체" } = await searchParams;
+  const { search, page = "1", sort } = await searchParams;
   const currentPage = parseInt(page);
   const supabase = await createClient();
 
@@ -40,8 +40,8 @@ export default async function ScheduleList({ searchParams }: Props) {
     query = query.or(`title.ilike.%${searchTerm}%`);
   }
 
-  // 이벤트 타입으로 필터링 (콘서트 또는 팬미팅)
-  if (sort === "콘서트" || sort === "팬미팅") {
+  // 이벤트 타입으로 필터링
+  if (sort) {
     query = query.eq("event_types.name", sort);
   }
 
