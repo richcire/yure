@@ -17,49 +17,6 @@ interface ScheduleCardProps {
 export default function ScheduleCard({ events }: ScheduleCardProps) {
   const [isOpen, setIsOpen] = useState(false);
 
-  const eventsData = [
-    {
-      id: "1",
-      groupId: "콘서트",
-      title: "요네즈 켄시",
-      start: "2025-04-10T10:00:00",
-      end: "2025-04-10T11:00:00",
-      extendedProps: {
-        content: "abc",
-      },
-    },
-    {
-      id: "2",
-      groupId: "팬미팅",
-      title: "아이묭",
-      start: "2025-04-11",
-      end: "2025-04-11",
-      extendedProps: {
-        content: "def",
-      },
-    },
-    {
-      id: "3",
-      groupId: "콘서트",
-      title: "나",
-      start: "2025-04-11",
-      end: "2025-04-11",
-      extendedProps: {
-        content: "def",
-      },
-    },
-    {
-      id: "4",
-      groupId: "팬미팅",
-      title: "미세스 그린 애플",
-      start: "2025-04-11",
-      end: "2025-04-11",
-      extendedProps: {
-        content: "def",
-      },
-    },
-  ];
-
   return (
     <div className="space-y-6">
       {events.map((eventItem, index) => (
