@@ -123,8 +123,9 @@ export default function Calendar({ events }: CalendarProps) {
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
         <DialogContent>
           <DialogTitle>{selectedEvent?.title}</DialogTitle>
-          <DialogDescription>Event Details</DialogDescription>
-          <div>{selectedEvent?.extendedProps?.content}</div>
+          <DialogDescription>
+            {selectedEvent?.extendedProps?.content}
+          </DialogDescription>
         </DialogContent>
       </Dialog>
     </div>

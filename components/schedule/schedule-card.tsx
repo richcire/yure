@@ -50,11 +50,11 @@ export default function ScheduleCard({ events }: ScheduleCardProps) {
               </span>
             </div>
           </div>
+
           <Dialog open={isOpen} onOpenChange={setIsOpen}>
             <DialogContent>
               <DialogTitle>{eventItem.title}</DialogTitle>
-              <DialogDescription>Event Details</DialogDescription>
-              <div>{eventItem.description}</div>
+              <DialogDescription>{eventItem.description}</DialogDescription>
             </DialogContent>
           </Dialog>
         </div>
