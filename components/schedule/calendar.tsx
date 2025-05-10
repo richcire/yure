@@ -12,21 +12,22 @@ import {
 } from "@/components/ui/dialog";
 import { IEvents } from "@/types/supabase-table";
 
-// 이벤트 유형 정의
-type EventGroupId = "콘서트" | "팬미팅" | string;
+interface CalendarProps {
+  events: IEvents[];
+}
 
+// FullCalendar 이벤트 데이터 타입
 interface EventData {
   id: string;
-  groupId: EventGroupId;
+  groupId: string;
   title: string;
   start: string;
   end: string;
   extendedProps: {
-    content: string;
+    description: string;
   };
   backgroundColor?: string;
   borderColor?: string;
-  textColor?: string;
 }
 
 interface ColorSet {
@@ -34,20 +35,29 @@ interface ColorSet {
   border: string;
 }
 
-// 이벤트 색상 설정 유틸리티 함수
+// DB 이벤트 데이터를 FullCalendar 이벤트 데이터로 변환
+function transformEvents(dbEvents: IEvents[]): EventData[] {
+  return dbEvents.map((event) => ({
+    id: event.id,
+    groupId: event.event_types.name,
+    title: event.title,
+    start: event.start_date,
+    end: event.end_date,
+    extendedProps: {
+      description: event.description,
+    },
+  }));
+}
+
+// 이벤트 색상 설정 함수
 function applyEventColors(events: EventData[]): EventData[] {
-  const colorMap: Record<EventGroupId, ColorSet> = {
+  const colorMap: Record<EventData["groupId"], ColorSet> = {
     콘서트: { bg: "#F8BBD0", border: "#F48FB1" },
     앨범: { bg: "#C8E6C9", border: "#A5D6A7" },
-    // 필요시 다른 groupId에 대한 색상 추가
   };
 
   return events.map((event) => {
-    const defaultColors: ColorSet = {
-      bg: "#BBDEFB",
-      border: "#90CAF9",
-    };
-    const colors = colorMap[event.groupId] || defaultColors;
+    const colors = colorMap[event.groupId];
 
     return {
       ...event,
@@ -57,32 +67,15 @@ function applyEventColors(events: EventData[]): EventData[] {
   });
 }
 
-interface CalendarProps {
-  events: IEvents[];
-}
-
-function transformEvents(dbEvents: IEvents[]): EventData[] {
-  return dbEvents.map((event) => ({
-    id: event.id.toString(),
-    groupId: event.event_types.name || "기타",
-    title: event.title,
-    start: event.start_date,
-    end: event.end_date,
-    extendedProps: {
-      content: event.description || "",
-    },
-  }));
-}
-
 export default function Calendar({ events }: CalendarProps) {
   const [selectedEvent, setSelectedEvent] = useState<EventApi | null>(null);
   const [isOpen, setIsOpen] = useState(false);
+
   // 색상이 적용된 이벤트 데이터 생성
-  // const coloredEvents = applyEventColors(events);
   const transformedEvents = applyEventColors(transformEvents(events));
 
   // 범례에 사용할 컬러맵 정의 - applyEventColors의 colorMap과 동일하게 유지
-  const legendColorMap: Record<EventGroupId, ColorSet> = {
+  const legendColorMap: Record<EventData["groupId"], ColorSet> = {
     콘서트: { bg: "#F8BBD0", border: "#F48FB1" },
     앨범: { bg: "#C8E6C9", border: "#A5D6A7" },
   };
@@ -107,12 +100,10 @@ export default function Calendar({ events }: CalendarProps) {
         {Object.entries(legendColorMap).map(([groupId, colors]) => (
           <div key={groupId} className="flex items-center gap-2">
             <div
-              className="w-5 h-5 rounded"
+              className="w-5 h-5 rounded border border-solid"
               style={{
                 backgroundColor: colors.bg,
                 borderColor: colors.border,
-                borderWidth: "1px",
-                borderStyle: "solid",
               }}
             />
             <span>{groupId}</span>
@@ -124,7 +115,7 @@ export default function Calendar({ events }: CalendarProps) {
         <DialogContent>
           <DialogTitle>{selectedEvent?.title}</DialogTitle>
           <DialogDescription>
-            {selectedEvent?.extendedProps?.content}
+            {selectedEvent?.extendedProps?.description}
           </DialogDescription>
         </DialogContent>
       </Dialog>
