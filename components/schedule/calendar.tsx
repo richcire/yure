@@ -38,7 +38,7 @@ interface ColorSet {
 function applyEventColors(events: EventData[]): EventData[] {
   const colorMap: Record<EventGroupId, ColorSet> = {
     콘서트: { bg: "#F8BBD0", border: "#F48FB1" },
-    팬미팅: { bg: "#C8E6C9", border: "#A5D6A7" },
+    앨범: { bg: "#C8E6C9", border: "#A5D6A7" },
     // 필요시 다른 groupId에 대한 색상 추가
   };
 
@@ -56,49 +56,6 @@ function applyEventColors(events: EventData[]): EventData[] {
     };
   });
 }
-
-const eventsData: EventData[] = [
-  {
-    id: "1",
-    groupId: "콘서트",
-    title: "요네즈 켄시",
-    start: "2025-04-10T10:00:00",
-    end: "2025-04-10T11:00:00",
-    extendedProps: {
-      content: "abc",
-    },
-  },
-  {
-    id: "2",
-    groupId: "팬미팅",
-    title: "아이묭",
-    start: "2025-04-11",
-    end: "2025-04-11",
-    extendedProps: {
-      content: "def",
-    },
-  },
-  {
-    id: "3",
-    groupId: "콘서트",
-    title: "나",
-    start: "2025-04-11",
-    end: "2025-04-11",
-    extendedProps: {
-      content: "def",
-    },
-  },
-  {
-    id: "4",
-    groupId: "팬미팅",
-    title: "미세스 그린 애플",
-    start: "2025-04-11",
-    end: "2025-04-11",
-    extendedProps: {
-      content: "def",
-    },
-  },
-];
 
 interface CalendarProps {
   events: IEvents[];
@@ -127,7 +84,7 @@ export default function Calendar({ events }: CalendarProps) {
   // 범례에 사용할 컬러맵 정의 - applyEventColors의 colorMap과 동일하게 유지
   const legendColorMap: Record<EventGroupId, ColorSet> = {
     콘서트: { bg: "#F8BBD0", border: "#F48FB1" },
-    팬미팅: { bg: "#C8E6C9", border: "#A5D6A7" },
+    앨범: { bg: "#C8E6C9", border: "#A5D6A7" },
   };
 
   return (
@@ -161,18 +118,6 @@ export default function Calendar({ events }: CalendarProps) {
             <span>{groupId}</span>
           </div>
         ))}
-        <div className="flex items-center gap-2">
-          <div
-            className="w-5 h-5 rounded"
-            style={{
-              backgroundColor: "#BBDEFB",
-              borderColor: "#90CAF9",
-              borderWidth: "1px",
-              borderStyle: "solid",
-            }}
-          />
-          <span>기타</span>
-        </div>
       </div>
 
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
