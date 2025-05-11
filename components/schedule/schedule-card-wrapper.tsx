@@ -24,7 +24,7 @@ export default async function ScheduleCardWrapper({ searchParams }: Props) {
       id,
       title,
       description,
-      event_types!inner (id, name),
+      event_types!inner (id, name, bg_color, border_color),
       start_date,
       end_date,
       created_at

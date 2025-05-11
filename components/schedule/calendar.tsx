@@ -23,16 +23,11 @@ interface EventData {
   title: string;
   start: string;
   end: string;
+  backgroundColor: string;
+  borderColor: string;
   extendedProps: {
     description: string;
   };
-  backgroundColor?: string;
-  borderColor?: string;
-}
-
-interface ColorSet {
-  bg: string;
-  border: string;
 }
 
 // DB 이벤트 데이터를 FullCalendar 이벤트 데이터로 변환
@@ -43,42 +38,26 @@ function transformEvents(dbEvents: IEvents[]): EventData[] {
     title: event.title,
     start: event.start_date,
     end: event.end_date,
+    backgroundColor: event.event_types.bg_color,
+    borderColor: event.event_types.border_color,
     extendedProps: {
       description: event.description,
     },
   }));
 }
 
-// 이벤트 색상 설정 함수
-function applyEventColors(events: EventData[]): EventData[] {
-  const colorMap: Record<EventData["groupId"], ColorSet> = {
-    콘서트: { bg: "#F8BBD0", border: "#F48FB1" },
-    앨범: { bg: "#C8E6C9", border: "#A5D6A7" },
-  };
-
-  return events.map((event) => {
-    const colors = colorMap[event.groupId];
-
-    return {
-      ...event,
-      backgroundColor: colors.bg,
-      borderColor: colors.border,
-    };
-  });
-}
-
 export default function Calendar({ events }: CalendarProps) {
   const [selectedEvent, setSelectedEvent] = useState<EventApi | null>(null);
   const [isOpen, setIsOpen] = useState(false);
 
-  // 색상이 적용된 이벤트 데이터 생성
-  const transformedEvents = applyEventColors(transformEvents(events));
+  const transformedEvents = transformEvents(events);
 
-  // 범례에 사용할 컬러맵 정의 - applyEventColors의 colorMap과 동일하게 유지
-  const legendColorMap: Record<EventData["groupId"], ColorSet> = {
-    콘서트: { bg: "#F8BBD0", border: "#F48FB1" },
-    앨범: { bg: "#C8E6C9", border: "#A5D6A7" },
-  };
+  // 고유 이벤트 타입 추출
+  const uniqueEventTypes = Array.from(
+    new Map(
+      events.map((event) => [event.event_types.name, event.event_types])
+    ).values()
+  );
 
   return (
     <div className="px-4 py-8">
@@ -97,16 +76,16 @@ export default function Calendar({ events }: CalendarProps) {
 
       {/* 색상 범례 */}
       <div className="mt-4 mb-8 flex flex-wrap gap-4 justify-center">
-        {Object.entries(legendColorMap).map(([groupId, colors]) => (
-          <div key={groupId} className="flex items-center gap-2">
+        {uniqueEventTypes.map((eventType) => (
+          <div key={eventType.name} className="flex items-center gap-2">
             <div
               className="w-5 h-5 rounded border border-solid"
               style={{
-                backgroundColor: colors.bg,
-                borderColor: colors.border,
+                backgroundColor: eventType.bg_color,
+                borderColor: eventType.border_color,
               }}
             />
-            <span>{groupId}</span>
+            <span>{eventType.name}</span>
           </div>
         ))}
       </div>

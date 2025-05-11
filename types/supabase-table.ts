@@ -127,4 +127,6 @@ export interface IEvents {
 export interface IEventTypes {
   id: string;
   name: string;
+  bg_color: string;
+  border_color: string;
 }
