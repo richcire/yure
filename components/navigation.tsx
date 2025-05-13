@@ -8,6 +8,7 @@ import Image from "next/image";
 import { INotifications, IUserInfo } from "@/types/supabase-table";
 import { useRouter, usePathname } from "next/navigation";
 import { User as UserIcon, ChevronRight, BellIcon } from "lucide-react";
+import roundLogo from "@/public/assets/logos/round.png";
 
 const Navigation = () => {
   const [user, setUser] = useState<User | undefined>();
@@ -97,24 +98,26 @@ const Navigation = () => {
         className={`fixed top-0 left-0 right-0 h-[60px] transition-all duration-300 z-50 bg-background border-b border-border`}
       >
         <div className="container mx-auto h-full px-4">
-          <div className="grid grid-cols-3 sm:grid-cols-6 lg:grid-cols-3 items-center h-full">
+          <div className="grid grid-cols-2 md:grid-cols-3 items-center h-full">
             {/* Logo */}
-            <div className="flex-shrink-0 col-span-2 sm:col-span-2 lg:col-span-1">
+            <div className="flex-shrink-0 col-span-1">
               <Link href="/" className="flex items-center gap-2">
                 <Image
-                  src="/assets/logos/round.png"
+                  src={roundLogo}
                   alt="Logo"
                   width={40}
                   height={40}
                   className="object-contain"
                   priority
                 />
-                <span className="hidden sm:inline">유레 揺れ</span>
+                <span className="hidden sm:inline font-semibold">
+                  유레 揺れ
+                </span>
               </Link>
             </div>
 
             {/* Navigation Links - Centered */}
-            <div className="hidden sm:flex items-center justify-center gap-8 col-span-2 lg:col-span-1">
+            <div className="hidden md:flex items-center justify-center gap-8 col-span-1 font-medium">
               <Link
                 href="/translation"
                 className="hover:text-primary transition-colors whitespace-nowrap"
@@ -172,8 +175,7 @@ const Navigation = () => {
             </div>
 
             {/* Auth Section */}
-
-            <div className="flex items-center justify-end gap-3 sm:gap-4 col-span-1 sm:col-span-2 lg:col-span-1">
+            <div className="flex items-center justify-end gap-3 md:gap-4 col-span-1">
               {/* Notifications Section */}
               <div>
                 <button
@@ -239,7 +241,7 @@ const Navigation = () => {
                   onClick={() => setShowDropdown((prev) => !prev)}
                 >
                   <div className="text-sm hover:text-primary transition-colors cursor-pointer truncate max-w-[120px] sm:max-w-none">
-                    안녕하세요, {name}님!
+                    <UserIcon size={20} />
                   </div>
                   {showDropdown && (
                     <div className="absolute right-0 top-full pt-2">
@@ -264,15 +266,15 @@ const Navigation = () => {
               ) : (
                 <Link
                   href={`/sign-in?redirectTo=${pathname}`}
-                  className="hover:text-primary transition-colors text-sm sm:text-base whitespace-nowrap"
+                  className="bg-primary text-white px-4 py-2 rounded-md hover:bg-primary/90 transition-all text-sm font-medium"
                 >
-                  <UserIcon size={20} />
+                  로그인
                 </Link>
               )}
 
               {/* Mobile Menu Button */}
               <button
-                className="sm:hidden ml-2 p-1"
+                className="md:hidden ml-2 p-1"
                 onClick={() => setIsSidebarOpen(true)}
               >
                 <svg
@@ -346,7 +348,7 @@ const Navigation = () => {
                 <ChevronRight size={16} />
               </Link>
               <Link
-                href="karaoke"
+                href="/karaoke"
                 className="px-4 py-2 hover:bg-gray-50 rounded-md transition-colors flex items-center justify-between"
                 onClick={() => setIsSidebarOpen(false)}
               >

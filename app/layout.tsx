@@ -1,9 +1,12 @@
-import { Gothic_A1 } from "next/font/google";
 import { ThemeProvider } from "next-themes";
 import "./globals.css";
 import { WebVitals } from "@/components/web-vitals";
 import { AdSenseCodeSnippet } from "@/components/google-adsense/adsense-code-snippet";
 import { Toaster } from "@/components/ui/sonner";
+import localFont from "next/font/local";
+import roundLogo from "@/public/assets/logos/round.png";
+import squareLogo from "@/public/assets/logos/square_high.jpeg";
+
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
   : "http://localhost:3000";
@@ -14,12 +17,12 @@ export const metadata = {
   description:
     "J-POP을 새로운 방식으로 만나보세요! 좋아하는 J-POP 노래의 번역을 확인하고, 최신 J-POP 뉴스와 기사도 놓치지 마세요. 또한, 원하는 곡의 노래방 번호도 간편하게 검색할 수 있습니다. J-POP 팬들을 위한 최적의 공간!",
   icons: {
-    icon: "/assets/logos/round.png",
+    icon: roundLogo.src,
   },
   openGraph: {
     images: [
       {
-        url: "/assets/logos/square_high.jpeg",
+        url: squareLogo.src,
         width: 1200,
         height: 630,
         alt: "유레 揺れ",
@@ -31,9 +34,54 @@ export const metadata = {
   },
 };
 
-const gothicFont = Gothic_A1({
-  subsets: ["latin"],
-  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
+const gothica1Font = localFont({
+  src: [
+    {
+      path: "../public/fonts/Gothic_A1/GothicA1-Thin.ttf",
+      weight: "100",
+      style: "normal",
+    },
+    {
+      path: "../public/fonts/Gothic_A1/GothicA1-ExtraLight.ttf",
+      weight: "200",
+      style: "normal",
+    },
+    {
+      path: "../public/fonts/Gothic_A1/GothicA1-Light.ttf",
+      weight: "300",
+      style: "normal",
+    },
+    {
+      path: "../public/fonts/Gothic_A1/GothicA1-Regular.ttf",
+      weight: "400",
+      style: "normal",
+    },
+    {
+      path: "../public/fonts/Gothic_A1/GothicA1-Medium.ttf",
+      weight: "500",
+      style: "normal",
+    },
+    {
+      path: "../public/fonts/Gothic_A1/GothicA1-SemiBold.ttf",
+      weight: "600",
+      style: "normal",
+    },
+    {
+      path: "../public/fonts/Gothic_A1/GothicA1-Bold.ttf",
+      weight: "700",
+      style: "normal",
+    },
+    {
+      path: "../public/fonts/Gothic_A1/GothicA1-ExtraBold.ttf",
+      weight: "800",
+      style: "normal",
+    },
+    {
+      path: "../public/fonts/Gothic_A1/GothicA1-Black.ttf",
+      weight: "900",
+      style: "normal",
+    },
+  ],
   display: "swap",
 });
 
@@ -43,7 +91,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ko" className={gothicFont.className} suppressHydrationWarning>
+    <html lang="ko" className={gothica1Font.className} suppressHydrationWarning>
       <head>
         {/* 구글 애드센스 코드 스니펫 */}
         <AdSenseCodeSnippet />

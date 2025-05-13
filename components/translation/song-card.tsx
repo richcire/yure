@@ -2,8 +2,8 @@ import { Card, CardTitle } from "@/components/ui/card";
 import Image from "next/image";
 import Link from "next/link";
 import { ITranslations } from "@/types/supabase-table";
-import { Eye, Activity, ArrowBigUp } from "lucide-react";
-
+import { ArrowBigUp } from "lucide-react";
+import squareLogo from "@/public/assets/logos/square_high.jpeg";
 interface SongCardProps {
   song: ITranslations;
 }
@@ -14,7 +14,7 @@ export function SongCard({ song }: SongCardProps) {
       <Card className="w-full cursor-pointer relative group overflow-hidden aspect-video">
         <div className="absolute inset-0">
           <Image
-            src={song.thumbnail_url || "/assets/logos/square_high.jpeg"}
+            src={song.thumbnail_url || squareLogo}
             alt={`${song.title} album cover`}
             fill
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
@@ -31,7 +31,7 @@ export function SongCard({ song }: SongCardProps) {
           <CardTitle className="text-[#F5F5F5] mb-2 font-bold">
             {song.title}
           </CardTitle>
-          <p className="text-sm text-[#F5F5F5] font-bold">{song.artist}</p>
+          <p className="text-sm text-[#F5F5F5] font-medium">{song.artist}</p>
         </div>
       </Card>
     </Link>

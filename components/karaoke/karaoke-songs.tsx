@@ -3,7 +3,7 @@
 import { useMediaQuery } from "@/hooks/use-media-query";
 import KaraokeAccordion from "./karaoke-accordion";
 import KaraokeCardsWrapper from "./karaoke-cards-wrapper";
-
+import { BottomDisplayAdWrapper } from "@/components/google-adsense/bottom-display-ad-wrapper";
 export default function KaraokeSongs() {
   const isMobile = useMediaQuery("(max-width: 768px)");
 
@@ -12,8 +12,18 @@ export default function KaraokeSongs() {
   }
 
   if (isMobile) {
-    return <KaraokeAccordion />;
+    return (
+      <>
+        <KaraokeAccordion />
+        <BottomDisplayAdWrapper />
+      </>
+    );
   }
 
-  return <KaraokeCardsWrapper />;
+  return (
+    <>
+      <KaraokeCardsWrapper />
+      <BottomDisplayAdWrapper />
+    </>
+  );
 }

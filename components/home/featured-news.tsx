@@ -1,6 +1,7 @@
 import { IFeaturedNews } from "@/types/supabase-table";
 import Image from "next/image";
 import Link from "next/link";
+import squareLogo from "@/public/assets/logos/square_high.jpeg";
 
 export default async function FeaturedNews({
   news,
@@ -20,7 +21,7 @@ export default async function FeaturedNews({
             <div className="border border-gray-200 rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow">
               <div className="relative h-48 w-full">
                 <Image
-                  src={news.thumbnail_url || "/assets/logos/square_high.jpeg"}
+                  src={news.thumbnail_url || squareLogo}
                   alt={news.title}
                   fill
                   className="object-cover"
@@ -30,7 +31,7 @@ export default async function FeaturedNews({
                 <h3 className="text-xl font-bold mb-2 line-clamp-2">
                   {news.title}
                 </h3>
-                <p className="text-gray-600 line-clamp-4">{news.summary}</p>
+                <p className="text-foreground line-clamp-4">{news.summary}</p>
               </div>
             </div>
           </Link>

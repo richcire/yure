@@ -1,7 +1,7 @@
 import { INews } from "@/types/supabase-table";
 import Image from "next/image";
 import Link from "next/link";
-
+import squareLogo from "@/public/assets/logos/square_high.jpeg";
 interface NewsGridProps {
   news: INews[];
 }
@@ -40,13 +40,11 @@ export default async function NewsGrid({ news }: NewsGridProps) {
           </div>
           <div className="mb-6">
             <Image
-              src={
-                featuredNews.thumbnail_url || "/assets/logos/square_high.jpeg"
-              }
+              src={featuredNews.thumbnail_url || squareLogo}
               alt={featuredNews.title}
               width={800}
               height={400}
-              className="h-auto w-full rounded-sm object-cover transition-opacity group-hover:opacity-90"
+              className="rounded-sm object-cover max-h-[400px] transition-opacity group-hover:opacity-90"
               priority
             />
           </div>
@@ -128,11 +126,11 @@ export default async function NewsGrid({ news }: NewsGridProps) {
               </Link>
               <div className="flex-shrink-0">
                 <Image
-                  src={news.thumbnail_url || "/assets/logos/square.jpeg"}
+                  src={news.thumbnail_url || squareLogo}
                   alt={news.title}
                   width={120}
                   height={120}
-                  className="h-24 w-24 rounded-sm object-cover transition-opacity group-hover:opacity-90"
+                  className="rounded-sm object-cover max-h-[120px] transition-opacity group-hover:opacity-90"
                 />
               </div>
               <div className="flex-1">

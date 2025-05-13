@@ -3,7 +3,7 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   /* config options here */
   images: {
-    formats: ["image/avif", "image/webp"],
+    formats: ["image/webp"],
     // loader: "custom",
     // loaderFile: "./utils/supabase/supabase-image-loader.ts",
     remotePatterns: [
@@ -16,6 +16,8 @@ const nextConfig: NextConfig = {
         hostname: "**",
       },
     ],
+    //1달 캐시
+    minimumCacheTTL: 2678400,
   },
 
   //폰트 파일은 인덱스 안되게

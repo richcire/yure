@@ -1,4 +1,4 @@
-import { use, Suspense } from "react";
+import { Suspense } from "react";
 import {
   ArticleTitle,
   ArticleTitleSkeleton,
@@ -11,6 +11,7 @@ import { IArticles, IComments } from "@/types/supabase-table";
 import { TipTapContentSkeleton } from "@/components/Tiptap/TipTapContentSkeleton";
 import ArticleContentWrapper from "@/components/article/article-content-wrapper";
 import ArticleRelatedPosts from "@/components/article/article-related-posts";
+import squareLogo from "@/public/assets/logos/square_high.jpeg";
 
 const getArticle = async (slug: string) => {
   const supabase = await createClient();
@@ -40,7 +41,7 @@ export async function generateMetadata({ params }: Props) {
           alt: `${decodeURIComponent(slug)}`,
         },
         {
-          url: "/assets/logos/square_high.jpeg",
+          url: squareLogo.src,
           width: 1200,
           height: 630,
           alt: `${decodeURIComponent(slug)}`,

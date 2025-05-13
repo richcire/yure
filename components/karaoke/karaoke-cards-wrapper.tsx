@@ -9,6 +9,7 @@ import { useVirtualizer } from "@tanstack/react-virtual";
 import { cn } from "@/lib/utils";
 import { Checkbox } from "../ui/checkbox";
 import { BottomDisplayAdWrapper } from "../google-adsense/bottom-display-ad-wrapper";
+import Link from "next/link";
 
 export const LoadingSpinner = ({ className }: { className?: string }) => {
   return (
@@ -222,15 +223,13 @@ export default function KaraokeCardsWrapper() {
 
       <div className="flex flex-col items-center justify-center gap-4 p-8">
         <p>찾으시는 노래가 없으신가요?</p>
-        <a
+        <Link
           href="/karaoke/application"
           className="text-[#003844] hover:text-[#214E34] underline"
         >
           노래방 곡 추가 신청하기
-        </a>
+        </Link>
       </div>
-
-      <BottomDisplayAdWrapper />
     </>
   );
 }
