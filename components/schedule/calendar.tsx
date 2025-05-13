@@ -60,7 +60,7 @@ export default function Calendar({ events }: CalendarProps) {
   );
 
   return (
-    <div className="px-4 py-8">
+    <>
       <FullCalendar
         plugins={[dayGridPlugin]}
         initialView="dayGridMonth"
@@ -98,6 +98,6 @@ export default function Calendar({ events }: CalendarProps) {
           </DialogDescription>
         </DialogContent>
       </Dialog>
-    </div>
+    </>
   );
 }

@@ -14,7 +14,7 @@ export default async function ScheduleList({ searchParams }: Props) {
   const { search } = await searchParams;
 
   return (
-    <>
+    <div className="px-4 py-8">
       {/* 검색어가 없으면 캘린더, 있으면 리스트 */}
       {!search ? (
         <CalendarWrapper searchParams={searchParams} />
@@ -22,6 +22,6 @@ export default async function ScheduleList({ searchParams }: Props) {
         <ScheduleCardWrapper searchParams={searchParams} />
       )}
       <BottomDisplayAdWrapper />
-    </>
+    </div>
   );
 }
