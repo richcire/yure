@@ -53,9 +53,18 @@ export default async function ScheduleCardWrapper({ searchParams }: Props) {
 
   return (
     <>
-      <ScheduleCard events={events ?? []} />
-      {totalPages > 1 && (
-        <PaginationControl currentPage={currentPage} totalPages={totalPages} />
+      {events ? (
+        <>
+          <ScheduleCard events={events} />
+          {totalPages > 1 && (
+            <PaginationControl
+              currentPage={currentPage}
+              totalPages={totalPages}
+            />
+          )}
+        </>
+      ) : (
+        "일정을 불러오는 중 오류가 발생했습니다."
       )}
     </>
   );

@@ -42,7 +42,11 @@ export default async function CalendarWrapper({ searchParams }: Props) {
 
   return (
     <>
-      <Calendar events={events ?? []} />
+      {events ? (
+        <Calendar events={events} />
+      ) : (
+        "일정을 불러오는 중 오류가 발생했습니다."
+      )}
     </>
   );
 }
