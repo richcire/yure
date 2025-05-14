@@ -43,7 +43,7 @@ export function ScheduleFilters() {
   };
 
   return (
-    <div className="flex gap-4 items-center flex-col sm:flex-row">
+    <div className="flex w-full gap-4 items-center flex-col sm:flex-row">
       <form onSubmit={handleSubmit} className="flex-1 w-full">
         <Input
           placeholder="검색어를 입력해주세요"
