@@ -66,7 +66,9 @@ export default function Calendar({ events }: CalendarProps) {
         initialView="dayGridMonth"
         events={transformedEvents}
         eventTextColor="#000000"
-        locale="ko"
+        headerToolbar={{
+          right: "prev,next",
+        }}
         height={"80vh"}
         eventClick={(info) => {
           setSelectedEvent(info.event);
