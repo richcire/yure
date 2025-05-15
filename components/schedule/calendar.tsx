@@ -11,6 +11,7 @@ import {
   DialogContent,
 } from "@/components/ui/dialog";
 import { IEvents } from "@/types/supabase-table";
+import "@/styles/calendar.css";
 
 interface CalendarProps {
   events: IEvents[];
@@ -67,7 +68,8 @@ export default function Calendar({ events }: CalendarProps) {
         events={transformedEvents}
         eventTextColor="#000000"
         headerToolbar={{
-          right: "prev,next",
+          left: "prev title next",
+          right: "",
         }}
         height={"80vh"}
         eventClick={(info) => {

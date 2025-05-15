@@ -1,0 +1,10 @@
+/* 일이 왼쪽에 위치 */
+.fc .fc-daygrid-day-top {
+  flex-direction: row;
+}
+
+/* < 날짜 > 로 정렬 */
+.fc-toolbar-chunk {
+  display: flex;
+  align-items: center;
+}
