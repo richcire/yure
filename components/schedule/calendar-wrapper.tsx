@@ -41,12 +41,12 @@ export default async function CalendarWrapper({ searchParams }: Props) {
   const { data: events } = await query.returns<IEvents[]>();
 
   return (
-    <>
+    <div className="px-3 py-6 bg-[#DAD6CB] rounded-md">
       {events ? (
         <Calendar events={events} />
       ) : (
         "일정을 불러오는 중 오류가 발생했습니다."
       )}
-    </>
+    </div>
   );
 }
