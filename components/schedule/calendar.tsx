@@ -72,8 +72,13 @@ export default function Calendar({ events }: CalendarProps) {
           right: "",
         }}
         height={"80vh"}
-        eventClick={(info) => {
-          setSelectedEvent(info.event);
+        eventMouseEnter={(mouseEnterInfo) => {
+          mouseEnterInfo.el.addEventListener("mouseenter", () => {
+            mouseEnterInfo.el.style.cursor = "pointer";
+          });
+        }}
+        eventClick={(eventClickInfo) => {
+          setSelectedEvent(eventClickInfo.event);
           setIsOpen(true);
         }}
       />

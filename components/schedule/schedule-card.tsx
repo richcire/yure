@@ -25,7 +25,7 @@ export default function ScheduleCard({ events }: ScheduleCardProps) {
           className="relative group border-b border-gray-300 pb-6 last:border-b-0 transition-colors hover:text-muted-foreground"
         >
           <div
-            className="flex flex-col gap-4 sm:flex-row"
+            className="flex flex-col gap-4 sm:flex-row cursor-pointer"
             onClick={() => {
               setIsOpen(true);
             }}
