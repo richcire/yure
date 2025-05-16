@@ -81,6 +81,7 @@ export default function Calendar({ events }: CalendarProps) {
           setSelectedEvent(eventClickInfo.event);
           setIsOpen(true);
         }}
+        dayMaxEvents={3}
       />
 
       {/* 색상 범례 */}
