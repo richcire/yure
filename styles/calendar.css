@@ -1,3 +1,12 @@
+:root {
+  /* 버튼 색 수정 */
+  --fc-button-text-color: #69140e;
+  --fc-button-bg-color: #e4e0d5;
+  --fc-button-border-color: #beb9ae;
+  --fc-button-hover-bg-color: #d0ccc1;
+  --fc-button-active-bg-color: #d0ccc1;
+}
+
 /* 일이 왼쪽에 위치 */
 .fc .fc-daygrid-day-top {
   flex-direction: row;
