@@ -41,7 +41,7 @@ export default async function CalendarWrapper({ searchParams }: Props) {
   const { data: events } = await query.returns<IEvents[]>();
 
   return (
-    <div className="px-3 py-6 bg-[#DAD6CB] rounded-md">
+    <div className="px-2 md:px-3 py-4 md:py-6 bg-[#DAD6CB] rounded-md">
       {events ? (
         <Calendar events={events} />
       ) : (

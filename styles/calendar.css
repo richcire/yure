@@ -43,3 +43,19 @@
   padding-top: 4px;
   padding-left: 8px;
 }
+
+/* 모바일 화면 */
+@media (max-width: 768px) {
+  /* 날짜 타일 모양 제거 */
+  .fc .fc-daygrid-day {
+    padding: 0px;
+  }
+
+  .fc .fc-daygrid-day-frame {
+    border-radius: 0px;
+  }
+
+  .fc-scroller-harness {
+    border-radius: 8px;
+  }
+}
