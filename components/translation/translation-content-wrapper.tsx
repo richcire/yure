@@ -28,10 +28,16 @@ export default async function TranslationContentWrapper({
 
       <div className="flex justify-between mt-16 text-sm text-muted-foreground">
         <time dateTime={data.created_at}>
-          작성일: {new Date(data.created_at).toLocaleString()}
+          작성일:{" "}
+          {new Date(data.created_at).toLocaleString("ko-KR", {
+            timeZone: "Asia/Seoul",
+          })}
         </time>
         <time dateTime={data.updated_at}>
-          최근 수정일: {new Date(data.updated_at).toLocaleString()}
+          최근 수정일:{" "}
+          {new Date(data.updated_at).toLocaleString("ko-KR", {
+            timeZone: "Asia/Seoul",
+          })}
         </time>
       </div>
     </div>

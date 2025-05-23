@@ -117,7 +117,7 @@ const Navigation = () => {
             </div>
 
             {/* Navigation Links - Centered */}
-            <div className="hidden md:flex items-center justify-center gap-8 col-span-1 font-medium">
+            <div className="hidden md:flex items-center justify-center gap-8 col-span-1 font-medium z-50">
               <Link
                 href="/translation"
                 className="hover:text-primary transition-colors whitespace-nowrap"
