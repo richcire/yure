@@ -330,6 +330,8 @@ export default function TiptapEditor({ id }: { id?: string }) {
         release_date: formatDate(releaseDate),
         thumbnail_url: thumbnailUrl,
         permalink,
+        // 게시물 수정 시 updated_at 필드에 현재 시간 추가
+        updated_at: new Date().toISOString(),
       };
 
       // Save or update the content in the translations table
