@@ -30,7 +30,6 @@ import { Label } from "@/components/ui/label";
 export default function NewsEditor({ id }: { id?: string }) {
   const [news, setNews] = useState<INews>();
   const [title, setTitle] = useState("");
-  const [summary, setSummary] = useState("");
   const [slug, setSlug] = useState("");
   const [progressValue, setProgressValue] = useState(0);
   const [isSaving, setIsSaving] = useState(false);
@@ -161,7 +160,6 @@ export default function NewsEditor({ id }: { id?: string }) {
         }
 
         setTitle(data.title);
-        setSummary(data.summary);
         setNews(data);
         setSlug(data.slug);
         editor?.commands.setContent(data.content);
@@ -251,6 +249,22 @@ export default function NewsEditor({ id }: { id?: string }) {
     return firstImage?.getAttribute("src") || "";
   };
 
+  const generateSummaryFromContent = () => {
+    if (!editor) return "";
+
+    // Get plain text content without HTML tags
+    const textContent = editor.getText();
+
+    // Clean up excessive whitespace and newlines
+    // Replace multiple whitespace characters (including newlines) with single spaces
+    const cleanedText = textContent
+      .replace(/\s+/g, " ") // Replace multiple whitespace chars with single space
+      .trim(); // Remove leading/trailing whitespace
+
+    // Take first 100 characters
+    return cleanedText.substring(0, 200) + "...";
+  };
+
   const updateNews = async () => {
     if (slug.includes("/")) {
       alert("퍼마링크에 슬래시(/)는 포함될 수 없습니다.");
@@ -264,7 +278,7 @@ export default function NewsEditor({ id }: { id?: string }) {
 
     setIsSaving(true);
 
-    if (!editor || !title || !summary) {
+    if (!editor || !title) {
       setIsSaving(false);
       console.error("Please fill in all required fields");
       return;
@@ -304,7 +318,7 @@ export default function NewsEditor({ id }: { id?: string }) {
 
     const newsData: Partial<INews> = {
       title,
-      summary,
+      summary: generateSummaryFromContent(),
       content: finalContentWrapper.innerHTML,
       thumbnail_url: thumbnailUrl,
       slug,
@@ -336,7 +350,7 @@ export default function NewsEditor({ id }: { id?: string }) {
     }
 
     setIsSaving(true);
-    if (!editor || !title || !summary) {
+    if (!editor || !title) {
       setIsSaving(false);
       console.error("Please fill in all required fields");
       return;
@@ -371,7 +385,7 @@ export default function NewsEditor({ id }: { id?: string }) {
       // Prepare the data object
       const newsData: Partial<INews> = {
         title,
-        summary,
+        summary: generateSummaryFromContent(),
         content: finalContentWrapper.innerHTML,
         thumbnail_url: thumbnailUrl,
         slug,
@@ -435,12 +449,6 @@ export default function NewsEditor({ id }: { id?: string }) {
               {title.length} / 60
             </div>
           </div>
-          <Input
-            placeholder="글 요약"
-            value={summary}
-            onChange={(e) => setSummary(e.target.value)}
-            required
-          />
 
           <div className="border rounded-md border-input">
             <Toolbar editor={editor} />
@@ -454,7 +462,7 @@ export default function NewsEditor({ id }: { id?: string }) {
           <Dialog>
             <DialogTrigger asChild>
               <Button
-                disabled={!title || title.length > 60 || !summary}
+                disabled={!title || title.length > 60}
                 className="shadow-lg"
               >
                 <Save className="w-4 h-4 mr-2" />
