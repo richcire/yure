@@ -8,6 +8,7 @@ import { YouTubeExtension } from "../Tiptap/extensions/YouTubeExtension";
 import { Highlight } from "@tiptap/extension-highlight";
 import Link from "@tiptap/extension-link";
 import { InstagramExtension } from "../Tiptap/extensions/InstagramExtension";
+import { GoogleAdExtension } from "../Tiptap/extensions/GoogleAdExtension";
 
 export default function TranslationContent({ content }: { content: string }) {
   const editor = useEditor({
@@ -28,6 +29,11 @@ export default function TranslationContent({ content }: { content: string }) {
         },
       }),
       InstagramExtension.configure({
+        HTMLAttributes: {
+          class: "rounded-md",
+        },
+      }),
+      GoogleAdExtension.configure({
         HTMLAttributes: {
           class: "rounded-md",
         },

@@ -21,6 +21,7 @@ import {
   Type,
   Link,
   Instagram,
+  DollarSign,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -119,6 +120,22 @@ export function Toolbar({ editor }: ToolbarProps) {
         .run();
       setInstagramEmbedCode("");
     }
+  };
+
+  const handleGoogleAdInsert = () => {
+    editor
+      .chain()
+      .focus()
+      .insertContent({
+        type: "googleAd",
+        attrs: {
+          client: "ca-pub-4738868818137222",
+          slot: "2891582134",
+          layout: "in-article",
+          format: "fluid",
+        },
+      })
+      .run();
   };
 
   return (
@@ -332,6 +349,10 @@ export function Toolbar({ editor }: ToolbarProps) {
             </div>
           </DialogContent>
         </Dialog>
+
+        <Button size="sm" variant="ghost" onClick={handleGoogleAdInsert}>
+          <DollarSign className="h-4 w-4" />
+        </Button>
       </div>
     </div>
   );
