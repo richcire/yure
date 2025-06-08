@@ -43,33 +43,36 @@ export default function GoogleAd({ node, deleteNode, editor }: NodeViewProps) {
           </div>
         )}
 
-        {showControls ? (
-          // Preview mode in editor
-          <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 my-4 bg-gray-50 dark:bg-gray-800">
-            <div className="flex items-center justify-center gap-2 text-gray-600 dark:text-gray-400">
-              <DollarSign className="h-6 w-6" />
-              <div className="text-center">
-                <div className="font-medium">Google AdSense</div>
-                <div className="text-sm">
-                  Client: {client} | Slot: {slot}
-                </div>
-                <div className="text-xs mt-1">
-                  Layout: {layout} | Format: {format}
+        {/* Container to limit ad width to 70% */}
+        <div className="w-[70%] mx-auto">
+          {showControls ? (
+            // Preview mode in editor
+            <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 my-4 bg-gray-50 dark:bg-gray-800">
+              <div className="flex items-center justify-center gap-2 text-gray-600 dark:text-gray-400">
+                <DollarSign className="h-6 w-6" />
+                <div className="text-center">
+                  <div className="font-medium">Google AdSense</div>
+                  <div className="text-sm">
+                    Client: {client} | Slot: {slot}
+                  </div>
+                  <div className="text-xs mt-1">
+                    Layout: {layout} | Format: {format}
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        ) : (
-          // Actual ad in view mode
-          <ins
-            className="adsbygoogle"
-            style={{ display: "block", textAlign: "center" }}
-            data-ad-layout={layout}
-            data-ad-format={format}
-            data-ad-client={client}
-            data-ad-slot={slot}
-          />
-        )}
+          ) : (
+            // Actual ad in view mode
+            <ins
+              className="adsbygoogle"
+              style={{ display: "block", textAlign: "center" }}
+              data-ad-layout={layout}
+              data-ad-format={format}
+              data-ad-client={client}
+              data-ad-slot={slot}
+            />
+          )}
+        </div>
       </div>
     </NodeViewWrapper>
   );
