@@ -13,7 +13,6 @@ export default function GoogleAd({ node, deleteNode, editor }: NodeViewProps) {
   const showControls = editor?.isEditable;
   const { client, slot, layout, format } = node.attrs;
 
-  console.log(showControls);
   useEffect(() => {
     // Only execute the ad script when not in edit mode and in production
     if (!showControls && process.env.NODE_ENV === "production") {
@@ -44,10 +43,10 @@ export default function GoogleAd({ node, deleteNode, editor }: NodeViewProps) {
         )}
 
         {/* Container to limit ad width to 70% */}
-        <div className="w-[70%] mx-auto">
+        <div className="w-[70%] mx-auto h-[160px]">
           {showControls ? (
             // Preview mode in editor
-            <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 my-4 bg-gray-50 dark:bg-gray-800">
+            <div className="border-2 border-dashed border-gray-300 rounded-lg p-6  bg-gray-50 dark:bg-gray-800 h-full">
               <div className="flex items-center justify-center gap-2 text-gray-600 dark:text-gray-400">
                 <DollarSign className="h-6 w-6" />
                 <div className="text-center">
