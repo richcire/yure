@@ -7,5 +7,14 @@ export async function POST(request: Request) {
   await supabase.rpc("increment_translation_views", {
     _permalink: decodeURIComponent(permalink),
   });
-  return NextResponse.json({ success: true });
+
+  return NextResponse.json(
+    { success: true },
+    {
+      headers: {
+        // Cache for 30 seconds to prevent rapid duplicate increments
+        "Cache-Control": "private, max-age=30",
+      },
+    }
+  );
 }
