@@ -1,5 +1,3 @@
-import { NextResponse } from "next/server";
-
 export async function GET(request: Request) {
   const baseUrl = "https://www.yure.me";
 
@@ -22,6 +20,8 @@ export async function GET(request: Request) {
   return new Response(xml, {
     headers: {
       "Content-Type": "application/xml",
+      // Cache for 1 hour, stale-while-revalidate for 1 day
+      "Cache-Control": "public, s-maxage=3600, stale-while-revalidate=86400",
     },
   });
 }
