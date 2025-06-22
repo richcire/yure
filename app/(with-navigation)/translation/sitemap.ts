@@ -1,6 +1,9 @@
 import { createClient } from "@/utils/supabase/server";
 import { MetadataRoute } from "next";
 
+// Add revalidation to reduce function invocations
+export const revalidate = 3600; // Revalidate every hour
+
 async function getTranslationPermalinks() {
   const supabase = await createClient();
   const { data, error } = await supabase

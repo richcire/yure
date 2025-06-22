@@ -1,6 +1,9 @@
 import { MetadataRoute } from "next";
 import { createClient } from "@/utils/supabase/server";
 
+// Add revalidation to reduce function invocations
+export const revalidate = 3600; // Revalidate every hour
+
 async function getNewsSlugs() {
   const supabase = await createClient();
   const { data, error } = await supabase.from("news").select("slug");
