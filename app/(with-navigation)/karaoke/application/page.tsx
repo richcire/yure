@@ -11,7 +11,7 @@ export default function KaraokeApplicationPage() {
         </p>
         <p className="text-gray-600">최대한 빨리 추가해드릴게요.</p>
       </div>
-      <KaraokeCommentSection useHideFeature={false} />
+      <KaraokeCommentSection />
       <BottomDisplayAdWrapper />
       <SideVerticalDisplayAdWrapper />
     </div>
