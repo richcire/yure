@@ -1,30 +1,19 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
 import type { IComments } from "@/types/supabase-table";
 import { User } from "@supabase/supabase-js";
 import { createClient } from "@/utils/supabase/client";
 import { useRouter, usePathname } from "next/navigation";
 import { KaraokeComment } from "./karaoke-comment";
+import { CommentsRefactory } from "@/components/comments/comments-refactory";
 
-interface CommentSectionProps {
-  useHideFeature?: boolean;
-}
-
-export function KaraokeCommentSection({
-  useHideFeature = true,
-}: CommentSectionProps) {
-  const [isOpen, setIsOpen] = useState(useHideFeature ? false : true);
-  const [newComment, setNewComment] = useState("");
+export function KaraokeCommentSection() {
   const [comments, setComments] = useState<
     (IComments & { replies: IComments[] })[]
   >([]);
   const [user, setUser] = useState<User | undefined>();
   const supabase = createClient();
-  const router = useRouter();
-  const pathname = usePathname();
   const getSession = async () => {
     const { data } = await supabase.auth.getSession();
     if (!data.session) {
@@ -46,8 +35,12 @@ export function KaraokeCommentSection({
     setComments(data);
   };
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (
+    e: React.FormEvent<HTMLFormElement>,
+    newComment: string
+  ) => {
     e.preventDefault();
+
     if (!newComment.trim()) return;
     const { data, error, count } = await supabase.rpc(
       "add_karaoke_comment",
@@ -63,8 +56,32 @@ export function KaraokeCommentSection({
       console.error("Error adding comment:", error);
       return;
     }
+
     setComments(data);
-    setNewComment("");
+  };
+
+  const handleSubmitReply = async (
+    e: React.FormEvent<HTMLFormElement>,
+    replyContent: string,
+    parent_id: string
+  ) => {
+    e.preventDefault();
+
+    const { data, error } = await supabase.rpc(
+      "add_karaoke_comment",
+      {
+        _content: replyContent,
+        _parent_id: parent_id,
+      },
+      {
+        count: "exact",
+      }
+    );
+    if (error) {
+      console.error("Error adding reply:", error);
+      return;
+    }
+    setComments(data);
   };
 
   useEffect(() => {
@@ -74,60 +91,14 @@ export function KaraokeCommentSection({
 
   return (
     <div className="mt-8">
-      {useHideFeature && (
-        <Button
-          variant="ghost"
-          onClick={() => setIsOpen(!isOpen)}
-          className="flex items-center gap-2"
-        >
-          <span>댓글 {isOpen ? "숨기기" : "보기"}</span>
-          <span className="text-sm text-muted-foreground">
-            ({comments.length})
-          </span>
-        </Button>
-      )}
-
-      {isOpen && (
-        <div className="mt-4 space-y-6">
-          <form onSubmit={handleSubmit} className="space-y-4">
-            {user ? (
-              <Textarea
-                value={newComment}
-                onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
-                  setNewComment(e.target.value)
-                }
-                placeholder="댓글을 달아보세요!"
-                className="w-full"
-              />
-            ) : (
-              <Textarea
-                placeholder="로그인 후 댓글을 달아보세요!"
-                className="w-full"
-                onClick={() => {
-                  router.push(`/sign-in?redirectTo=${pathname}`);
-                }}
-                readOnly
-              />
-            )}
-            {user && (
-              <Button type="submit" disabled={!newComment.trim()}>
-                댓글 작성
-              </Button>
-            )}
-          </form>
-
-          <div className="space-y-4">
-            {comments.map((comment) => (
-              <KaraokeComment
-                key={comment.id}
-                comment={comment}
-                user={user}
-                setComments={setComments}
-              />
-            ))}
-          </div>
-        </div>
-      )}
+      <CommentsRefactory
+        comment={comments}
+        useHideFeature={false}
+        handleSubmit={handleSubmit}
+        handleSubmitReply={handleSubmitReply}
+        deleteFn={"delete_karaoke_comment"}
+        setComment={setComments}
+      />
     </div>
   );
 }
