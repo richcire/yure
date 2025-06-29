@@ -1,5 +1,8 @@
 import { MetadataRoute } from "next";
 
+// Add revalidation to reduce function invocations
+export const revalidate = 3600; // Revalidate every hour
+
 export default function Sitemap(): MetadataRoute.Sitemap {
   return [
     {

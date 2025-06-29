@@ -31,6 +31,7 @@ import Link from "@tiptap/extension-link";
 import { MultiSelect } from "../ui/multi-select";
 import { Label } from "../ui/label";
 import { InstagramExtension } from "./extensions/InstagramExtension";
+import { GoogleAdExtension } from "./extensions/GoogleAdExtension";
 
 interface CategoryOption {
   value: number;
@@ -81,6 +82,11 @@ export default function TiptapEditor({ id }: { id?: string }) {
         },
       }),
       InstagramExtension.configure({
+        HTMLAttributes: {
+          class: "rounded-md",
+        },
+      }),
+      GoogleAdExtension.configure({
         HTMLAttributes: {
           class: "rounded-md",
         },
