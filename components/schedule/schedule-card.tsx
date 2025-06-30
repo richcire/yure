@@ -43,7 +43,7 @@ export default function ScheduleCard({ events }: ScheduleCardProps) {
                 {eventItem.title}
               </h2>
               <p className="mb-3 text-gray-700 line-clamp-3 lg:line-clamp-2">
-                {eventItem.event_types.name}
+                {eventItem.description}
               </p>
               <span className="text-sm font-medium text-gray-600">
                 예매하기
