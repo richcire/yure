@@ -103,7 +103,7 @@ export default function Calendar({ events }: CalendarProps) {
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
         <DialogContent>
           <DialogTitle>{selectedEvent?.title}</DialogTitle>
-          <DialogDescription>
+          <DialogDescription className="break-all">
             {selectedEvent?.extendedProps?.description}
           </DialogDescription>
         </DialogContent>
