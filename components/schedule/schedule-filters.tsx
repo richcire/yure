@@ -64,7 +64,8 @@ export function ScheduleFilters() {
         <SelectContent>
           <SelectItem value="전체">전체</SelectItem>
           <SelectItem value="콘서트">콘서트</SelectItem>
-          <SelectItem value="앨범">앨범</SelectItem>
+          <SelectItem value="앨범 발매">앨범 발매</SelectItem>
+          <SelectItem value="페스티벌">페스티벌</SelectItem>
         </SelectContent>
       </Select>
     </div>
