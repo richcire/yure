@@ -59,7 +59,12 @@ export default function ScheduleEditor({ id }: { id?: string }) {
       if (id) {
         const { data: event, error: eventError } = await supabase
           .from("events")
-          .select("*")
+          .select(
+            `
+            *,
+            event_types(id, name)
+            `
+          )
           .eq("id", id)
           .single<IEvents>();
 
@@ -159,10 +164,11 @@ export default function ScheduleEditor({ id }: { id?: string }) {
                 setSelectedEventType(eventType.find((type) => type.id === id))
               }
               value={selectedEventType?.id}
-              defaultValue={eventTypeId}
             >
               <SelectTrigger className="w-full">
-                <SelectValue placeholder="이벤트 타입 선택" />
+                <SelectValue
+                  placeholder={`${eventType.find((type) => type.id === eventTypeId)?.name || "이벤트 타입 선택"}`}
+                />
               </SelectTrigger>
               <SelectContent>
                 {eventType.map((type) => (
