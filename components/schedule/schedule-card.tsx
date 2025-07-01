@@ -43,7 +43,8 @@ export default function ScheduleCard({ events }: ScheduleCardProps) {
                 <div className="flex items-center gap-1 text-xs text-gray-600">
                   <Calendar className="h-3 w-3" />
                   <span>
-                    {new Date(eventItem.start_date).toLocaleDateString()}
+                    {new Date(eventItem.start_date).toLocaleDateString()} {"~ "}
+                    {new Date(eventItem.end_date).toLocaleDateString()}
                   </span>
                 </div>
               </div>
