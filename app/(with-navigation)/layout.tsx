@@ -67,6 +67,12 @@ export default function WithNavigationLayout({
               >
                 NEWS
               </Link>
+              <Link
+                href="/schedule"
+                className="hover:text-primary transition-colors"
+              >
+                일정
+              </Link>
             </div>
 
             {/* Navigation Links - Mobile */}
@@ -100,6 +106,12 @@ export default function WithNavigationLayout({
                 className="hover:text-primary transition-colors"
               >
                 NEWS
+              </Link>
+              <Link
+                href="/schedule"
+                className="hover:text-primary transition-colors"
+              >
+                일정
               </Link>
             </div>
 
