@@ -47,6 +47,14 @@ function transformEvents(dbEvents: IEvents[]): EventData[] {
   }));
 }
 
+function linkify(text: string) {
+  // URL 정규식
+  const urlRegex = /(https?:\/\/[^\s]+)/g;
+  return text.replace(urlRegex, (url) => {
+    return `<a href="${url}" target="_blank" style="color: #1976d2; text-decoration: underline;">${url}</a>`;
+  });
+}
+
 export default function Calendar({ events }: CalendarProps) {
   const [selectedEvent, setSelectedEvent] = useState<EventApi | null>(null);
   const [isOpen, setIsOpen] = useState(false);
@@ -104,7 +112,13 @@ export default function Calendar({ events }: CalendarProps) {
         <DialogContent>
           <DialogTitle>{selectedEvent?.title}</DialogTitle>
           <DialogDescription className="break-all">
-            {selectedEvent?.extendedProps?.description}
+            {selectedEvent?.extendedProps?.description ? (
+              <span
+                dangerouslySetInnerHTML={{
+                  __html: linkify(selectedEvent.extendedProps.description),
+                }}
+              />
+            ) : null}
           </DialogDescription>
         </DialogContent>
       </Dialog>

@@ -14,6 +14,14 @@ interface ScheduleCardProps {
   events: IEvents[];
 }
 
+function linkify(text: string) {
+  // URL 정규식
+  const urlRegex = /(https?:\/\/[^\s]+)/g;
+  return text.replace(urlRegex, (url) => {
+    return `<a href="${url}" target="_blank" style="color: #1976d2; text-decoration: underline;">${url}</a>`;
+  });
+}
+
 export default function ScheduleCard({ events }: ScheduleCardProps) {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -54,7 +62,15 @@ export default function ScheduleCard({ events }: ScheduleCardProps) {
           <Dialog open={isOpen} onOpenChange={setIsOpen}>
             <DialogContent>
               <DialogTitle>{eventItem.title}</DialogTitle>
-              <DialogDescription>{eventItem.description}</DialogDescription>
+              <DialogDescription className="break-all">
+                {eventItem?.description ? (
+                  <span
+                    dangerouslySetInnerHTML={{
+                      __html: linkify(eventItem.description),
+                    }}
+                  />
+                ) : null}
+              </DialogDescription>
             </DialogContent>
           </Dialog>
         </div>
