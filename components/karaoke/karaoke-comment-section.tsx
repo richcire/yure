@@ -4,8 +4,6 @@ import { useEffect, useState } from "react";
 import type { IComments } from "@/types/supabase-table";
 import { User } from "@supabase/supabase-js";
 import { createClient } from "@/utils/supabase/client";
-import { useRouter, usePathname } from "next/navigation";
-import { KaraokeComment } from "./karaoke-comment";
 import { CommentsRefactory } from "@/components/comments/comments-refactory";
 
 export function KaraokeCommentSection() {
