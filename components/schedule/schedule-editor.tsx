@@ -199,13 +199,7 @@ export default function ScheduleEditor({ id }: { id?: string }) {
             <Button
               className="shadow-lg"
               onClick={updateEvent}
-              disabled={
-                !title ||
-                !description ||
-                !startDate ||
-                !endDate ||
-                !selectedEventType
-              }
+              disabled={!title || !description || !startDate || !endDate}
             >
               <Save className="w-4 h-4 mr-2" />
               저장
