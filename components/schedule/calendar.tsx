@@ -31,6 +31,14 @@ interface EventData {
   };
 }
 
+// 이벤트 종료일자에 하루 더하기
+function addOneDay(dateString: string) {
+  const date = new Date(dateString);
+  date.setDate(date.getDate() + 1);
+  // YYYY-MM-DD 형식으로 반환
+  return date.toISOString().slice(0, 10);
+}
+
 // DB 이벤트 데이터를 FullCalendar 이벤트 데이터로 변환
 function transformEvents(dbEvents: IEvents[]): EventData[] {
   return dbEvents.map((event) => ({
@@ -38,7 +46,7 @@ function transformEvents(dbEvents: IEvents[]): EventData[] {
     groupId: event.event_types.name,
     title: event.title,
     start: event.start_date,
-    end: event.end_date,
+    end: addOneDay(event.end_date),
     backgroundColor: event.event_types.bg_color,
     borderColor: event.event_types.border_color,
     extendedProps: {
