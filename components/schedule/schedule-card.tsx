@@ -23,7 +23,7 @@ function linkify(text: string) {
 }
 
 export default function ScheduleCard({ events }: ScheduleCardProps) {
-  const [isOpen, setIsOpen] = useState(false);
+  const [selectedEventId, setSelectedEventId] = useState<string | null>(null);
 
   return (
     <div className="space-y-6">
@@ -35,7 +35,7 @@ export default function ScheduleCard({ events }: ScheduleCardProps) {
           <div
             className="flex flex-col gap-4 sm:flex-row cursor-pointer"
             onClick={() => {
-              setIsOpen(true);
+              setSelectedEventId(eventItem.id);
             }}
           >
             <div className="flex-1 sm:w-3/4">
@@ -60,7 +60,12 @@ export default function ScheduleCard({ events }: ScheduleCardProps) {
             </div>
           </div>
 
-          <Dialog open={isOpen} onOpenChange={setIsOpen}>
+          <Dialog
+            open={selectedEventId === eventItem.id}
+            onOpenChange={(open) => {
+              if (!open) setSelectedEventId(null);
+            }}
+          >
             <DialogContent>
               <DialogTitle>{eventItem.title}</DialogTitle>
               <DialogDescription className="break-all">
