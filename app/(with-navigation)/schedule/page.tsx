@@ -15,19 +15,21 @@ interface Props {
 function CalendarSkeleton() {
   return (
     <div className="px-2 md:px-3 py-4 md:py-6 bg-[#DAD6CB] rounded-md font-sans text-[14px]">
-      <div className="flex items-center gap-2 md:gap-4 mb-4">
+      <div className="flex items-center gap-2 mb-4">
         <Skeleton className="h-10 w-10 rounded bg-[#e4e0d5] border border-[#beb9ae]" />
         <Skeleton
-          className="h-8 w-36 md:w-56 rounded bg-transparent"
-          style={{ background: "rgba(180,180,180,0.12)" }}
+          className="h-8 w-32 md:w-48 rounded bg-transparent"
+          style={{ background: "rgba(180,180,180,0.15)" }}
         />
         <Skeleton className="h-10 w-10 rounded bg-[#e4e0d5] border border-[#beb9ae]" />
       </div>
-      <div className="grid grid-cols-7 gap-1 md:gap-2 mb-2">
+
+      <div className="grid grid-cols-7 gap-1 md:gap-2 mb-1">
         {[...Array(7)].map((_, i) => (
           <Skeleton
             key={i}
-            className="h-6 w-full bg-gray-100 rounded-md border-none"
+            className="h-5 w-full bg-transparent rounded-sm"
+            style={{ background: "rgba(150,150,150,0.1)" }}
           />
         ))}
       </div>
@@ -35,11 +37,11 @@ function CalendarSkeleton() {
         {[...Array(42)].map((_, i) => (
           <div
             key={i}
-            className="relative h-16 md:h-24 w-full bg-[#e4e0d5] rounded-[8px] md:rounded-xl border border-[#f0ede6] p-[4px] md:p-[4px]"
+            className="relative h-14 md:h-20 w-full bg-[#e4e0d5] rounded-lg border border-[#f0ede6]"
             style={{ minHeight: "56px" }}
           >
             <div className="absolute top-1 left-2">
-              <Skeleton className="h-4 w-6 bg-gray-200 rounded" />
+              <Skeleton className="h-4 w-5 bg-gray-300 rounded-sm" />
             </div>
             <div className="absolute left-2 right-2 bottom-2 flex flex-col gap-1">
               <Skeleton className="h-3 w-3/4 bg-gray-100 rounded" />
