@@ -51,12 +51,9 @@ export default function ScheduleCard({ events }: ScheduleCardProps) {
               <h2 className="mb-2 text-xl font-bold leading-tight sm:text-2xl line-clamp-2 lg:line-clamp-1">
                 {eventItem.title}
               </h2>
-              <p className="mb-3 text-gray-700 line-clamp-3 lg:line-clamp-2">
+              <p className="text-gray-700 line-clamp-3 lg:line-clamp-2">
                 {eventItem.description}
               </p>
-              <span className="text-sm font-medium text-gray-600">
-                예매하기
-              </span>
             </div>
           </div>
 
