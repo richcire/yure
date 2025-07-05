@@ -14,23 +14,40 @@ interface Props {
 
 function CalendarSkeleton() {
   return (
-    <div className="px-2 md:px-3 py-4 md:py-6 bg-[#DAD6CB] rounded-md">
-      <div className="flex items-center justify-between mb-4">
-        <Skeleton className="h-7 w-24 md:w-40" />
-        <div className="flex gap-2">
-          <Skeleton className="h-7 w-7 rounded-full" />
-          <Skeleton className="h-7 w-7 rounded-full" />
-        </div>
+    <div className="px-2 md:px-3 py-4 md:py-6 bg-[#DAD6CB] rounded-md font-sans text-[14px]">
+      <div className="flex items-center gap-2 md:gap-4 mb-4">
+        <Skeleton className="h-10 w-10 rounded bg-[#e4e0d5] border border-[#beb9ae]" />
+        <Skeleton
+          className="h-8 w-36 md:w-56 rounded bg-transparent"
+          style={{ background: "rgba(180,180,180,0.12)" }}
+        />
+        <Skeleton className="h-10 w-10 rounded bg-[#e4e0d5] border border-[#beb9ae]" />
       </div>
-      <div className="grid grid-cols-7 gap-1 md:gap-2 mb-6">
+      <div className="grid grid-cols-7 gap-1 md:gap-2 mb-2">
         {[...Array(7)].map((_, i) => (
-          <Skeleton key={i} className="h-4 w-full bg-gray-200" />
-        ))}
-        {[...Array(35)].map((_, i) => (
           <Skeleton
             key={i}
-            className="h-12 md:h-16 w-full bg-gray-100 rounded-md"
+            className="h-6 w-full bg-gray-100 rounded-md border-none"
           />
+        ))}
+      </div>
+      <div className="grid grid-cols-7 gap-1 md:gap-2 mb-6">
+        {[...Array(42)].map((_, i) => (
+          <div
+            key={i}
+            className="relative h-16 md:h-24 w-full bg-[#e4e0d5] rounded-[8px] md:rounded-xl border border-[#f0ede6] p-[4px] md:p-[4px]"
+            style={{ minHeight: "56px" }}
+          >
+            <div className="absolute top-1 left-2">
+              <Skeleton className="h-4 w-6 bg-gray-200 rounded" />
+            </div>
+            <div className="absolute left-2 right-2 bottom-2 flex flex-col gap-1">
+              <Skeleton className="h-3 w-3/4 bg-gray-100 rounded" />
+              {i % 7 === 0 && (
+                <Skeleton className="h-3 w-1/2 bg-gray-100 rounded" />
+              )}
+            </div>
+          </div>
         ))}
       </div>
       <div className="mt-4 mb-8 flex flex-wrap gap-4 justify-center">
