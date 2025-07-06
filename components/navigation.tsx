@@ -166,6 +166,12 @@ const Navigation = () => {
               >
                 NEWS
               </Link>
+              <Link
+                href="/schedule"
+                className="hover:text-primary transition-colors whitespace-nowrap"
+              >
+                일정
+              </Link>
             </div>
 
             {/* Auth Section */}
@@ -363,6 +369,14 @@ const Navigation = () => {
                 onClick={() => setIsSidebarOpen(false)}
               >
                 <span>NEWS</span>
+                <ChevronRight size={16} />
+              </Link>
+              <Link
+                href="/schedule"
+                className="px-4 py-2 hover:bg-gray-50 rounded-md transition-colors flex items-center justify-between"
+                onClick={() => setIsSidebarOpen(false)}
+              >
+                <span>일정</span>
                 <ChevronRight size={16} />
               </Link>
             </div>
