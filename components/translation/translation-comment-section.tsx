@@ -26,7 +26,7 @@ export function TranslationCommentSection({
 
   const getComments = async () => {
     const { data, error, count } = await supabase.rpc(
-      "get_tranlsation_comments_with_replies",
+      "get_translation_comments_with_replies",
       { _permalink: permalink },
       { count: "exact" }
     );
@@ -48,7 +48,7 @@ export function TranslationCommentSection({
     const { data, error, count } = await supabase.rpc(
       "add_translation_comment",
       {
-        p_link: decodeURIComponent(permalink),
+        _permalink: decodeURIComponent(permalink),
         new_content: newComment,
         parent_id: null,
       }
@@ -69,7 +69,7 @@ export function TranslationCommentSection({
     e.preventDefault();
 
     const { data, error } = await supabase.rpc("add_translation_comment", {
-      p_link: decodeURIComponent(permalink),
+      _permalink: decodeURIComponent(permalink),
       new_content: replyContent,
       parent_id,
     });

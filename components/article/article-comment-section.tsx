@@ -43,7 +43,7 @@ export function ArticleCommentSection({ slug }: { slug: string }) {
 
     if (!newComment.trim()) return;
     const { data, error } = await supabase.rpc("add_article_comment", {
-      s_input: decodeURIComponent(slug),
+      _slug: decodeURIComponent(slug),
       new_content: newComment,
       parent_id: null,
     });
@@ -64,7 +64,7 @@ export function ArticleCommentSection({ slug }: { slug: string }) {
     e.preventDefault();
 
     const { data, error } = await supabase.rpc("add_article_comment", {
-      s_input: decodeURIComponent(slug),
+      _slug: decodeURIComponent(slug),
       new_content: replyContent,
       parent_id,
     });
