@@ -82,7 +82,7 @@ function NewsLoading() {
 
 export default function Home() {
   return (
-    <main className="w-full min-h-screen bg-background">
+    <main className="w-full min-h-screen bg-comfortWhite">
       <Suspense fallback={<CarouselLoading />}>
         <FeaturedArticleWrapper />
       </Suspense>

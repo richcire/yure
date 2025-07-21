@@ -45,6 +45,7 @@ export async function middleware(request: NextRequest) {
     "/auth",
     "/protected",
     "/ads.txt",
+    "/schedule",
   ];
 
   const isExcluded = excludePaths.some((path) => pathname.startsWith(path));

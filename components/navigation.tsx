@@ -7,14 +7,50 @@ import { User } from "@supabase/supabase-js";
 import Image from "next/image";
 import { INotifications, IUserInfo } from "@/types/supabase-table";
 import { useRouter, usePathname } from "next/navigation";
-import { User as UserIcon, ChevronRight, BellIcon } from "lucide-react";
+import { User as UserIcon, BellIcon, ChevronDown } from "lucide-react";
 import roundLogo from "@/public/assets/logos/round.png";
+import {
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+  navigationMenuTriggerStyle,
+} from "@/components/ui/navigation-menu";
+import { cn } from "@/lib/utils";
+import React from "react";
+
+const ListItem = React.forwardRef<
+  React.ElementRef<"a">,
+  React.ComponentPropsWithoutRef<"a"> & { title: string }
+>(({ className, title, children, ...props }, ref) => {
+  return (
+    <li>
+      <NavigationMenuLink asChild>
+        <a
+          ref={ref}
+          className={cn(
+            "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors",
+            className
+          )}
+          {...props}
+        >
+          <div className="text-sm font-medium leading-none">{title}</div>
+          <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+            {children}
+          </p>
+        </a>
+      </NavigationMenuLink>
+    </li>
+  );
+});
+ListItem.displayName = "ListItem";
 
 const Navigation = () => {
   const [user, setUser] = useState<User | undefined>();
   const [name, setName] = useState<string | undefined>();
   const [showDropdown, setShowDropdown] = useState(false);
-  const [showKaraokeDropdown, setShowKaraokeDropdown] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
   const [notifications, setNotifications] = useState<INotifications[]>([]);
@@ -94,82 +130,82 @@ const Navigation = () => {
 
   return (
     <>
-      <nav
-        className={`fixed top-0 left-0 right-0 h-[60px] transition-all duration-300 z-50 bg-background border-b border-border`}
-      >
+      <nav className="fixed top-0 left-0 right-0 h-[80px] transition-all duration-300 z-50">
         <div className="container mx-auto h-full px-4">
-          <div className="grid grid-cols-2 md:grid-cols-3 items-center h-full">
+          <div className="flex items-center justify-between h-full">
             {/* Logo */}
-            <div className="flex-shrink-0 col-span-1">
-              <Link href="/" className="flex items-center gap-2">
-                <Image
-                  src={roundLogo}
-                  alt="Logo"
-                  width={40}
-                  height={40}
-                  className="object-contain"
-                  priority
-                />
-                <span className="hidden sm:inline font-semibold">
-                  유레 揺れ
-                </span>
-              </Link>
-            </div>
+            <Link href="/" className="flex items-center gap-2">
+              <Image
+                src={roundLogo}
+                alt="Logo"
+                width={40}
+                height={40}
+                className="object-contain"
+                priority
+              />
+              <span className="hidden sm:inline font-semibold">유레 揺れ</span>
+            </Link>
 
-            {/* Navigation Links - Centered */}
-            <div className="hidden md:flex items-center justify-center gap-8 col-span-1 font-medium z-50">
-              <Link
-                href="/translation"
-                className="hover:text-primary transition-colors whitespace-nowrap"
-              >
-                J-POP 가사번역
-              </Link>
-              <Link
-                href="/article"
-                className="hover:text-primary transition-colors whitespace-nowrap"
-              >
-                유레 매거진
-              </Link>
-              <div
-                className="relative"
-                onMouseEnter={() => setShowKaraokeDropdown(true)}
-                onMouseLeave={() => setShowKaraokeDropdown(false)}
-              >
-                <Link
-                  href="/karaoke"
-                  className="hover:text-primary transition-colors whitespace-nowrap"
-                >
-                  노래방 번호 검색
-                </Link>
-                {showKaraokeDropdown && (
-                  <div className="absolute left-0 top-full pt-1">
-                    <div className="w-48 bg-white/80 backdrop-blur-sm shadow-sm border rounded-md">
-                      <Link
-                        href="/karaoke"
-                        className="block px-4 py-2 text-sm hover:bg-red-50 transition-colors rounded-md"
-                      >
-                        노래방 번호 검색
-                      </Link>
-                      <Link
-                        href="/karaoke/application"
-                        className="block px-4 py-2 text-sm hover:bg-red-50 transition-colors rounded-md"
-                      >
-                        노래방 번호 신청
-                      </Link>
-                    </div>
-                  </div>
-                )}
-              </div>
-              <Link
-                href="/news"
-                className="hover:text-primary transition-colors whitespace-nowrap"
-              >
-                NEWS
-              </Link>
+            {/* Navigation Menu - Centered */}
+            <div className="hidden md:block">
+              <NavigationMenu>
+                <NavigationMenuList className="bg-background/70 backdrop-blur-sm px-6 py-1 rounded-2xl">
+                  <NavigationMenuItem>
+                    <NavigationMenuTrigger className="bg-transparent">
+                      Content
+                    </NavigationMenuTrigger>
+                    <NavigationMenuContent>
+                      <ul className="grid w-[400px] gap-3 p-4">
+                        <ListItem
+                          href="/translation"
+                          title="J-POP Lyrics Translation"
+                        >
+                          Browse Japanese song lyrics with Korean translations
+                        </ListItem>
+                        <ListItem href="/article" title="Yure Magazine">
+                          Read articles about Japanese culture and music
+                        </ListItem>
+                        <ListItem href="/news" title="NEWS">
+                          Stay updated with the latest Japanese music news
+                        </ListItem>
+                      </ul>
+                    </NavigationMenuContent>
+                  </NavigationMenuItem>
+                  <NavigationMenuItem>
+                    <NavigationMenuTrigger className="bg-transparent">
+                      Karaoke Number
+                    </NavigationMenuTrigger>
+                    <NavigationMenuContent>
+                      <ul className="grid w-[400px] gap-3 p-4">
+                        <ListItem href="/karaoke" title="Karaoke Number Search">
+                          Search for karaoke numbers of Japanese songs
+                        </ListItem>
+                        <ListItem
+                          href="/karaoke/application"
+                          title="Karaoke Number Request"
+                        >
+                          Request karaoke numbers for songs not in the database
+                        </ListItem>
+                      </ul>
+                    </NavigationMenuContent>
+                  </NavigationMenuItem>
+                  <NavigationMenuItem>
+                    <NavigationMenuLink
+                      asChild
+                      className={cn(
+                        navigationMenuTriggerStyle(),
+                        "bg-transparent"
+                      )}
+                    >
+                      <Link href="/schedule">Schedule</Link>
+                    </NavigationMenuLink>
+                  </NavigationMenuItem>
+                </NavigationMenuList>
+              </NavigationMenu>
             </div>
 
             {/* Auth Section */}
-            <div className="flex items-center justify-end gap-3 md:gap-4 col-span-1">
+            <div className="flex items-center gap-3 md:gap-4">
               {/* Notifications Section */}
               <div>
                 <button
@@ -325,45 +361,52 @@ const Navigation = () => {
               </svg>
             </button>
             <div className="flex flex-col gap-4 mt-8 flex-1">
+              <div className="px-4 py-2 font-medium">Content</div>
               <Link
                 href="/translation"
-                className="px-4 py-2 hover:bg-gray-50 rounded-md transition-colors flex items-center justify-between"
+                className="px-8 py-2 hover:bg-gray-50 rounded-md transition-colors"
                 onClick={() => setIsSidebarOpen(false)}
               >
-                <span>J-POP 가사번역</span>
-                <ChevronRight size={16} />
+                J-POP Lyrics Translation
               </Link>
               <Link
                 href="/article"
-                className="px-4 py-2 hover:bg-gray-50 rounded-md transition-colors flex items-center justify-between"
+                className="px-8 py-2 hover:bg-gray-50 rounded-md transition-colors"
                 onClick={() => setIsSidebarOpen(false)}
               >
-                <span>유레 매거진</span>
-                <ChevronRight size={16} />
-              </Link>
-              <Link
-                href="/karaoke"
-                className="px-4 py-2 hover:bg-gray-50 rounded-md transition-colors flex items-center justify-between"
-                onClick={() => setIsSidebarOpen(false)}
-              >
-                <span>노래방 번호 검색</span>
-                <ChevronRight size={16} />
-              </Link>
-              <Link
-                href="/karaoke/application"
-                className="px-4 py-2 hover:bg-gray-50 rounded-md transition-colors flex items-center justify-between"
-                onClick={() => setIsSidebarOpen(false)}
-              >
-                <span>노래방 번호 신청</span>
-                <ChevronRight size={16} />
+                Yure Magazine
               </Link>
               <Link
                 href="/news"
-                className="px-4 py-2 hover:bg-gray-50 rounded-md transition-colors flex items-center justify-between"
+                className="px-8 py-2 hover:bg-gray-50 rounded-md transition-colors"
                 onClick={() => setIsSidebarOpen(false)}
               >
-                <span>NEWS</span>
-                <ChevronRight size={16} />
+                NEWS
+              </Link>
+
+              <div className="px-4 py-2 font-medium">Karaoke Number</div>
+              <Link
+                href="/karaoke"
+                className="px-8 py-2 hover:bg-gray-50 rounded-md transition-colors"
+                onClick={() => setIsSidebarOpen(false)}
+              >
+                Karaoke Number Search
+              </Link>
+              <Link
+                href="/karaoke/application"
+                className="px-8 py-2 hover:bg-gray-50 rounded-md transition-colors"
+                onClick={() => setIsSidebarOpen(false)}
+              >
+                Karaoke Number Request
+              </Link>
+
+              <div className="px-4 py-2 font-medium">Schedule</div>
+              <Link
+                href="/schedule"
+                className="px-8 py-2 hover:bg-gray-50 rounded-md transition-colors"
+                onClick={() => setIsSidebarOpen(false)}
+              >
+                Schedule
               </Link>
             </div>
 
