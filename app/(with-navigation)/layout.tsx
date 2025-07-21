@@ -1,4 +1,4 @@
-import Navigation from "@/components/navigation";
+import Navigation from "@/components/navigation-section/navigation";
 import { ThemeSwitcher } from "@/components/theme-switcher";
 import { Instagram, Youtube } from "lucide-react";
 import Link from "next/link";

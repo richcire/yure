@@ -20,6 +20,7 @@ import {
 } from "@/components/ui/navigation-menu";
 import { cn } from "@/lib/utils";
 import React from "react";
+import Notification from "./notification";
 
 const ListItem = React.forwardRef<
   React.ElementRef<"a">,
@@ -49,49 +50,11 @@ ListItem.displayName = "ListItem";
 
 const Navigation = () => {
   const [user, setUser] = useState<User | undefined>();
-  const [name, setName] = useState<string | undefined>();
   const [showDropdown, setShowDropdown] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [showNotifications, setShowNotifications] = useState(false);
-  const [notifications, setNotifications] = useState<INotifications[]>([]);
   const supabase = createClient();
   const router = useRouter();
   const pathname = usePathname();
-
-  const markAsReadAll = async () => {
-    if (notifications.length === 0) {
-      return;
-    }
-    const { data, error } = await supabase.from("notifications").upsert(
-      notifications.map((notification) => ({
-        ...notification,
-        is_read: true,
-      })),
-      {
-        onConflict: "id",
-      }
-    );
-    setNotifications([]);
-  };
-
-  const getNotifications = async (user_id: string, role: string) => {
-    const { data, error } =
-      role === "admin"
-        ? await supabase
-            .from("notifications")
-            .select("*")
-            .eq("is_read", false)
-            .order("created_at", { ascending: false })
-            .returns<INotifications[]>()
-        : await supabase
-            .from("notifications")
-            .select("*")
-            .eq("recipient_user_id", user_id)
-            .eq("is_read", false)
-            .order("created_at", { ascending: false })
-            .returns<INotifications[]>();
-    return { data, error };
-  };
 
   useEffect(() => {
     const getSession = async () => {
@@ -100,24 +63,6 @@ const Navigation = () => {
         return;
       }
       setUser(data.session?.user);
-
-      if (data.session?.user) {
-        const { data: userData } = await supabase
-          .from("user_info")
-          .select("name, role")
-          .eq("user_id", data.session?.user.id)
-          .single<IUserInfo>();
-
-        setName(userData?.name);
-
-        const { data: notifications } = await getNotifications(
-          data.session?.user.id,
-          userData?.role || ""
-        );
-        if (notifications) {
-          setNotifications(notifications);
-        }
-      }
     };
     getSession();
   }, []);
@@ -207,62 +152,7 @@ const Navigation = () => {
             {/* Auth Section */}
             <div className="flex items-center gap-3 md:gap-4">
               {/* Notifications Section */}
-              <div>
-                <button
-                  className="hover:text-primary transition-colors flex items-center justify-center relative"
-                  onClick={() => setShowNotifications((prev) => !prev)}
-                >
-                  <BellIcon size={20} />
-                  {notifications.length > 0 && (
-                    <div className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
-                      {notifications.length > 9 ? "9+" : notifications.length}
-                    </div>
-                  )}
-                </button>
-
-                {showNotifications && (
-                  <div className="absolute right-1 top-full pt-2">
-                    <div className="w-80 bg-[#F5F5F5] backdrop-blur-sm shadow-sm border rounded-md p-4">
-                      <div className="flex items-center justify-between mb-4">
-                        <h3 className="font-medium">알림</h3>
-                        <button
-                          className="text-sm text-muted-foreground hover:text-primary transition-colors"
-                          onClick={markAsReadAll}
-                        >
-                          모두 읽음 표시
-                        </button>
-                      </div>
-
-                      <div className="space-y-4">
-                        {notifications.length > 0 ? (
-                          notifications.map((notification) => (
-                            <Link
-                              href={notification.relevant_url || "#"}
-                              key={notification.id}
-                              className="flex items-start gap-3 p-2 rounded-md"
-                            >
-                              <div className="flex-1">
-                                <p className="text-sm">
-                                  {notification.message}
-                                </p>
-                                <p className="text-xs text-muted-foreground">
-                                  {new Date(
-                                    notification.created_at
-                                  ).toLocaleDateString()}
-                                </p>
-                              </div>
-                            </Link>
-                          ))
-                        ) : (
-                          <div className="text-sm text-center text-muted-foreground">
-                            새로운 알림이 없습니다
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                )}
-              </div>
+              {user && <Notification />}
               {user ? (
                 <div
                   className="relative"
@@ -296,7 +186,7 @@ const Navigation = () => {
               ) : (
                 <Link
                   href={`/sign-in?redirectTo=${pathname}`}
-                  className="bg-primary text-white px-4 py-2 rounded-md hover:bg-primary/90 transition-all text-sm font-medium"
+                  className="bg-primary text-white px-4 py-2 rounded-md hover:bg-primary/80 transition-all text-sm font-medium"
                 >
                   로그인
                 </Link>
