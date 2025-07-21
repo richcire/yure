@@ -1,10 +1,13 @@
 import { Suspense } from "react";
+import Image from "next/image";
 import { FeaturedTranslations } from "@/components/home/featured-translations";
 import { Skeleton } from "@/components/ui/skeleton";
 import FeaturedArticleWrapper from "@/components/home/featured-article-wrapper";
 import { BottomDisplayAd } from "@/components/google-adsense/bottom-display-ad";
 import Search from "@/components/karaoke/search";
 import FeaturedNewsWrapper from "@/components/home/featured-news-wrapper";
+import santa from "@/public/assets/images/santa.png";
+import ScrollDownInstructor from "@/components/home/scroll-down-instructor";
 
 function CarouselLoading() {
   return (
@@ -83,6 +86,22 @@ function NewsLoading() {
 export default function Home() {
   return (
     <main className="w-full min-h-screen bg-comfortWhite">
+      <div className="max-w-[2912px] mx-auto">
+        <div
+          className="relative w-full overflow-hidden"
+          style={{ paddingTop: "56.25%" }}
+        >
+          <Image
+            src={santa}
+            alt="Santa Claus image"
+            fill
+            priority
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 100vw, 2912px"
+            className="object-cover"
+          />
+          <ScrollDownInstructor />
+        </div>
+      </div>
       <Suspense fallback={<CarouselLoading />}>
         <FeaturedArticleWrapper />
       </Suspense>

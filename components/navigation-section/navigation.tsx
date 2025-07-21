@@ -5,9 +5,8 @@ import Link from "next/link";
 import { createClient } from "@/utils/supabase/client";
 import { User } from "@supabase/supabase-js";
 import Image from "next/image";
-import { INotifications, IUserInfo } from "@/types/supabase-table";
 import { useRouter, usePathname } from "next/navigation";
-import { User as UserIcon, BellIcon, ChevronDown } from "lucide-react";
+import { User as UserIcon } from "lucide-react";
 import roundLogo from "@/public/assets/logos/round.png";
 import {
   NavigationMenu,
@@ -186,7 +185,7 @@ const Navigation = () => {
               ) : (
                 <Link
                   href={`/sign-in?redirectTo=${pathname}`}
-                  className="bg-primary text-white px-4 py-2 rounded-md hover:bg-primary/80 transition-all text-sm font-medium"
+                  className="bg-primary text-white px-4 py-2 rounded-md hover:opacity-70 transition-all text-sm font-medium"
                 >
                   로그인
                 </Link>
