@@ -34,7 +34,7 @@ export async function FeaturedTranslations() {
             className="mb-8 text-3xl font-bold"
             duration={3}
           >
-            멜로디만으로는 알 수 없는 감정, 지금 해석해드릴게요
+            "멜로디만으로는 알 수 없는 감정, 지금 해석해드릴게요"
           </TextAnimate>
           <Link
             href="/translation"

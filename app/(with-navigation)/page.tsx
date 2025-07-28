@@ -114,7 +114,7 @@ export default function Home() {
           className="text-center mb-12 text-3xl font-bold"
           duration={2}
         >
-          부르고 싶은 그 노래, 언제든 어디서든 번호 확인
+          "부르고 싶은 그 노래, 언제든 어디서든 번호 확인"
         </TextAnimate>
         <Search />
       </div>

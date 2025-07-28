@@ -4,14 +4,16 @@ import { ArrowRightIcon } from "lucide-react";
 import Link from "next/link";
 import { Marquee } from "@/components/magicui/marquee";
 import ScheduleBadge from "./schedule-badge";
+import { IEvents } from "@/types/supabase-table";
 
 export default async function FeaturedSchedule() {
   const supabase = await createClient();
   const { data: events } = await supabase
     .from("events")
-    .select("id, title")
+    .select("id, title, event_types!inner (bg_color, border_color)")
     .order("created_at", { ascending: false })
-    .limit(80);
+    .limit(80)
+    .returns<IEvents[]>();
 
   const firstRow = events?.slice(0, 20);
   const secondRow = events?.slice(20, 40);
@@ -31,7 +33,7 @@ export default async function FeaturedSchedule() {
           className="mb-8 text-3xl font-bold"
           duration={3}
         >
-          놓치지 마세요, 당신의 최애가 오는 날
+          "놓치지 마세요, 당신의 최애가 오는 날"
         </TextAnimate>
         <Link
           href="/translation"
@@ -45,22 +47,42 @@ export default async function FeaturedSchedule() {
       <div className="relative flex w-full flex-col items-center justify-center overflow-hidden pt-10">
         <Marquee pauseOnHover className="[--duration:60s]  pt-5">
           {firstRow?.map((event) => (
-            <ScheduleBadge key={event.id} title={event.title} />
+            <ScheduleBadge
+              key={event.id}
+              title={event.title}
+              bgColor={event.event_types?.bg_color}
+              borderColor={event.event_types?.border_color}
+            />
           ))}
         </Marquee>
         <Marquee reverse pauseOnHover className="[--duration:50s]  pt-5">
           {secondRow?.map((event) => (
-            <ScheduleBadge key={event.id} title={event.title} />
+            <ScheduleBadge
+              key={event.id}
+              title={event.title}
+              bgColor={event.event_types?.bg_color}
+              borderColor={event.event_types?.border_color}
+            />
           ))}
         </Marquee>
         <Marquee pauseOnHover className="[--duration:60s]  pt-5">
           {thirdRow?.map((event) => (
-            <ScheduleBadge key={event.id} title={event.title} />
+            <ScheduleBadge
+              key={event.id}
+              title={event.title}
+              bgColor={event.event_types?.bg_color}
+              borderColor={event.event_types?.border_color}
+            />
           ))}
         </Marquee>
         <Marquee pauseOnHover className="[--duration:50s]  pt-5">
           {fourthRow?.map((event) => (
-            <ScheduleBadge key={event.id} title={event.title} />
+            <ScheduleBadge
+              key={event.id}
+              title={event.title}
+              bgColor={event.event_types?.bg_color}
+              borderColor={event.event_types?.border_color}
+            />
           ))}
         </Marquee>
       </div>
