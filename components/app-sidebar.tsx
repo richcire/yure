@@ -6,6 +6,7 @@ import {
   Settings,
   Tag,
   Newspaper,
+  FileText,
 } from "lucide-react";
 
 import {
@@ -34,7 +35,7 @@ const items = [
   {
     title: "Article",
     url: "/admin/article",
-    icon: Calendar,
+    icon: FileText,
   },
   {
     title: "Category",
@@ -50,6 +51,11 @@ const items = [
     title: "News",
     url: "/admin/news",
     icon: Newspaper,
+  },
+  {
+    title: "Schedule",
+    url: "/admin/schedule",
+    icon: Calendar,
   },
   {
     title: "test",
