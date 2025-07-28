@@ -8,6 +8,8 @@ import Search from "@/components/karaoke/search";
 import FeaturedNewsWrapper from "@/components/home/featured-news-wrapper";
 import santa from "@/public/assets/images/santa.png";
 import ScrollDownInstructor from "@/components/home/scroll-down-instructor";
+import { TextAnimate } from "@/components/magicui/text-animate";
+import FeaturedSchedule from "@/components/home/featured-schedule";
 
 function CarouselLoading() {
   return (
@@ -102,27 +104,36 @@ export default function Home() {
           <ScrollDownInstructor />
         </div>
       </div>
-      <Suspense fallback={<CarouselLoading />}>
-        <FeaturedArticleWrapper />
-      </Suspense>
 
-      <div className="max-w-5xl mx-auto my-12 px-4">
-        <h2 className="text-3xl font-bold mb-4 pt-12 text-center">
-          🔍 JPOP 노래방 검색기
-        </h2>
-        <p className="text-center mb-8">
-          부르고 싶은 J-POP 노래방 번호를 한 번에 찾아보세요!
-        </p>
+      <div className="max-w-5xl mx-auto py-60 px-4">
+        <p className="text-xl mb-8 text-center">JPOP 노래방 검색기</p>
+        <TextAnimate
+          animation="blurInUp"
+          by="character"
+          once
+          className="text-center mb-12 text-3xl font-bold"
+          duration={2}
+        >
+          부르고 싶은 그 노래, 언제든 어디서든 번호 확인
+        </TextAnimate>
         <Search />
       </div>
 
-      <div className="max-w-5xl mx-auto my-12">
+      <div className="w-full pt-48 pb-60">
         <Suspense fallback={<TranslationsLoading />}>
           <FeaturedTranslations />
         </Suspense>
       </div>
 
-      <div className="max-w-5xl mx-auto my-12 px-4">
+      <Suspense fallback={<CarouselLoading />}>
+        <FeaturedArticleWrapper />
+      </Suspense>
+
+      <div className="w-full pt-48 pb-60">
+        <FeaturedSchedule />
+      </div>
+
+      <div className="container mx-auto px-4 pt-48 pb-60">
         <Suspense fallback={<NewsLoading />}>
           <FeaturedNewsWrapper />
         </Suspense>
