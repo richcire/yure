@@ -96,39 +96,37 @@ const Navigation = () => {
                 <NavigationMenuList className="bg-background/70 backdrop-blur-sm px-6 py-1 rounded-2xl">
                   <NavigationMenuItem>
                     <NavigationMenuTrigger className="bg-transparent">
-                      Content
+                      컨텐츠
                     </NavigationMenuTrigger>
                     <NavigationMenuContent>
                       <ul className="grid w-[400px] gap-3 p-4">
-                        <ListItem
-                          href="/translation"
-                          title="J-POP Lyrics Translation"
-                        >
-                          Browse Japanese song lyrics with Korean translations
+                        <ListItem href="/translation" title="J-POP 가사 번역">
+                          J-POP 노래 가사를 한국어 번역과 함께 감상해보세요
                         </ListItem>
-                        <ListItem href="/article" title="Yure Magazine">
-                          Read articles about Japanese culture and music
+                        <ListItem href="/article" title="유레 매거진">
+                          J-컬처와 음악 이야기, 지금 만나보세요
                         </ListItem>
-                        <ListItem href="/news" title="NEWS">
-                          Stay updated with the latest Japanese music news
+                        <ListItem href="/news" title="유레 뉴스">
+                          지금 일본 음악 씬에서 무슨 일이? 가장 빠른 뉴스로
+                          확인하세요
                         </ListItem>
                       </ul>
                     </NavigationMenuContent>
                   </NavigationMenuItem>
                   <NavigationMenuItem>
                     <NavigationMenuTrigger className="bg-transparent">
-                      Karaoke Number
+                      노래방 번호
                     </NavigationMenuTrigger>
                     <NavigationMenuContent>
                       <ul className="grid w-[400px] gap-3 p-4">
-                        <ListItem href="/karaoke" title="Karaoke Number Search">
-                          Search for karaoke numbers of Japanese songs
+                        <ListItem href="/karaoke" title="노래방 번호 찾기">
+                          부르고 싶은 일본 노래, 번호부터 찾아보세요
                         </ListItem>
                         <ListItem
                           href="/karaoke/application"
-                          title="Karaoke Number Request"
+                          title="노래방 번호 신청"
                         >
-                          Request karaoke numbers for songs not in the database
+                          찾는 노래가 없다면? 노래방 번호 요청하기
                         </ListItem>
                       </ul>
                     </NavigationMenuContent>
@@ -141,7 +139,7 @@ const Navigation = () => {
                         "bg-transparent"
                       )}
                     >
-                      <Link href="/schedule">Schedule</Link>
+                      <Link href="/schedule">일정</Link>
                     </NavigationMenuLink>
                   </NavigationMenuItem>
                 </NavigationMenuList>
@@ -250,52 +248,52 @@ const Navigation = () => {
               </svg>
             </button>
             <div className="flex flex-col gap-4 mt-8 flex-1">
-              <div className="px-4 py-2 font-medium">Content</div>
+              <div className="px-4 py-2 font-medium">컨텐츠</div>
               <Link
                 href="/translation"
                 className="px-8 py-2 hover:bg-gray-50 rounded-md transition-colors"
                 onClick={() => setIsSidebarOpen(false)}
               >
-                J-POP Lyrics Translation
+                J-POP 가사 번역
               </Link>
               <Link
                 href="/article"
                 className="px-8 py-2 hover:bg-gray-50 rounded-md transition-colors"
                 onClick={() => setIsSidebarOpen(false)}
               >
-                Yure Magazine
+                유레 매거진
               </Link>
               <Link
                 href="/news"
                 className="px-8 py-2 hover:bg-gray-50 rounded-md transition-colors"
                 onClick={() => setIsSidebarOpen(false)}
               >
-                NEWS
+                유레 뉴스
               </Link>
 
-              <div className="px-4 py-2 font-medium">Karaoke Number</div>
+              <div className="px-4 py-2 font-medium">노래방 번호</div>
               <Link
                 href="/karaoke"
                 className="px-8 py-2 hover:bg-gray-50 rounded-md transition-colors"
                 onClick={() => setIsSidebarOpen(false)}
               >
-                Karaoke Number Search
+                노래방 번호 찾기
               </Link>
               <Link
                 href="/karaoke/application"
                 className="px-8 py-2 hover:bg-gray-50 rounded-md transition-colors"
                 onClick={() => setIsSidebarOpen(false)}
               >
-                Karaoke Number Request
+                노래방 번호 신청
               </Link>
 
-              <div className="px-4 py-2 font-medium">Schedule</div>
+              <div className="px-4 py-2 font-medium">일정</div>
               <Link
                 href="/schedule"
                 className="px-8 py-2 hover:bg-gray-50 rounded-md transition-colors"
                 onClick={() => setIsSidebarOpen(false)}
               >
-                Schedule
+                일정
               </Link>
             </div>
 

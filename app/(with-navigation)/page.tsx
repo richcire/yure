@@ -90,8 +90,8 @@ export default function Home() {
     <main className="w-full min-h-screen bg-comfortWhite">
       <div className="max-w-[2912px] mx-auto">
         <div
-          className="relative w-full overflow-hidden"
-          style={{ paddingTop: "56.25%" }}
+          className="relative w-full overflow-hidden md:h-auto h-screen md:[&>*]:relative [&>*]:absolute"
+          style={{ paddingTop: "clamp(0px, (100vw - 768px) * 999, 56.25%)" }}
         >
           <Image
             src={santa}

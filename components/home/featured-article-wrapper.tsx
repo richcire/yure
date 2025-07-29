@@ -49,7 +49,7 @@ export default async function FeaturedArticleWrapper() {
         {articles.map((article) => (
           <div
             key={article.id}
-            className="relative aspect-[16/9] group overflow-hidden rounded-lg"
+            className="relative aspect-[16/9] group overflow-hidden rounded-lg cursor-pointer"
           >
             {/* Banner Image */}
             <div className="absolute inset-0 transition-transform duration-500 ease-in-out group-hover:scale-110">
