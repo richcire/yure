@@ -64,6 +64,7 @@ const config = {
         },
       },
       colors: {
+        comfortWhite: "#F5F5F5",
         border: "#69140E",
         input: "#69140E",
         ring: "hsl(var(--ring))",

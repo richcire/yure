@@ -1,10 +1,15 @@
 import { Suspense } from "react";
+import Image from "next/image";
 import { FeaturedTranslations } from "@/components/home/featured-translations";
 import { Skeleton } from "@/components/ui/skeleton";
 import FeaturedArticleWrapper from "@/components/home/featured-article-wrapper";
 import { BottomDisplayAd } from "@/components/google-adsense/bottom-display-ad";
 import Search from "@/components/karaoke/search";
 import FeaturedNewsWrapper from "@/components/home/featured-news-wrapper";
+import santa from "@/public/assets/images/santa.png";
+import ScrollDownInstructor from "@/components/home/scroll-down-instructor";
+import { TextAnimate } from "@/components/magicui/text-animate";
+import FeaturedSchedule from "@/components/home/featured-schedule";
 
 function CarouselLoading() {
   return (
@@ -82,28 +87,53 @@ function NewsLoading() {
 
 export default function Home() {
   return (
-    <main className="w-full min-h-screen bg-background">
-      <Suspense fallback={<CarouselLoading />}>
-        <FeaturedArticleWrapper />
-      </Suspense>
+    <main className="w-full min-h-screen bg-comfortWhite">
+      <div className="max-w-[2912px] mx-auto">
+        <div
+          className="relative w-full overflow-hidden md:h-auto h-screen md:[&>*]:relative [&>*]:absolute"
+          style={{ paddingTop: "clamp(0px, (100vw - 768px) * 999, 56.25%)" }}
+        >
+          <Image
+            src={santa}
+            alt="Santa Claus image"
+            fill
+            priority
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 100vw, 2912px"
+            className="object-cover"
+          />
+          <ScrollDownInstructor />
+        </div>
+      </div>
 
-      <div className="max-w-5xl mx-auto my-12 px-4">
-        <h2 className="text-3xl font-bold mb-4 pt-12 text-center">
-          🔍 JPOP 노래방 검색기
-        </h2>
-        <p className="text-center mb-8">
-          부르고 싶은 J-POP 노래방 번호를 한 번에 찾아보세요!
-        </p>
+      <div className="max-w-5xl mx-auto py-60 px-4">
+        <p className="text-xl mb-8 text-center">JPOP 노래방 검색기</p>
+        <TextAnimate
+          animation="blurInUp"
+          by="character"
+          once
+          className="text-center mb-12 text-3xl font-bold"
+          duration={2}
+        >
+          "부르고 싶은 그 노래, 언제든 어디서든 번호 확인"
+        </TextAnimate>
         <Search />
       </div>
 
-      <div className="max-w-5xl mx-auto my-12">
+      <div className="w-full pt-48 pb-60">
         <Suspense fallback={<TranslationsLoading />}>
           <FeaturedTranslations />
         </Suspense>
       </div>
 
-      <div className="max-w-5xl mx-auto my-12 px-4">
+      <Suspense fallback={<CarouselLoading />}>
+        <FeaturedArticleWrapper />
+      </Suspense>
+
+      <div className="w-full pt-48 pb-60">
+        <FeaturedSchedule />
+      </div>
+
+      <div className="container mx-auto px-4 pt-48 pb-60">
         <Suspense fallback={<NewsLoading />}>
           <FeaturedNewsWrapper />
         </Suspense>
