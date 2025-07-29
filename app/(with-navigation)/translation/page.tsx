@@ -70,7 +70,7 @@ function TranslationFilterSkeleton() {
 
 export default async function TranslationHomePage({ searchParams }: Props) {
   return (
-    <div className="w-full max-w-5xl mx-auto min-h-screen bg-background">
+    <div className="w-full max-w-5xl mx-auto min-h-screen bg-background pt-20">
       <div className="px-4">
         <Suspense>
           <Header />

@@ -1,4 +1,4 @@
-import Navigation from "@/components/navigation";
+import Navigation from "@/components/navigation-section/navigation";
 import { ThemeSwitcher } from "@/components/theme-switcher";
 import { Instagram, Youtube } from "lucide-react";
 import Link from "next/link";
@@ -11,7 +11,7 @@ export default function WithNavigationLayout({
   return (
     <>
       <Navigation />
-      <main className="min-h-screen flex flex-col items-center pt-[60px]">
+      <main className="min-h-screen flex flex-col items-center bg-comfortWhite">
         <div className="flex-1 w-full flex flex-col items-center">
           {children}
 
