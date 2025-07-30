@@ -30,7 +30,7 @@ export function Header() {
   };
 
   return (
-    <header className="bg-background border-b">
+    <header className=" border-b">
       <div className="container py-8 px-0">
         <div className="flex flex-col sm:flex-row justify-between items-center gap-8">
           <div className="flex items-center">
