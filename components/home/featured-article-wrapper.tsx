@@ -37,9 +37,9 @@ export default async function FeaturedArticleWrapper() {
       </p>
       <div className="flex justify-end">
         <Link
-          href="/translation"
+          href="/article"
           className="mb-8 flex items-center bg-primary text-primary-foreground px-4 rounded-md h-10 w-32 hover:bg-primary/50 hover:text-primary/90 transition-colors"
-          aria-label="View all translations"
+          aria-label="View all articles"
         >
           <span className="mr-2">더보기</span>
           <ArrowRightIcon className="w-4 h-4" />
@@ -47,7 +47,8 @@ export default async function FeaturedArticleWrapper() {
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {articles.map((article) => (
-          <div
+          <Link
+            href={`/article/${article.slug}`}
             key={article.id}
             className="relative aspect-[16/9] group overflow-hidden rounded-lg cursor-pointer"
           >
@@ -71,7 +72,7 @@ export default async function FeaturedArticleWrapper() {
                 {article.title}
               </h3>
             </div>
-          </div>
+          </Link>
         ))}
       </div>
     </section>
