@@ -32,25 +32,6 @@ export const YouTubeExtension = Node.create<YouTubeOptions>({
     };
   },
 
-  getEmbedUrl(url: string) {
-    if (!url) return null;
-
-    const patterns = [
-      /(?:https?:\/\/)?(?:www\.)?youtube\.com\/watch\?v=([^&]+)/,
-      /(?:https?:\/\/)?(?:www\.)?youtube\.com\/embed\/([^?]+)/,
-      /(?:https?:\/\/)?(?:www\.)?youtu\.be\/([^?]+)/,
-    ];
-
-    for (const pattern of patterns) {
-      const match = url.match(pattern);
-      if (match) {
-        return `https://www.youtube-nocookie.com/embed/${match[1]}`;
-      }
-    }
-
-    return url;
-  },
-
   parseHTML() {
     return [
       {
