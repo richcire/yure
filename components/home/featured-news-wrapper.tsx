@@ -40,7 +40,7 @@ export default async function FeaturedNewsWrapper() {
               animation="blurIn"
               by="character"
               once
-              className="text-2xl md:text-3xl font-bold text-center"
+              className="text-xl md:text-3xl font-bold text-center"
               duration={3}
             >
               "가장 빠른 J-POP 뉴스, 가장 먼저 만나는 이야기"
