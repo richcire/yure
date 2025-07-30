@@ -25,7 +25,7 @@ interface Props {
 function ArticleListSkeleton() {
   return (
     <>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pt-20">
         {[...Array(6)].map((_, i) => (
           <div
             key={i}
@@ -55,7 +55,7 @@ function ArticleListSkeleton() {
 
 export default async function ArticleHomePage({ searchParams }: Props) {
   return (
-    <div className="w-full max-w-5xl mx-auto min-h-screen bg-background">
+    <div className="w-full max-w-5xl mx-auto min-h-screen bg-background pt-20">
       <Header />
       <main className="container mx-auto px-4 py-4">
         <Suspense fallback={<ArticleListSkeleton />}>

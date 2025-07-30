@@ -97,7 +97,7 @@ export default async function NewsHomePage({ searchParams }: Props) {
   const currentPage = parseInt(page);
 
   return (
-    <div className="w-full max-w-5xl mx-auto min-h-screen bg-background px-4 py-8">
+    <div className="w-full max-w-5xl mx-auto min-h-screen bg-background px-4 py-8 pt-20">
       <Header />
       <NewsBanner />
       <main>

@@ -34,6 +34,7 @@ export async function middleware(request: NextRequest) {
     "/article",
     "/karaoke",
     "/news",
+    "/schedule",
     "/admin",
     "/api",
     "/terms",
@@ -45,6 +46,7 @@ export async function middleware(request: NextRequest) {
     "/auth",
     "/protected",
     "/ads.txt",
+    "/schedule",
   ];
 
   const isExcluded = excludePaths.some((path) => pathname.startsWith(path));
