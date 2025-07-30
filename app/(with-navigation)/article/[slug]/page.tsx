@@ -12,6 +12,7 @@ import { TipTapContentSkeleton } from "@/components/Tiptap/TipTapContentSkeleton
 import ArticleContentWrapper from "@/components/article/article-content-wrapper";
 import ArticleRelatedPosts from "@/components/article/article-related-posts";
 import squareLogo from "@/public/assets/logos/square_high.jpeg";
+import { ArticleCommentSection } from "@/components/article/article-comment-section";
 
 const getArticle = async (slug: string) => {
   const supabase = await createClient();
@@ -141,11 +142,7 @@ export default async function ArticlePage({ params }: Props) {
             <ArticleRelatedPosts slug={slug} />
           </Suspense>
           <Suspense fallback={<div>댓글을 불러오는 중...</div>}>
-            <CommentSection
-              getComments={getComments}
-              addComment={addComment}
-              deleteComment={deleteComment}
-            />
+            <ArticleCommentSection slug={slug} />
           </Suspense>
         </div>
         <SideVerticalDisplayAdWrapper />
