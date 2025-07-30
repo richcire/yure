@@ -28,6 +28,7 @@
     "@tailwindcss/typography": "^0.5.16",
     "@tanstack/react-table": "^8.20.6",
     "@tanstack/react-virtual": "^3.13.4",
+    "@tiptap/core": "^3.0.7",
     "@tiptap/extension-highlight": "^3.0.7",
     "@tiptap/extension-link": "^3.0.7",
     "@tiptap/extension-text-align": "^3.0.7",
