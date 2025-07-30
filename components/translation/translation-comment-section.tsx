@@ -6,7 +6,11 @@ import { User } from "@supabase/supabase-js";
 import { createClient } from "@/utils/supabase/client";
 import { CommentsRefactory } from "@/components/comments/comments-refactory";
 
-export function KaraokeCommentSection() {
+export function TranslationCommentSection({
+  permalink,
+}: {
+  permalink: string;
+}) {
   const [comments, setComments] = useState<
     (IComments & { replies: IComments[] })[]
   >([]);
@@ -22,10 +26,11 @@ export function KaraokeCommentSection() {
 
   const getComments = async () => {
     const { data, error, count } = await supabase.rpc(
-      "get_karaoke_comments_with_replies",
-      {},
+      "get_translation_comments_with_replies",
+      { _permalink: permalink },
       { count: "exact" }
     );
+
     if (error) {
       console.error("Error fetching comments:", error);
       return;
@@ -41,13 +46,11 @@ export function KaraokeCommentSection() {
 
     if (!newComment.trim()) return;
     const { data, error, count } = await supabase.rpc(
-      "add_karaoke_comment",
+      "add_translation_comment",
       {
-        _content: newComment,
-        _parent_id: null,
-      },
-      {
-        count: "exact",
+        _permalink: decodeURIComponent(permalink),
+        new_content: newComment,
+        parent_id: null,
       }
     );
     if (error) {
@@ -65,16 +68,11 @@ export function KaraokeCommentSection() {
   ) => {
     e.preventDefault();
 
-    const { data, error } = await supabase.rpc(
-      "add_karaoke_comment",
-      {
-        _content: replyContent,
-        _parent_id: parent_id,
-      },
-      {
-        count: "exact",
-      }
-    );
+    const { data, error } = await supabase.rpc("add_translation_comment", {
+      _permalink: decodeURIComponent(permalink),
+      new_content: replyContent,
+      parent_id,
+    });
     if (error) {
       console.error("Error adding reply:", error);
       return;
@@ -91,10 +89,10 @@ export function KaraokeCommentSection() {
     <div className="mt-8">
       <CommentsRefactory
         comment={comments}
-        useHideFeature={false}
+        useHideFeature={true}
         handleSubmit={handleSubmit}
         handleSubmitReply={handleSubmitReply}
-        deleteFn={"delete_karaoke_comment"}
+        deleteFn={"delete_translation_comment"}
         setComment={setComments}
       />
     </div>

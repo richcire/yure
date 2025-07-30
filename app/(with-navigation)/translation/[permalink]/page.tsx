@@ -13,6 +13,7 @@ import TranslationRelatedPosts from "@/components/translation/translation-relate
 import ViewCounter from "@/components/translation/ViewCounter";
 import TranslationRelatedPostsSkeleton from "@/components/translation/translation-related-posts-skeleton";
 import squareLogo from "@/public/assets/logos/square_high.jpeg";
+import { TranslationCommentSection } from "@/components/translation/translation-comment-section";
 
 export async function generateMetadata({ params }: Props) {
   const { permalink } = await params;
@@ -113,11 +114,7 @@ export default async function TranslationPage({ params }: Props) {
         </Suspense>
 
         <Suspense fallback={<div>댓글을 불러오는 중...</div>}>
-          <CommentSection
-            getComments={getComments}
-            addComment={addComment}
-            deleteComment={deleteComment}
-          />
+          <TranslationCommentSection permalink={permalink} />
         </Suspense>
       </div>
       <SideVerticalDisplayAdWrapper />
