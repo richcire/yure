@@ -53,7 +53,7 @@ export default async function TranslationRelatedPosts({
       {previousPost && (
         <Link
           href={`/translation/${previousPost.permalink}`}
-          className="group flex flex-col rounded-lg shadow-md hover:shadow-lg transition-shadow p-4"
+          className="group flex flex-col bg-background rounded-lg shadow-md hover:shadow-lg transition-shadow p-4"
         >
           <div className="text-sm text-gray-600 mb-2">이전 게시물</div>
           <div className="relative aspect-video mb-3 w-full">
@@ -75,7 +75,7 @@ export default async function TranslationRelatedPosts({
       {nextPost && (
         <Link
           href={`/translation/${nextPost.permalink}`}
-          className="group flex flex-col rounded-lg shadow-md hover:shadow-lg transition-shadow p-4"
+          className="group flex flex-col bg-background rounded-lg shadow-md hover:shadow-lg transition-shadow p-4"
         >
           <div className="text-sm text-gray-600 mb-2 text-right">
             다음 게시물

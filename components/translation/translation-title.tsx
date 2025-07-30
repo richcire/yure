@@ -42,20 +42,27 @@ export async function TranslationTitle({ permalink }: TranslationTitleProps) {
   }
 
   return (
-    <div className="bg-[#214E34] backdrop-blur-sm shadow-sm p-4 rounded-md mb-8">
-      <h1 className="text-3xl text-[#E4E0D5] font-bold mb-2">
+    <div className="bg-[#214E34] shadow-lg p-4 rounded-md mb-8">
+      <h1 className="text-2xl sm:text-3xl text-[#E4E0D5] font-bold mb-2">
         {translation.title}
       </h1>
-      <h2 className="text-xl text-[#E4E0D5] mb-8">{translation.artist}</h2>
+      <h2 className="text-lg sm:text-xl text-[#E4E0D5] mb-8">
+        {translation.artist}
+      </h2>
       <div className="w-full flex justify-between items-end">
         <div className="flex gap-2">
           {translation.categories.map((category) => (
-            <Badge key={category.id} className="font-bold">
+            <Badge
+              key={category.id}
+              className="font-bold text-xs sm:text-sm bg-background text-foreground"
+            >
               {category.name}
             </Badge>
           ))}
         </div>
-        <h3 className="text-[#E4E0D5]">발매일: {translation.release_date}</h3>
+        <h3 className="text-[#E4E0D5] text-sm sm:text-base">
+          발매일: {translation.release_date}
+        </h3>
       </div>
     </div>
   );

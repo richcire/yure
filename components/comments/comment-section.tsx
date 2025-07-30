@@ -97,7 +97,7 @@ export function CommentSection({
                   setNewComment(e.target.value)
                 }
                 placeholder="댓글을 달아보세요!"
-                className="w-full"
+                className="w-full border-none shadow-lg"
               />
             ) : (
               <Textarea
@@ -110,7 +110,11 @@ export function CommentSection({
               />
             )}
             {user && (
-              <Button type="submit" disabled={!newComment.trim()}>
+              <Button
+                type="submit"
+                disabled={!newComment.trim()}
+                className="hover:text-primary"
+              >
                 댓글 작성
               </Button>
             )}
