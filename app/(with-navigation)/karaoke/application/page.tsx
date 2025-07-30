@@ -3,7 +3,7 @@ import { SideVerticalDisplayAdWrapper } from "@/components/google-adsense/side-v
 import { BottomDisplayAdWrapper } from "@/components/google-adsense/bottom-display-ad-wrapper";
 export default function KaraokeApplicationPage() {
   return (
-    <div className="container max-w-5xl mx-auto py-8 px-4 min-h-screen">
+    <div className="container max-w-5xl mx-auto pt-32 px-4 min-h-screen">
       <div className="mb-8 text-center">
         <h1 className="text-3xl font-bold">🔖 노래방 번호 신청</h1>
         <p className="text-gray-600 mt-2">

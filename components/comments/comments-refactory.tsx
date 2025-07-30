@@ -108,12 +108,12 @@ export function CommentsRefactory({
                   setNewComment(e.target.value)
                 }
                 placeholder="댓글을 달아보세요!"
-                className="w-full"
+                className="w-full border-none shadow-md"
               />
             ) : (
               <Textarea
                 placeholder="로그인 후 댓글을 달아보세요!"
-                className="w-full"
+                className="w-full border-none shadow-md"
                 onClick={() => {
                   router.push(`/sign-in?redirectTo=${pathname}`);
                 }}

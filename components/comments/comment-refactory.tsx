@@ -45,7 +45,7 @@ export default function CommentRefactory({
   };
 
   return (
-    <div className="border rounded-lg p-4 space-y-4">
+    <div className="bg-background rounded-lg p-4 space-y-4">
       <div className="flex items-start gap-4">
         <div className="flex-1">
           <div className="flex items-center justify-between gap-2">
@@ -100,12 +100,12 @@ export default function CommentRefactory({
                     setReplyContent(e.target.value)
                   }
                   placeholder="답글을 달아보세요!"
-                  className="w-full"
+                  className="w-full bg-transparent"
                 />
               ) : (
                 <Textarea
                   placeholder="로그인 후 댓글을 달아보세요!"
-                  className="w-full"
+                  className="w-full bg-transparent"
                   onClick={() => {
                     router.push("/sign-in");
                   }}
@@ -118,6 +118,7 @@ export default function CommentRefactory({
                     type="submit"
                     size="sm"
                     disabled={!replyContent.trim()}
+                    className="hover:text-primary"
                   >
                     답글 작성
                   </Button>
@@ -127,6 +128,7 @@ export default function CommentRefactory({
                   variant="outline"
                   size="sm"
                   onClick={() => setIsReplying(false)}
+                  className="bg-transparent"
                 >
                   취소
                 </Button>
