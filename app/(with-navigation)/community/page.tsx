@@ -5,7 +5,7 @@ import CategoryFilter from "@/components/community/category-filter";
 
 export default function CommunityPage() {
   return (
-    <div className="w-full max-w-5xl mx-auto min-h-screen bg-background px-4 py-8 pt-20">
+    <div className="w-full max-w-5xl mx-auto min-h-screen px-4 py-8 pt-20">
       <Header />
       <main>
         <TrendingPosts />

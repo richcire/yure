@@ -73,7 +73,7 @@ export default function TrendingPosts() {
   ];
 
   return (
-    <div className="bg-white rounded-lg p-6 mb-6">
+    <div className="bg-white rounded-lg p-6 mb-6 border border-gray-200">
       <h2 className="text-xl font-bold mb-6 text-gray-900">인기글</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8">
         {/* Left Column - Posts 1-5 */}
@@ -92,7 +92,9 @@ export default function TrendingPosts() {
                 <div className="flex items-center gap-2 mb-1">
                   <span className="text-xs text-gray-500">{post.author}</span>
                   <span className="text-xs text-gray-400">•</span>
-                  <span className="text-xs text-gray-400">{post.timeAgo}</span>
+                  <span className="text-[10px] text-gray-400">
+                    {post.timeAgo}
+                  </span>
                 </div>
                 <h3 className="text-sm font-medium text-gray-900 group-hover:text-blue-600 transition-colors line-clamp-1 mb-1">
                   {post.title}
@@ -106,7 +108,7 @@ export default function TrendingPosts() {
         </div>
 
         {/* Right Column - Posts 6-10 */}
-        <div className="space-y-4 mt-4 md:mt-0">
+        <div className="space-y-4 mt-4 md:mt-0 hidden md:block">
           {posts.slice(5, 10).map((post, index) => (
             <div
               key={post.id}
@@ -121,7 +123,9 @@ export default function TrendingPosts() {
                 <div className="flex items-center gap-2 mb-1">
                   <span className="text-xs text-gray-500">{post.author}</span>
                   <span className="text-xs text-gray-400">•</span>
-                  <span className="text-xs text-gray-400">{post.timeAgo}</span>
+                  <span className="text-[10px] text-gray-400">
+                    {post.timeAgo}
+                  </span>
                 </div>
                 <h3 className="text-sm font-medium text-gray-900 group-hover:text-blue-600 transition-colors line-clamp-1 mb-1">
                   {post.title}

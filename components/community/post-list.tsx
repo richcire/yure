@@ -79,7 +79,7 @@ export default function PostList() {
                     {post.author}
                   </span>
                   <span>•</span>
-                  <span>{post.timeAgo}</span>
+                  <span className="text-xs">{post.timeAgo}</span>
                 </div>
               </div>
 
