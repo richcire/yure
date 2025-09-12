@@ -1,4 +1,5 @@
 import { MessageCircle, Heart } from "lucide-react";
+import Link from "next/link";
 
 interface Post {
   id: number;
@@ -9,56 +10,62 @@ interface Post {
   likes: number;
   comments: number;
   image?: string;
+  slug: string;
 }
 
 const mockPosts: Post[] = [
   {
     id: 1,
-    title: "배고파",
-    content: "배고파",
-    author: "YURE",
-    timeAgo: "1분 전",
-    likes: 0,
-    comments: 0,
-    image: "https://placehold.co/100x60",
+    title: "신입 개발자를 위한 React 학습 로드맵 가이드",
+    content: "기초부터 심화까지 체계적인 React 학습 방법을 정리해봤습니다",
+    author: "개발자민수",
+    timeAgo: "2분 전",
+    likes: 42,
+    comments: 18,
+    image: "https://placehold.co/100x60/4F46E5/FFFFFF?text=React",
+    slug: "react-learning-roadmap",
   },
   {
     id: 2,
-    title: "배고파",
-    content: "배고파 배고파 배고파",
-    author: "YURE",
-    timeAgo: "1분 전",
-    likes: 1,
-    comments: 0,
+    title: "TypeScript vs JavaScript 선택 가이드",
+    content: "프로젝트에 따른 TypeScript와 JavaScript 선택 기준",
+    author: "코딩초보",
+    timeAgo: "15분 전",
+    likes: 23,
+    comments: 31,
+    slug: "typescript-vs-javascript",
   },
   {
     id: 3,
-    title: "배고파",
-    content: "배고파",
-    author: "YURE",
-    timeAgo: "4분 전",
-    likes: 6,
-    comments: 1,
-    image: "https://placehold.co/100x60",
+    title: "2024년 프론트엔드 트렌드 분석",
+    content: "올해 주목받고 있는 프론트엔드 기술들과 전망",
+    author: "테크리더",
+    timeAgo: "1시간 전",
+    likes: 89,
+    comments: 45,
+    image: "https://placehold.co/100x60/1F2937/FFFFFF?text=Trend",
+    slug: "frontend-trends-2024",
   },
   {
     id: 4,
-    title: "배고파",
-    content: "배고파 배고파 배고파",
-    author: "YURE",
-    timeAgo: "15분 전",
-    likes: 12,
-    comments: 8,
+    title: "카카오 2024 코딩테스트 후기",
+    content: "최근 카카오 코딩테스트 문제 유형과 난이도 분석",
+    author: "알고마스터",
+    timeAgo: "3시간 전",
+    likes: 156,
+    comments: 67,
+    slug: "kakao-coding-test-review",
   },
   {
     id: 5,
-    title: "배고파",
-    content: "배고파",
-    author: "YURE",
-    timeAgo: "32분 전",
-    likes: 8,
-    comments: 3,
-    image: "https://placehold.co/100x60",
+    title: "효율적인 Git 브랜칭 전략",
+    content: "팀 프로젝트에서 활용할 수 있는 Git 워크플로우 비교",
+    author: "Git마스터",
+    timeAgo: "5시간 전",
+    likes: 72,
+    comments: 29,
+    image: "https://placehold.co/100x60/10B981/FFFFFF?text=Git",
+    slug: "git-branching-strategy",
   },
 ];
 
@@ -66,9 +73,10 @@ export default function PostList() {
   return (
     <div className="space-y-4 mx-auto">
       {mockPosts.map((post) => (
-        <div
+        <Link
           key={post.id}
-          className="bg-white rounded-lg border border-gray-200 p-4 hover:shadow-md transition-shadow cursor-pointer"
+          href={`/community/${post.slug}`}
+          className="block bg-white rounded-lg border border-gray-200 p-4 hover:shadow-md transition-shadow cursor-pointer"
         >
           <div className="flex items-start justify-between">
             <div className="flex-1">
@@ -120,7 +128,7 @@ export default function PostList() {
               </div>
             )}
           </div>
-        </div>
+        </Link>
       ))}
     </div>
   );

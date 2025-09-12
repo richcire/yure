@@ -95,6 +95,9 @@ importers:
       '@tiptap/starter-kit':
         specifier: ^3.0.7
         version: 3.0.7
+      '@tiptap/static-renderer':
+        specifier: ^3.4.2
+        version: 3.4.2(@tiptap/core@3.0.7(@tiptap/pm@3.0.7))(@tiptap/pm@3.0.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       autoprefixer:
         specifier: 10.4.20
         version: 10.4.20(postcss@8.4.49)
@@ -1439,6 +1442,14 @@ packages:
 
   '@tiptap/starter-kit@3.0.7':
     resolution: {integrity: sha512-oTHZp6GXQQaZfZi8Fh7klH2YUeGq73XPF35CFw41mwdWdUUUms3ipaCKFqUyEYO21JMf3pZylJLxUucx5U7isg==}
+
+  '@tiptap/static-renderer@3.4.2':
+    resolution: {integrity: sha512-q2EzUJE/zbHbGgZ8cwy+tGZ2iKgJfqjp5mfmPBA/5cnJ3DplCWc/d5cuKaUUvDD0vceki9nm/pUYn+pm3Bcskw==}
+    peerDependencies:
+      '@tiptap/core': ^3.4.2
+      '@tiptap/pm': ^3.4.2
+      react: ^17.0.0 || ^18.0.0 || ^19.0.0
+      react-dom: ^17.0.0 || ^18.0.0 || ^19.0.0
 
   '@types/cookie@0.6.0':
     resolution: {integrity: sha512-4Kh9a6B2bQciAhf7FSuMRRkUWecJgJu9nPnx3yzpsfXX/c50REIqpHY4C82bXP90qrLtXtkDxTZosYO3UpOwlA==}
@@ -3538,6 +3549,13 @@ snapshots:
       '@tiptap/extension-underline': 3.0.7(@tiptap/core@3.0.7(@tiptap/pm@3.0.7))
       '@tiptap/extensions': 3.0.7(@tiptap/core@3.0.7(@tiptap/pm@3.0.7))(@tiptap/pm@3.0.7)
       '@tiptap/pm': 3.0.7
+
+  '@tiptap/static-renderer@3.4.2(@tiptap/core@3.0.7(@tiptap/pm@3.0.7))(@tiptap/pm@3.0.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)':
+    dependencies:
+      '@tiptap/core': 3.0.7(@tiptap/pm@3.0.7)
+      '@tiptap/pm': 3.0.7
+      react: 19.0.0
+      react-dom: 19.0.0(react@19.0.0)
 
   '@types/cookie@0.6.0': {}
 
