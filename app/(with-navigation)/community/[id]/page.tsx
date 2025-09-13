@@ -212,17 +212,17 @@ const mockPosts: Record<string, PostData> = {
   },
 };
 
-async function getPost(slug: string): Promise<PostData | null> {
-  return mockPosts[slug] || null;
+async function getPost(id: string): Promise<PostData | null> {
+  return mockPosts[id] || null;
 }
 
 interface PageProps {
-  params: Promise<{ slug: string }>;
+  params: Promise<{ id: string }>;
 }
 
 export default async function CommunityPostPage({ params }: PageProps) {
-  const { slug } = await params;
-  const post = await getPost(slug);
+  const { id } = await params;
+  const post = await getPost(id);
 
   if (!post) {
     notFound();
