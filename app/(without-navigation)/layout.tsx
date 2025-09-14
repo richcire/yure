@@ -7,7 +7,7 @@ export default function WithoutNavigationLayout({
 }>) {
   return (
     <>
-      <main className="min-h-screen flex flex-col items-center pt-16">
+      <main className="min-h-screen flex flex-col items-center">
         <div className="flex-1 w-full flex flex-col items-center">
           {children}
 
