@@ -1,5 +1,5 @@
 import { ThemeProvider } from "next-themes";
-import "./globals.css";
+import "./globals.scss";
 import { WebVitals } from "@/components/web-vitals";
 import { AdSenseCodeSnippet } from "@/components/google-adsense/adsense-code-snippet";
 import { Toaster } from "@/components/ui/sonner";
