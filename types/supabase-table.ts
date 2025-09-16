@@ -130,3 +130,13 @@ export interface IEventTypes {
   bg_color: string;
   border_color: string;
 }
+
+export interface IPosts {
+  id: string;
+  author_id: IUserInfo;
+  title: string;
+  content: string;
+  like_count: number;
+  comment_count: number;
+  created_at: string;
+}
