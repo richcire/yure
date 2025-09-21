@@ -15,14 +15,7 @@ export function MobileKaraokeInfeedAdWrapper() {
     (window.adsbygoogle = window.adsbygoogle || []).push({});
   }, []);
   return (
-    <div
-      style={{
-        width: "375px",
-        height: "80px",
-        // overflow: "hidden",
-        position: "relative",
-      }}
-    >
+    <div className="infeed-ad">
       <ins
         className="adsbygoogle"
         style={{ display: "block", width: "375px", height: "80px" }}

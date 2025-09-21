@@ -209,6 +209,11 @@ body {
   }
 }
 
+.infeed-ad {
+  width: 375px;
+  height: 80px;
+}
+
 /* Error Page Styles */
 @keyframes bounce-slow {
   0%,
