@@ -17,7 +17,7 @@ export default function KaraokeSongs() {
       <>
         <KaraokeAccordion />
         <BottomDisplayAdWrapper />
-        <MobileStickyBottomAdWrapper />
+        {/* <MobileStickyBottomAdWrapper /> */}
       </>
     );
   }
