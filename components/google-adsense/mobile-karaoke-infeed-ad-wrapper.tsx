@@ -17,12 +17,10 @@ export function MobileKaraokeInfeedAdWrapper() {
   return (
     <div className="my-12 max-w-[768px] min-w-[320px] mx-auto px-4 w-full">
       <ins
-        className="adsbygoogle h-20"
-        style={{ display: "block" }}
+        className="adsbygoogle"
+        style={{ display: "inline-block", width: "375px", height: "80px" }}
         data-ad-client="ca-pub-4738868818137222"
-        data-ad-slot="6505812562"
-        data-ad-format="auto"
-        data-full-width-responsive="true"
+        data-ad-slot="5910638236"
       ></ins>
     </div>
   );
