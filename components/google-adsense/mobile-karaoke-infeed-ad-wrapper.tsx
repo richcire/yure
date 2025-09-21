@@ -28,7 +28,7 @@ export function MobileKaraokeInfeedAdWrapper() {
         className="adsbygoogle"
         style={{
           display: "inline-block",
-          width: "320px",
+          width: "375px",
           height: "80px !important",
           minHeight: "80px",
           maxHeight: "80px",
