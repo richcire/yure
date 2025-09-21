@@ -1,5 +1,6 @@
 "use client";
 
+import React from "react";
 import {
   Accordion,
   AccordionContent,
@@ -14,7 +15,7 @@ import { IKaraokeSongs } from "@/types/supabase-table";
 import { useVirtualizer } from "@tanstack/react-virtual";
 import { cn } from "@/lib/utils";
 import { Checkbox } from "../ui/checkbox";
-import { BottomDisplayAdWrapper } from "../google-adsense/bottom-display-ad-wrapper";
+import { MobileKaraokeInfeedAdWrapper } from "../google-adsense/mobile-karaoke-infeed-ad-wrapper";
 import Link from "next/link";
 
 export const LoadingSpinner = ({ className }: { className?: string }) => {
@@ -104,6 +105,8 @@ export default function KaraokeAccordion() {
       },
       {
         threshold: 0.1,
+        root: null, // Use viewport as root
+        rootMargin: "100px", // Load more content before reaching the bottom
       }
     );
     if (loaderRef.current) {
@@ -117,8 +120,13 @@ export default function KaraokeAccordion() {
 
   const rowVirtualizer = useVirtualizer({
     count: songs.length,
-    getScrollElement: () => parentRef.current,
-    estimateSize: () => 80,
+    getScrollElement: () => document.documentElement,
+    estimateSize: (index) => {
+      // Every 5th item (index + 1 % 5 === 0) has an additional 80px for the ad
+      const hasAd = (index + 1) % 5 === 0;
+      return 90 + (hasAd ? 80 : 0); // 90px for accordion + 80px if there's an ad
+    },
+    overscan: 5, // Add some overscan for smoother scrolling
   });
 
   if (!searchQuery) {
@@ -175,7 +183,7 @@ export default function KaraokeAccordion() {
         </div>
       </div>
 
-      <div ref={parentRef} className="h-[calc(100vh-300px)] overflow-auto">
+      <div ref={parentRef}>
         <div
           className="relative"
           style={{
@@ -192,46 +200,53 @@ export default function KaraokeAccordion() {
             }}
           >
             <Accordion type="single" collapsible className="space-y-2">
-              {rowVirtualizer.getVirtualItems().map((virtualItem) => (
-                <AccordionItem
-                  key={virtualItem.key}
-                  value={songs[virtualItem.index].id.toString()}
-                  className="border rounded-lg px-4"
-                >
-                  <AccordionTrigger className="hover:no-underline">
-                    <div className="flex flex-col items-start gap-1">
-                      <div className="font-medium">
-                        {songs[virtualItem.index].song_title}
-                      </div>
-                      <div className="text-sm text-muted-foreground">
-                        {songs[virtualItem.index].singer}
-                      </div>
-                    </div>
-                  </AccordionTrigger>
-                  <AccordionContent>
-                    <div className="space-y-2 pb-2">
-                      <div className="flex justify-between">
-                        <span className="text-sm font-medium">TJ</span>
-                        <span className="text-sm">
-                          {songs[virtualItem.index].tj || "-"}
-                        </span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-sm font-medium">KY</span>
-                        <span className="text-sm">
-                          {songs[virtualItem.index].ky || "-"}
-                        </span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-sm font-medium">JOYSOUND</span>
-                        <span className="text-sm">
-                          {songs[virtualItem.index].js || "-"}
-                        </span>
-                      </div>
-                    </div>
-                  </AccordionContent>
-                </AccordionItem>
-              ))}
+              {rowVirtualizer.getVirtualItems().map((virtualItem) => {
+                const shouldShowAd = (virtualItem.index + 1) % 5 === 0;
+                return (
+                  <React.Fragment key={virtualItem.key}>
+                    <AccordionItem
+                      value={songs[virtualItem.index].id.toString()}
+                      className="border rounded-lg px-4"
+                    >
+                      <AccordionTrigger className="hover:no-underline">
+                        <div className="flex flex-col items-start gap-1">
+                          <div className="font-medium">
+                            {songs[virtualItem.index].song_title}
+                          </div>
+                          <div className="text-sm text-muted-foreground">
+                            {songs[virtualItem.index].singer}
+                          </div>
+                        </div>
+                      </AccordionTrigger>
+                      <AccordionContent>
+                        <div className="space-y-2 pb-2">
+                          <div className="flex justify-between">
+                            <span className="text-sm font-medium">TJ</span>
+                            <span className="text-sm">
+                              {songs[virtualItem.index].tj || "-"}
+                            </span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span className="text-sm font-medium">KY</span>
+                            <span className="text-sm">
+                              {songs[virtualItem.index].ky || "-"}
+                            </span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span className="text-sm font-medium">
+                              JOYSOUND
+                            </span>
+                            <span className="text-sm">
+                              {songs[virtualItem.index].js || "-"}
+                            </span>
+                          </div>
+                        </div>
+                      </AccordionContent>
+                    </AccordionItem>
+                    {shouldShowAd && <MobileKaraokeInfeedAdWrapper />}
+                  </React.Fragment>
+                );
+              })}
             </Accordion>
           </div>
         </div>
@@ -245,7 +260,7 @@ export default function KaraokeAccordion() {
         )}
       </div>
 
-      <div className="flex flex-col items-center justify-center gap-4 p-8">
+      <div className="flex flex-col items-center justify-center gap-4 p-8 mt-20">
         <p>찾으시는 노래가 없으신가요?</p>
         <Link
           href="/karaoke/application"

@@ -74,7 +74,7 @@ const Navigation = () => {
 
   return (
     <>
-      <nav className="fixed top-0 left-0 right-0 h-[80px] transition-all duration-300 z-50">
+      <nav className="fixed top-0 left-0 right-0 transition-all duration-300 z-50 bg-background/70 md:bg-transparent h-16  md:h-[80px] ">
         <div className="container mx-auto h-full px-4">
           <div className="flex items-center justify-between h-full">
             {/* Logo */}
@@ -150,44 +150,46 @@ const Navigation = () => {
             <div className="flex items-center gap-3 md:gap-4">
               {/* Notifications Section */}
               {user && <Notification />}
-              {user ? (
-                <div
-                  className="relative"
-                  onMouseEnter={() => setShowDropdown(true)}
-                  onMouseLeave={() => setShowDropdown(false)}
-                  onClick={() => setShowDropdown((prev) => !prev)}
-                >
-                  <div className="text-sm hover:text-primary transition-colors cursor-pointer truncate max-w-[120px] sm:max-w-none">
-                    <UserIcon size={20} />
-                  </div>
-                  {showDropdown && (
-                    <div className="absolute right-0 top-full pt-2">
-                      <div className="w-32 bg-[#F5F5F5] backdrop-blur-sm shadow-sm border rounded-md py-2">
-                        <button
-                          onClick={() => router.push("/protected/myPage")}
-                          className="w-full text-left px-4 py-2 text-sm hover:bg-red-50 transition-colors rounded-md"
-                        >
-                          마이 페이지
-                        </button>
-                        <div className="h-[1px] bg-border my-2 mx-4" />
-                        <button
-                          onClick={handleSignOut}
-                          className="w-full text-left px-4 py-2 text-sm text-red-500 hover:bg-red-50 transition-colors rounded-md"
-                        >
-                          로그아웃
-                        </button>
-                      </div>
+              <div className="hidden sm:block">
+                {user ? (
+                  <div
+                    className="relative"
+                    onMouseEnter={() => setShowDropdown(true)}
+                    onMouseLeave={() => setShowDropdown(false)}
+                    onClick={() => setShowDropdown((prev) => !prev)}
+                  >
+                    <div className="text-sm hover:text-primary transition-colors cursor-pointer truncate max-w-[120px] sm:max-w-none">
+                      <UserIcon size={20} />
                     </div>
-                  )}
-                </div>
-              ) : (
-                <Link
-                  href={`/sign-in?redirectTo=${pathname}`}
-                  className="bg-primary text-white px-4 py-2 rounded-md hover:opacity-70 transition-all text-sm font-medium"
-                >
-                  로그인
-                </Link>
-              )}
+                    {showDropdown && (
+                      <div className="absolute right-0 top-full pt-2">
+                        <div className="w-32 bg-[#F5F5F5] backdrop-blur-sm shadow-sm border rounded-md py-2">
+                          <button
+                            onClick={() => router.push("/protected/myPage")}
+                            className="w-full text-left px-4 py-2 text-sm hover:bg-red-50 transition-colors rounded-md"
+                          >
+                            마이 페이지
+                          </button>
+                          <div className="h-[1px] bg-border my-2 mx-4" />
+                          <button
+                            onClick={handleSignOut}
+                            className="w-full text-left px-4 py-2 text-sm text-red-500 hover:bg-red-50 transition-colors rounded-md"
+                          >
+                            로그아웃
+                          </button>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                ) : (
+                  <Link
+                    href={`/sign-in?redirectTo=${pathname}`}
+                    className="bg-primary text-white px-4 py-2 rounded-md hover:opacity-70 transition-all text-sm font-medium"
+                  >
+                    로그인
+                  </Link>
+                )}
+              </div>
 
               {/* Mobile Menu Button */}
               <button
@@ -298,20 +300,41 @@ const Navigation = () => {
             </div>
 
             {/* Login section at bottom */}
-            {!user && (
-              <div className="mt-auto border-t border-border pt-4">
-                <div className="text-sm text-center mb-3">
-                  로그인하고 더 많은 기능을 사용해보세요!
-                </div>
-                <Link
-                  href={`/sign-in?redirectTo=${pathname}`}
-                  className="block w-full bg-foreground text-white py-2 px-4 rounded-md text-center text-sm hover:bg-primary/90 transition-colors"
-                  onClick={() => setIsSidebarOpen(false)}
-                >
-                  로그인하기
-                </Link>
-              </div>
-            )}
+            <div className="mt-auto border-t border-border pt-4">
+              {user ? (
+                <>
+                  <Link
+                    href="/protected/myPage"
+                    className="block w-full bg-foreground text-white py-2 px-4 rounded-md text-center text-sm hover:bg-primary/90 transition-colors"
+                    onClick={() => setIsSidebarOpen(false)}
+                  >
+                    마이페이지
+                  </Link>
+                  <button
+                    onClick={() => {
+                      handleSignOut();
+                      setIsSidebarOpen(false);
+                    }}
+                    className="mt-2 block w-full border border-red-500 text-red-500 py-2 px-4 rounded-md text-center text-sm hover:bg-red-50 transition-colors"
+                  >
+                    로그아웃
+                  </button>
+                </>
+              ) : (
+                <>
+                  <div className="text-sm text-center mb-3">
+                    로그인하고 더 많은 기능을 사용해보세요!
+                  </div>
+                  <Link
+                    href={`/sign-in?redirectTo=${pathname}`}
+                    className="block w-full bg-foreground text-white py-2 px-4 rounded-md text-center text-sm hover:bg-primary/90 transition-colors"
+                    onClick={() => setIsSidebarOpen(false)}
+                  >
+                    로그인하기
+                  </Link>
+                </>
+              )}
+            </div>
           </div>
         </div>
       </div>

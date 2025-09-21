@@ -98,6 +98,8 @@ export default function KaraokeCardsWrapper() {
       },
       {
         threshold: 0.1,
+        root: null, // Use viewport as root
+        rootMargin: "100px", // Load more content before reaching the bottom
       }
     );
     if (loaderRef.current) {
@@ -111,8 +113,9 @@ export default function KaraokeCardsWrapper() {
 
   const rowVirtualizer = useVirtualizer({
     count: songs.length,
-    getScrollElement: () => parentRef.current,
+    getScrollElement: () => document.documentElement,
     estimateSize: () => 60,
+    overscan: 5, // Add some overscan for smoother scrolling
   });
 
   if (!searchQuery) {
@@ -180,10 +183,7 @@ export default function KaraokeCardsWrapper() {
         <div className="w-[10%] text-center">JOYSOUND</div>
       </div>
 
-      <div
-        ref={parentRef}
-        className="h-[calc(100vh-300px)] overflow-auto border rounded-lg"
-      >
+      <div ref={parentRef} className="border rounded-lg">
         <div
           className="relative"
           style={{
