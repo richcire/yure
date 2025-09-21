@@ -1,7 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { BottomDisplayAd } from "../google-adsense/bottom-display-ad";
+import { BottomDisplayAd } from "./bottom-display-ad";
 import { useState } from "react";
 import { ChevronDown, ChevronUp } from "lucide-react";
 
@@ -24,7 +24,7 @@ export default function MobileStickyBottomAdWrapper({
     >
       <button
         onClick={() => setIsHidden(!isHidden)}
-        className="w-full bg-foreground rounded-t-lg px-8 py-1 text-white flex items-center justify-center"
+        className="w-full bg-gray-200 rounded-t-lg px-8 py-1 text-black flex items-center justify-center"
       >
         {isHidden ? (
           <ChevronUp className="w-3 h-3" />
@@ -32,12 +32,7 @@ export default function MobileStickyBottomAdWrapper({
           <ChevronDown className="w-3 h-3" />
         )}
       </button>
-      <div
-        className={cn(
-          "h-[100px] bg-red-500",
-          "flex items-center justify-center"
-        )}
-      >
+      <div className={cn("h-[100px]", "flex items-center justify-center")}>
         <div className="w-full max-w-[320px] h-full">
           <BottomDisplayAd />
         </div>
