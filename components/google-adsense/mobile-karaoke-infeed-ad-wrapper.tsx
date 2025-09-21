@@ -15,13 +15,29 @@ export function MobileKaraokeInfeedAdWrapper() {
     (window.adsbygoogle = window.adsbygoogle || []).push({});
   }, []);
   return (
-    <div className="infeed-ad">
+    <div
+      className="infeed-ad"
+      style={{
+        height: "80px !important",
+        minHeight: "80px",
+        maxHeight: "80px",
+        // overflow: "hidden",
+      }}
+    >
       <ins
         className="adsbygoogle"
-        style={{ display: "block", width: "375px", height: "80px" }}
+        style={{
+          display: "inline-block",
+          width: "375px",
+          height: "80px !important",
+          minHeight: "80px",
+          maxHeight: "80px",
+          overflow: "hidden",
+        }}
         data-ad-client="ca-pub-4738868818137222"
         data-ad-slot="5910638236"
         data-ad-format="fixed"
+        data-full-width-responsive="false"
       ></ins>
     </div>
   );
