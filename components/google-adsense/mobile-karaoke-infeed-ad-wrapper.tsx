@@ -15,12 +15,21 @@ export function MobileKaraokeInfeedAdWrapper() {
     (window.adsbygoogle = window.adsbygoogle || []).push({});
   }, []);
   return (
-    <ins
-      className="adsbygoogle"
-      style={{ display: "inline-block", width: "375px", height: "80px" }}
-      data-ad-client="ca-pub-4738868818137222"
-      data-ad-slot="5910638236"
-      data-ad-format="fixed"
-    ></ins>
+    <div
+      style={{
+        width: "375px",
+        height: "80px",
+        // overflow: "hidden",
+        position: "relative",
+      }}
+    >
+      <ins
+        className="adsbygoogle"
+        style={{ display: "block", width: "100%", height: "100%" }}
+        data-ad-client="ca-pub-4738868818137222"
+        data-ad-slot="5910638236"
+        data-ad-format="fixed"
+      ></ins>
+    </div>
   );
 }
