@@ -2,8 +2,14 @@
 
 import { cn } from "@/lib/utils";
 import { BottomDisplayAd } from "./bottom-display-ad";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ChevronDown, ChevronUp } from "lucide-react";
+
+declare global {
+  interface Window {
+    adsbygoogle: any;
+  }
+}
 
 interface MobileStickyBottomAdWrapperProps {
   className?: string;
@@ -12,6 +18,10 @@ interface MobileStickyBottomAdWrapperProps {
 export default function MobileStickyBottomAdWrapper({
   className,
 }: MobileStickyBottomAdWrapperProps) {
+  if (process.env.NODE_ENV !== "production") return null;
+  useEffect(() => {
+    (window.adsbygoogle = window.adsbygoogle || []).push({});
+  }, []);
   const [isHidden, setIsHidden] = useState(false);
 
   return (
@@ -32,10 +42,21 @@ export default function MobileStickyBottomAdWrapper({
           <ChevronDown className="w-3 h-3" />
         )}
       </button>
-      <div className={cn("h-[100px]", "flex items-center justify-center")}>
-        <div className="w-full max-w-[320px] h-full">
-          <BottomDisplayAd />
-        </div>
+      <div className="w-full max-w-[320px] h-[100px]">
+        <style jsx>{`
+          .stick_ad {
+            width: 320px;
+            height: 100px;
+          }
+        `}</style>
+        <ins
+          className="adsbygoogle stick_ad"
+          style={{ display: "block" }}
+          data-ad-client="ca-pub-4738868818137222"
+          data-ad-slot="6505812562"
+          data-ad-format="auto"
+          data-full-width-responsive="true"
+        ></ins>
       </div>
     </div>
   );
