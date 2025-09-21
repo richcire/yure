@@ -45,8 +45,8 @@ export default function MobileStickyBottomAdWrapper({
       <div className="w-full max-w-[320px] h-[100px]">
         <style jsx>{`
           .stick_ad {
-            width: 320px;
-            height: 100px;
+            width: 320px !important;
+            height: 100px !important;
           }
         `}</style>
         <ins
