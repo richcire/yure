@@ -4,6 +4,7 @@ import { IPosts } from "@/types/supabase-table";
 import { createClient } from "@/utils/supabase/server";
 import { formatDistanceToNow } from "date-fns";
 import { ko } from "date-fns/locale";
+import PostContent from "@/components/community/post-content";
 
 export default async function PostList() {
   const supabase = await createClient();
@@ -48,9 +49,9 @@ export default async function PostList() {
                 <h3 className="font-semibold text-gray-900 mb-1 text-lg leading-tight">
                   {post.title}
                 </h3>
-                <p className="text-gray-600 text-sm leading-relaxed">
-                  {post.content}
-                </p>
+                <div className="text-gray-600 text-sm leading-relaxed">
+                  <PostContent content={post.content} />
+                </div>
               </div>
 
               {/* Interactions */}

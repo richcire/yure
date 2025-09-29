@@ -6,6 +6,7 @@ import { createClient } from "@/utils/supabase/server";
 import { IPosts } from "@/types/supabase-table";
 import { formatDistanceToNow } from "date-fns";
 import { ko } from "date-fns/locale";
+import PostContent from "@/components/community/post-content";
 
 interface PageProps {
   params: Promise<{ id: string }>;
@@ -85,7 +86,7 @@ export default async function CommunityPostPage({ params }: PageProps) {
 
         {/* 게시글 본문 */}
         <div className="p-6">
-          <div>{post.content}</div>
+          <PostContent content={post.content} />
         </div>
       </article>
     </div>
