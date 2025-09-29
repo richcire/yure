@@ -6,15 +6,47 @@ import { formatDistanceToNow } from "date-fns";
 import { ko } from "date-fns/locale";
 import PostContent from "@/components/community/post-content";
 
-export default async function PostList() {
+interface Props {
+  searchParams: Promise<{
+    search?: string;
+    sort?: string;
+  }>;
+}
+
+export default async function PostList({ searchParams }: Props) {
+  const { search, sort = "created_desc" } = await searchParams;
   const supabase = await createClient();
-  const { data: posts, error } = await supabase
-    .from("posts")
-    .select("*, author_id!inner (name)")
+
+  let query = supabase.from("posts").select(
+    `
+      id,
+      title,
+      content,
+      author_id!inner (name),
+      created_at,
+      like_count,
+      comment_count
+    `,
+    { count: "exact" }
+  );
+
+  // 대소문자 구분 없이 검색
+  if (search) {
+    const searchTerm = search.toLowerCase();
+    query = query.or(`title.ilike.%${searchTerm}%`);
+  }
+
+  if (sort === "hot") {
+    query = query.order("comment_count", { ascending: false });
+  } else {
+    query = query.order("created_at", { ascending: false });
+  }
+
+  const { data: posts } = await query
     .order("created_at", { ascending: false })
     .returns<IPosts[]>();
 
-  if (error || !posts) {
+  if (!posts) {
     throw new Error("Failed to fetch posts");
   }
 
