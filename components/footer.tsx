@@ -79,6 +79,19 @@ export default function Footer() {
                 </Link>
               </div>
             </div>
+
+            {/* Community Section */}
+            <div>
+              <h3 className="font-medium mb-4">커뮤니티</h3>
+              <div className="flex flex-col gap-3">
+                <Link
+                  href="/community"
+                  className="hover:text-primary transition-colors text-sm text-muted-foreground"
+                >
+                  커뮤니티
+                </Link>
+              </div>
+            </div>
           </div>
         </div>
 

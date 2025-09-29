@@ -142,6 +142,17 @@ const Navigation = () => {
                       <Link href="/schedule">일정</Link>
                     </NavigationMenuLink>
                   </NavigationMenuItem>
+                  <NavigationMenuItem>
+                    <NavigationMenuLink
+                      asChild
+                      className={cn(
+                        navigationMenuTriggerStyle(),
+                        "bg-transparent"
+                      )}
+                    >
+                      <Link href="/community">커뮤니티</Link>
+                    </NavigationMenuLink>
+                  </NavigationMenuItem>
                 </NavigationMenuList>
               </NavigationMenu>
             </div>
@@ -294,6 +305,15 @@ const Navigation = () => {
                 onClick={() => setIsSidebarOpen(false)}
               >
                 일정
+              </Link>
+
+              <div className="px-4 py-2 font-medium">커뮤니티</div>
+              <Link
+                href="/community"
+                className="px-8 py-2 hover:bg-gray-50 rounded-md transition-colors"
+                onClick={() => setIsSidebarOpen(false)}
+              >
+                커뮤니티
               </Link>
             </div>
 
