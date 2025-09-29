@@ -4,7 +4,6 @@ import { IPosts } from "@/types/supabase-table";
 import { createClient } from "@/utils/supabase/server";
 import { formatDistanceToNow } from "date-fns";
 import { ko } from "date-fns/locale";
-import PostContent from "@/components/community/post-content";
 
 interface Props {
   searchParams: Promise<{
@@ -81,8 +80,8 @@ export default async function PostList({ searchParams }: Props) {
                 <h3 className="font-semibold text-gray-900 mb-1 text-lg leading-tight">
                   {post.title}
                 </h3>
-                <div className="text-gray-600 text-sm leading-relaxed">
-                  <PostContent content={post.content} />
+                <div className="text-gray-600 text-sm leading-relaxed line-clamp-3 md:line-clamp-2">
+                  {post.content.replace(/<[^>]*>/g, " ").trim()}
                 </div>
               </div>
 
