@@ -78,6 +78,7 @@ import content from "@/components/tiptap-templates/simple/data/content.json";
 import { createClient } from "@/utils/supabase/client";
 import { IPosts } from "@/types/supabase-table";
 import { useRouter } from "next/navigation";
+import { Input } from "@/components/ui/input";
 
 const MainToolbarContent = ({
   onHighlighterClick,
@@ -194,7 +195,7 @@ export function SimpleEditor() {
     "main" | "highlighter" | "link"
   >("main");
   const toolbarRef = React.useRef<HTMLDivElement>(null);
-
+  const [title, setTitle] = React.useState("");
   const router = useRouter();
 
   const editor = useEditor({
@@ -255,7 +256,7 @@ export function SimpleEditor() {
 
       // Prepare the data object
       const postData: Partial<IPosts> = {
-        title: "Test Post",
+        title,
         content: editor?.getHTML(),
       };
 
@@ -300,11 +301,20 @@ export function SimpleEditor() {
           <Button onClick={savePost}>Save</Button>
         </Toolbar>
 
-        <EditorContent
-          editor={editor}
-          role="presentation"
-          className="simple-editor-content"
-        />
+        <div className="flex flex-col gap-6 max-w-5xl mx-auto w-full p-4">
+          <Input
+            placeholder="제목"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            required
+          />
+
+          <EditorContent
+            editor={editor}
+            role="presentation"
+            className="simple-editor-content"
+          />
+        </div>
       </EditorContext.Provider>
     </div>
   );
