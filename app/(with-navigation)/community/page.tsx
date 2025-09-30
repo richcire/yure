@@ -2,6 +2,7 @@ import Header from "@/components/community/community-header";
 import TrendingPosts from "@/components/community/trending-posts";
 import PostList from "@/components/community/post-list";
 import CategoryFilter from "@/components/community/category-filter";
+import WriteButton from "@/components/community/write-button";
 
 interface Props {
   searchParams: Promise<{
@@ -13,19 +14,23 @@ export default async function CommunityPage({ searchParams }: Props) {
   const { search } = await searchParams;
 
   return (
-    <div className="w-full max-w-5xl mx-auto min-h-screen px-4 py-8 pt-20">
-      <Header />
-      <main>
-        {!search ? (
-          <>
-            <TrendingPosts />
-            <CategoryFilter />
+    <>
+      <div className="w-full max-w-5xl mx-auto min-h-screen px-4 py-8 pt-20">
+        <Header />
+        <main>
+          {!search ? (
+            <>
+              <TrendingPosts />
+              <CategoryFilter />
+              <PostList searchParams={searchParams} />
+            </>
+          ) : (
             <PostList searchParams={searchParams} />
-          </>
-        ) : (
-          <PostList searchParams={searchParams} />
-        )}
-      </main>
-    </div>
+          )}
+        </main>
+      </div>
+
+      <WriteButton />
+    </>
   );
 }
