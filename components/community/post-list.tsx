@@ -1,9 +1,10 @@
-import { MessageCircle, Heart } from "lucide-react";
 import Link from "next/link";
 import { IPosts } from "@/types/supabase-table";
 import { createClient } from "@/utils/supabase/server";
 import { formatDistanceToNow } from "date-fns";
 import { ko } from "date-fns/locale";
+import PostLike from "@/components/community/post-like";
+import PostComment from "@/components/community/post-comment";
 
 interface Props {
   searchParams: Promise<{
@@ -86,16 +87,9 @@ export default async function PostList({ searchParams }: Props) {
               </div>
 
               {/* Interactions */}
-              <div className="flex items-center gap-6 text-sm text-gray-500">
-                <button className="flex items-center gap-1 hover:text-red-500 transition-colors">
-                  <Heart className="h-4 w-4" />
-                  <span>{post.like_count}</span>
-                </button>
-
-                <button className="flex items-center gap-1 hover:text-blue-500 transition-colors">
-                  <MessageCircle className="h-4 w-4" />
-                  <span>{post.comment_count}</span>
-                </button>
+              <div className="flex items-center gap-6 text-sm text-gray-500 z-50">
+                <PostLike like_count={post.like_count} id={post.id} />
+                <PostComment comment_count={post.comment_count} />
               </div>
             </div>
 
