@@ -79,19 +79,6 @@ export default function PostLike({
           return;
         }
 
-        // 좋아요 수 감소
-        const { error: updateError } = await supabase
-          .from("posts")
-          .update({
-            like_count: likeCount - 1,
-          })
-          .eq("id", id);
-
-        if (updateError) {
-          console.error("Error updating like count:", updateError);
-          return;
-        }
-
         setLikeCount(likeCount - 1);
         setUserLike(false);
       } else {
@@ -102,19 +89,6 @@ export default function PostLike({
 
         if (insertError) {
           console.error("Error adding like:", insertError);
-          return;
-        }
-
-        // 좋아요 수 증가
-        const { error: updateError } = await supabase
-          .from("posts")
-          .update({
-            like_count: likeCount + 1,
-          })
-          .eq("id", id);
-
-        if (updateError) {
-          console.error("Error updating like count:", updateError);
           return;
         }
 
