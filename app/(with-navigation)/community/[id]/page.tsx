@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation";
-import { MessageCircle, Heart, ArrowLeft } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import NextLink from "next/link";
 import { createClient } from "@/utils/supabase/server";
@@ -7,6 +7,8 @@ import { IPosts } from "@/types/supabase-table";
 import { formatDistanceToNow } from "date-fns";
 import { ko } from "date-fns/locale";
 import PostContent from "@/components/community/post-content";
+import PostLike from "@/components/community/post-like";
+import PostComment from "@/components/community/post-comment";
 
 interface PageProps {
   params: Promise<{ id: string }>;
@@ -69,24 +71,17 @@ export default async function CommunityPostPage({ params }: PageProps) {
                 })}
               </div>
             </div>
-
-            {/* 통계 */}
-            <div className="flex items-center gap-4 text-sm text-gray-500">
-              <div className="flex items-center gap-1">
-                <Heart className="h-4 w-4" />
-                <span>{post.like_count}</span>
-              </div>
-              <div className="flex items-center gap-1">
-                <MessageCircle className="h-4 w-4" />
-                <span>{post.comment_count}</span>
-              </div>
-            </div>
           </div>
         </div>
 
         {/* 게시글 본문 */}
         <div className="p-6">
           <PostContent content={post.content} />
+        </div>
+        {/* 본문 아래 인터랙션 */}
+        <div className="flex items-center gap-6 text-sm text-gray-500 border-t border-gray-200 p-6">
+          <PostLike like_count={post.like_count} id={post.id} />
+          <PostComment comment_count={post.comment_count} />
         </div>
       </article>
     </div>
