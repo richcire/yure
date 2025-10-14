@@ -29,7 +29,7 @@ export default function Reply({ reply, onDelete }: ReplyProps) {
       <div className="flex items-center justify-between gap-2">
         <div className="flex items-center gap-2">
           <span className="font-semibold">{reply.author_name}</span>
-          <span className="text-sm text-muted-foreground">
+          <span className="text-sm text-gray-600">
             {formatDistanceToNow(new Date(reply.created_at), {
               addSuffix: true,
               locale: ko,

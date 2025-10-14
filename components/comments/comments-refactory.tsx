@@ -78,7 +78,7 @@ export function CommentsRefactory({
   }, []);
 
   return (
-    <div>
+    <div className="text-black">
       {useHideFeature && (
         <Button
           variant="ghost"
@@ -86,9 +86,7 @@ export function CommentsRefactory({
           className="flex items-center gap-2"
         >
           <span>댓글 {isOpen ? "숨기기" : "보기"}</span>
-          <span className="text-sm text-muted-foreground">
-            ({comment.length})
-          </span>
+          <span className="text-sm">({comment.length})</span>
         </Button>
       )}
 
@@ -108,12 +106,12 @@ export function CommentsRefactory({
                   setNewComment(e.target.value)
                 }
                 placeholder="댓글을 달아보세요!"
-                className="w-full border-none shadow-md"
+                className="w-full border-gray-200 bg-transparent"
               />
             ) : (
               <Textarea
                 placeholder="로그인 후 댓글을 달아보세요!"
-                className="w-full border-none shadow-md"
+                className="w-full border-gray-200 bg-transparent"
                 onClick={() => {
                   router.push(`/sign-in?redirectTo=${pathname}`);
                 }}
@@ -121,7 +119,11 @@ export function CommentsRefactory({
               />
             )}
             {user && (
-              <Button type="submit" disabled={!newComment.trim()}>
+              <Button
+                type="submit"
+                disabled={!newComment.trim()}
+                className="bg-blue-500 hover:bg-blue-600"
+              >
                 댓글 작성
               </Button>
             )}

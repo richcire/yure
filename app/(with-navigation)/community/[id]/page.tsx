@@ -9,6 +9,7 @@ import { ko } from "date-fns/locale";
 import PostContent from "@/components/community/post-content";
 import PostLike from "@/components/community/post-like";
 import PostComment from "@/components/community/post-comment";
+import { PostCommentSection } from "@/components/community/post-comment-section";
 
 interface PageProps {
   params: Promise<{ id: string }>;
@@ -78,11 +79,15 @@ export default async function CommunityPostPage({ params }: PageProps) {
         <div className="p-6">
           <PostContent content={post.content} />
         </div>
+
         {/* 본문 아래 인터랙션 */}
         <div className="flex items-center gap-6 text-sm text-gray-500 border-t border-gray-200 p-6">
           <PostLike like_count={post.like_count} id={post.id} />
           <PostComment comment_count={post.comment_count} />
         </div>
+
+        {/* 댓글 섹션 */}
+        <PostCommentSection id={post.id} />
       </article>
     </div>
   );

@@ -45,13 +45,13 @@ export default function CommentRefactory({
   };
 
   return (
-    <div className="bg-background rounded-lg p-4 space-y-4">
+    <div className="rounded-lg p-4 space-y-4 text-black">
       <div className="flex items-start gap-4">
         <div className="flex-1">
           <div className="flex items-center justify-between gap-2">
             <div className="flex items-center gap-2">
               <span className="font-semibold">{comment.author_name}</span>
-              <span className="text-sm text-muted-foreground">
+              <span className="text-sm text-gray-600">
                 {formatDistanceToNow(new Date(comment.created_at), {
                   addSuffix: true,
                   locale: ko,
@@ -100,12 +100,12 @@ export default function CommentRefactory({
                     setReplyContent(e.target.value)
                   }
                   placeholder="답글을 달아보세요!"
-                  className="w-full bg-transparent"
+                  className="w-full bg-transparent text-black"
                 />
               ) : (
                 <Textarea
                   placeholder="로그인 후 댓글을 달아보세요!"
-                  className="w-full bg-transparent"
+                  className="w-full bg-transparent text-black"
                   onClick={() => {
                     router.push("/sign-in");
                   }}
@@ -118,7 +118,7 @@ export default function CommentRefactory({
                     type="submit"
                     size="sm"
                     disabled={!replyContent.trim()}
-                    className="hover:text-primary"
+                    className="hover:text-primary bg-blue-500 hover:bg-blue-600"
                   >
                     답글 작성
                   </Button>
