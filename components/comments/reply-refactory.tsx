@@ -22,7 +22,7 @@ export default function Reply({ reply, onDelete }: ReplyProps) {
   // const canDelete = user?.id === reply.author_id;
 
   return (
-    <div className="relative pl-8 py-4 border-t">
+    <div className="relative pl-8 py-4 border-t border-foreground/20">
       <div className="absolute left-0 top-4 h-full w-8">
         <CornerDownRight className="w-4 h-4" />
       </div>
@@ -55,7 +55,7 @@ export default function Reply({ reply, onDelete }: ReplyProps) {
         </DropdownMenu>
         {/* )} */}
       </div>
-      <p className="mt-2">{reply.content}</p>
+      <p className="text-foreground/80 mt-2">{reply.content}</p>
     </div>
   );
 }
