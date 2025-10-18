@@ -6,7 +6,7 @@ import FeaturedArticleWrapper from "@/components/home/featured-article-wrapper";
 import { BottomDisplayAd } from "@/components/google-adsense/bottom-display-ad";
 import Search from "@/components/karaoke/search";
 import FeaturedNewsWrapper from "@/components/home/featured-news-wrapper";
-import santa from "@/public/assets/images/santa.png";
+import yure_background from "@/public/assets/images/yure_background_2025_10.png";
 import ScrollDownInstructor from "@/components/home/scroll-down-instructor";
 import { TextAnimate } from "@/components/magicui/text-animate";
 import FeaturedSchedule from "@/components/home/featured-schedule";
@@ -94,7 +94,7 @@ export default function Home() {
           style={{ paddingTop: "clamp(0px, (100vw - 768px) * 999, 56.25%)" }}
         >
           <Image
-            src={santa}
+            src={yure_background}
             alt="Santa Claus image"
             fill
             priority
