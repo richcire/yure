@@ -47,6 +47,7 @@ export async function middleware(request: NextRequest) {
     "/protected",
     "/ads.txt",
     "/schedule",
+    "/assets",
     "/community",
   ];
 
