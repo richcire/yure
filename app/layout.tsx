@@ -37,48 +37,23 @@ export const metadata = {
 const gothica1Font = localFont({
   src: [
     {
-      path: "../public/fonts/Gothic_A1/GothicA1-Thin.ttf",
-      weight: "100",
-      style: "normal",
-    },
-    {
-      path: "../public/fonts/Gothic_A1/GothicA1-ExtraLight.ttf",
-      weight: "200",
-      style: "normal",
-    },
-    {
-      path: "../public/fonts/Gothic_A1/GothicA1-Light.ttf",
-      weight: "300",
-      style: "normal",
-    },
-    {
-      path: "../public/fonts/Gothic_A1/GothicA1-Regular.ttf",
+      path: "../public/fonts/Gothic_A1/gothic-a1-v18-korean_latin-regular.woff2",
       weight: "400",
       style: "normal",
     },
     {
-      path: "../public/fonts/Gothic_A1/GothicA1-Medium.ttf",
+      path: "../public/fonts/Gothic_A1/gothic-a1-v18-korean_latin-500.woff2",
       weight: "500",
       style: "normal",
     },
     {
-      path: "../public/fonts/Gothic_A1/GothicA1-SemiBold.ttf",
+      path: "../public/fonts/Gothic_A1/gothic-a1-v18-korean_latin-600.woff2",
       weight: "600",
       style: "normal",
     },
     {
-      path: "../public/fonts/Gothic_A1/GothicA1-Bold.ttf",
+      path: "../public/fonts/Gothic_A1/gothic-a1-v18-korean_latin-700.woff2",
       weight: "700",
-      style: "normal",
-    },
-    {
-      path: "../public/fonts/Gothic_A1/GothicA1-ExtraBold.ttf",
-      weight: "800",
-      style: "normal",
-    },
-    {
-      path: "../public/fonts/Gothic_A1/GothicA1-Black.ttf",
-      weight: "900",
       style: "normal",
     },
   ],
