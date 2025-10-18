@@ -26,6 +26,7 @@ import {
 import Link from "@tiptap/extension-link";
 import { InstagramExtension } from "./extensions/InstagramExtension";
 import { Label } from "@/components/ui/label";
+import { CustomHighlight } from "./extensions/CustomHighlightExtenstion";
 
 export default function NewsEditor({ id }: { id?: string }) {
   const [news, setNews] = useState<INews>();
@@ -38,6 +39,7 @@ export default function NewsEditor({ id }: { id?: string }) {
   const editor = useEditor({
     extensions: [
       StarterKit,
+      CustomHighlight,
       TextAlign.configure({
         types: ["heading", "paragraph", "youtube"],
       }),
@@ -58,7 +60,8 @@ export default function NewsEditor({ id }: { id?: string }) {
       }),
       Highlight.configure({
         HTMLAttributes: {
-          class: "bg-[#84894A] dark:bg-[#84894A]",
+          class:
+            "bg-[#FFD966] text-[#69140E] dark:bg-[#84894A] dark:text-[#FDF7C3]",
         },
       }),
       Link.configure({
