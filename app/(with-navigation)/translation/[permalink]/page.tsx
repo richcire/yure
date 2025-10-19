@@ -3,9 +3,7 @@ import {
   TranslationTitle,
   TranslationTitleSkeleton,
 } from "@/components/translation/translation-title";
-import { CommentSection } from "@/components/comments/comment-section";
 import { createClient } from "@/utils/supabase/server";
-import { IComments } from "@/types/supabase-table";
 import { SideVerticalDisplayAdWrapper } from "@/components/google-adsense/side-vertical-display-ad-wrapper";
 import TranslationContentWrapper from "@/components/translation/translation-content-wrapper";
 import { TipTapContentSkeleton } from "@/components/Tiptap/TipTapContentSkeleton";
@@ -59,42 +57,6 @@ interface Props {
 
 export default async function TranslationPage({ params }: Props) {
   const { permalink } = await params;
-
-  const getComments = async () => {
-    "use server";
-    const supabase = await createClient();
-    const { data, error } = await supabase
-      .rpc("get_translation_comments", {
-        p_link: decodeURIComponent(permalink),
-      })
-      .returns<IComments[]>();
-    return { data, error };
-  };
-
-  const addComment = async (new_content: string, parent_id?: string) => {
-    "use server";
-    const supabase = await createClient();
-    const { data, error } = await supabase
-      .rpc("add_translation_comment", {
-        p_link: decodeURIComponent(permalink),
-        new_content,
-        parent_id,
-      })
-      .returns<IComments[]>();
-    return { data, error };
-  };
-
-  const deleteComment = async (commentId: string) => {
-    "use server";
-    const supabase = await createClient();
-    const { data, error } = await supabase
-      .from("translation_comments")
-      .delete()
-      .eq("id", commentId)
-      .select()
-      .returns<IComments[]>();
-    return { data, error };
-  };
 
   return (
     <div className="container mx-auto px-4 py-32">
