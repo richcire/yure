@@ -1,11 +1,9 @@
 import { ITranslations } from "@/types/supabase-table";
-import { createClient } from "@/utils/supabase/server";
 import { Badge } from "../ui/badge";
 import { Skeleton } from "../ui/skeleton";
-import { redirect, notFound } from "next/navigation";
 
 interface TranslationTitleProps {
-  permalink: string;
+  translation: ITranslations;
 }
 
 export function TranslationTitleSkeleton() {
@@ -20,27 +18,7 @@ export function TranslationTitleSkeleton() {
   );
 }
 
-async function fetchTranslation(permalink: string) {
-  const supabase = await createClient();
-  const { data, error } = await supabase
-    .rpc("get_single_translation_header", {
-      _permalink: decodeURIComponent(permalink),
-    })
-    .single<ITranslations>();
-
-  if (error || !data) {
-    return null;
-  }
-  return data;
-}
-
-export async function TranslationTitle({ permalink }: TranslationTitleProps) {
-  const translation = await fetchTranslation(permalink);
-
-  if (!translation) {
-    notFound();
-  }
-
+export function TranslationTitle({ translation }: TranslationTitleProps) {
   return (
     <div className="bg-[#214E34] shadow-lg p-4 rounded-md mb-8">
       <h1 className="text-2xl sm:text-3xl text-[#E4E0D5] font-bold mb-2">

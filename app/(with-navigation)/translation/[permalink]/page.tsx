@@ -3,9 +3,7 @@ import {
   TranslationTitle,
   TranslationTitleSkeleton,
 } from "@/components/translation/translation-title";
-import { CommentSection } from "@/components/comments/comment-section";
-import { createClient } from "@/utils/supabase/server";
-import { IComments } from "@/types/supabase-table";
+import { createPublicClient } from "@/utils/supabase/public";
 import { SideVerticalDisplayAdWrapper } from "@/components/google-adsense/side-vertical-display-ad-wrapper";
 import TranslationContentWrapper from "@/components/translation/translation-content-wrapper";
 import { TipTapContentSkeleton } from "@/components/Tiptap/TipTapContentSkeleton";
@@ -14,10 +12,11 @@ import ViewCounter from "@/components/translation/ViewCounter";
 import TranslationRelatedPostsSkeleton from "@/components/translation/translation-related-posts-skeleton";
 import squareLogo from "@/public/assets/logos/square_high.jpeg";
 import { TranslationCommentSection } from "@/components/translation/translation-comment-section";
+import { notFound } from "next/navigation";
 
 export async function generateMetadata({ params }: Props) {
   const { permalink } = await params;
-  const supabase = await createClient();
+  const supabase = await createPublicClient();
   const { data, error } = await supabase
     .from("translations")
     .select("title, artist, thumbnail_url")
@@ -57,54 +56,43 @@ interface Props {
   }>;
 }
 
+// Force static behavior and caching
+export const dynamic = "force-static";
+export const fetchCache = "force-cache";
+export const revalidate = 3600; // Revalidate every hour
+export const preferredRegion = "edge"; // Deploy to edge for better performance
+
 export default async function TranslationPage({ params }: Props) {
   const { permalink } = await params;
 
-  const getComments = async () => {
-    "use server";
-    const supabase = await createClient();
-    const { data, error } = await supabase
-      .rpc("get_translation_comments", {
-        p_link: decodeURIComponent(permalink),
-      })
-      .returns<IComments[]>();
-    return { data, error };
-  };
+  const supabase = createPublicClient();
+  const { data: translation } = await supabase
+    .from("translations")
+    .select(
+      `
+      *,
+      categories (
+        id,
+        name
+      )
+    `
+    )
+    .eq("permalink", permalink)
+    .single();
 
-  const addComment = async (new_content: string, parent_id?: string) => {
-    "use server";
-    const supabase = await createClient();
-    const { data, error } = await supabase
-      .rpc("add_translation_comment", {
-        p_link: decodeURIComponent(permalink),
-        new_content,
-        parent_id,
-      })
-      .returns<IComments[]>();
-    return { data, error };
-  };
-
-  const deleteComment = async (commentId: string) => {
-    "use server";
-    const supabase = await createClient();
-    const { data, error } = await supabase
-      .from("translation_comments")
-      .delete()
-      .eq("id", commentId)
-      .select()
-      .returns<IComments[]>();
-    return { data, error };
-  };
+  if (!translation) {
+    notFound();
+  }
 
   return (
     <div className="container mx-auto px-4 py-32">
       <ViewCounter permalink={permalink} />
       <div className="max-w-4xl mx-auto">
         <Suspense fallback={<TranslationTitleSkeleton />}>
-          <TranslationTitle permalink={permalink} />
+          <TranslationTitle translation={translation} />
         </Suspense>
         <Suspense fallback={<TipTapContentSkeleton />}>
-          <TranslationContentWrapper permalink={permalink} />
+          <TranslationContentWrapper translation={translation} />
         </Suspense>
 
         {/* <TipTapContentSkeleton /> */}
