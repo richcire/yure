@@ -3,7 +3,7 @@ import {
   TranslationTitle,
   TranslationTitleSkeleton,
 } from "@/components/translation/translation-title";
-import { createClient } from "@/utils/supabase/server";
+import { createPublicClient } from "@/utils/supabase/public";
 import { SideVerticalDisplayAdWrapper } from "@/components/google-adsense/side-vertical-display-ad-wrapper";
 import TranslationContentWrapper from "@/components/translation/translation-content-wrapper";
 import { TipTapContentSkeleton } from "@/components/Tiptap/TipTapContentSkeleton";
@@ -12,10 +12,11 @@ import ViewCounter from "@/components/translation/ViewCounter";
 import TranslationRelatedPostsSkeleton from "@/components/translation/translation-related-posts-skeleton";
 import squareLogo from "@/public/assets/logos/square_high.jpeg";
 import { TranslationCommentSection } from "@/components/translation/translation-comment-section";
+import { notFound } from "next/navigation";
 
 export async function generateMetadata({ params }: Props) {
   const { permalink } = await params;
-  const supabase = await createClient();
+  const supabase = await createPublicClient();
   const { data, error } = await supabase
     .from("translations")
     .select("title, artist, thumbnail_url")
@@ -55,18 +56,43 @@ interface Props {
   }>;
 }
 
+// Force static behavior and caching
+export const dynamic = "force-static";
+export const fetchCache = "force-cache";
+export const revalidate = 3600; // Revalidate every hour
+export const preferredRegion = "edge"; // Deploy to edge for better performance
+
 export default async function TranslationPage({ params }: Props) {
   const { permalink } = await params;
+
+  const supabase = createPublicClient();
+  const { data: translation } = await supabase
+    .from("translations")
+    .select(
+      `
+      *,
+      categories (
+        id,
+        name
+      )
+    `
+    )
+    .eq("permalink", permalink)
+    .single();
+
+  if (!translation) {
+    notFound();
+  }
 
   return (
     <div className="container mx-auto px-4 py-32">
       <ViewCounter permalink={permalink} />
       <div className="max-w-4xl mx-auto">
         <Suspense fallback={<TranslationTitleSkeleton />}>
-          <TranslationTitle permalink={permalink} />
+          <TranslationTitle translation={translation} />
         </Suspense>
         <Suspense fallback={<TipTapContentSkeleton />}>
-          <TranslationContentWrapper permalink={permalink} />
+          <TranslationContentWrapper translation={translation} />
         </Suspense>
 
         {/* <TipTapContentSkeleton /> */}
