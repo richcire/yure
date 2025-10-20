@@ -56,12 +56,6 @@ interface Props {
   }>;
 }
 
-// Force static behavior and caching
-export const dynamic = "force-static";
-export const fetchCache = "force-cache";
-export const revalidate = 3600; // Revalidate every hour
-export const preferredRegion = "edge"; // Deploy to edge for better performance
-
 export default async function TranslationPage({ params }: Props) {
   const { permalink } = await params;
 
