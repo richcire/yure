@@ -39,7 +39,7 @@ export default async function CommunityPostPage({ params }: PageProps) {
   }
 
   return (
-    <div className="w-full max-w-4xl mx-auto min-h-screen pt-20 px-4">
+    <div className="w-full max-w-4xl mx-auto min-h-screen py-20 px-4">
       {/* 뒤로가기 버튼 */}
       <div className="mb-6">
         <NextLink href="/community">
