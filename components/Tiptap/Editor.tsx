@@ -8,6 +8,7 @@ import { Toolbar } from "./Toolbar";
 import { ImageExtension } from "./extensions/ImageExtension";
 import { YouTubeExtension } from "./extensions/YouTubeExtension";
 import { Highlight } from "@tiptap/extension-highlight";
+import { CustomHighlight } from "./extensions/CustomHighlightExtenstion";
 import { Button } from "@/components/ui/button";
 import { createClient } from "@/utils/supabase/client";
 import { useState, useEffect } from "react";
@@ -68,6 +69,7 @@ export default function TiptapEditor({ id }: { id?: string }) {
   const editor = useEditor({
     extensions: [
       StarterKit,
+      CustomHighlight,
       TextAlign.configure({
         types: ["heading", "paragraph", "youtube"],
       }),
@@ -93,7 +95,8 @@ export default function TiptapEditor({ id }: { id?: string }) {
       }),
       Highlight.configure({
         HTMLAttributes: {
-          class: "bg-[#84894A] dark:bg-[#84894A]",
+          class:
+            "bg-[#FFD966] text-[#69140E] dark:bg-[#84894A] dark:text-[#FDF7C3]",
         },
       }),
       Link.configure({

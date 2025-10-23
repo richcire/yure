@@ -212,6 +212,15 @@ body {
   }
 }
 
+.infeed-ad {
+  width: 375px;
+  height: 80px;
+}
+
+.infeed-ad .adsbygoogle {
+  height: 80px !important;
+}
+
 /* Error Page Styles */
 @keyframes bounce-slow {
   0%,

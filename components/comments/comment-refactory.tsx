@@ -45,7 +45,7 @@ export default function CommentRefactory({
   };
 
   return (
-    <div className="rounded-lg p-4 space-y-4 text-black">
+    <div className="rounded-lg p-4 space-y-4 text-foreground">
       <div className="flex items-start gap-4">
         <div className="flex-1">
           <div className="flex items-center justify-between gap-2">
@@ -80,7 +80,7 @@ export default function CommentRefactory({
           <Button
             variant="ghost"
             size="sm"
-            className="mt-2"
+            className="text-foreground/80 mt-2"
             onClick={() => setIsReplying(!isReplying)}
           >
             답글 달기
@@ -100,25 +100,25 @@ export default function CommentRefactory({
                     setReplyContent(e.target.value)
                   }
                   placeholder="답글을 달아보세요!"
-                  className="w-full bg-transparent text-black"
+                  className="w-full  bg-transparent focus:outline-none focus-visible:ring-0 focus:border-foreground/20"
                 />
               ) : (
                 <Textarea
                   placeholder="로그인 후 댓글을 달아보세요!"
-                  className="w-full bg-transparent text-black"
+                  className="w-full bg-transparent focus:outline-none focus-visible:ring-0 focus:border-foreground/20"
                   onClick={() => {
                     router.push("/sign-in");
                   }}
                   readOnly
                 />
               )}
-              <div className="flex gap-2">
+              <div className="flex justify-end gap-2">
                 {user && (
                   <Button
                     type="submit"
                     size="sm"
                     disabled={!replyContent.trim()}
-                    className="hover:text-primary bg-blue-500 hover:bg-blue-600"
+                    className="hover:text-primary text-foreground border border-foreground/20 bg-transparent hover:bg-background/30 transition-colors"
                   >
                     답글 작성
                   </Button>
@@ -128,7 +128,7 @@ export default function CommentRefactory({
                   variant="outline"
                   size="sm"
                   onClick={() => setIsReplying(false)}
-                  className="bg-transparent"
+                  className="hover:text-primary border border-foreground/20 bg-transparent hover:bg-background/30 transition-colors"
                 >
                   취소
                 </Button>

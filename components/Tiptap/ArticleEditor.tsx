@@ -3,6 +3,7 @@
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import { TextAlign } from "@tiptap/extension-text-align";
+import { CustomHighlight } from "./extensions/CustomHighlightExtenstion";
 // import FontSize from "@tiptap/extension-font-size";
 import { Toolbar } from "./Toolbar";
 import { ImageExtension } from "./extensions/ImageExtension";
@@ -41,6 +42,7 @@ export default function ArticleEditor({ id }: { id?: string }) {
   const editor = useEditor({
     extensions: [
       StarterKit,
+      CustomHighlight,
       TextAlign.configure({
         types: ["heading", "paragraph", "youtube"],
       }),
@@ -61,7 +63,8 @@ export default function ArticleEditor({ id }: { id?: string }) {
       }),
       Highlight.configure({
         HTMLAttributes: {
-          class: "bg-[#84894A] dark:bg-[#84894A]",
+          class:
+            "bg-[#FFD966] text-[#69140E] dark:bg-[#84894A] dark:text-[#FDF7C3]",
         },
       }),
       Link.configure({
