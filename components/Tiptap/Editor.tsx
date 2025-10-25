@@ -95,8 +95,7 @@ export default function TiptapEditor({ id }: { id?: string }) {
       }),
       Highlight.configure({
         HTMLAttributes: {
-          class:
-            "bg-[#FFD966] text-[#69140E] dark:bg-[#84894A] dark:text-[#FDF7C3]",
+          class: "bg-[#FFD966] text-[#69140E]",
         },
       }),
       Link.configure({
