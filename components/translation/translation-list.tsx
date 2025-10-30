@@ -38,7 +38,7 @@ export default async function TranslationList({ searchParams }: Props) {
   const ascending = direction === "asc";
 
   const { data: translations, error } = await supabase
-    .rpc("search_translations", {
+    .rpc("new_search_translations", {
       _search_keyword: search || "",
       _category_ids: categoryIds,
     })
@@ -47,7 +47,6 @@ export default async function TranslationList({ searchParams }: Props) {
       (currentPage - 1) * ITEMS_PER_PAGE,
       currentPage * ITEMS_PER_PAGE - 1
     );
-
   const totalPages =
     translations.length > 0
       ? Math.ceil((translations[0].count || 0) / ITEMS_PER_PAGE)
