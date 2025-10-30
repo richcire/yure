@@ -28,10 +28,16 @@ export function SongCard({ song }: SongCardProps) {
           <span className="text-sm text-white">{song.views || 0}</span>
         </div>
         <div className="relative z-10 h-full flex flex-col justify-end p-4">
-          <CardTitle className="text-[#F5F5F5] mb-2 font-bold">
+          <CardTitle
+            className={`${song.thumbnail_url ? "text-[#F5F5F5]" : "text-foreground"} mb-2 font-bold`}
+          >
             {song.title}
           </CardTitle>
-          <p className="text-sm text-[#F5F5F5] font-medium">{song.artist}</p>
+          <p
+            className={`text-sm ${song.thumbnail_url ? "text-[#F5F5F5]" : "text-foreground"} font-medium`}
+          >
+            {song.artist}
+          </p>
         </div>
       </Card>
     </Link>

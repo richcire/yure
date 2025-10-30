@@ -32,6 +32,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { MultiSelect } from "@/components/ui/multi-select";
 import { Input } from "@/components/ui/input";
+import { Switch } from "@/components/ui/switch";
 import { TranslationTitle } from "@/components/translation/translation-title";
 interface CategoryOption {
   value: number;
@@ -283,6 +284,23 @@ const deleteTranslation = async (id: string) => {
   }
 };
 
+const VisibilityToggle = ({ translation }: { translation: ITranslations }) => {
+  const supabase = createClient();
+  const router = useRouter();
+
+  const handleToggle = async () => {
+    await supabase
+      .from("translations")
+      .update({ is_hidden: !translation.is_hidden })
+      .eq("id", translation.id);
+    router.refresh();
+  };
+
+  return (
+    <Switch checked={translation.is_hidden} onCheckedChange={handleToggle} />
+  );
+};
+
 export const columns: ColumnDef<ITranslations>[] = [
   {
     accessorKey: "title",
@@ -291,6 +309,14 @@ export const columns: ColumnDef<ITranslations>[] = [
   {
     accessorKey: "artist",
     header: "Artist",
+  },
+  {
+    accessorKey: "is_hidden",
+    header: "비공개",
+    cell: ({ row }) => {
+      const translation = row.original;
+      return <VisibilityToggle translation={translation} />;
+    },
   },
   {
     id: "actions",
