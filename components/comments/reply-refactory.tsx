@@ -55,7 +55,11 @@ export default function Reply({ reply, onDelete }: ReplyProps) {
         </DropdownMenu>
         {/* )} */}
       </div>
-      <p className="text-foreground/80 mt-2">{reply.content}</p>
+      {reply.is_deleted ? (
+        <p className="text-foreground/80 mt-2">삭제된 댓글입니다.</p>
+      ) : (
+        <p className="text-foreground/80 mt-2">{reply.content}</p>
+      )}
     </div>
   );
 }

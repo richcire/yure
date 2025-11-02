@@ -56,6 +56,7 @@ export interface IComments {
   content: string;
   parent_comment_id: string;
   created_at: string;
+  is_deleted?: boolean;
 }
 
 export interface IUserInfo {

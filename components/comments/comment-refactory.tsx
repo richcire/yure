@@ -75,7 +75,11 @@ export default function CommentRefactory({
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
-          <p className="mt-2">{comment.content}</p>
+          {comment.is_deleted ? (
+            <p className="mt-2">삭제된 댓글입니다.</p>
+          ) : (
+            <p className="mt-2">{comment.content}</p>
+          )}
 
           <Button
             variant="ghost"
