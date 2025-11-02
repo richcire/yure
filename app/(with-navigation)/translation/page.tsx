@@ -70,8 +70,8 @@ function TranslationFilterSkeleton() {
 
 export default async function TranslationHomePage({ searchParams }: Props) {
   return (
-    <div className="w-full max-w-5xl mx-auto min-h-screen bg-background pt-32 lg:my-20 rounded-lg shadow-lg">
-      <div className="px-4">
+    <div className="w-full max-w-6xl mx-auto min-h-screen bg-background pt-32 lg:my-20 rounded-lg shadow-lg">
+      <div className="px-4 md:px-8">
         <Suspense>
           <Header />
         </Suspense>
@@ -79,7 +79,7 @@ export default async function TranslationHomePage({ searchParams }: Props) {
           <TranslationFilter searchParams={searchParams} />
         </Suspense>
       </div>
-      <main className="container mx-auto px-4 py-8 w-full">
+      <main className="container mx-auto px-4 md:px-8 py-8 w-full">
         <Suspense fallback={<TranslationListSkeleton />}>
           <TranslationList searchParams={searchParams} />
         </Suspense>
