@@ -87,7 +87,7 @@ export function PostCommentSection({ id }: { id: string }) {
         useHideFeature={true}
         handleSubmit={handleSubmit}
         handleSubmitReply={handleSubmitReply}
-        deleteFn={"delete_article_comment"}
+        deleteFn={"delete_post_comment"}
         setComment={setComments}
       />
     </div>
