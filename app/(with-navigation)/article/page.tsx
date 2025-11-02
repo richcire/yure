@@ -55,9 +55,9 @@ function ArticleListSkeleton() {
 
 export default async function ArticleHomePage({ searchParams }: Props) {
   return (
-    <div className="w-full max-w-5xl mx-auto min-h-screen bg-background pt-20">
+    <div className="w-full max-w-6xl mx-auto min-h-screen bg-background pt-32 lg:my-20 rounded-lg shadow-lg">
       <Header />
-      <main className="container mx-auto px-4 py-4">
+      <main className="container mx-auto px-4 md:px-8 w-full py-8">
         <Suspense fallback={<ArticleListSkeleton />}>
           <ArticleList searchParams={searchParams} />
         </Suspense>
