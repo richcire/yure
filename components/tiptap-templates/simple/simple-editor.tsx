@@ -73,7 +73,7 @@ import { handleImageUpload, MAX_FILE_SIZE } from "@/lib/tiptap-utils";
 // --- Styles ---
 import "@/components/tiptap-templates/simple/simple-editor.scss";
 
-import content from "@/components/tiptap-templates/simple/data/content.json";
+// import content from "@/components/tiptap-templates/simple/data/content.json";
 
 import { createClient } from "@/utils/supabase/client";
 import { IPosts } from "@/types/supabase-table";
@@ -236,7 +236,7 @@ export function SimpleEditor() {
         onError: (error) => console.error("Upload failed:", error),
       }),
     ],
-    content,
+    content: "여기에 내용을 입력해주세요.",
   });
 
   const rect = useCursorVisibility({
