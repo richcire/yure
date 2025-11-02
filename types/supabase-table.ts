@@ -14,6 +14,7 @@ export interface ITranslations {
   permalink: string;
   keyword: string;
   views: number;
+  is_hidden?: boolean;
   updated_at: string;
 }
 

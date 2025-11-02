@@ -4,7 +4,7 @@ import { Suspense } from "react";
 
 export default function Header() {
   return (
-    <header className="mb-6 border-b-2 pb-4">
+    <header className="mb-6 pb-4 px-4 md:px-8">
       <div className="my-6 text-center">
         <h1 className="font-serif text-5xl font-bold uppercase tracking-tight sm:text-6xl md:text-7xl">
           News
@@ -14,8 +14,8 @@ export default function Header() {
         </p>
       </div>
 
-      <div className="flex flex-col justify-between gap-4 border-t-2 pt-4 sm:flex-row sm:items-center">
-        <div className="flex items-center gap-2">
+      <div className="flex flex-col justify-between gap-4 md:border-y-2 py-4 sm:flex-row sm:items-center">
+        <div className="items-center gap-2 hidden md:flex">
           <Newspaper className="h-5 w-5" />
           <span className="font-medium">Latest Edition</span>
         </div>

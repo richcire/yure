@@ -78,7 +78,7 @@ const Navigation = () => {
         <div className="container mx-auto h-full px-4">
           <div className="flex items-center justify-between h-full">
             {/* Logo */}
-            <Link href="/" className="flex items-center gap-2">
+            <Link href="/" className="flex items-center gap-2 md:w-[150px]">
               <Image
                 src={roundLogo}
                 alt="Logo"
@@ -158,7 +158,7 @@ const Navigation = () => {
             </div>
 
             {/* Auth Section */}
-            <div className="flex items-center gap-3 md:gap-4">
+            <div className="flex items-center gap-3 md:gap-4 md:w-[150px]">
               {/* Notifications Section */}
               {user && <Notification />}
               <div className="hidden sm:block">

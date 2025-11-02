@@ -40,7 +40,7 @@ export default function TranslationContent({ content }: { content: string }) {
       }),
       Highlight.configure({
         HTMLAttributes: {
-          class: "bg-yellow-200 dark:bg-yellow-800",
+          class: "bg-[#FFD966] text-[#69140E]",
         },
       }),
       Link.configure({

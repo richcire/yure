@@ -1,10 +1,11 @@
 import { ITranslations } from "@/types/supabase-table";
-import { createClient } from "@/utils/supabase/server";
 import Link from "next/link";
 import Image from "next/image";
 import squareLogo from "@/public/assets/logos/square_high.jpeg";
+import { createPublicClient } from "@/utils/supabase/public";
+
 async function getRelatedPosts(permalink: string) {
-  const supabase = await createClient();
+  const supabase = await createPublicClient();
   const { data, error } = await supabase
     .from("translations")
     .select("created_at")
