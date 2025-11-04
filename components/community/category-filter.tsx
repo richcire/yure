@@ -14,7 +14,7 @@ export default function CategoryFilter() {
   const handleSortChange = (value: string) => {
     const params = new URLSearchParams(searchParams.toString());
     params.set("sort", value);
-    router.push(`${pathname}?${params.toString()}`);
+    router.replace(`${pathname}?${params.toString()}`, { scroll: false });
   };
 
   return (
