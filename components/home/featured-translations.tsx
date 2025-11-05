@@ -14,6 +14,7 @@ export async function FeaturedTranslations() {
   const { data: translations } = await supabase
     .from("translations")
     .select("id, title, artist, permalink, thumbnail_url")
+    .eq("is_hidden", false)
     .order("created_at", { ascending: false })
     .limit(16)
     .returns<ITranslations[]>();
