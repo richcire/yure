@@ -18,6 +18,7 @@ async function getRelatedPosts(permalink: string) {
   const previousPost = supabase
     .from("translations")
     .select("title, permalink, thumbnail_url")
+    .eq("is_hidden", false)
     .lt("created_at", data.created_at)
     .order("created_at", { ascending: false })
     .limit(1)
@@ -26,6 +27,7 @@ async function getRelatedPosts(permalink: string) {
   const nextPost = supabase
     .from("translations")
     .select("title, permalink, thumbnail_url")
+    .eq("is_hidden", false)
     .gt("created_at", data.created_at)
     .order("created_at", { ascending: true })
     .limit(1)

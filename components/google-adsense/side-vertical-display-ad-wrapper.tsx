@@ -22,8 +22,6 @@ export const SideVerticalDisplayAdWrapper = () => {
   if (isMobile) return null;
 
   return (
-    <div className="sticky-side-ad">
-      <SideVerticalDisplayAd />
-    </div>
+    <div className="sticky-side-ad">{/* <SideVerticalDisplayAd /> */}</div>
   );
 };

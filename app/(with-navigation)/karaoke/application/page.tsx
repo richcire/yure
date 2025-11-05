@@ -13,7 +13,7 @@ export default function KaraokeApplicationPage() {
       </div>
       <KaraokeCommentSection />
       <BottomDisplayAdWrapper />
-      <SideVerticalDisplayAdWrapper />
+      {/* <SideVerticalDisplayAdWrapper /> */}
     </div>
   );
 }

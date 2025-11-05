@@ -145,7 +145,7 @@ export default async function ArticlePage({ params }: Props) {
             <ArticleCommentSection slug={slug} />
           </Suspense>
         </div>
-        <SideVerticalDisplayAdWrapper />
+        {/* <SideVerticalDisplayAdWrapper /> */}
       </div>
     </>
   );

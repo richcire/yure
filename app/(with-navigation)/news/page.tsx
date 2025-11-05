@@ -97,7 +97,7 @@ export default async function NewsHomePage({ searchParams }: Props) {
   const currentPage = parseInt(page);
 
   return (
-    <div className="w-full max-w-6xl mx-auto min-h-screen bg-background pt-32 lg:my-20 rounded-lg shadow-lg">
+    <div className="w-full max-w-6xl mx-auto min-h-screen bg-hanji pt-32 lg:my-20 rounded-lg shadow-lg">
       <Header />
       <NewsBanner />
       <main className="container mx-auto px-4 md:px-8 w-full py-8">
@@ -121,7 +121,7 @@ export default async function NewsHomePage({ searchParams }: Props) {
           <NewsList searchParams={searchParams} />
         </Suspense>
       </main>
-      <SideVerticalDisplayAdWrapper />
+      {/* <SideVerticalDisplayAdWrapper /> */}
     </div>
   );
 }
