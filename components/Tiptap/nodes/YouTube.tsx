@@ -17,6 +17,7 @@ export default function YouTube({
   const [isInitialRender, setIsInitialRender] = useState(true);
   const [isFolded, setIsFolded] = useState(false);
   const videoRef = useRef<HTMLDivElement>(null);
+  const hasEverBeenVisible = useRef(false);
   const showControls = editor?.isEditable;
   const aspectRatio = node.attrs.aspectRatio || "16/9";
   const pathname = usePathname();
@@ -32,7 +33,13 @@ export default function YouTube({
 
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (!isInitialRender) {
+        // Track if video has ever been visible
+        if (entry.isIntersecting) {
+          hasEverBeenVisible.current = true;
+        }
+
+        // Only enable sticky mode if video has been visible AND is now out of view
+        if (!isInitialRender && hasEverBeenVisible.current) {
           setIsSticky(!entry.isIntersecting);
         }
       },
