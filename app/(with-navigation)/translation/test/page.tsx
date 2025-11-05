@@ -18,7 +18,7 @@ export default async function TestPage() {
     return <div>Error: {error.message}</div>;
   }
   const thumbnail =
-    "https://ypkefxbgavxybyzluxan.supabase.co/storage/v1/object/public/images/translation/1762336152313-gppzvr.webp";
+    "https://ypkefxbgavxybyzluxan.supabase.co/storage/v1/object/public/images/translation/1762330851070-lsm1fu.jpeg";
   const title = "Pretender";
   const subtitle = "Official髭男dism";
   const tags = ["락", "얼터네이티브", "발라드"];

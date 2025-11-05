@@ -70,7 +70,7 @@ function TranslationFilterSkeleton() {
 
 export default async function TranslationHomePage({ searchParams }: Props) {
   return (
-    <div className="w-full max-w-6xl mx-auto min-h-screen bg-background pt-32 lg:my-20 rounded-lg shadow-lg">
+    <div className="w-full max-w-6xl mx-auto min-h-screen pt-32 lg:my-20 rounded-lg shadow-lg bg-hanji">
       <div className="px-4 md:px-8">
         <Suspense>
           <Header />
@@ -84,7 +84,7 @@ export default async function TranslationHomePage({ searchParams }: Props) {
           <TranslationList searchParams={searchParams} />
         </Suspense>
       </main>
-      <SideVerticalDisplayAdWrapper />
+      {/* <SideVerticalDisplayAdWrapper /> */}
     </div>
   );
 }
