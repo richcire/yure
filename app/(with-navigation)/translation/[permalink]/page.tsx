@@ -173,7 +173,7 @@ export default async function TranslationPage({ params }: Props) {
           <TranslationCommentSection permalink={permalink} />
         </Suspense>
       </section>
-      <SideVerticalDisplayAdWrapper />
+      {/* <SideVerticalDisplayAdWrapper /> */}
     </div>
 
     // <div className="container mx-auto px-4 py-32">
