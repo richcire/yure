@@ -68,7 +68,7 @@ export default async function NewsPage({ params }: Props) {
           <NewsCommentSection news={news} useHideFeature={true} />
         </Suspense>
       </div>
-      <SideVerticalDisplayAdWrapper />
+      {/* <SideVerticalDisplayAdWrapper /> */}
     </div>
   );
 }

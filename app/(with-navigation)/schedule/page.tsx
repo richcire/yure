@@ -106,7 +106,7 @@ export default async function SchedulePage({ searchParams }: Props) {
       >
         <ScheduleList searchParams={searchParams} />
       </Suspense>
-      <SideVerticalDisplayAdWrapper />
+      {/* <SideVerticalDisplayAdWrapper /> */}
     </div>
   );
 }

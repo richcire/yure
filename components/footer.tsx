@@ -5,7 +5,7 @@ import { Instagram, Youtube } from "lucide-react";
 
 export default function Footer() {
   return (
-    <footer className="w-full mx-auto text-md py-20 bg-background">
+    <footer className="w-full mx-auto text-md py-20 border-t">
       <div className="container mx-auto px-4">
         <div className="flex flex-col md:flex-row items-start justify-center gap-16 md:gap-24">
           {/* Logo Section */}
