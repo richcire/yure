@@ -10,6 +10,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { X } from "lucide-react";
 import { createClient } from "@/utils/supabase/client";
+import translateInsertLyrics from "@/utils/ai/translate-insert-lyrics";
 
 export default function AdminPage() {
   const [isLoading, setIsLoading] = useState(false);
@@ -75,18 +76,6 @@ export default function AdminPage() {
     }
   };
 
-  const uploadThumbnailImage = async (file: File) => {
-    const supabase = createClient();
-    const fileName = `translation/${Date.now()}-${Math.random().toString(36).substring(7)}`;
-    const { data: uploadData, error: uploadError } = await supabase.storage
-      .from("images")
-      .upload(fileName, file);
-    const {
-      data: { publicUrl: thumbnailUrl },
-    } = await supabase.storage.from("images").getPublicUrl(fileName);
-    return thumbnailUrl;
-  };
-
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!validateForm()) {
@@ -102,79 +91,23 @@ export default function AdminPage() {
         color: "#3f3f3f !important",
       },
     });
-    const response = await fetch("/api/autopost", {
-      method: "POST",
-      body: JSON.stringify({ input_as_text: formData.lyrics }),
-    });
-    const translatedLyrics = (await response.json()).html;
-
-    let thumbnailUrl = "";
-    if (thumbnailImage) {
-      thumbnailUrl = await uploadThumbnailImage(thumbnailImage);
+    try {
+      await translateInsertLyrics(formData, thumbnailImage);
+    } catch (error) {
+      toast("액션 실패", {
+        description: `${error}`,
+        style: {
+          color: "#3f3f3f !important",
+        },
+      });
+      setIsLoading(false);
+      return;
     }
-
-    const finalContent = makeFinalContent(
-      translatedLyrics,
-      formData.youtubeKey,
-      formData.artistInContent,
-      thumbnailUrl
-    );
-    await insertDataToSupabase(finalContent, thumbnailUrl);
-
     toast("액션 완료", {
       description: "작업이 완료되었습니다.",
     });
 
     setIsLoading(false);
-  };
-
-  const makeFinalContent = (
-    html: string,
-    youtubeKey: string,
-    artistInContent: string,
-    thumbnailUrl: string
-  ) => {
-    const parts = html.split("</h1>");
-    const front_part = parts[0];
-    const back_part = parts[1];
-    const artist_parts = artistInContent.split("\n");
-    const first_artist = artist_parts[0];
-    const second_artist = artist_parts[1];
-    let final_content =
-      front_part +
-      "</h1>" +
-      "<h2 style='text-align: center;'><strong>" +
-      first_artist +
-      "</strong><br><strong>" +
-      second_artist +
-      "</strong></h2><ins class='rounded-md adsbygoogle' data-ad-layout='in-article' data-ad-format='fluid' data-ad-client='ca-pub-4738868818137222' data-ad-slot='2891582134' style='display: block; text-align: center;'></ins>" +
-      back_part;
-    final_content =
-      `<iframe class="rounded-md" src="https://www.youtube.com/embed/${youtubeKey}" width="100%" data-aspect-ratio="16/9" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="true"></iframe><p style="text-align: center;"></p>` +
-      final_content;
-    if (thumbnailUrl) {
-      final_content =
-        `<img class="rounded-md max-w-full" src="${thumbnailUrl}" width="100%" textalign="left" float="none">` +
-        final_content;
-    }
-    return final_content;
-  };
-
-  const insertDataToSupabase = async (
-    finalContent: string,
-    thumbnailUrl: string
-  ) => {
-    const supabase = createClient();
-    const { error } = await supabase.from("translations").insert({
-      title: formData.title,
-      artist: formData.artist,
-      content: finalContent,
-      thumbnail_url: thumbnailUrl || null,
-      keyword: formData.keyword,
-      permalink: formData.permalink,
-      release_date: formData.releaseDate || null,
-      is_hidden: true,
-    });
   };
 
   return (
