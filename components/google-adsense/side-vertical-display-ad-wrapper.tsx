@@ -1,6 +1,6 @@
 "use client";
 
-import { SideVerticalDisplayAd } from "./side-veritcal-display-ad";
+import { SideVerticalDisplayAd } from "./side-vertical-display-ad";
 import { useEffect, useState } from "react";
 export const SideVerticalDisplayAdWrapper = () => {
   const [isMobile, setIsMobile] = useState(false);
