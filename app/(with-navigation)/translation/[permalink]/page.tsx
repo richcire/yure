@@ -1,12 +1,5 @@
 import { Suspense } from "react";
-import {
-  TranslationTitle,
-  TranslationTitleSkeleton,
-} from "@/components/translation/translation-title";
 import { createPublicClient } from "@/utils/supabase/public";
-import { SideVerticalDisplayAdWrapper } from "@/components/google-adsense/side-vertical-display-ad-wrapper";
-import TranslationContentWrapper from "@/components/translation/translation-content-wrapper";
-import { TipTapContentSkeleton } from "@/components/Tiptap/TipTapContentSkeleton";
 import TranslationRelatedPosts from "@/components/translation/translation-related-posts";
 import ViewCounter from "@/components/translation/ViewCounter";
 import TranslationRelatedPostsSkeleton from "@/components/translation/translation-related-posts-skeleton";
@@ -146,7 +139,7 @@ export default async function TranslationPage({ params }: Props) {
       {/* 본문 컨테이너: 스크롤 시 배경 위를 덮으며 올라옴 */}
       <section
         id="content"
-        className="relative pb-24 max-w-4xl w-screen p-4 rounded-2xl bg-gradient-to-b from-[#F5F5F5] to-[#E4E0D5]"
+        className="relative pb-24 max-w-4xl w-screen p-4 rounded-2xl bg-gradient-to-b from-[#F5F5F5] to-[#E4E0D5] mb-48"
       >
         <p className="absolute -top-24 right-4 text-sm md:text-base text-white/85 text-right">
           {new Date(translation.release_date).toLocaleString("ko-KR", {
@@ -155,13 +148,6 @@ export default async function TranslationPage({ params }: Props) {
             day: "numeric",
           })}
         </p>
-
-        {/* <div className="mx-auto max-w-3xl rounded-2xl bg-white p-6 shadow-soft ring-1 ring-black/5 md:p-10">
-          <div className="mb-8 flex items-center justify-end text-sm text-gray-500">
-            <div>2023년 08월 02일</div>
-          </div>
-
-        </div> */}
         <TranslationContent content={translation.content} />
         <BottomDisplayAdWrapper />
 
@@ -173,28 +159,6 @@ export default async function TranslationPage({ params }: Props) {
           <TranslationCommentSection permalink={permalink} />
         </Suspense>
       </section>
-      {/* <SideVerticalDisplayAdWrapper /> */}
     </div>
-
-    // <div className="container mx-auto px-4 py-32">
-    //   <ViewCounter permalink={permalink} />
-    //   <div className="max-w-4xl mx-auto">
-    //     <Suspense fallback={<TranslationTitleSkeleton />}>
-    //       <TranslationTitle translation={translation} />
-    //     </Suspense>
-    //     <Suspense fallback={<TipTapContentSkeleton />}>
-    //       <TranslationContentWrapper translation={translation} />
-    //     </Suspense>
-
-    //     <Suspense fallback={<TranslationRelatedPostsSkeleton />}>
-    //       <TranslationRelatedPosts permalink={permalink} />
-    //     </Suspense>
-
-    //     <Suspense fallback={<div>댓글을 불러오는 중...</div>}>
-    //       <TranslationCommentSection permalink={permalink} />
-    //     </Suspense>
-    //   </div>
-    //   <SideVerticalDisplayAdWrapper />
-    // </div>
   );
 }

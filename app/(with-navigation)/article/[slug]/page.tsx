@@ -92,6 +92,10 @@ export default async function ArticlePage({ params }: Props) {
     <div className="min-h-screen w-screen  text-[#222]">
       {/* 1. HERO 영역 (상단 사진 + 타이틀 오버레이) */}
       <section className="relative h-[340px] sm:h-[420px] lg:h-[460px]">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+        />
         {/* 배경 이미지 */}
         <div className="absolute inset-0">
           <Image

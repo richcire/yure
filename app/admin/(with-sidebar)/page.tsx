@@ -21,6 +21,7 @@ export default function AdminPage() {
     permalink: "",
     releaseDate: "",
     youtubeKey: "",
+    catchPhrase: "",
     lyrics: "",
     artistInContent: "",
   });
@@ -66,6 +67,7 @@ export default function AdminPage() {
       permalink: "",
       releaseDate: "",
       youtubeKey: "",
+      catchPhrase: "",
       lyrics: "",
       artistInContent: "",
     });
@@ -200,22 +202,41 @@ export default function AdminPage() {
               </div>
             </div>
 
-            {/* Release Date */}
-            <div className="space-y-2">
-              <Label
-                htmlFor="releaseDate"
-                className="text-gray-700 font-medium"
-              >
-                발매일
-              </Label>
-              <Input
-                type="text"
-                placeholder="예: 2024-01-15"
-                id="releaseDate"
-                value={formData.releaseDate}
-                onChange={handleChange}
-                className="border-gray-200 focus:border-blue-500 focus:ring-blue-500"
-              />
+            {/* Keyword and Permalink Row */}
+            <div className="grid grid-cols-2 gap-4">
+              {/* Release Date */}
+              <div className="space-y-2">
+                <Label
+                  htmlFor="releaseDate"
+                  className="text-gray-700 font-medium"
+                >
+                  발매일
+                </Label>
+                <Input
+                  type="text"
+                  placeholder="예: 2024-01-15"
+                  id="releaseDate"
+                  value={formData.releaseDate}
+                  onChange={handleChange}
+                  className="border-gray-200 focus:border-blue-500 focus:ring-blue-500"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label
+                  htmlFor="catchPhrase"
+                  className="text-gray-700 font-medium"
+                >
+                  캐치프레이즈 <span className="text-red-500">*</span>
+                </Label>
+                <Input
+                  type="text"
+                  placeholder="예: 너의 목소리가 들려와"
+                  id="catchPhrase"
+                  value={formData.catchPhrase}
+                  onChange={handleChange}
+                  className="border-gray-200 focus:border-blue-500 focus:ring-blue-500"
+                />
+              </div>
             </div>
 
             {/* youtube key value */}
