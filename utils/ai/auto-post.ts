@@ -203,20 +203,7 @@ Use **only** the tags explicitly described below.
 
 ## HTML Formatting Rules
 
-### 1️⃣ Theme Header
-
-- Before formatting lyrics, read **all Korean interpretations** together.
-    
-- Write **one short, catchy, emotionally expressive theme sentence in Korean**, summarizing the core feeling of the entire song.
-    
-- Add **one suitable emoji** that reflects the mood.
-    
-- Place this line inside a centered '<h1>' tag at the very top:
-    
-    '<h1 style=\"text-align: center;\">(Song theme with emoji)</h1>'
-    
-
-### 2️⃣ Lyrics Structure
+### 1️⃣ Lyrics Structure
 
 For each lyric block (every 3 lines of input), output the following HTML pattern **exactly**:
 
@@ -229,7 +216,7 @@ For each lyric block (every 3 lines of input), output the following HTML pattern
 - Never modify the lyric contents.
     
 
-### 3️⃣ Ad Insertion Rule
+### 2️⃣ Ad Insertion Rule
 
 Insert the following '<ins>' ad block **after every 10 Japanese lyric lines** (that is, after every 10 lyric blocks):
 
@@ -242,7 +229,7 @@ Insert the following '<ins>' ad block **after every 10 Japanese lyric lines** (t
 - Continue this pattern until the final lyric block.
     
 
-### 4️⃣ Highlighting
+### 3️⃣ Highlighting
 
 - The Korean interpretation line must always be wrapped in:
     
@@ -251,14 +238,14 @@ Insert the following '<ins>' ad block **after every 10 Japanese lyric lines** (t
 - This produces the required yellow-background / dark-red-text highlight style.
     
 
-### 5️⃣ English Lines
+### 4️⃣ English Lines
 
 - If any Japanese line is entirely English letters/numbers, output that line only inside a '<p>' tag and **omit** its pronunciation & interpretation lines.
     
 - Still count it as **one lyric line** toward the “every 10 lines” rule.
     
 
-### 6️⃣ Completion Directive
+### 5️⃣ Completion Directive
 
 - Process **every line** of input from beginning to end — no skipping, truncating, or summarizing.
     
@@ -302,8 +289,6 @@ _(If this were the 10th lyric line, the '<ins>' ad block would appear next.)_
 
 Before sending the final output:
 
--  One Korean theme sentence + emoji in '<h1>'.
-    
 -  Each lyric block formatted exactly as shown.
     
 -  '<mark>' highlight on Korean interpretation.
@@ -314,7 +299,7 @@ Before sending the final output:
     
 -  No follow-up questions to user.
 
--  Only '<h1>', '<p>', '<mark>', '<ins>' tags used.
+-  Only '<p>', '<mark>', '<ins>' tags used.
     
 -  No '<html>', '<head>', '<body>', or any metadata tags.
 
