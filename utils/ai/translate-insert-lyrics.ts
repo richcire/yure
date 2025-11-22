@@ -10,6 +10,7 @@ interface IFormData {
   permalink: string;
   releaseDate: string;
   youtubeKey: string;
+  catchPhrase: string;
   lyrics: string;
   artistInContent: string;
 }
@@ -40,32 +41,42 @@ const makeFinalContent = (
   html: string,
   youtubeKey: string,
   artistInContent: string,
+  catchPhrase: string,
   thumbnailUrl: string
 ) => {
-  const parts = html.split("</h1>");
-  const front_part = parts[0];
-  const back_part = parts[1];
-  const artist_parts = artistInContent.split("\n");
-  const first_artist = artist_parts[0];
-  const second_artist = artist_parts[1];
-  let final_content =
-    front_part +
-    "</h1>" +
-    "<h2 style='text-align: center;'><strong>" +
-    first_artist +
-    "</strong><br><strong>" +
-    second_artist +
-    "</strong></h2><ins class='rounded-md adsbygoogle' data-ad-layout='in-article' data-ad-format='fluid' data-ad-client='ca-pub-4738868818137222' data-ad-slot='2891582134' style='display: block; text-align: center;'></ins>" +
-    back_part;
-  final_content =
-    `<iframe class="rounded-md" src="https://www.youtube.com/embed/${youtubeKey}" width="100%" data-aspect-ratio="16/9" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="true"></iframe><p style="text-align: center;"></p>` +
-    final_content;
-  if (thumbnailUrl) {
-    final_content =
-      `<img class="rounded-md max-w-full" src="${thumbnailUrl}" width="100%" textalign="left" float="none">` +
-      final_content;
+  let finalContent = html;
+  if (artistInContent) {
+    const artist_parts = artistInContent.split("\n");
+    const first_artist = artist_parts[0];
+    const second_artist = artist_parts[1];
+    finalContent =
+      `<h1 style="text-align: center;">${catchPhrase}</h1> ` +
+      "<h2 style='text-align: center;'><strong>" +
+      first_artist +
+      "</strong><br><strong>" +
+      second_artist +
+      "</strong></h2><ins class='rounded-md adsbygoogle' data-ad-layout='in-article' data-ad-format='fluid' data-ad-client='ca-pub-4738868818137222' data-ad-slot='2891582134' style='display: block; text-align: center;'></ins>" +
+      finalContent;
   }
-  return final_content;
+
+  if (catchPhrase) {
+    finalContent =
+      `<h1 style="text-align: center;">${catchPhrase}</h1> ` + finalContent;
+  }
+
+  if (thumbnailUrl) {
+    finalContent =
+      `<img class="rounded-md max-w-full" src="${thumbnailUrl}" width="100%" textalign="left" float="none">` +
+      finalContent;
+  }
+
+  if (youtubeKey) {
+    finalContent =
+      `<iframe class="rounded-md" src="https://www.youtube.com/embed/${youtubeKey}" width="100%" data-aspect-ratio="16/9" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="true"></iframe><p style="text-align: center;"></p>` +
+      finalContent;
+  }
+
+  return finalContent;
 };
 
 const uploadThumbnailImage = async (file: File) => {
@@ -96,6 +107,7 @@ const translateInsertLyrics = async (
       html,
       formData.youtubeKey,
       formData.artistInContent,
+      formData.catchPhrase,
       thumbnailUrl
     );
     await insertDataToSupabase(formData, finalContent, thumbnailUrl);

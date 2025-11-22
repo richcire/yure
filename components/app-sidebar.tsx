@@ -57,11 +57,6 @@ const items = [
     url: "/admin/schedule",
     icon: Calendar,
   },
-  {
-    title: "test",
-    url: "/admin/test",
-    icon: Settings,
-  },
 ];
 
 export function AppSidebar() {
