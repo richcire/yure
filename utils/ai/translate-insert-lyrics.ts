@@ -50,7 +50,6 @@ const makeFinalContent = (
     const first_artist = artist_parts[0];
     const second_artist = artist_parts[1];
     finalContent =
-      `<h1 style="text-align: center;">${catchPhrase}</h1> ` +
       "<h2 style='text-align: center;'><strong>" +
       first_artist +
       "</strong><br><strong>" +
