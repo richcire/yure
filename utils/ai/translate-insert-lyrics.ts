@@ -63,15 +63,15 @@ const makeFinalContent = (
       `<h1 style="text-align: center;">${catchPhrase}</h1> ` + finalContent;
   }
 
-  if (thumbnailUrl) {
-    finalContent =
-      `<img class="rounded-md max-w-full" src="${thumbnailUrl}" width="100%" textalign="left" float="none">` +
-      finalContent;
-  }
-
   if (youtubeKey) {
     finalContent =
       `<iframe class="rounded-md" src="https://www.youtube.com/embed/${youtubeKey}" width="100%" data-aspect-ratio="16/9" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="true"></iframe><p style="text-align: center;"></p>` +
+      finalContent;
+  }
+
+  if (thumbnailUrl) {
+    finalContent =
+      `<img class="rounded-md max-w-full" src="${thumbnailUrl}" width="100%" textalign="left" float="none">` +
       finalContent;
   }
 
