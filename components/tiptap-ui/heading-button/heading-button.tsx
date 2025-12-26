@@ -1,6 +1,6 @@
 "use client"
 
-import * as React from "react"
+import { forwardRef, useCallback } from "react"
 
 // --- Lib ---
 import { parseShortcutKeys } from "@/lib/tiptap-utils"
@@ -50,10 +50,7 @@ export function HeadingShortcutBadge({
  *
  * For custom button implementations, use the `useHeading` hook instead.
  */
-export const HeadingButton = React.forwardRef<
-  HTMLButtonElement,
-  HeadingButtonProps
->(
+export const HeadingButton = forwardRef<HTMLButtonElement, HeadingButtonProps>(
   (
     {
       editor: providedEditor,
@@ -84,7 +81,7 @@ export const HeadingButton = React.forwardRef<
       onToggled,
     })
 
-    const handleClick = React.useCallback(
+    const handleClick = useCallback(
       (event: React.MouseEvent<HTMLButtonElement>) => {
         onClick?.(event)
         if (event.defaultPrevented) return

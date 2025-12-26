@@ -1,6 +1,6 @@
 "use client"
 
-import * as React from "react"
+import { forwardRef, useCallback } from "react"
 
 // --- Hooks ---
 import { useTiptapEditor } from "@/hooks/use-tiptap-editor"
@@ -47,7 +47,7 @@ export function CodeBlockShortcutBadge({
  *
  * For custom button implementations, use the `useCodeBlock` hook instead.
  */
-export const CodeBlockButton = React.forwardRef<
+export const CodeBlockButton = forwardRef<
   HTMLButtonElement,
   CodeBlockButtonProps
 >(
@@ -79,7 +79,7 @@ export const CodeBlockButton = React.forwardRef<
       onToggled,
     })
 
-    const handleClick = React.useCallback(
+    const handleClick = useCallback(
       (event: React.MouseEvent<HTMLButtonElement>) => {
         onClick?.(event)
         if (event.defaultPrevented) return

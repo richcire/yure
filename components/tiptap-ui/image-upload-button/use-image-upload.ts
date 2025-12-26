@@ -1,18 +1,15 @@
 "use client"
 
-import * as React from "react"
+import { useCallback, useEffect, useState } from "react"
 import { useHotkeys } from "react-hotkeys-hook"
 import { type Editor } from "@tiptap/react"
 
 // --- Hooks ---
 import { useTiptapEditor } from "@/hooks/use-tiptap-editor"
-import { useIsMobile } from "@/hooks/use-mobile"
+import { useIsBreakpoint } from "@/hooks/use-is-breakpoint"
 
 // --- Lib ---
-import {
-  isExtensionAvailable,
-  isNodeTypeSelected,
-} from "@/lib/tiptap-utils"
+import { isExtensionAvailable } from "@/lib/tiptap-utils"
 
 // --- Icons ---
 import { ImagePlusIcon } from "@/components/tiptap-icons/image-plus-icon"
@@ -43,11 +40,7 @@ export interface UseImageUploadConfig {
  */
 export function canInsertImage(editor: Editor | null): boolean {
   if (!editor || !editor.isEditable) return false
-  if (
-    !isExtensionAvailable(editor, "imageUpload") ||
-    isNodeTypeSelected(editor, ["image"])
-  )
-    return false
+  if (!isExtensionAvailable(editor, "imageUpload")) return false
 
   return editor.can().insertContent({ type: "imageUpload" })
 }
@@ -143,12 +136,12 @@ export function useImageUpload(config?: UseImageUploadConfig) {
   } = config || {}
 
   const { editor } = useTiptapEditor(providedEditor)
-  const isMobile = useIsMobile()
-  const [isVisible, setIsVisible] = React.useState<boolean>(true)
+  const isMobile = useIsBreakpoint()
+  const [isVisible, setIsVisible] = useState<boolean>(true)
   const canInsert = canInsertImage(editor)
   const isActive = isImageActive(editor)
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (!editor) return
 
     const handleSelectionUpdate = () => {
@@ -164,7 +157,7 @@ export function useImageUpload(config?: UseImageUploadConfig) {
     }
   }, [editor, hideWhenUnavailable])
 
-  const handleImage = React.useCallback(() => {
+  const handleImage = useCallback(() => {
     if (!editor) return false
 
     const success = insertImage(editor)

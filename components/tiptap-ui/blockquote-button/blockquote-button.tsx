@@ -1,6 +1,6 @@
 "use client"
 
-import * as React from "react"
+import { forwardRef, useCallback } from "react"
 
 // --- Tiptap UI ---
 import type { UseBlockquoteConfig } from "@/components/tiptap-ui/blockquote-button"
@@ -47,7 +47,7 @@ export function BlockquoteShortcutBadge({
  *
  * For custom button implementations, use the `useBlockquote` hook instead.
  */
-export const BlockquoteButton = React.forwardRef<
+export const BlockquoteButton = forwardRef<
   HTMLButtonElement,
   BlockquoteButtonProps
 >(
@@ -79,7 +79,7 @@ export const BlockquoteButton = React.forwardRef<
       onToggled,
     })
 
-    const handleClick = React.useCallback(
+    const handleClick = useCallback(
       (event: React.MouseEvent<HTMLButtonElement>) => {
         onClick?.(event)
         if (event.defaultPrevented) return

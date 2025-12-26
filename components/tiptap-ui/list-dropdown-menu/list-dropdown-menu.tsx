@@ -1,6 +1,6 @@
 "use client"
 
-import * as React from "react"
+import { useCallback, useState } from "react"
 import { type Editor } from "@tiptap/react"
 
 // --- Hooks ---
@@ -12,7 +12,7 @@ import { ChevronDownIcon } from "@/components/tiptap-icons/chevron-down-icon"
 // --- Tiptap UI ---
 import { ListButton, type ListType } from "@/components/tiptap-ui/list-button"
 
-import { useListDropdownMenu } from "./use-list-dropdown-menu"
+import { useListDropdownMenu } from "@/components/tiptap-ui/list-dropdown-menu/use-list-dropdown-menu"
 
 // --- UI Primitives ---
 import type { ButtonProps } from "@/components/tiptap-ui-primitive/button"
@@ -59,7 +59,7 @@ export function ListDropdownMenu({
   ...props
 }: ListDropdownMenuProps) {
   const { editor } = useTiptapEditor(providedEditor)
-  const [isOpen, setIsOpen] = React.useState(false)
+  const [isOpen, setIsOpen] = useState(false)
 
   const { filteredLists, canToggle, isActive, isVisible, Icon } =
     useListDropdownMenu({
@@ -68,7 +68,7 @@ export function ListDropdownMenu({
       hideWhenUnavailable,
     })
 
-  const handleOnOpenChange = React.useCallback(
+  const handleOnOpenChange = useCallback(
     (open: boolean) => {
       setIsOpen(open)
       onOpenChange?.(open)
@@ -76,7 +76,7 @@ export function ListDropdownMenu({
     [onOpenChange]
   )
 
-  if (!isVisible || !editor || !editor.isEditable) {
+  if (!isVisible) {
     return null
   }
 

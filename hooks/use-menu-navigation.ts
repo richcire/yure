@@ -1,7 +1,7 @@
 "use client"
 
-import * as React from "react"
 import type { Editor } from "@tiptap/react"
+import { useEffect, useState } from "react"
 
 type Orientation = "horizontal" | "vertical" | "both"
 
@@ -61,11 +61,11 @@ export function useMenuNavigation<T>({
   orientation = "vertical",
   autoSelectFirstItem = true,
 }: MenuNavigationOptions<T>) {
-  const [selectedIndex, setSelectedIndex] = React.useState<number>(
+  const [selectedIndex, setSelectedIndex] = useState<number>(
     autoSelectFirstItem ? 0 : -1
   )
 
-  React.useEffect(() => {
+  useEffect(() => {
     const handleKeyboardNavigation = (event: KeyboardEvent) => {
       if (!items.length) return false
 
@@ -183,7 +183,7 @@ export function useMenuNavigation<T>({
     orientation,
   ])
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (query) {
       setSelectedIndex(autoSelectFirstItem ? 0 : -1)
     }

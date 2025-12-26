@@ -1,6 +1,6 @@
 "use client"
 
-import * as React from "react"
+import { forwardRef, useCallback } from "react"
 
 // --- Lib ---
 import { parseShortcutKeys } from "@/lib/tiptap-utils"
@@ -59,7 +59,7 @@ export function TextAlignShortcutBadge({
  *
  * For custom button implementations, use the `useTextAlign` hook instead.
  */
-export const TextAlignButton = React.forwardRef<
+export const TextAlignButton = forwardRef<
   HTMLButtonElement,
   TextAlignButtonProps
 >(
@@ -94,7 +94,7 @@ export const TextAlignButton = React.forwardRef<
       onAligned,
     })
 
-    const handleClick = React.useCallback(
+    const handleClick = useCallback(
       (event: React.MouseEvent<HTMLButtonElement>) => {
         onClick?.(event)
         if (event.defaultPrevented) return

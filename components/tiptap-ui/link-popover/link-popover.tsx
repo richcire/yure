@@ -1,10 +1,10 @@
 "use client"
 
-import * as React from "react"
+import { forwardRef, useCallback, useEffect, useState } from "react"
 import type { Editor } from "@tiptap/react"
 
 // --- Hooks ---
-import { useIsMobile } from "@/hooks/use-mobile"
+import { useIsBreakpoint } from "@/hooks/use-is-breakpoint"
 import { useTiptapEditor } from "@/hooks/use-tiptap-editor"
 
 // --- Icons ---
@@ -77,7 +77,7 @@ export interface LinkPopoverProps
 /**
  * Link button component for triggering the link popover
  */
-export const LinkButton = React.forwardRef<HTMLButtonElement, ButtonProps>(
+export const LinkButton = forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, children, ...props }, ref) => {
     return (
       <Button
@@ -110,9 +110,9 @@ const LinkMain: React.FC<LinkMainProps> = ({
   openLink,
   isActive,
 }) => {
-  const isMobile = useIsMobile()
+  const isMobile = useIsBreakpoint()
 
-  const handleKeyDown = (event: React.KeyboardEvent) => {
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === "Enter") {
       event.preventDefault()
       setLink()
@@ -204,10 +204,7 @@ export const LinkContent: React.FC<{
  *
  * For custom popover implementations, use the `useLinkPopover` hook instead.
  */
-export const LinkPopover = React.forwardRef<
-  HTMLButtonElement,
-  LinkPopoverProps
->(
+export const LinkPopover = forwardRef<HTMLButtonElement, LinkPopoverProps>(
   (
     {
       editor: providedEditor,
@@ -222,7 +219,7 @@ export const LinkPopover = React.forwardRef<
     ref
   ) => {
     const { editor } = useTiptapEditor(providedEditor)
-    const [isOpen, setIsOpen] = React.useState(false)
+    const [isOpen, setIsOpen] = useState(false)
 
     const {
       isVisible,
@@ -241,7 +238,7 @@ export const LinkPopover = React.forwardRef<
       onSetLink,
     })
 
-    const handleOnOpenChange = React.useCallback(
+    const handleOnOpenChange = useCallback(
       (nextIsOpen: boolean) => {
         setIsOpen(nextIsOpen)
         onOpenChange?.(nextIsOpen)
@@ -249,12 +246,12 @@ export const LinkPopover = React.forwardRef<
       [onOpenChange]
     )
 
-    const handleSetLink = React.useCallback(() => {
+    const handleSetLink = useCallback(() => {
       setLink()
       setIsOpen(false)
     }, [setLink])
 
-    const handleClick = React.useCallback(
+    const handleClick = useCallback(
       (event: React.MouseEvent<HTMLButtonElement>) => {
         onClick?.(event)
         if (event.defaultPrevented) return
@@ -263,7 +260,7 @@ export const LinkPopover = React.forwardRef<
       [onClick, isOpen]
     )
 
-    React.useEffect(() => {
+    useEffect(() => {
       if (autoOpenOnLinkActive && isActive) {
         setIsOpen(true)
       }

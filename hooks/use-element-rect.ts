@@ -1,7 +1,7 @@
 "use client"
 
-import * as React from "react"
-import { useThrottledCallback } from "./use-throttled-callback"
+import { useCallback, useEffect, useState } from "react"
+import { useThrottledCallback } from "@/hooks/use-throttled-callback"
 
 export type RectState = Omit<DOMRect, "toJSON">
 
@@ -56,9 +56,9 @@ export function useElementRect({
   throttleMs = 100,
   useResizeObserver = true,
 }: ElementRectOptions = {}): RectState {
-  const [rect, setRect] = React.useState<RectState>(initialRect)
+  const [rect, setRect] = useState<RectState>(initialRect)
 
-  const getTargetElement = React.useCallback((): Element | null => {
+  const getTargetElement = useCallback((): Element | null => {
     if (!enabled || !isClientSide()) return null
 
     if (!element) {
@@ -103,7 +103,7 @@ export function useElementRect({
     { leading: true, trailing: true }
   )
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (!enabled || !isClientSide()) {
       setRect(initialRect)
       return
@@ -126,8 +126,8 @@ export function useElementRect({
 
     const handleUpdate = () => updateRect()
 
-    window.addEventListener("scroll", handleUpdate, { passive: true })
-    window.addEventListener("resize", handleUpdate, { passive: true })
+    window.addEventListener("scroll", handleUpdate, true)
+    window.addEventListener("resize", handleUpdate, true)
 
     cleanup.push(() => {
       window.removeEventListener("scroll", handleUpdate)

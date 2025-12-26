@@ -1,6 +1,6 @@
 "use client"
 
-import * as React from "react"
+import { useCallback, useEffect, useState } from "react"
 import type { Editor } from "@tiptap/react"
 
 // --- Hooks ---
@@ -172,11 +172,11 @@ export function useMark(config: UseMarkConfig) {
   } = config
 
   const { editor } = useTiptapEditor(providedEditor)
-  const [isVisible, setIsVisible] = React.useState<boolean>(true)
+  const [isVisible, setIsVisible] = useState<boolean>(true)
   const canToggle = canToggleMark(editor, type)
   const isActive = isMarkActive(editor, type)
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (!editor) return
 
     const handleSelectionUpdate = () => {
@@ -192,7 +192,7 @@ export function useMark(config: UseMarkConfig) {
     }
   }, [editor, type, hideWhenUnavailable])
 
-  const handleMark = React.useCallback(() => {
+  const handleMark = useCallback(() => {
     if (!editor) return false
 
     const success = toggleMark(editor, type)

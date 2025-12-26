@@ -1,6 +1,6 @@
 "use client"
 
-import * as React from "react"
+import { useRef, useState } from "react"
 import type { NodeViewProps } from "@tiptap/react"
 import { NodeViewWrapper } from "@tiptap/react"
 import { Button } from "@/components/tiptap-ui-primitive/button"
@@ -83,7 +83,7 @@ export interface UploadOptions {
  * Custom hook for managing multiple file uploads with progress tracking and cancellation
  */
 function useFileUpload(options: UploadOptions) {
-  const [fileItems, setFileItems] = React.useState<FileItem[]>([])
+  const [fileItems, setFileItems] = useState<FileItem[]>([])
 
   const uploadFile = async (file: File): Promise<string | null> => {
     if (file.size > options.maxSize) {
@@ -288,8 +288,8 @@ const ImageUploadDragArea: React.FC<ImageUploadDragAreaProps> = ({
   onFile,
   children,
 }) => {
-  const [isDragOver, setIsDragOver] = React.useState(false)
-  const [isDragActive, setIsDragActive] = React.useState(false)
+  const [isDragOver, setIsDragOver] = useState(false)
+  const [isDragActive, setIsDragActive] = useState(false)
 
   const handleDragEnter = (e: React.DragEvent) => {
     e.preventDefault()
@@ -435,7 +435,7 @@ const DropZoneContent: React.FC<{ maxSize: number; limit: number }> = ({
 
 export const ImageUploadNode: React.FC<NodeViewProps> = (props) => {
   const { accept, limit, maxSize } = props.node.attrs
-  const inputRef = React.useRef<HTMLInputElement>(null)
+  const inputRef = useRef<HTMLInputElement>(null)
   const extension = props.extension
 
   const uploadOptions: UploadOptions = {

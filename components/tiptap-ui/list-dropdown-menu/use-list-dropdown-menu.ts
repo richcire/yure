@@ -1,6 +1,6 @@
 "use client"
 
-import * as React from "react"
+import { useEffect, useMemo, useState } from "react"
 import type { Editor } from "@tiptap/react"
 
 // --- Hooks ---
@@ -168,21 +168,18 @@ export function useListDropdownMenu(config?: UseListDropdownMenuConfig) {
   } = config || {}
 
   const { editor } = useTiptapEditor(providedEditor)
-  const [isVisible, setIsVisible] = React.useState(false)
+  const [isVisible, setIsVisible] = useState(true)
 
   const listInSchema = types.some((type) => isNodeInSchema(type, editor))
 
-  const filteredLists = React.useMemo(
-    () => getFilteredListOptions(types),
-    [types]
-  )
+  const filteredLists = useMemo(() => getFilteredListOptions(types), [types])
 
   const canToggleAny = canToggleAnyList(editor, types)
   const isAnyActive = isAnyListActive(editor, types)
   const activeType = getActiveListType(editor, types)
   const activeList = filteredLists.find((option) => option.type === activeType)
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (!editor) return
 
     const handleSelectionUpdate = () => {

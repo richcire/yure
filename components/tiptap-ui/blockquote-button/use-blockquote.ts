@@ -1,6 +1,6 @@
 "use client"
 
-import * as React from "react"
+import { useCallback, useEffect, useState } from "react"
 import type { Editor } from "@tiptap/react"
 import { NodeSelection, TextSelection } from "@tiptap/pm/state"
 
@@ -16,6 +16,7 @@ import {
   isNodeInSchema,
   isNodeTypeSelected,
   isValidPosition,
+  selectionWithinConvertibleTypes,
 } from "@/lib/tiptap-utils"
 
 export const BLOCKQUOTE_SHORTCUT_KEY = "mod+shift+b"
@@ -57,23 +58,23 @@ export function canToggleBlockquote(
     return editor.can().toggleWrap("blockquote")
   }
 
-  try {
-    const view = editor.view
-    const state = view.state
-    const selection = state.selection
-
-    if (selection.empty || selection instanceof TextSelection) {
-      const pos = findNodePosition({
-        editor,
-        node: state.selection.$anchor.node(1),
-      })?.pos
-      if (!isValidPosition(pos)) return false
-    }
-
-    return true
-  } catch {
+  // Ensure selection is in nodes we're allowed to convert
+  if (
+    !selectionWithinConvertibleTypes(editor, [
+      "paragraph",
+      "heading",
+      "bulletList",
+      "orderedList",
+      "taskList",
+      "blockquote",
+      "codeBlock",
+    ])
+  )
     return false
-  }
+
+  // Either we can wrap in blockquote directly on the selection,
+  // or we can clear formatting/nodes to arrive at a blockquote.
+  return editor.can().toggleWrap("blockquote") || editor.can().clearNodes()
 }
 
 /**
@@ -118,7 +119,12 @@ export function toggleBlockquote(editor: Editor | null): boolean {
         ? selection.to - lastChild.nodeSize
         : selection.to - 1
 
-      chain = chain.setTextSelection({ from, to }).clearNodes()
+      const resolvedFrom = state.doc.resolve(from)
+      const resolvedTo = state.doc.resolve(to)
+
+      chain = chain
+        .setTextSelection(TextSelection.between(resolvedFrom, resolvedTo))
+        .clearNodes()
     }
 
     const toggle = editor.isActive("blockquote")
@@ -198,11 +204,11 @@ export function useBlockquote(config?: UseBlockquoteConfig) {
   } = config || {}
 
   const { editor } = useTiptapEditor(providedEditor)
-  const [isVisible, setIsVisible] = React.useState<boolean>(true)
+  const [isVisible, setIsVisible] = useState<boolean>(true)
   const canToggle = canToggleBlockquote(editor)
   const isActive = editor?.isActive("blockquote") || false
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (!editor) return
 
     const handleSelectionUpdate = () => {
@@ -218,7 +224,7 @@ export function useBlockquote(config?: UseBlockquoteConfig) {
     }
   }, [editor, hideWhenUnavailable])
 
-  const handleToggle = React.useCallback(() => {
+  const handleToggle = useCallback(() => {
     if (!editor) return false
 
     const success = toggleBlockquote(editor)

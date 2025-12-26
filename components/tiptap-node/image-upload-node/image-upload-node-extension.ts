@@ -70,6 +70,8 @@ export const ImageUploadNode = Node.create<ImageUploadNodeOptions>({
 
   draggable: true,
 
+  selectable: true,
+
   atom: true,
 
   addOptions() {

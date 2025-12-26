@@ -1,6 +1,6 @@
 "use client"
 
-import * as React from "react"
+import { forwardRef, useCallback } from "react"
 
 // --- Lib ---
 import { parseShortcutKeys } from "@/lib/tiptap-utils"
@@ -46,7 +46,7 @@ export function MarkShortcutBadge({
  *
  * For custom button implementations, use the `useMark` hook instead.
  */
-export const MarkButton = React.forwardRef<HTMLButtonElement, MarkButtonProps>(
+export const MarkButton = forwardRef<HTMLButtonElement, MarkButtonProps>(
   (
     {
       editor: providedEditor,
@@ -77,7 +77,7 @@ export const MarkButton = React.forwardRef<HTMLButtonElement, MarkButtonProps>(
       onToggled,
     })
 
-    const handleClick = React.useCallback(
+    const handleClick = useCallback(
       (event: React.MouseEvent<HTMLButtonElement>) => {
         onClick?.(event)
         if (event.defaultPrevented) return

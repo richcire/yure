@@ -49,7 +49,7 @@ export default async function NewsPage({ params }: Props) {
   const news = await fetchNews(slug);
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="container mx-auto px-4 py-8 mb-48">
       <div className="max-w-4xl mx-auto">
         <Suspense fallback={<NewsTitleSkeleton />}>
           <NewsTitle slug={slug} />

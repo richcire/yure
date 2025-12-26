@@ -1,6 +1,6 @@
 "use client"
 
-import * as React from "react"
+import { forwardRef } from "react"
 import "@/components/tiptap-ui-primitive/separator/separator.scss"
 import { cn } from "@/lib/tiptap-utils"
 
@@ -11,7 +11,7 @@ export interface SeparatorProps extends React.HTMLAttributes<HTMLDivElement> {
   decorative?: boolean
 }
 
-export const Separator = React.forwardRef<HTMLDivElement, SeparatorProps>(
+export const Separator = forwardRef<HTMLDivElement, SeparatorProps>(
   ({ decorative, orientation = "vertical", className, ...divProps }, ref) => {
     const ariaOrientation = orientation === "vertical" ? orientation : undefined
     const semanticProps = decorative

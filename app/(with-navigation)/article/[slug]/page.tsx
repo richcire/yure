@@ -3,22 +3,25 @@ import {
   ArticleTitle,
   ArticleTitleSkeleton,
 } from "../../../../components/article/article-title";
-import { CommentSection } from "@/components/comments/comment-section";
 import { BottomDisplayAdWrapper } from "@/components/google-adsense/bottom-display-ad-wrapper";
-import { SideVerticalDisplayAdWrapper } from "@/components/google-adsense/side-vertical-display-ad-wrapper";
 import { createClient } from "@/utils/supabase/server";
-import { IArticles, IComments } from "@/types/supabase-table";
+import { IArticles } from "@/types/supabase-table";
 import { TipTapContentSkeleton } from "@/components/Tiptap/TipTapContentSkeleton";
 import ArticleContentWrapper from "@/components/article/article-content-wrapper";
 import ArticleRelatedPosts from "@/components/article/article-related-posts";
 import squareLogo from "@/public/assets/logos/square_high.jpeg";
 import { ArticleCommentSection } from "@/components/article/article-comment-section";
+import { redirect } from "next/navigation";
+import Image from "next/image";
+import ArticleContent from "@/components/article/article-content";
 
 const getArticle = async (slug: string) => {
   const supabase = await createClient();
   const { data, error } = await supabase
     .from("articles")
-    .select("title, user_info(name), thumbnail_url, created_at, updated_at")
+    .select(
+      "title, user_info(name), content, thumbnail_url, created_at, updated_at"
+    )
     .eq("slug", slug)
     .single<IArticles>();
   return { data, error };
@@ -66,7 +69,7 @@ export default async function ArticlePage({ params }: Props) {
 
   const { data, error } = await getArticle(decodeURIComponent(slug));
   if (error) {
-    return <div>Error: {error.message}</div>;
+    redirect("/404");
   }
 
   const structuredData = data
@@ -85,68 +88,67 @@ export default async function ArticlePage({ params }: Props) {
       }
     : null;
 
-  const getComments = async () => {
-    "use server";
-    const supabase = await createClient();
-    const { data, error } = await supabase
-      .rpc("get_article_comments", {
-        s_input: decodeURIComponent(slug),
-      })
-      .returns<IComments[]>();
-    return { data, error };
-  };
-
-  const addComment = async (new_content: string, parent_id?: string) => {
-    "use server";
-    const supabase = await createClient();
-    const { data, error } = await supabase
-      .rpc("add_article_comment", {
-        s_input: decodeURIComponent(slug),
-        new_content,
-        parent_id,
-      })
-      .returns<IComments[]>();
-    return { data, error };
-  };
-
-  const deleteComment = async (commentId: string) => {
-    "use server";
-    const supabase = await createClient();
-    const { data, error } = await supabase
-      .from("article_comments")
-      .delete()
-      .eq("id", commentId)
-      .select()
-      .returns<IComments[]>();
-    return { data, error };
-  };
-
   return (
-    <>
-      <section>
+    <div className="min-h-screen w-screen  text-[#222]">
+      {/* 1. HERO 영역 (상단 사진 + 타이틀 오버레이) */}
+      <section className="relative h-[340px] sm:h-[420px] lg:h-[460px]">
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
         />
+        {/* 배경 이미지 */}
+        <div className="absolute inset-0">
+          <Image
+            src={data?.thumbnail_url || squareLogo}
+            alt={data?.title || ""}
+            fill
+            className="object-cover"
+            priority
+          />
+
+          {/* 어두운 그라데이션 오버레이 (위·아래 살짝 어둡게) */}
+          <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/20 to-black/70" />
+        </div>
+
+        {/* 텍스트 영역 */}
+        <div className="relative z-10 h-full">
+          <div className="mx-auto flex h-full max-w-3xl flex-col justify-end px-6 pb-12 lg:px-0">
+            {/* 제목 */}
+            <h1 className="mb-3 text-2xl md:text-[30px] leading-tight font-semibold text-white">
+              {data?.title}
+            </h1>
+
+            {/* 작성자/시간 */}
+            <div className="flex flex-wrap items-center gap-2 text-[11px] text-gray-300">
+              <span>by {data?.user_info.name}</span>
+              <span className="text-gray-400">·</span>
+              <span>
+                {new Date(data?.created_at || "").toLocaleDateString()}
+              </span>
+            </div>
+          </div>
+        </div>
       </section>
-      <div className="container mx-auto px-4 py-8">
-        <div className="max-w-4xl mx-auto">
-          <Suspense fallback={<ArticleTitleSkeleton />}>
-            <ArticleTitle slug={slug} />
-          </Suspense>
+
+      {/* 2. 본문 영역 */}
+      <div className="bg-[#f8f5f0]">
+        <div className="mx-auto max-w-3xl px-6 lg:px-0 pt-10 pb-24">
+          {/* 본문 */}
           <Suspense fallback={<TipTapContentSkeleton />}>
-            <ArticleContentWrapper slug={slug} />
+            <ArticleContent content={data?.content || ""} />
           </Suspense>
-          <BottomDisplayAdWrapper />
+
+          {/* 구분선 */}
+          <div className="my-10 h-px bg-gray-200" />
+
           <Suspense fallback={<div>관련 포스트를 불러오는 중...</div>}>
-            <ArticleRelatedPosts slug={slug} />
+            <ArticleRelatedPosts slug="anime-sabikuibisuko" />
           </Suspense>
           <Suspense fallback={<div>댓글을 불러오는 중...</div>}>
-            <ArticleCommentSection slug={slug} />
+            <ArticleCommentSection slug="anime-sabikuibisuko" />
           </Suspense>
         </div>
-        {/* <SideVerticalDisplayAdWrapper /> */}
       </div>
-    </>
+    </div>
   );
 }

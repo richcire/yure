@@ -1,6 +1,6 @@
 "use client"
 
-import * as React from "react"
+import { forwardRef, useCallback, useMemo } from "react"
 
 // --- Lib ---
 import { parseShortcutKeys } from "@/lib/tiptap-utils"
@@ -48,9 +48,32 @@ export function ColorHighlightShortcutBadge({
 /**
  * Button component for applying color highlights in a Tiptap editor.
  *
+ * Supports two highlighting modes:
+ * - "mark": Uses the highlight mark extension (default)
+ * - "node": Uses the node background extension
+ *
  * For custom button implementations, use the `useColorHighlight` hook instead.
+ *
+ * @example
+ * ```tsx
+ * // Mark-based highlighting (default)
+ * <ColorHighlightButton highlightColor="yellow" />
+ *
+ * // Node-based background coloring
+ * <ColorHighlightButton
+ *   highlightColor="var(--tt-color-highlight-blue)"
+ *   mode="node"
+ * />
+ *
+ * // With custom callback
+ * <ColorHighlightButton
+ *   highlightColor="red"
+ *   mode="mark"
+ *   onApplied={({ color, mode }) => console.log(`Applied ${color} in ${mode} mode`)}
+ * />
+ * ```
  */
-export const ColorHighlightButton = React.forwardRef<
+export const ColorHighlightButton = forwardRef<
   HTMLButtonElement,
   ColorHighlightButtonProps
 >(
@@ -60,6 +83,7 @@ export const ColorHighlightButton = React.forwardRef<
       highlightColor,
       text,
       hideWhenUnavailable = false,
+      mode = "mark",
       onApplied,
       showShortcut = false,
       onClick,
@@ -82,10 +106,11 @@ export const ColorHighlightButton = React.forwardRef<
       highlightColor,
       label: text || `Toggle highlight (${highlightColor})`,
       hideWhenUnavailable,
+      mode,
       onApplied,
     })
 
-    const handleClick = React.useCallback(
+    const handleClick = useCallback(
       (event: React.MouseEvent<HTMLButtonElement>) => {
         onClick?.(event)
         if (event.defaultPrevented) return
@@ -94,7 +119,7 @@ export const ColorHighlightButton = React.forwardRef<
       [handleColorHighlight, onClick]
     )
 
-    const buttonStyle = React.useMemo(
+    const buttonStyle = useMemo(
       () =>
         ({
           ...style,

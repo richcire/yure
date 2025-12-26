@@ -1,6 +1,6 @@
 "use client"
 
-import * as React from "react"
+import { forwardRef, Fragment, useMemo } from "react"
 
 // --- Tiptap UI Primitive ---
 import {
@@ -32,16 +32,16 @@ export const ShortcutDisplay: React.FC<{ shortcuts: string[] }> = ({
   return (
     <div>
       {shortcuts.map((key, index) => (
-        <React.Fragment key={index}>
+        <Fragment key={index}>
           {index > 0 && <kbd>+</kbd>}
           <kbd>{key}</kbd>
-        </React.Fragment>
+        </Fragment>
       ))}
     </div>
   )
 }
 
-export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
+export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
   (
     {
       className,
@@ -54,7 +54,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     },
     ref
   ) => {
-    const shortcuts = React.useMemo(
+    const shortcuts = useMemo<string[]>(
       () => parseShortcutKeys({ shortcutKeys }),
       [shortcutKeys]
     )
@@ -93,7 +93,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 
 Button.displayName = "Button"
 
-export const ButtonGroup = React.forwardRef<
+export const ButtonGroup = forwardRef<
   HTMLDivElement,
   React.ComponentProps<"div"> & {
     orientation?: "horizontal" | "vertical"

@@ -1,6 +1,6 @@
 "use client"
 
-import * as React from "react"
+import { useCallback, useEffect, useState } from "react"
 import type { ChainedCommands } from "@tiptap/react"
 import { type Editor } from "@tiptap/react"
 
@@ -75,7 +75,7 @@ export function canSetTextAlign(
   if (!editor || !editor.isEditable) return false
   if (
     !isExtensionAvailable(editor, "textAlign") ||
-    isNodeTypeSelected(editor, ["image"])
+    isNodeTypeSelected(editor, ["image", "horizontalRule"])
   )
     return false
 
@@ -182,11 +182,11 @@ export function useTextAlign(config: UseTextAlignConfig) {
   } = config
 
   const { editor } = useTiptapEditor(providedEditor)
-  const [isVisible, setIsVisible] = React.useState<boolean>(true)
+  const [isVisible, setIsVisible] = useState<boolean>(true)
   const canAlign = canSetTextAlign(editor, align)
   const isActive = isTextAlignActive(editor, align)
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (!editor) return
 
     const handleSelectionUpdate = () => {
@@ -202,7 +202,7 @@ export function useTextAlign(config: UseTextAlignConfig) {
     }
   }, [editor, hideWhenUnavailable, align])
 
-  const handleTextAlign = React.useCallback(() => {
+  const handleTextAlign = useCallback(() => {
     if (!editor) return false
 
     const success = setTextAlign(editor, align)

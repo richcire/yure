@@ -1,6 +1,6 @@
 "use client"
 
-import * as React from "react"
+import { useCallback, useEffect, useState } from "react"
 import type { Editor } from "@tiptap/react"
 
 // --- Hooks ---
@@ -10,7 +10,11 @@ import { useTiptapEditor } from "@/hooks/use-tiptap-editor"
 import { LinkIcon } from "@/components/tiptap-icons/link-icon"
 
 // --- Lib ---
-import { isMarkInSchema, sanitizeUrl } from "@/lib/tiptap-utils"
+import {
+  isMarkInSchema,
+  isNodeTypeSelected,
+  sanitizeUrl,
+} from "@/lib/tiptap-utils"
 
 /**
  * Configuration for the link popover functionality
@@ -50,6 +54,10 @@ export interface LinkHandlerProps {
  */
 export function canSetLink(editor: Editor | null): boolean {
   if (!editor || !editor.isEditable) return false
+
+  // The third argument 'true' checks whether the current selection is inside an image caption, and prevents setting a link there
+  // If the selection is inside an image caption, we can't set a link
+  if (isNodeTypeSelected(editor, ["image"], true)) return false
   return editor.can().setMark("link")
 }
 
@@ -88,9 +96,9 @@ export function shouldShowLinkButton(props: {
  */
 export function useLinkHandler(props: LinkHandlerProps) {
   const { editor, onSetLink } = props
-  const [url, setUrl] = React.useState<string | null>(null)
+  const [url, setUrl] = useState<string | null>(null)
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (!editor) return
 
     // Get URL immediately on mount
@@ -101,7 +109,7 @@ export function useLinkHandler(props: LinkHandlerProps) {
     }
   }, [editor, url])
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (!editor) return
 
     const updateLinkState = () => {
@@ -115,7 +123,7 @@ export function useLinkHandler(props: LinkHandlerProps) {
     }
   }, [editor])
 
-  const setLink = React.useCallback(() => {
+  const setLink = useCallback(() => {
     if (!url || !editor) return
 
     const { selection } = editor.state
@@ -136,7 +144,7 @@ export function useLinkHandler(props: LinkHandlerProps) {
     onSetLink?.()
   }, [editor, onSetLink, url])
 
-  const removeLink = React.useCallback(() => {
+  const removeLink = useCallback(() => {
     if (!editor) return
     editor
       .chain()
@@ -148,7 +156,7 @@ export function useLinkHandler(props: LinkHandlerProps) {
     setUrl("")
   }, [editor])
 
-  const openLink = React.useCallback(
+  const openLink = useCallback(
     (target: string = "_blank", features: string = "noopener,noreferrer") => {
       if (!url) return
 
@@ -181,9 +189,9 @@ export function useLinkState(props: {
   const canSet = canSetLink(editor)
   const isActive = isLinkActive(editor)
 
-  const [isVisible, setIsVisible] = React.useState(false)
+  const [isVisible, setIsVisible] = useState(true)
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (!editor) return
 
     const handleSelectionUpdate = () => {

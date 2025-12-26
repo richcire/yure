@@ -1,9 +1,9 @@
 "use client"
 
-import * as React from "react"
 import type { Editor } from "@tiptap/react"
 import { useWindowSize } from "@/hooks/use-window-size"
-import { useBodyRect } from "./use-element-rect"
+import { useBodyRect } from "@/hooks/use-element-rect"
+import { useEffect } from "react"
 
 export interface CursorVisibilityOptions {
   /**
@@ -35,7 +35,7 @@ export function useCursorVisibility({
     useResizeObserver: true,
   })
 
-  React.useEffect(() => {
+  useEffect(() => {
     const ensureCursorVisibility = () => {
       if (!editor) return
 

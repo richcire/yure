@@ -1,6 +1,6 @@
 "use client"
 
-import * as React from "react"
+import { forwardRef, useCallback, useState } from "react"
 
 // --- Icons ---
 import { ChevronDownIcon } from "@/components/tiptap-icons/chevron-down-icon"
@@ -43,7 +43,7 @@ export interface HeadingDropdownMenuProps
  *
  * For custom dropdown implementations, use the `useHeadingDropdownMenu` hook instead.
  */
-export const HeadingDropdownMenu = React.forwardRef<
+export const HeadingDropdownMenu = forwardRef<
   HTMLButtonElement,
   HeadingDropdownMenuProps
 >(
@@ -59,14 +59,14 @@ export const HeadingDropdownMenu = React.forwardRef<
     ref
   ) => {
     const { editor } = useTiptapEditor(providedEditor)
-    const [isOpen, setIsOpen] = React.useState(false)
+    const [isOpen, setIsOpen] = useState<boolean>(false)
     const { isVisible, isActive, canToggle, Icon } = useHeadingDropdownMenu({
       editor,
       levels,
       hideWhenUnavailable,
     })
 
-    const handleOpenChange = React.useCallback(
+    const handleOpenChange = useCallback(
       (open: boolean) => {
         if (!editor || !canToggle) return
         setIsOpen(open)

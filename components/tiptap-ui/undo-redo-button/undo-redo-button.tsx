@@ -1,6 +1,6 @@
 "use client"
 
-import * as React from "react"
+import { forwardRef, useCallback } from "react"
 
 // --- Lib ---
 import { parseShortcutKeys } from "@/lib/tiptap-utils"
@@ -52,7 +52,7 @@ export function HistoryShortcutBadge({
  *
  * For custom button implementations, use the `useHistory` hook instead.
  */
-export const UndoRedoButton = React.forwardRef<
+export const UndoRedoButton = forwardRef<
   HTMLButtonElement,
   UndoRedoButtonProps
 >(
@@ -79,7 +79,7 @@ export const UndoRedoButton = React.forwardRef<
         onExecuted,
       })
 
-    const handleClick = React.useCallback(
+    const handleClick = useCallback(
       (event: React.MouseEvent<HTMLButtonElement>) => {
         onClick?.(event)
         if (event.defaultPrevented) return

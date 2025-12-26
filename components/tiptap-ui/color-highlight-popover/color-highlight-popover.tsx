@@ -1,11 +1,11 @@
 "use client"
 
-import * as React from "react"
+import { forwardRef, useMemo, useRef, useState } from "react"
 import { type Editor } from "@tiptap/react"
 
 // --- Hooks ---
 import { useMenuNavigation } from "@/hooks/use-menu-navigation"
-import { useIsMobile } from "@/hooks/use-mobile"
+import { useIsBreakpoint } from "@/hooks/use-is-breakpoint"
 import { useTiptapEditor } from "@/hooks/use-tiptap-editor"
 
 // --- Icons ---
@@ -63,7 +63,7 @@ export interface ColorHighlightPopoverProps
   colors?: HighlightColor[]
 }
 
-export const ColorHighlightPopoverButton = React.forwardRef<
+export const ColorHighlightPopoverButton = forwardRef<
   HTMLButtonElement,
   ButtonProps
 >(({ className, children, ...props }, ref) => (
@@ -96,10 +96,10 @@ export function ColorHighlightPopoverContent({
   ]),
 }: ColorHighlightPopoverContentProps) {
   const { handleRemoveHighlight } = useColorHighlight({ editor })
-  const isMobile = useIsMobile()
-  const containerRef = React.useRef<HTMLDivElement>(null)
+  const isMobile = useIsBreakpoint()
+  const containerRef = useRef<HTMLDivElement>(null)
 
-  const menuItems = React.useMemo(
+  const menuItems = useMemo(
     () => [...colors, { label: "Remove highlight", value: "none" }],
     [colors]
   )
@@ -115,6 +115,7 @@ export function ColorHighlightPopoverContent({
       ) as HTMLElement
       if (highlightedElement) highlightedElement.click()
       if (item.value === "none") handleRemoveHighlight()
+      return true
     },
     autoSelectFirstItem: false,
   })
@@ -175,7 +176,7 @@ export function ColorHighlightPopover({
   ...props
 }: ColorHighlightPopoverProps) {
   const { editor } = useTiptapEditor(providedEditor)
-  const [isOpen, setIsOpen] = React.useState(false)
+  const [isOpen, setIsOpen] = useState(false)
   const { isVisible, canColorHighlight, isActive, label, Icon } =
     useColorHighlight({
       editor,

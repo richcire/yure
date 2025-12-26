@@ -1,6 +1,6 @@
 "use client"
 
-import * as React from "react"
+import { forwardRef, useCallback } from "react"
 
 // --- Lib ---
 import { parseShortcutKeys } from "@/lib/tiptap-utils"
@@ -20,6 +20,9 @@ import type { ButtonProps } from "@/components/tiptap-ui-primitive/button"
 import { Button } from "@/components/tiptap-ui-primitive/button"
 import { Badge } from "@/components/tiptap-ui-primitive/badge"
 
+type IconProps = React.SVGProps<SVGSVGElement>
+type IconComponent = ({ className, ...props }: IconProps) => React.ReactElement
+
 export interface ImageUploadButtonProps
   extends Omit<ButtonProps, "type">,
     UseImageUploadConfig {
@@ -32,6 +35,10 @@ export interface ImageUploadButtonProps
    * @default false
    */
   showShortcut?: boolean
+  /**
+   * Optional custom icon component to render instead of the default.
+   */
+  icon?: React.MemoExoticComponent<IconComponent> | React.FC<IconProps>
 }
 
 export function ImageShortcutBadge({
@@ -47,7 +54,7 @@ export function ImageShortcutBadge({
  *
  * For custom button implementations, use the `useImage` hook instead.
  */
-export const ImageUploadButton = React.forwardRef<
+export const ImageUploadButton = forwardRef<
   HTMLButtonElement,
   ImageUploadButtonProps
 >(
@@ -59,6 +66,7 @@ export const ImageUploadButton = React.forwardRef<
       onInserted,
       showShortcut = false,
       onClick,
+      icon: CustomIcon,
       children,
       ...buttonProps
     },
@@ -79,7 +87,7 @@ export const ImageUploadButton = React.forwardRef<
       onInserted,
     })
 
-    const handleClick = React.useCallback(
+    const handleClick = useCallback(
       (event: React.MouseEvent<HTMLButtonElement>) => {
         onClick?.(event)
         if (event.defaultPrevented) return
@@ -91,6 +99,8 @@ export const ImageUploadButton = React.forwardRef<
     if (!isVisible) {
       return null
     }
+
+    const RenderIcon = CustomIcon ?? Icon
 
     return (
       <Button
@@ -110,7 +120,7 @@ export const ImageUploadButton = React.forwardRef<
       >
         {children ?? (
           <>
-            <Icon className="tiptap-button-icon" />
+            <RenderIcon className="tiptap-button-icon" />
             {text && <span className="tiptap-button-text">{text}</span>}
             {showShortcut && <ImageShortcutBadge shortcutKeys={shortcutKeys} />}
           </>
