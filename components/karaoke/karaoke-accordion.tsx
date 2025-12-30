@@ -130,7 +130,7 @@ export default function KaraokeAccordion() {
   });
 
   if (!searchQuery) {
-    return <div>검색 키워드가 없습니다.</div>;
+    return <div>검색 키워드를 입력해주세요!</div>;
   }
 
   return (
@@ -258,16 +258,6 @@ export default function KaraokeAccordion() {
             <LoadingSpinner />
           </div>
         )}
-      </div>
-
-      <div className="flex flex-col items-center justify-center gap-4 p-8 mt-20">
-        <p>찾으시는 노래가 없으신가요?</p>
-        <Link
-          href="/karaoke/application"
-          className="text-[#003844] hover:text-[#214E34] underline"
-        >
-          노래방 곡 추가 신청하기
-        </Link>
       </div>
     </>
   );
