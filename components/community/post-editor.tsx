@@ -68,7 +68,7 @@ import { useCursorVisibility } from "@/hooks/use-cursor-visibility";
 // import { ThemeToggle } from "@/components/tiptap-templates/simple/theme-toggle"
 
 // --- Lib ---
-import { handleImageUpload, MAX_FILE_SIZE } from "@/lib/tiptap-utils";
+import { MAX_FILE_SIZE } from "@/lib/tiptap-utils";
 
 // --- Styles ---
 import "@/components/tiptap-templates/simple/simple-editor.scss";
@@ -196,7 +196,37 @@ export function PostEditor() {
   );
   const toolbarRef = useRef<HTMLDivElement>(null);
   const [title, setTitle] = useState("");
+  const [isSaving, setIsSaving] = useState(false);
   const router = useRouter();
+
+  // 업로드 대기 중인 파일들을 저장 (blobUrl -> File 매핑)
+  const pendingFilesRef = useRef<Map<string, File>>(new Map());
+
+  // 이미지 선택 시 바로 업로드하지 않고 blob URL 반환
+  const handleImageSelect = async (
+    file: File,
+    onProgress?: (event: { progress: number }) => void
+  ): Promise<string> => {
+    if (!file) {
+      throw new Error("No file provided");
+    }
+
+    if (file.size > MAX_FILE_SIZE) {
+      throw new Error(
+        `File size exceeds maximum allowed (${MAX_FILE_SIZE / (1024 * 1024)}MB)`
+      );
+    }
+
+    // Blob URL 생성 (임시 URL)
+    const blobUrl = URL.createObjectURL(file);
+
+    // 파일을 Map에 저장
+    pendingFilesRef.current.set(blobUrl, file);
+
+    onProgress?.({ progress: 100 });
+
+    return blobUrl;
+  };
 
   const editor = useEditor({
     immediatelyRender: false,
@@ -231,7 +261,7 @@ export function PostEditor() {
         accept: "image/*",
         maxSize: MAX_FILE_SIZE,
         limit: 3,
-        upload: handleImageUpload,
+        upload: handleImageSelect,
         onError: (error) => console.error("Upload failed:", error),
       }),
     ],
@@ -249,14 +279,65 @@ export function PostEditor() {
     }
   }, [isMobile, mobileView]);
 
+  // Save 시 모든 pending 이미지를 Supabase에 업로드
+  const uploadPendingImages = async (content: string): Promise<string> => {
+    const supabase = createClient();
+    let updatedContent = content;
+
+    for (const [blobUrl, file] of Array.from(
+      pendingFilesRef.current.entries()
+    )) {
+      // 파일명 생성
+      const fileExt = file.name.split(".").pop();
+      const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`;
+      const filePath = `post/${fileName}`;
+
+      // Supabase Storage에 업로드
+      const { error } = await supabase.storage
+        .from("images")
+        .upload(filePath, file);
+
+      if (error) {
+        console.error("Upload error:", error);
+        continue;
+      }
+
+      // 공개 URL 가져오기
+      const { data: urlData } = supabase.storage
+        .from("images")
+        .getPublicUrl(filePath);
+
+      // blob URL을 실제 URL로 교체
+      updatedContent = updatedContent.replace(blobUrl, urlData.publicUrl);
+
+      // blob URL 해제
+      URL.revokeObjectURL(blobUrl);
+    }
+
+    // pending 파일 초기화
+    pendingFilesRef.current.clear();
+
+    return updatedContent;
+  };
+
   const savePost = async () => {
+    if (!editor || !title) {
+      console.error("Please fill in all required fields");
+      return;
+    }
+
+    setIsSaving(true);
+
     try {
       const supabase = createClient();
+
+      // pending 이미지들을 Supabase에 업로드하고 URL 교체
+      const content = await uploadPendingImages(editor.getHTML());
 
       // Prepare the data object
       const postData: Partial<IPosts> = {
         title,
-        content: editor?.getHTML(),
+        content,
       };
 
       // Save to posts table
@@ -269,6 +350,8 @@ export function PostEditor() {
       }
     } catch (error) {
       console.error("Error details:", error);
+    } finally {
+      setIsSaving(false);
     }
   };
 
