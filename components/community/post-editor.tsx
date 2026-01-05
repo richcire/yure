@@ -12,7 +12,7 @@ import { Typography } from "@tiptap/extension-typography";
 import { Highlight } from "@tiptap/extension-highlight";
 import { Subscript } from "@tiptap/extension-subscript";
 import { Superscript } from "@tiptap/extension-superscript";
-import { Selection } from "@tiptap/extensions";
+import { Placeholder, Selection } from "@tiptap/extensions";
 
 // --- UI Primitives ---
 import { Button } from "@/components/tiptap-ui-primitive/button";
@@ -264,8 +264,11 @@ export function PostEditor() {
         upload: handleImageSelect,
         onError: (error) => console.error("Upload failed:", error),
       }),
+      Placeholder.configure({
+        placeholder: "여기에 내용을 입력해주세요.",
+      }),
     ],
-    content: "여기에 내용을 입력해주세요.",
+    content: "",
   });
 
   const rect = useCursorVisibility({
