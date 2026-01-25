@@ -14,7 +14,6 @@ import { ArticleCommentSection } from "@/components/article/article-comment-sect
 import { redirect } from "next/navigation";
 import Image from "next/image";
 import ArticleContent from "@/components/article/article-content";
-import SideBannerAd from "@/components/advertisement/side-banner-ad";
 
 const getArticle = async (slug: string) => {
   const supabase = await createClient();
@@ -91,9 +90,6 @@ export default async function ArticlePage({ params }: Props) {
 
   return (
     <div className="min-h-screen w-screen  text-[#222]">
-      {/* Fixed Side Banner Advertisement */}
-      <SideBannerAd position="right" />
-      
       {/* 1. HERO 영역 (상단 사진 + 타이틀 오버레이) */}
       <section className="relative h-[340px] sm:h-[420px] lg:h-[460px]">
         <script
