@@ -14,7 +14,7 @@ export default function SideBannerAd({ position = "right" }: SideBannerAdProps) 
 
   return (
     <div
-      className={`fixed top-1/2 -translate-y-1/2 z-40 block ${
+      className={`fixed top-1/2 -translate-y-1/2 z-[60] block ${
         position === "right" ? "right-8" : "left-8"
       }`}
     >
