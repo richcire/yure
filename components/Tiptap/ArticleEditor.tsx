@@ -14,7 +14,6 @@ import { createClient } from "@/utils/supabase/client";
 import { useState, useEffect } from "react";
 import { Save } from "lucide-react";
 import { Input } from "@/components/ui/input";
-import { Progress } from "@/components/ui/progress";
 import { useRouter } from "next/navigation";
 import { IArticles } from "@/types/supabase-table";
 import {
@@ -27,6 +26,13 @@ import {
 import { Label } from "@/components/ui/label";
 import Link from "@tiptap/extension-link";
 import { InstagramExtension } from "./extensions/InstagramExtension";
+import { tiptapLinkConfig } from "@/lib/tiptap-link-config";
+import {
+  uploadImages,
+  deleteRemovedImagesInStorage,
+  getThumbnailImage,
+} from "@/utils/tiptap/image-upload";
+import { EditorSavingOverlay } from "./EditorSavingOverlay";
 
 export default function ArticleEditor({ id }: { id?: string }) {
   const [article, setArticle] = useState<IArticles>();
@@ -64,81 +70,10 @@ export default function ArticleEditor({ id }: { id?: string }) {
       Highlight.configure({
         HTMLAttributes: {
           class:
-            "bg-[#FFD966] text-[#69140E] dark:bg-[#84894A] dark:text-[#FDF7C3]",
+            "bg-lyric-mark text-primary dark:bg-lyric-mark-dark dark:text-lyric-mark-text-dark",
         },
       }),
-      Link.configure({
-        openOnClick: false,
-        autolink: true,
-        defaultProtocol: "https",
-        protocols: ["http", "https"],
-        isAllowedUri: (url, ctx) => {
-          try {
-            // construct URL
-            const parsedUrl = url.includes(":")
-              ? new URL(url)
-              : new URL(`${ctx.defaultProtocol}://${url}`);
-
-            // use default validation
-            if (!ctx.defaultValidate(parsedUrl.href)) {
-              return false;
-            }
-
-            // disallowed protocols
-            const disallowedProtocols = ["ftp", "file", "mailto"];
-            const protocol = parsedUrl.protocol.replace(":", "");
-
-            if (disallowedProtocols.includes(protocol)) {
-              return false;
-            }
-
-            // only allow protocols specified in ctx.protocols
-            const allowedProtocols = ctx.protocols.map((p) =>
-              typeof p === "string" ? p : p.scheme
-            );
-
-            if (!allowedProtocols.includes(protocol)) {
-              return false;
-            }
-
-            // disallowed domains
-            const disallowedDomains = [
-              "example-phishing.com",
-              "malicious-site.net",
-            ];
-            const domain = parsedUrl.hostname;
-
-            if (disallowedDomains.includes(domain)) {
-              return false;
-            }
-
-            // all checks have passed
-            return true;
-          } catch {
-            return false;
-          }
-        },
-        shouldAutoLink: (url) => {
-          try {
-            // construct URL
-            const parsedUrl = url.includes(":")
-              ? new URL(url)
-              : new URL(`https://${url}`);
-
-            // only auto-link if the domain is not in the disallowed list
-            const disallowedDomains = [
-              "example-no-autolink.com",
-              "another-no-autolink.com",
-            ];
-            const domain = parsedUrl.hostname;
-
-            return !disallowedDomains.includes(domain);
-          } catch {
-            return false;
-          }
-        },
-      }),
-      //   FontSize,
+      Link.configure(tiptapLinkConfig),
     ],
     content: "",
     editorProps: {
@@ -182,13 +117,13 @@ export default function ArticleEditor({ id }: { id?: string }) {
     const supabase = createClient();
 
     const fileName = `${storageFolder}/banner-${Date.now()}-${Math.random().toString(36).substring(7)}.${selectedBannerImage.type.split("/")[1]}`;
-    const { data: uploadData, error: uploadError } = await supabase.storage
+    const { error: uploadError } = await supabase.storage
       .from("images")
       .upload(fileName, selectedBannerImage);
 
     if (uploadError) {
       console.error("Error uploading banner image:", uploadError);
-      return { bannerUrl: null, uploadError: uploadError };
+      return { bannerUrl: null, uploadError };
     }
 
     const {
@@ -196,86 +131,6 @@ export default function ArticleEditor({ id }: { id?: string }) {
     } = supabase.storage.from("images").getPublicUrl(fileName);
 
     return { bannerUrl: publicUrl, uploadError: null };
-  };
-
-  const deleteRemovedImagesInStorage = async (
-    newContent: string,
-    oldContent: string,
-    storageFolder: string
-  ) => {
-    const supabase = createClient();
-    const oldContentWrapper = document.createElement("div");
-    oldContentWrapper.innerHTML = oldContent;
-    const oldImages = Array.from(oldContentWrapper.getElementsByTagName("img"))
-      .map((img) => img.getAttribute("src"))
-      .filter((src) => src?.includes("supabase.co"));
-
-    const newContentWrapper = document.createElement("div");
-    newContentWrapper.innerHTML = newContent;
-    const newImages = Array.from(newContentWrapper.getElementsByTagName("img"))
-      .map((img) => img.getAttribute("src"))
-      .filter((src) => src?.includes("supabase.co"));
-
-    const imagesToDelete = oldImages.filter(
-      (oldSrc) => !newImages.includes(oldSrc)
-    );
-
-    const imagePathsToDelete = imagesToDelete
-      .map((imgUrl) => {
-        const path = imgUrl?.split("/").pop();
-        return path ? `${storageFolder}/${path}` : undefined;
-      })
-      .filter((url): url is string => url !== undefined);
-
-    if (imagePathsToDelete.length > 0) {
-      await supabase.storage.from("images").remove(imagePathsToDelete);
-    }
-  };
-
-  const uploadImages = async (newContent: string, storageFolder: string) => {
-    const supabase = createClient();
-    const newContentWrapper = document.createElement("div");
-    newContentWrapper.innerHTML = newContent;
-    const images = Array.from(
-      newContentWrapper.getElementsByTagName("img")
-    ).filter((img) => {
-      const src = img.getAttribute("src");
-      return src?.startsWith("data:image");
-    });
-
-    // Upload each image to Supabase storage and get their URLs
-    const imagePromises = images.map(async (img, idx) => {
-      const base64Data = img.getAttribute("src");
-      // Convert base64 to blob
-      const response = await fetch(base64Data!);
-      const blob = await response.blob();
-
-      // Upload to Supabase storage
-      const fileName = `${storageFolder}/${Date.now()}-${Math.random().toString(36).substring(7)}.${blob.type.split("/")[1]}`;
-      const { data: uploadData, error: uploadError } = await supabase.storage
-        .from("images")
-        .upload(fileName, blob);
-
-      if (uploadError) {
-        return { finalContent: null, uploadError: uploadError };
-      }
-
-      const {
-        data: { publicUrl },
-      } = supabase.storage.from("images").getPublicUrl(fileName);
-
-      // Update the image src with the public URL
-      img.setAttribute("src", publicUrl);
-    });
-
-    await Promise.all(imagePromises);
-
-    return { finalContentWrapper: newContentWrapper, uploadError: null };
-  };
-
-  const getThumbnailImage = (finalContentWrapper: HTMLDivElement) => {
-    const firstImage = finalContentWrapper.querySelector("img");
-    return firstImage?.getAttribute("src") || "";
   };
 
   const updateArticle = async () => {
@@ -303,7 +158,7 @@ export default function ArticleEditor({ id }: { id?: string }) {
 
     //delete old banner image and upload new one if selected
     if (selectedBannerImage) {
-      const currentBannerPath = article?.banner_url.split("/").pop();
+      const currentBannerPath = article?.banner_url?.split("/").pop();
 
       if (currentBannerPath) {
         const { error: bannerDeleteError } = await supabase.storage
@@ -348,10 +203,11 @@ export default function ArticleEditor({ id }: { id?: string }) {
       "article"
     );
 
-    if (uploadError) {
+    if (uploadError || !finalContentWrapper) {
       setIsSaving(false);
       setProgressValue(0);
       console.error("Error uploading images:", uploadError);
+      return;
     }
 
     setProgressValue(80);
@@ -426,7 +282,7 @@ export default function ArticleEditor({ id }: { id?: string }) {
         "article"
       );
 
-      if (uploadError) {
+      if (uploadError || !finalContentWrapper) {
         setIsSaving(false);
         setProgressValue(0);
         console.error("Error uploading images:", uploadError);
@@ -476,17 +332,7 @@ export default function ArticleEditor({ id }: { id?: string }) {
 
   return (
     <>
-      <div
-        className={`fixed top-0 left-0 w-screen h-screen bg-black/50 z-30 flex justify-center items-center ${
-          isSaving ? "block" : "hidden"
-        }`}
-      >
-        <Progress
-          value={progressValue}
-          className="w-1/3"
-          indicatorClassName="bg-white"
-        />
-      </div>
+      <EditorSavingOverlay isSaving={isSaving} progressValue={progressValue} />
       <div className="w-full relative min-h-screen pb-16">
         <div className="flex flex-col gap-6 max-w-5xl mx-auto w-full p-4">
           <Input

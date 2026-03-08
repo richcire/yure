@@ -1,4 +1,4 @@
-import TranslationContent from "./translation-content";
+import TiptapContentViewer from "@/components/tiptap-content-viewer";
 import { ITranslations } from "@/types/supabase-table";
 import { BottomDisplayAdWrapper } from "../google-adsense/bottom-display-ad-wrapper";
 
@@ -9,7 +9,7 @@ export default async function TranslationContentWrapper({
 }) {
   return (
     <div>
-      <TranslationContent content={translation.content} />
+      <TiptapContentViewer content={translation.content} variant="translation" />
       <BottomDisplayAdWrapper />
 
       <div className="flex justify-between mt-16 text-sm text-muted-foreground">

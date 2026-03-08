@@ -28,7 +28,7 @@ async function getData(): Promise<INews[]> {
   return data;
 }
 
-export default async function ArticlePage() {
+export default async function NewsPage() {
   const data = await getData();
 
   return (

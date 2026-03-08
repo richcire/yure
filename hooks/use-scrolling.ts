@@ -1,3 +1,5 @@
+"use client";
+
 import type { RefObject } from "react"
 import { useEffect, useState } from "react"
 
@@ -19,7 +21,7 @@ export function useScrolling(
   useEffect(() => {
     // Resolve element or window
     const element: EventTargetWithScroll =
-      target && typeof Window !== "undefined" && target instanceof Window
+      target && typeof window !== "undefined" && target instanceof Window
         ? target
         : ((target as RefObject<HTMLElement>)?.current ?? window)
 
@@ -47,7 +49,7 @@ export function useScrolling(
     const supportsScrollEnd = element === window && "onscrollend" in window
 
     const handleScroll: EventListener = () => {
-      if (!isScrolling) setIsScrolling(true)
+      setIsScrolling(true)
 
       if (!supportsScrollEnd) {
         clearTimeout(timeout)
@@ -69,7 +71,7 @@ export function useScrolling(
       }
       clearTimeout(timeout)
     }
-  }, [target, debounce, fallbackToDocument, isScrolling])
+  }, [target, debounce, fallbackToDocument])
 
   return isScrolling
 }

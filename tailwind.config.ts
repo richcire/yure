@@ -64,7 +64,18 @@ const config = {
         },
       },
       colors: {
+        // 브랜드 배경 토큰
         comfortWhite: "#F5F5F5",
+        hanji: "#E4E0D5",
+        "hanji-dark": "#DAD6CB",
+        "article-bg": "#f8f5f0",
+        // 브랜드 UI 토큰
+        "banner-green": "#214E34",
+        "lyric-mark": "#FFD966",
+        "lyric-mark-dark": "#84894A",
+        "lyric-mark-text-dark": "#FDF7C3",
+        "link-blue": "#1976d2",
+        // shadcn/ui 시맨틱 토큰
         border: "#69140E",
         input: "#69140E",
         ring: "hsl(var(--ring))",
@@ -137,11 +148,13 @@ const config = {
         "accordion-up": "accordion-up 0.2s ease-out",
         shimmer: "shimmer 2s infinite linear",
       },
-      backgroundColor: {
-        hanji: "#E4E0D5",
-      },
     },
   },
+  safelist: [
+    // DB에 저장된 기존 번역 콘텐츠의 레거시 하이라이트 클래스 보존
+    "bg-[#FFD966]",
+    "text-[#69140E]",
+  ],
   plugins: [require("tailwindcss-animate"), require("@tailwindcss/typography")],
 } satisfies Config;
 

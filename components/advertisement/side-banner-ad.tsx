@@ -14,11 +14,11 @@ export default function SideBannerAd({ position = "right" }: SideBannerAdProps) 
 
   return (
     <div
-      className={`fixed top-1/2 -translate-y-1/2 z-40 block ${
+      className={`fixed top-1/2 -translate-y-1/2 z-[60] block ${
         position === "right" ? "right-8" : "left-8"
       }`}
     >
-      <div className="relative w-[160px] h-[640px] bg-white shadow-lg rounded-lg overflow-hidden border border-gray-200">
+      <div className="relative w-[160px] h-[640px] bg-background shadow-lg rounded-lg overflow-hidden border border-border">
         {/* Coupang Partners Disclaimer */}
         <div className="absolute top-0 left-0 right-0 z-20 bg-gray-100 px-2 py-2">
           <p className="text-[9px] leading-tight text-gray-600 text-center">

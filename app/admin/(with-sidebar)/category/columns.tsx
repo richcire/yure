@@ -11,19 +11,10 @@ import {
 import { Button } from "@/components/ui/button";
 import { MoreHorizontal } from "lucide-react";
 import { createClient } from "@/utils/supabase/client";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { DeleteAlert } from "@/components/admin/delete-alert";
+import { toast } from "sonner";
 import {
   Dialog,
   DialogTrigger,
@@ -41,45 +32,6 @@ interface Category {
   name: string;
 }
 
-const DeleteAlert = ({
-  onDelete,
-  name,
-}: {
-  onDelete: () => Promise<void>;
-  name: string;
-}) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const router = useRouter();
-  const handleDelete = async () => {
-    await onDelete();
-    setIsOpen(false);
-    router.refresh();
-  };
-
-  return (
-    <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
-      <AlertDialogTrigger asChild>
-        <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
-          삭제
-        </DropdownMenuItem>
-      </AlertDialogTrigger>
-      <AlertDialogContent>
-        <AlertDialogHeader>
-          <AlertDialogTitle>정말 삭제하시겠습니까?</AlertDialogTitle>
-          <AlertDialogDescription>
-            이 작업은 &quot;{name}&quot;을(를) 영구적으로 삭제합니다. 이 작업은
-            취소할 수 없습니다.
-          </AlertDialogDescription>
-        </AlertDialogHeader>
-        <AlertDialogFooter>
-          <AlertDialogCancel>취소</AlertDialogCancel>
-          <AlertDialogAction onClick={handleDelete}>삭제</AlertDialogAction>
-        </AlertDialogFooter>
-      </AlertDialogContent>
-    </AlertDialog>
-  );
-};
-
 const deleteCategory = async (id: number) => {
   const supabase = createClient();
 
@@ -92,19 +44,25 @@ const ModifyDialog = ({ id, name }: { id: number; name: string }) => {
   const [categoryName, setCategoryName] = useState(name);
   const router = useRouter();
   const handleModify = async () => {
+    if (!categoryName.trim()) {
+      toast.error("카테고리 이름을 입력해주세요.");
+      return;
+    }
+
     const supabase = createClient();
     const { error } = await supabase
       .from("categories")
-      .update({ name: categoryName })
+      .update({ name: categoryName.trim() })
       .eq("id", id);
 
     if (error) {
-      window.alert(error.message);
+      toast.error("카테고리 수정에 실패했습니다: " + error.message);
       return;
-    } else {
-      setIsOpen(false);
-      router.refresh();
     }
+
+    toast.success("카테고리가 수정되었습니다.");
+    setIsOpen(false);
+    router.refresh();
   };
 
   return (
@@ -159,7 +117,7 @@ export const columns: ColumnDef<Category>[] = [
             <DropdownMenuSeparator />
             <DeleteAlert
               onDelete={() => deleteCategory(category.id)}
-              name={category.name}
+              title={category.name}
             />
           </DropdownMenuContent>
         </DropdownMenu>
