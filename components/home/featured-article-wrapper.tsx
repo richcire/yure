@@ -55,7 +55,7 @@ export default async function FeaturedArticleWrapper() {
             {/* Banner Image */}
             <div className="absolute inset-0 transition-transform duration-500 ease-in-out group-hover:scale-110">
               <Image
-                src={article.banner_url || article.thumbnail_url}
+                src={article.banner_url ?? article.thumbnail_url ?? ""}
                 alt={article.title}
                 fill
                 className="object-cover"

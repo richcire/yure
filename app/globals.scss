@@ -13,12 +13,12 @@
     --card-foreground: 0 0% 3.9%; /* #020617 */
     --popover: 0 0% 100%; /* #fff */
     --popover-foreground: 0 0% 3.9%; /* #020617 */
-    --primary: 4, 76%, 23%;
+    --primary: 4 76% 23%;
     --primary-foreground: 0 0% 98%;
     --secondary: 0 0% 96.1%;
     --secondary-foreground: 0 0% 9%;
     --muted: 0 0% 96.1%;
-    --muted-foreground: 4, 76%, 23%, 0.7;
+    --muted-foreground: 4 15% 45%; /* 브랜드 컬러와 조화되는 웜 그레이 (#69140E 계열 뮤트) */
     --accent: 0 0% 96.1%;
     --accent-foreground: 0 0% 9%;
     --destructive: 0 84.2% 60.2%;
@@ -226,11 +226,11 @@ body {
   0%,
   100% {
     transform: translateY(-5%);
-    animationtimingfunction: cubic-bezier(0.8, 0, 1, 1);
+    animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
   }
   50% {
     transform: translateY(0);
-    animationtimingfunction: cubic-bezier(0, 0, 0.2, 1);
+    animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
   }
 }
 
@@ -238,7 +238,7 @@ body {
   animation: bounce-slow 2s infinite;
 }
 
-@keyframes fadeIn {
+@keyframes fadeInUp {
   0% {
     opacity: 0;
     transform: translateY(10px);
@@ -250,7 +250,7 @@ body {
 }
 
 .animate-fade-in {
-  animation: fadeIn 0.5s ease-in;
+  animation: fadeInUp 0.5s ease-in;
 }
 
 @keyframes shine {
@@ -298,5 +298,15 @@ body {
   .writing-vertical {
     writing-mode: vertical-rl;
     text-orientation: mixed;
+  }
+
+  /* linkify() 유틸이 생성하는 외부 링크 스타일 */
+  .external-link {
+    color: theme("colors.link-blue");
+    text-decoration: underline;
+
+    &:hover {
+      opacity: 0.8;
+    }
   }
 }

@@ -98,7 +98,7 @@ function ScheduleCardSkeleton() {
 export default async function SchedulePage({ searchParams }: Props) {
   const { search } = await searchParams;
   return (
-    <div className="w-full max-w-5xl mx-auto min-h-screen bg-background pt-20">
+    <div className="w-full max-w-5xl mx-auto min-h-screen bg-background pt-32">
       <Header />
       <Suspense
         key={search || ""}

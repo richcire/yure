@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/dialog";
 import { IEvents } from "@/types/supabase-table";
 import "@/styles/calendar.css";
+import { linkify } from "@/utils/linkify";
 
 interface CalendarProps {
   events: IEvents[];
@@ -55,15 +56,6 @@ function transformEvents(dbEvents: IEvents[]): EventData[] {
   }));
 }
 
-function linkify(text: string) {
-  // URL 정규식
-  const urlRegex = /(https?:\/\/[^\s]+)/g;
-  return text
-    .replace(urlRegex, (url) => {
-      return `<a href="${url}" target="_blank" style="color: #1976d2; text-decoration: underline;">${url}</a>`;
-    })
-    .replace(/\n/g, "<br />"); // 줄바꿈 처리
-}
 
 export default function Calendar({ events }: CalendarProps) {
   const [selectedEvent, setSelectedEvent] = useState<EventApi | null>(null);
@@ -84,7 +76,7 @@ export default function Calendar({ events }: CalendarProps) {
         plugins={[dayGridPlugin]}
         initialView="dayGridMonth"
         events={transformedEvents}
-        eventTextColor="#000000"
+        eventTextColor="hsl(var(--foreground))"
         headerToolbar={{
           left: "prev title next",
           right: "",

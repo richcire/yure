@@ -119,7 +119,7 @@ export default function KaraokeCardsWrapper() {
   });
 
   if (!searchQuery) {
-    return <div>검색 키워드가 없습니다.</div>;
+    return <div>검색 키워드를 입력해주세요!</div>;
   }
 
   return (
@@ -204,9 +204,9 @@ export default function KaraokeCardsWrapper() {
                 key={virtualItem.key}
                 title={songs[virtualItem.index].song_title}
                 artist={songs[virtualItem.index].singer}
-                tjNumber={songs[virtualItem.index].tj}
-                kyNumber={songs[virtualItem.index].ky}
-                joyNumber={songs[virtualItem.index].js}
+                tjNumber={songs[virtualItem.index].tj ?? undefined}
+                kyNumber={songs[virtualItem.index].ky ?? undefined}
+                joyNumber={songs[virtualItem.index].js ?? undefined}
               />
             ))}
           </div>
@@ -219,16 +219,6 @@ export default function KaraokeCardsWrapper() {
             <LoadingSpinner />
           </div>
         )}
-      </div>
-
-      <div className="flex flex-col items-center justify-center gap-4 p-8">
-        <p>찾으시는 노래가 없으신가요?</p>
-        <Link
-          href="/karaoke/application"
-          className="text-[#003844] hover:text-[#214E34] underline"
-        >
-          노래방 곡 추가 신청하기
-        </Link>
       </div>
     </>
   );

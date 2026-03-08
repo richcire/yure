@@ -8,9 +8,9 @@ export interface ITranslations {
     id: number;
     name: string;
   }[];
-  thumbnail_url: string;
+  thumbnail_url: string | null;
   created_at: string;
-  release_date: string;
+  release_date: string | null;
   permalink: string;
   keyword: string;
   views: number;
@@ -26,8 +26,8 @@ export interface IArticles {
   created_at: string;
   updated_at: string;
   slug: string;
-  thumbnail_url: string;
-  banner_url: string;
+  thumbnail_url: string | null;
+  banner_url: string | null;
 }
 
 export interface ITranslationCategories {
@@ -41,13 +41,10 @@ export interface ICategories {
   created_at: string;
 }
 
-export interface IFeaturedArticles {
-  id: string;
-  title: string;
-  thumbnail_url: string;
-  slug: string;
-  banner_url: string;
-}
+export type IFeaturedArticles = Pick<
+  IArticles,
+  "id" | "title" | "thumbnail_url" | "slug" | "banner_url"
+>;
 
 export interface IComments {
   id: string;
@@ -55,15 +52,17 @@ export interface IComments {
   author_name: string;
   author_id: string;
   content: string;
-  parent_comment_id: string;
+  parent_comment_id: string | null;
   created_at: string;
   is_deleted?: boolean;
 }
 
+export type UserRole = "admin" | "employee" | "none";
+
 export interface IUserInfo {
   id: string;
   name: string;
-  role: string;
+  role: UserRole;
   created_at: string;
 }
 
@@ -71,9 +70,9 @@ export interface IKaraokeSongs {
   id: string;
   song_title: string;
   singer: string;
-  tj: string;
-  ky: string;
-  js: string;
+  tj: string | null;
+  ky: string | null;
+  js: string | null;
   keyword: string;
   created_at: string;
   updated_at: string;
@@ -85,34 +84,30 @@ export interface INews {
   slug: string;
   content: string;
   summary: string;
-  thumbnail_url: string;
+  thumbnail_url: string | null;
   user_info: IUserInfo;
   created_at: string;
   updated_at: string;
 }
 
-export interface IFeaturedNews {
-  id: string;
-  thumbnail_url: string;
-  title: string;
-  summary: string;
-  slug: string;
-}
+export type IFeaturedNews = Pick<
+  INews,
+  "id" | "thumbnail_url" | "title" | "summary" | "slug"
+>;
+
+export type NotificationType =
+  | "comment_reply"
+  | "mention"
+  | "system"
+  | string;
 
 export interface INotifications {
   id: string;
   recipient_user_id: string;
   message: string;
-  type: string;
+  type: NotificationType;
   relevant_url: string;
   is_read: boolean;
-  created_at: string;
-}
-
-export interface ITest {
-  id: string;
-  content: string;
-  thumbnail_url: string;
   created_at: string;
 }
 

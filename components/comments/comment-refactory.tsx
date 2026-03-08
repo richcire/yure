@@ -21,7 +21,7 @@ import Reply from "./reply-refactory";
 interface CommentProps {
   comment: IComments & { replies: IComments[] };
   user: User | undefined;
-  handleDelete: any;
+  handleDelete: (commentId: string) => void;
   handleSubmitReply: (
     e: React.FormEvent<HTMLFormElement>,
     replyContent: string,

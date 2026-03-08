@@ -325,7 +325,6 @@ type WorkflowInput = { input_as_text: string };
 // Main code entrypoint
 export const runWorkflow = async (workflow: WorkflowInput) => {
   return await withTrace("Auto Translate", async () => {
-    const state = {};
     const conversationHistory: AgentInputItem[] = [
       {
         role: "user",
@@ -338,12 +337,10 @@ export const runWorkflow = async (workflow: WorkflowInput) => {
         workflow_id: "wf_690ee61d5d1c8190a58e055a65c6214e017aae9496ce43a2",
       },
     });
-    console.log("translate start");
     const japaneseLyricsTranslaterResultTemp = await runner.run(
       japaneseLyricsTranslater,
       [...conversationHistory]
     );
-    console.log("translate end");
     conversationHistory.push(
       ...japaneseLyricsTranslaterResultTemp.newItems.map((item) => item.rawItem)
     );
@@ -355,8 +352,6 @@ export const runWorkflow = async (workflow: WorkflowInput) => {
     const japaneseLyricsTranslaterResult = {
       output_text: japaneseLyricsTranslaterResultTemp.finalOutput ?? "",
     };
-    console.log(japaneseLyricsTranslaterResult.output_text);
-    console.log("html converter start");
     const htmlConverterResultTemp = await runner.run(
       htmlConverter,
       [...conversationHistory],
@@ -366,7 +361,6 @@ export const runWorkflow = async (workflow: WorkflowInput) => {
         },
       }
     );
-    console.log("html converter end");
     conversationHistory.push(
       ...htmlConverterResultTemp.newItems.map((item) => item.rawItem)
     );

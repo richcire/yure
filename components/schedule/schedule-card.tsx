@@ -9,19 +9,10 @@ import {
 } from "@/components/ui/dialog";
 import { useState } from "react";
 import { IEvents } from "@/types/supabase-table";
+import { linkify } from "@/utils/linkify";
 
 interface ScheduleCardProps {
   events: IEvents[];
-}
-
-function linkify(text: string) {
-  // URL 정규식
-  const urlRegex = /(https?:\/\/[^\s]+)/g;
-  return text
-    .replace(urlRegex, (url) => {
-      return `<a href="${url}" target="_blank" style="color: #1976d2; text-decoration: underline;">${url}</a>`;
-    })
-    .replace(/\n/g, "<br />"); // 줄바꿈 처리
 }
 
 export default function ScheduleCard({ events }: ScheduleCardProps) {

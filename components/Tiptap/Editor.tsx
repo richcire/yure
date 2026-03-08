@@ -14,7 +14,6 @@ import { createClient } from "@/utils/supabase/client";
 import { useState, useEffect } from "react";
 import { Save } from "lucide-react";
 import { Input } from "@/components/ui/input";
-import { Progress } from "@/components/ui/progress";
 import { useRouter } from "next/navigation";
 import { DatePicker } from "@/components/date-picker";
 import { ICategories, ITranslations } from "@/types/supabase-table";
@@ -29,6 +28,8 @@ import {
   DrawerTrigger,
 } from "@/components/ui/drawer";
 import Link from "@tiptap/extension-link";
+import { tiptapLinkConfig } from "@/lib/tiptap-link-config";
+import { EditorSavingOverlay } from "./EditorSavingOverlay";
 import { MultiSelect } from "../ui/multi-select";
 import { Label } from "../ui/label";
 import { InstagramExtension } from "./extensions/InstagramExtension";
@@ -95,81 +96,10 @@ export default function TiptapEditor({ id }: { id?: string }) {
       }),
       Highlight.configure({
         HTMLAttributes: {
-          class: "bg-[#FFD966] text-[#69140E]",
+          class: "bg-lyric-mark text-primary",
         },
       }),
-      Link.configure({
-        openOnClick: false,
-        autolink: true,
-        defaultProtocol: "https",
-        protocols: ["http", "https"],
-        isAllowedUri: (url, ctx) => {
-          try {
-            // construct URL
-            const parsedUrl = url.includes(":")
-              ? new URL(url)
-              : new URL(`${ctx.defaultProtocol}://${url}`);
-
-            // use default validation
-            if (!ctx.defaultValidate(parsedUrl.href)) {
-              return false;
-            }
-
-            // disallowed protocols
-            const disallowedProtocols = ["ftp", "file", "mailto"];
-            const protocol = parsedUrl.protocol.replace(":", "");
-
-            if (disallowedProtocols.includes(protocol)) {
-              return false;
-            }
-
-            // only allow protocols specified in ctx.protocols
-            const allowedProtocols = ctx.protocols.map((p) =>
-              typeof p === "string" ? p : p.scheme
-            );
-
-            if (!allowedProtocols.includes(protocol)) {
-              return false;
-            }
-
-            // disallowed domains
-            const disallowedDomains = [
-              "example-phishing.com",
-              "malicious-site.net",
-            ];
-            const domain = parsedUrl.hostname;
-
-            if (disallowedDomains.includes(domain)) {
-              return false;
-            }
-
-            // all checks have passed
-            return true;
-          } catch {
-            return false;
-          }
-        },
-        shouldAutoLink: (url) => {
-          try {
-            // construct URL
-            const parsedUrl = url.includes(":")
-              ? new URL(url)
-              : new URL(`https://${url}`);
-
-            // only auto-link if the domain is not in the disallowed list
-            const disallowedDomains = [
-              "example-no-autolink.com",
-              "another-no-autolink.com",
-            ];
-            const domain = parsedUrl.hostname;
-
-            return !disallowedDomains.includes(domain);
-          } catch {
-            return false;
-          }
-        },
-      }),
-      //   FontSize,
+      Link.configure(tiptapLinkConfig),
     ],
     content: "",
     editorProps: {
@@ -216,7 +146,9 @@ export default function TiptapEditor({ id }: { id?: string }) {
 
         setTitle(translation.title);
         setArtist(translation.artist);
-        setReleaseDate(new Date(translation.release_date));
+        if (translation.release_date) {
+          setReleaseDate(new Date(translation.release_date));
+        }
         setPermalink(translation.permalink);
         editor?.commands.setContent(translation.content);
       }
@@ -386,17 +318,7 @@ export default function TiptapEditor({ id }: { id?: string }) {
 
   return (
     <>
-      <div
-        className={`fixed top-0 left-0 w-screen h-screen bg-black/50 z-30 flex justify-center items-center ${
-          isSaving ? "block" : "hidden"
-        }`}
-      >
-        <Progress
-          value={progressValue}
-          className="w-1/3"
-          indicatorClassName="bg-white"
-        />
-      </div>
+      <EditorSavingOverlay isSaving={isSaving} progressValue={progressValue} />
       <div className="w-full relative min-h-screen pb-16">
         <div className="flex flex-col gap-6 max-w-5xl mx-auto w-full p-4">
           <Input
