@@ -383,7 +383,6 @@ export function PostEditor() {
               onBack={() => setMobileView("main")}
             />
           )}
-          <Button onClick={savePost}>Save</Button>
         </Toolbar>
 
         <div className="flex flex-col gap-6 max-w-5xl mx-auto w-full p-4">
@@ -400,6 +399,14 @@ export function PostEditor() {
             className="simple-editor-content"
           />
         </div>
+
+        <button
+          onClick={savePost}
+          disabled={isSaving}
+          className="fixed bottom-6 right-6 z-50 bg-primary text-primary-foreground px-5 py-2.5 rounded-full shadow-lg hover:bg-primary/90 transition-colors disabled:opacity-50"
+        >
+          {isSaving ? "저장 중..." : "저장"}
+        </button>
       </EditorContext.Provider>
     </div>
   );
