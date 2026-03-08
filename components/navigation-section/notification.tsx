@@ -71,18 +71,24 @@ export default function Notification() {
       <button
         className="hover:text-primary transition-colors flex items-center justify-center relative"
         onClick={() => setShowNotifications((prev) => !prev)}
+        aria-label="알림 목록 열기"
+        aria-expanded={showNotifications}
+        aria-haspopup="dialog"
       >
-        <BellIcon size={20} />
+        <BellIcon size={20} aria-hidden="true" />
         {notifications.length > 0 && (
-          <div className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
+          <div
+            className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center"
+            aria-label={`읽지 않은 알림 ${notifications.length}개`}
+          >
             {notifications.length > 9 ? "9+" : notifications.length}
           </div>
         )}
       </button>
 
       {showNotifications && (
-        <div className="absolute right-1 top-full pt-2">
-          <div className="w-80 bg-[#F5F5F5] backdrop-blur-sm shadow-sm border rounded-md p-4">
+        <div className="absolute right-1 top-full pt-2" role="dialog" aria-label="알림">
+          <div className="w-80 bg-comfortWhite backdrop-blur-sm shadow-sm border rounded-md p-4">
             <div className="flex items-center justify-between mb-4">
               <h3 className="font-medium">알림</h3>
               <button

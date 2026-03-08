@@ -3,6 +3,8 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/utils/supabase/client";
+import { cleanAndLowercase } from "@/utils/string";
+import { toast } from "sonner";
 import {
   Dialog,
   DialogTrigger,
@@ -17,7 +19,6 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { DropdownMenuTrigger } from "@radix-ui/react-dropdown-menu";
 
 interface SongModifyDialogProps {
   id: string;
@@ -53,6 +54,11 @@ export const SongModifyDialog = ({
   const router = useRouter();
 
   const handleUpload = async () => {
+    if (!songData.title.trim() || !songData.artist.trim()) {
+      toast.error("제목과 아티스트를 입력해주세요.");
+      return;
+    }
+
     const supabase = createClient();
     const { error } = await supabase
       .from("karaoke_songs")
@@ -67,20 +73,14 @@ export const SongModifyDialog = ({
       .eq("id", id);
 
     if (error) {
-      window.alert(error.message);
+      toast.error("수정에 실패했습니다: " + error.message);
       return;
-    } else {
-      setIsOpen(false);
-      router.refresh();
     }
-  };
 
-  function cleanAndLowercase(str1: string, str2: string) {
-    return (str1 + str2) // Concatenates the strings
-      .replaceAll(/[\n\r\t\b\f\v]/g, "")
-      .replaceAll(" ", "") // Removes spaces
-      .toLowerCase(); // Converts to lowercase
-  }
+    toast.success("곡 정보가 수정되었습니다.");
+    setIsOpen(false);
+    router.refresh();
+  };
 
   const handleTitleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const title = e.target.value;

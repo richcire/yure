@@ -116,6 +116,27 @@ VERCEL_URL                        # Vercel 배포 URL (자동 설정)
 
 ---
 
+## 디자인 시스템
+
+> **UI 작업 전 반드시 [`DESIGN_SYSTEM.md`](./DESIGN_SYSTEM.md)를 먼저 읽으세요.**
+
+색상 토큰, 타이포그래피, 레이아웃 패턴, 컴포넌트 패턴, 금지사항이 모두 정리되어 있습니다.
+
+### 핵심 토큰 요약
+
+| 역할 | Tailwind 클래스 |
+|---|---|
+| 기본 텍스트 | `text-foreground` |
+| 보조 텍스트 | `text-muted-foreground` |
+| 페이지 배경 | `bg-background` |
+| 밝은 배경 | `bg-comfortWhite` |
+| 한지 배경 | `bg-hanji` |
+| 브랜드 강조 | `bg-primary`, `text-primary` |
+| 보더 | `border-border` |
+| 파괴적 액션 | `bg-destructive`, `text-destructive` |
+
+---
+
 ## 공통 컨벤션
 
 - **컴포넌트**: `"use client"` 지시어가 없으면 기본적으로 Server Component
@@ -126,3 +147,4 @@ VERCEL_URL                        # Vercel 배포 URL (자동 설정)
 - **아이콘**: `lucide-react`
 - **날짜 처리**: `date-fns`
 - **TypeScript**: 모든 파일은 TypeScript (`.ts`, `.tsx`), `any` 사용 금지
+- **외부 링크 변환**: `utils/linkify.ts`의 `linkify()` 함수 사용 (직접 구현 금지)

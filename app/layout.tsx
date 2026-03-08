@@ -58,12 +58,12 @@ export default function RootLayout({
         {/* 구글 애드센스 코드 스니펫 */}
         <AdSenseCodeSnippet />
       </head>
-      <body className="text-[#69140E]">
+      <body className="text-foreground">
         {/* <WebVitals /> */}
 
         <ThemeProvider
           attribute="class"
-          defaultTheme="ligth"
+          defaultTheme="light"
           enableSystem
           disableTransitionOnChange
         >

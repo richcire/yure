@@ -4,6 +4,7 @@ import Link from "next/link";
 import { ITranslations } from "@/types/supabase-table";
 import { ArrowBigUp } from "lucide-react";
 import squareLogo from "@/public/assets/logos/square_high.jpeg";
+
 interface SongCardProps {
   song: ITranslations;
 }
@@ -21,20 +22,20 @@ export function SongCard({ song }: SongCardProps) {
             className="object-cover transition-transform duration-300 group-hover:scale-110"
             priority={true}
           />
-          <div className="absolute inset-0 bg-black/05 transition-opacity duration-300 " />
+          <div className="absolute inset-0 bg-black/5 transition-opacity duration-300" />
         </div>
         <div className="absolute top-2 left-2 z-20 flex items-center gap-1 bg-black/50 rounded-md px-2 py-1">
-          <ArrowBigUp className="w-4 h-4 text-white" />
+          <ArrowBigUp className="w-4 h-4 text-white" aria-hidden="true" />
           <span className="text-sm text-white">{song.views || 0}</span>
         </div>
         <div className="relative z-10 h-full flex flex-col justify-end p-4">
           <CardTitle
-            className={`${song.thumbnail_url ? "text-[#F5F5F5]" : "text-foreground"} mb-2 font-bold`}
+            className={`${song.thumbnail_url ? "text-comfortWhite" : "text-foreground"} mb-2 font-bold`}
           >
             {song.title}
           </CardTitle>
           <p
-            className={`text-sm ${song.thumbnail_url ? "text-[#F5F5F5]" : "text-foreground"} font-medium`}
+            className={`text-sm ${song.thumbnail_url ? "text-comfortWhite" : "text-foreground"} font-medium`}
           >
             {song.artist}
           </p>

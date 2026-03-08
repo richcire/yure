@@ -11,7 +11,7 @@ import ArticleContentWrapper from "@/components/article/article-content-wrapper"
 import ArticleRelatedPosts from "@/components/article/article-related-posts";
 import squareLogo from "@/public/assets/logos/square_high.jpeg";
 import { ArticleCommentSection } from "@/components/article/article-comment-section";
-import { redirect } from "next/navigation";
+import { notFound } from "next/navigation";
 import Image from "next/image";
 import ArticleContent from "@/components/article/article-content";
 
@@ -69,7 +69,7 @@ export default async function ArticlePage({ params }: Props) {
 
   const { data, error } = await getArticle(decodeURIComponent(slug));
   if (error) {
-    redirect("/404");
+    notFound();
   }
 
   const structuredData = data
@@ -89,7 +89,7 @@ export default async function ArticlePage({ params }: Props) {
     : null;
 
   return (
-    <div className="min-h-screen w-screen  text-[#222]">
+    <div className="min-h-screen w-screen text-foreground">
       {/* 1. HERO 영역 (상단 사진 + 타이틀 오버레이) */}
       <section className="relative h-[340px] sm:h-[420px] lg:h-[460px]">
         <script
@@ -114,12 +114,12 @@ export default async function ArticlePage({ params }: Props) {
         <div className="relative z-10 h-full">
           <div className="mx-auto flex h-full max-w-3xl flex-col justify-end px-6 pb-12 lg:px-0">
             {/* 제목 */}
-            <h1 className="mb-3 text-2xl md:text-[30px] leading-tight font-semibold text-white">
+            <h1 className="mb-3 text-2xl md:text-3xl leading-tight font-semibold text-white">
               {data?.title}
             </h1>
 
             {/* 작성자/시간 */}
-            <div className="flex flex-wrap items-center gap-2 text-[11px] text-gray-300">
+            <div className="flex flex-wrap items-center gap-2 text-xs text-gray-300">
               <span>by {data?.user_info.name}</span>
               <span className="text-gray-400">·</span>
               <span>
@@ -131,7 +131,7 @@ export default async function ArticlePage({ params }: Props) {
       </section>
 
       {/* 2. 본문 영역 */}
-      <div className="bg-[#f8f5f0]">
+      <div className="bg-article-bg">
         <div className="mx-auto max-w-3xl px-6 lg:px-0 pt-10 pb-24">
           {/* 본문 */}
           <Suspense fallback={<TipTapContentSkeleton />}>
@@ -142,10 +142,10 @@ export default async function ArticlePage({ params }: Props) {
           <div className="my-10 h-px bg-gray-200" />
 
           <Suspense fallback={<div>관련 포스트를 불러오는 중...</div>}>
-            <ArticleRelatedPosts slug="anime-sabikuibisuko" />
+            <ArticleRelatedPosts slug={decodeURIComponent(slug)} />
           </Suspense>
           <Suspense fallback={<div>댓글을 불러오는 중...</div>}>
-            <ArticleCommentSection slug="anime-sabikuibisuko" />
+            <ArticleCommentSection slug={decodeURIComponent(slug)} />
           </Suspense>
         </div>
       </div>

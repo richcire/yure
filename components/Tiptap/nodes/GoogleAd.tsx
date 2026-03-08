@@ -60,8 +60,16 @@ export default function GoogleAd({ node, deleteNode, editor }: NodeViewProps) {
                 </div>
               </div>
             </div>
+          ) : process.env.NODE_ENV !== "production" ? (
+            // Dev mode placeholder in view mode
+            <div className="border border-dashed border-gray-300 dark:border-gray-600 rounded-lg h-full flex items-center justify-center">
+              <div className="flex items-center gap-2 text-gray-400 dark:text-gray-500">
+                <DollarSign className="h-4 w-4" />
+                <span className="text-xs">광고 영역 (개발 환경)</span>
+              </div>
+            </div>
           ) : (
-            // Actual ad in view mode
+            // Actual ad in view mode (production only)
             <ins
               className="adsbygoogle"
               style={{ display: "block", textAlign: "center" }}
