@@ -1,5 +1,5 @@
-import { SimpleEditor } from "@/components/tiptap-templates/simple/simple-editor";
+import { PostEditor } from "@/components/community/post-editor";
 
 export default function App() {
-  return <SimpleEditor />;
+  return <PostEditor />;
 }
