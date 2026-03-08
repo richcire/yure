@@ -13,6 +13,7 @@ import { Highlight } from "@tiptap/extension-highlight";
 import { Subscript } from "@tiptap/extension-subscript";
 import { Superscript } from "@tiptap/extension-superscript";
 import { Placeholder, Selection } from "@tiptap/extensions";
+import { toast } from "sonner";
 
 // --- UI Primitives ---
 import { Button } from "@/components/tiptap-ui-primitive/button";
@@ -212,6 +213,7 @@ export function PostEditor() {
     }
 
     if (file.size > MAX_FILE_SIZE) {
+      toast.error(`파일 크기가 ${MAX_FILE_SIZE / (1024 * 1024)}MB를 초과합니다.`);
       throw new Error(
         `File size exceeds maximum allowed (${MAX_FILE_SIZE / (1024 * 1024)}MB)`
       );
@@ -262,7 +264,7 @@ export function PostEditor() {
         maxSize: MAX_FILE_SIZE,
         limit: 3,
         upload: handleImageSelect,
-        onError: (error) => console.error("Upload failed:", error),
+        onError: (error) => toast.error(`이미지 업로드에 실패했습니다: ${error.message}`),
       }),
       Placeholder.configure({
         placeholder: "여기에 내용을 입력해주세요.",
