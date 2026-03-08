@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/utils/supabase/client";
+import { toast } from "sonner";
 import {
   Dialog,
   DialogTrigger,
@@ -22,18 +23,25 @@ export const UploadDialog = () => {
   const [categoryName, setCategoryName] = useState("");
   const router = useRouter();
   const handleUpload = async () => {
+    if (!categoryName.trim()) {
+      toast.error("카테고리 이름을 입력해주세요.");
+      return;
+    }
+
     const supabase = createClient();
     const { error } = await supabase
       .from("categories")
-      .insert({ name: categoryName });
+      .insert({ name: categoryName.trim() });
 
     if (error) {
-      window.alert(error.message);
+      toast.error("카테고리 생성에 실패했습니다: " + error.message);
       return;
-    } else {
-      setIsOpen(false);
-      router.refresh();
     }
+
+    toast.success("카테고리가 생성되었습니다.");
+    setCategoryName("");
+    setIsOpen(false);
+    router.refresh();
   };
 
   return (

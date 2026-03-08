@@ -88,8 +88,8 @@ const uploadThumbnailImage = async (file: File) => {
     console.error(uploadError);
     throw uploadError;
   }
-  const publiUrl = `https://ypkefxbgavxybyzluxan.supabase.co/storage/v1/object/public/images/${fileName}`;
-  return publiUrl;
+  const publicUrl = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/images/${fileName}`;
+  return publicUrl;
 };
 
 const translateInsertLyrics = async (

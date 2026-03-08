@@ -63,13 +63,18 @@ const ModifyKeywordAlert = ({
   const supabase = createClient();
 
   const handleSave = async () => {
-    await supabase
+    const { error } = await supabase
       .from("translations")
       .update({
         keyword:
           baseKeyword + newKeyword.replaceAll(" ", "").toLowerCase().trim(),
       })
       .eq("id", translationId);
+    if (error) {
+      toast.error("키워드 수정에 실패했습니다: " + error.message);
+      return;
+    }
+    toast.success("키워드가 수정되었습니다.");
     setIsOpen(false);
   };
 
@@ -161,16 +166,32 @@ const ModifyCategoriesAlert = ({
   };
 
   const handleSave = async () => {
-    await supabase
+    const { error: deleteError } = await supabase
       .from("translation_categories")
       .delete()
       .eq("translation_id", translationId);
-    await supabase.from("translation_categories").insert(
-      selectedCategoriesIds.map((categoryId) => ({
-        translation_id: translationId,
-        category_id: categoryId,
-      }))
-    );
+
+    if (deleteError) {
+      toast.error("카테고리 삭제에 실패했습니다: " + deleteError.message);
+      return;
+    }
+
+    const { error: insertError } = await supabase
+      .from("translation_categories")
+      .insert(
+        selectedCategoriesIds.map((categoryId) => ({
+          translation_id: translationId,
+          category_id: categoryId,
+        }))
+      );
+
+    if (insertError) {
+      toast.error("카테고리 수정에 실패했습니다: " + insertError.message);
+      return;
+    }
+
+    toast.success("카테고리가 수정되었습니다.");
+    setIsOpen(false);
   };
   return (
     <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
@@ -202,57 +223,12 @@ const ModifyCategoriesAlert = ({
   );
 };
 
-const DeleteAlert = ({
-  onDelete,
-  title,
-  translationId,
-}: {
-  onDelete: () => Promise<void>;
-  title: string;
-  translationId: string;
-}) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const supabase = createClient();
-
-  const router = useRouter();
-  const handleDelete = async () => {
-    await onDelete();
-    await supabase
-      .from("translation_categories")
-      .delete()
-      .eq("translation_id", translationId);
-    setIsOpen(false);
-    router.refresh();
-  };
-
-  return (
-    <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
-      <AlertDialogTrigger asChild>
-        <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
-          삭제
-        </DropdownMenuItem>
-      </AlertDialogTrigger>
-      <AlertDialogContent>
-        <AlertDialogHeader>
-          <AlertDialogTitle>정말 삭제하시겠습니까?</AlertDialogTitle>
-          <AlertDialogDescription>
-            이 작업은 &quot;{title}&quot;을(를) 영구적으로 삭제합니다. 이 작업은
-            취소할 수 없습니다.
-          </AlertDialogDescription>
-        </AlertDialogHeader>
-        <AlertDialogFooter>
-          <AlertDialogCancel>취소</AlertDialogCancel>
-          <AlertDialogAction onClick={handleDelete}>삭제</AlertDialogAction>
-        </AlertDialogFooter>
-      </AlertDialogContent>
-    </AlertDialog>
-  );
-};
+import { DeleteAlert } from "@/components/admin/delete-alert";
+import { toast } from "sonner";
 
 const deleteTranslation = async (id: string) => {
   const supabase = createClient();
 
-  // First fetch the translation to get content and image paths
   const { data: translation } = await supabase
     .from("translations")
     .select("*")
@@ -260,11 +236,9 @@ const deleteTranslation = async (id: string) => {
     .single();
 
   if (translation) {
-    // Create temporary div to parse HTML content
     const tempDiv = document.createElement("div");
     tempDiv.innerHTML = translation.content;
 
-    // Get all image URLs from the content
     const contentImages = Array.from(tempDiv.getElementsByTagName("img"))
       .map((img) => img.getAttribute("src"))
       .filter((src) => src?.includes("supabase.co"))
@@ -274,12 +248,15 @@ const deleteTranslation = async (id: string) => {
       })
       .filter((url): url is string => url !== undefined);
 
-    // Delete all images from storage
     if (contentImages.length > 0) {
       await supabase.storage.from("images").remove(contentImages);
     }
 
-    // Delete the translation record
+    await supabase
+      .from("translation_categories")
+      .delete()
+      .eq("translation_id", id);
+
     await supabase.from("translations").delete().eq("id", id);
   }
 };
@@ -346,7 +323,6 @@ export const columns: ColumnDef<ITranslations>[] = [
             <DeleteAlert
               onDelete={() => deleteTranslation(translation.id)}
               title={translation.title}
-              translationId={translation.id}
             />
           </DropdownMenuContent>
         </DropdownMenu>

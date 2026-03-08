@@ -163,7 +163,7 @@ const Navigation = () => {
                     </div>
                     {showDropdown && (
                       <div className="absolute right-0 top-full pt-2">
-                        <div className="w-32 bg-[#F5F5F5] backdrop-blur-sm shadow-sm border rounded-md py-2">
+                        <div className="w-32 bg-comfortWhite backdrop-blur-sm shadow-sm border rounded-md py-2">
                           <button
                             onClick={() => router.push("/protected/myPage")}
                             className="w-full text-left px-4 py-2 text-sm hover:bg-red-50 transition-colors rounded-md"
@@ -195,6 +195,9 @@ const Navigation = () => {
               <button
                 className="md:hidden ml-2 p-1"
                 onClick={() => setIsSidebarOpen(true)}
+                aria-label="메뉴 열기"
+                aria-expanded={isSidebarOpen}
+                aria-controls="mobile-sidebar"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -203,6 +206,7 @@ const Navigation = () => {
                   strokeWidth={1.5}
                   stroke="currentColor"
                   className="w-6 h-6"
+                  aria-hidden="true"
                 >
                   <path
                     strokeLinecap="round"
@@ -222,9 +226,13 @@ const Navigation = () => {
           isSidebarOpen ? "opacity-100 z-50" : "opacity-0 pointer-events-none"
         }`}
         onClick={() => setIsSidebarOpen(false)}
+        aria-hidden={!isSidebarOpen}
       >
         <div
-          className={`fixed right-0 top-0 h-full w-[20rem] bg-[#F5F5F5] shadow-lg transition-transform duration-300 ${
+          id="mobile-sidebar"
+          role="dialog"
+          aria-label="모바일 메뉴"
+          className={`fixed right-0 top-0 h-full w-[20rem] bg-comfortWhite shadow-lg transition-transform duration-300 ${
             isSidebarOpen ? "translate-x-0" : "translate-x-full"
           }`}
           onClick={(e) => e.stopPropagation()}
@@ -233,6 +241,7 @@ const Navigation = () => {
             <button
               className="absolute top-3 right-3 p-1"
               onClick={() => setIsSidebarOpen(false)}
+              aria-label="메뉴 닫기"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -241,6 +250,7 @@ const Navigation = () => {
                 strokeWidth={1.5}
                 stroke="currentColor"
                 className="w-6 h-6"
+                aria-hidden="true"
               >
                 <path
                   strokeLinecap="round"

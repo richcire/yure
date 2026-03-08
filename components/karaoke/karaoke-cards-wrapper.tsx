@@ -204,9 +204,9 @@ export default function KaraokeCardsWrapper() {
                 key={virtualItem.key}
                 title={songs[virtualItem.index].song_title}
                 artist={songs[virtualItem.index].singer}
-                tjNumber={songs[virtualItem.index].tj}
-                kyNumber={songs[virtualItem.index].ky}
-                joyNumber={songs[virtualItem.index].js}
+                tjNumber={songs[virtualItem.index].tj ?? undefined}
+                kyNumber={songs[virtualItem.index].ky ?? undefined}
+                joyNumber={songs[virtualItem.index].js ?? undefined}
               />
             ))}
           </div>
