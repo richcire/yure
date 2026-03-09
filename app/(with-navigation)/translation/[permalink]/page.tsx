@@ -1,15 +1,27 @@
 import { Suspense } from "react";
+import dynamic from "next/dynamic";
 import { createPublicClient } from "@/utils/supabase/public";
 import TranslationRelatedPosts from "@/components/translation/translation-related-posts";
-import ViewCounter from "@/components/translation/ViewCounter";
 import TranslationRelatedPostsSkeleton from "@/components/translation/translation-related-posts-skeleton";
 import squareLogo from "@/public/assets/logos/square_high.jpeg";
-import { TranslationCommentSection } from "@/components/translation/translation-comment-section";
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import TranslationContent from "@/components/translation/translation-content";
 import { ICategories } from "@/types/supabase-table";
-import { BottomDisplayAdWrapper } from "@/components/google-adsense/bottom-display-ad-wrapper";
+
+const ViewCounter = dynamic(
+  () => import("@/components/translation/ViewCounter")
+);
+const BottomDisplayAdWrapper = dynamic(() =>
+  import("@/components/google-adsense/bottom-display-ad-wrapper").then(
+    (mod) => ({ default: mod.BottomDisplayAdWrapper })
+  )
+);
+const TranslationCommentSection = dynamic(() =>
+  import("@/components/translation/translation-comment-section").then(
+    (mod) => ({ default: mod.TranslationCommentSection })
+  )
+);
 
 export async function generateMetadata({ params }: Props) {
   const { permalink } = await params;
@@ -87,6 +99,7 @@ export default async function TranslationPage({ params }: Props) {
           alt=""
           fill
           priority
+          sizes="100vw"
           className="object-cover"
         />
         {/* 가독성 보정용 오버레이 그라데이션 */}
