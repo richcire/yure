@@ -23,17 +23,13 @@ function NewsGridSkeleton() {
         ))}
       </div>
       <div className="md:col-span-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {[...Array(6)].map((_, i) => (
+        {[...Array(3)].map((_, i) => (
           <div key={i} className="flex flex-col space-y-3">
-            <Skeleton className="w-full h-40 rounded-sm animate-pulse bg-gray-300" />
+            <Skeleton className="w-full h-40 rounded-sm bg-gray-300" />
             <Skeleton className="w-3/4 h-5 bg-gray-300" />
             <Skeleton className="w-1/2 h-4 bg-gray-300" />
-            <Skeleton className="w-full h-16 bg-gray-300" />
           </div>
         ))}
-      </div>
-      <div className="md:col-span-12 mt-8 flex justify-center">
-        <Skeleton className="w-96 h-10 bg-gray-300" />
       </div>
     </div>
   );

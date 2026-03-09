@@ -1,9 +1,19 @@
 import NewsGrid from "@/components/news/news-grid";
-import { PaginationControl } from "@/components/ui/pagination-control";
 import { INews } from "@/types/supabase-table";
-import { createClient } from "@/utils/supabase/server";
-import { BottomDisplayAdWrapper } from "../google-adsense/bottom-display-ad-wrapper";
+import { createPublicClient } from "@/utils/supabase/public";
 import NewsCard from "@/components/news/news-card";
+import dynamic from "next/dynamic";
+
+const BottomDisplayAdWrapper = dynamic(() =>
+  import("../google-adsense/bottom-display-ad-wrapper").then((m) => ({
+    default: m.BottomDisplayAdWrapper,
+  }))
+);
+const PaginationControl = dynamic(() =>
+  import("@/components/ui/pagination-control").then((m) => ({
+    default: m.PaginationControl,
+  }))
+);
 
 const ITEMS_PER_PAGE = 9;
 
@@ -17,7 +27,7 @@ interface Props {
 export default async function NewsList({ searchParams }: Props) {
   const { search, page = "1" } = await searchParams;
   const currentPage = parseInt(page);
-  const supabase = await createClient();
+  const supabase = createPublicClient();
 
   // Build the base query
   let query = supabase.from("news").select(
@@ -25,7 +35,6 @@ export default async function NewsList({ searchParams }: Props) {
       id,
       title,
       slug,
-      content,
       summary,
       thumbnail_url,
       user_info!inner (name),

@@ -1,7 +1,9 @@
-import ScheduleCard from "@/components/schedule/schedule-card";
+import dynamic from "next/dynamic";
 import { IEvents } from "@/types/supabase-table";
 import { createClient } from "@/utils/supabase/server";
 import { PaginationControl } from "@/components/ui/pagination-control";
+
+const ScheduleCard = dynamic(() => import("@/components/schedule/schedule-card"));
 
 const ITEMS_PER_PAGE = 9;
 

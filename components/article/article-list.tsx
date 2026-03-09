@@ -2,7 +2,13 @@ import { ArticleGrid } from "@/components/article/article-grid";
 import { PaginationControl } from "@/components/ui/pagination-control";
 import { IArticles } from "@/types/supabase-table";
 import { createClient } from "@/utils/supabase/server";
-import { BottomDisplayAdWrapper } from "../google-adsense/bottom-display-ad-wrapper";
+import dynamic from "next/dynamic";
+
+const BottomDisplayAdWrapper = dynamic(() =>
+  import("../google-adsense/bottom-display-ad-wrapper").then((m) => ({
+    default: m.BottomDisplayAdWrapper,
+  }))
+);
 
 const ITEMS_PER_PAGE = 9;
 

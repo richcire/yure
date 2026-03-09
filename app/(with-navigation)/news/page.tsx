@@ -1,4 +1,3 @@
-import { SideVerticalDisplayAdWrapper } from "@/components/google-adsense/side-vertical-display-ad-wrapper";
 import Header from "@/components/news/header";
 import NewsBanner from "@/components/news/news-banner";
 import NewsList from "@/components/news/news-list";
@@ -42,17 +41,13 @@ function NewsGridSkeleton() {
         ))}
       </div>
       <div className="md:col-span-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {[...Array(6)].map((_, i) => (
+        {[...Array(3)].map((_, i) => (
           <div key={i} className="flex flex-col space-y-3">
-            <Skeleton className="w-full h-40 rounded-sm animate-pulse bg-gray-300" />
+            <Skeleton className="w-full h-40 rounded-sm bg-gray-300" />
             <Skeleton className="w-3/4 h-5 bg-gray-300" />
             <Skeleton className="w-1/2 h-4 bg-gray-300" />
-            <Skeleton className="w-full h-16 bg-gray-300" />
           </div>
         ))}
-      </div>
-      <div className="md:col-span-12 mt-8 flex justify-center">
-        <Skeleton className="w-96 h-10 bg-gray-300" />
       </div>
     </div>
   );
@@ -61,7 +56,7 @@ function NewsGridSkeleton() {
 function NewsCardSkeleton() {
   return (
     <div className="space-y-6">
-      {[...Array(5)].map((_, index) => (
+      {[...Array(3)].map((_, index) => (
         <div
           key={index}
           className="relative group border-b border-gray-300 pb-6 last:border-b-0"
@@ -121,7 +116,6 @@ export default async function NewsHomePage({ searchParams }: Props) {
           <NewsList searchParams={searchParams} />
         </Suspense>
       </main>
-      {/* <SideVerticalDisplayAdWrapper /> */}
     </div>
   );
 }

@@ -1,5 +1,7 @@
-import Calendar from "@/components/schedule/calendar";
+import dynamic from "next/dynamic";
 import { createClient } from "@/utils/supabase/server";
+
+const Calendar = dynamic(() => import("@/components/schedule/calendar"));
 import { IEvents } from "@/types/supabase-table";
 
 interface Props {
