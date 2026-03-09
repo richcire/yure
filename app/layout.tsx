@@ -55,6 +55,15 @@ export default function RootLayout({
   return (
     <html lang="ko" className={gothica1Font.className} suppressHydrationWarning>
       <head>
+        {/* Supabase Storage preconnect */}
+        <link
+          rel="preconnect"
+          href={process.env.NEXT_PUBLIC_SUPABASE_URL}
+        />
+        <link
+          rel="dns-prefetch"
+          href={process.env.NEXT_PUBLIC_SUPABASE_URL}
+        />
         {/* 구글 애드센스 코드 스니펫 */}
         <AdSenseCodeSnippet />
       </head>

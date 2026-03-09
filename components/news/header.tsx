@@ -1,6 +1,8 @@
 import { Newspaper } from "lucide-react";
-import NewsFilters from "./news-filters";
+import dynamic from "next/dynamic";
 import { Suspense } from "react";
+
+const NewsFilters = dynamic(() => import("./news-filters"));
 
 export default function Header() {
   return (

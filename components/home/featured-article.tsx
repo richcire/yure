@@ -60,7 +60,7 @@ export function FeaturedArticle({
                     fill
                     className="object-cover"
                     sizes="(max-width: 1500px) 100vw, 50vw"
-                    priority={index === 0}
+                    loading="lazy"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent">
                     <div className="absolute bottom-0 left-0 right-0 p-8">

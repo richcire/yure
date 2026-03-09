@@ -7,9 +7,10 @@ import squareLogo from "@/public/assets/logos/square_high.jpeg";
 
 interface SongCardProps {
   song: ITranslations;
+  index?: number;
 }
 
-export function SongCard({ song }: SongCardProps) {
+export function SongCard({ song, index = 0 }: SongCardProps) {
   return (
     <Link href={`/translation/${song.permalink}`} passHref>
       <Card className="w-full cursor-pointer relative group overflow-hidden aspect-video">
@@ -20,7 +21,8 @@ export function SongCard({ song }: SongCardProps) {
             fill
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             className="object-cover transition-transform duration-300 group-hover:scale-110"
-            priority={true}
+            priority={index < 2}
+            loading={index >= 2 ? "lazy" : undefined}
           />
           <div className="absolute inset-0 bg-black/5 transition-opacity duration-300" />
         </div>

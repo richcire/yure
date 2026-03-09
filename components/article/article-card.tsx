@@ -6,9 +6,10 @@ import squareLogo from "@/public/assets/logos/square_high.jpeg";
 
 interface ArticleCardProps {
   article: IArticles;
+  index?: number;
 }
 
-export function ArticleCard({ article }: ArticleCardProps) {
+export function ArticleCard({ article, index = 0 }: ArticleCardProps) {
   return (
     <Link href={`/article/${article.slug}`}>
       <Card className="flex flex-col h-[450px] overflow-hidden transition-all duration-300 hover:shadow-lg group bg-background text-foreground border-2 border-[#69140E]/50 hover:bg-[#69140E]/5">
@@ -19,6 +20,9 @@ export function ArticleCard({ article }: ArticleCardProps) {
             fill
             className="object-cover rounded-lg"
             sizes="(max-width: 750px) 100vw, (max-width: 1000px) 50vw, 33vw"
+            {...(index < 3
+              ? { priority: true }
+              : { loading: "lazy" as const })}
           />
         </div>
         <CardContent className="p-4 pt-0 flex-1">

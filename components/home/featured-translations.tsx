@@ -4,7 +4,6 @@ import { ArrowRightIcon } from "lucide-react";
 import { CDCarousel } from "./cd-carousel";
 import { ITranslations } from "@/types/supabase-table";
 import { Marquee } from "@/components/magicui/marquee";
-import { motion } from "motion/react";
 import VideoTape from "./video-tape";
 import { TextAnimate } from "../magicui/text-animate";
 

@@ -1,15 +1,29 @@
 import { Suspense } from "react";
+import dynamic from "next/dynamic";
 import Image from "next/image";
 import { FeaturedTranslations } from "@/components/home/featured-translations";
 import { Skeleton } from "@/components/ui/skeleton";
 import FeaturedArticleWrapper from "@/components/home/featured-article-wrapper";
-import { BottomDisplayAd } from "@/components/google-adsense/bottom-display-ad";
-import Search from "@/components/karaoke/search";
 import FeaturedNewsWrapper from "@/components/home/featured-news-wrapper";
-import yure_background from "@/public/assets/images/yure_1.png";
-import ScrollDownInstructor from "@/components/home/scroll-down-instructor";
-import { TextAnimate } from "@/components/magicui/text-animate";
-import FeaturedSchedule from "@/components/home/featured-schedule";
+import yure_background from "@/public/assets/images/yure_1.webp";
+
+const ScrollDownInstructor = dynamic(
+  () => import("@/components/home/scroll-down-instructor")
+);
+const TextAnimate = dynamic(() =>
+  import("@/components/magicui/text-animate").then((mod) => ({
+    default: mod.TextAnimate,
+  }))
+);
+const BottomDisplayAd = dynamic(() =>
+  import("@/components/google-adsense/bottom-display-ad").then((mod) => ({
+    default: mod.BottomDisplayAd,
+  }))
+);
+const Search = dynamic(() => import("@/components/karaoke/search"));
+const FeaturedSchedule = dynamic(
+  () => import("@/components/home/featured-schedule")
+);
 
 function CarouselLoading() {
   return (
@@ -95,10 +109,11 @@ export default function Home() {
         >
           <Image
             src={yure_background}
-            alt="Santa Claus image"
+            alt="유레 메인 배경 이미지"
             fill
             priority
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 100vw, 2912px"
+            placeholder="blur"
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 100vw, 1920px"
             className="object-cover"
           />
           <ScrollDownInstructor />

@@ -7,7 +7,7 @@ export const AdSenseCodeSnippet = () => {
       async
       src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4738868818137222"
       crossOrigin="anonymous"
-      strategy="afterInteractive"
+      strategy="lazyOnload"
     />
   );
 };
