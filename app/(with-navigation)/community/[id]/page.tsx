@@ -10,6 +10,7 @@ import PostContent from "@/components/community/post-content";
 import PostLike from "@/components/community/post-like";
 import PostComment from "@/components/community/post-comment";
 import { PostCommentSection } from "@/components/community/post-comment-section";
+import PostDeleteButton from "@/components/community/post-delete-button";
 
 interface PageProps {
   params: Promise<{ id: string }>;
@@ -19,11 +20,12 @@ async function getPost(id: string): Promise<IPosts | null> {
   const supabase = await createClient();
   const { data, error } = await supabase
     .from("posts")
-    .select("*, author_id!inner (name)")
+    .select("*, author_id!inner (user_id, name)")
     .eq("id", id)
     .single<IPosts>();
 
   if (error || !data) {
+    console.error("getPost error:", error);
     throw new Error("Post not found");
   }
 
@@ -37,6 +39,13 @@ export default async function CommunityPostPage({ params }: PageProps) {
   if (!post) {
     redirect("/404");
   }
+
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  const isAuthor = user?.id === post.author_id.user_id;
 
   return (
     <div className="w-full max-w-4xl mx-auto min-h-screen py-20 px-4">
@@ -72,6 +81,9 @@ export default async function CommunityPostPage({ params }: PageProps) {
                 })}
               </div>
             </div>
+            {isAuthor && (
+              <PostDeleteButton postId={post.id} content={post.content} />
+            )}
           </div>
         </div>
 
