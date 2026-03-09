@@ -1,6 +1,13 @@
-import { BottomDisplayAdWrapper } from "../google-adsense/bottom-display-ad-wrapper";
+import dynamic from "next/dynamic";
 import ScheduleCardWrapper from "@/components/schedule/schedule-card-wrapper";
 import CalendarWrapper from "@/components/schedule/calendar-wrapper";
+
+const BottomDisplayAdWrapper = dynamic(
+  () =>
+    import("../google-adsense/bottom-display-ad-wrapper").then((m) => ({
+      default: m.BottomDisplayAdWrapper,
+    }))
+);
 
 interface Props {
   searchParams: Promise<{

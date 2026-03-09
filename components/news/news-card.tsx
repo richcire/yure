@@ -2,7 +2,8 @@ import Link from "next/link";
 import Image from "next/image";
 import { Calendar } from "lucide-react";
 import { INews } from "@/types/supabase-table";
-import squareLogo from "@/public/assets/logos/square_high.jpeg";
+
+const FALLBACK_IMAGE = "/assets/logos/square_high.jpeg";
 interface NewsCardProps {
   news: INews[];
 }
@@ -26,12 +27,14 @@ export default function NewsCard({ news }: NewsCardProps) {
           <div className="flex flex-col gap-4 sm:flex-row">
             <div className="sm:w-1/4">
               <Image
-                src={newsItem.thumbnail_url || squareLogo}
+                src={newsItem.thumbnail_url || FALLBACK_IMAGE}
                 alt={newsItem.title}
                 width={300}
                 height={200}
                 className="h-auto w-full rounded-sm object-cover transition-opacity group-hover:opacity-90"
                 priority={index === 0}
+                loading={index === 0 ? "eager" : "lazy"}
+                sizes="(max-width: 640px) 100vw, 25vw"
               />
             </div>
             <div className="flex-1 sm:w-3/4">

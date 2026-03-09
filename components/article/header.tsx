@@ -1,5 +1,9 @@
-import { ArticleFilters } from "./article-filters";
+import dynamic from "next/dynamic";
 import { Suspense } from "react";
+
+const ArticleFilters = dynamic(() =>
+  import("./article-filters").then((m) => ({ default: m.ArticleFilters }))
+);
 export function Header() {
   return (
     <header className="container mx-auto px-4 md:px-8 flex flex-col justify-center items-center">

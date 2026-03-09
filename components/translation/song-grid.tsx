@@ -8,8 +8,8 @@ interface SongGridProps {
 export function SongGrid({ songs }: SongGridProps) {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 relative">
-      {songs.map((song) => (
-        <SongCard key={song.id} song={song} />
+      {songs.map((song, index) => (
+        <SongCard key={song.id} song={song} index={index} />
       ))}
     </div>
   );

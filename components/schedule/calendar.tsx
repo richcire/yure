@@ -81,7 +81,7 @@ export default function Calendar({ events }: CalendarProps) {
           left: "prev title next",
           right: "",
         }}
-        height={"100vh"}
+        height={"auto"}
         eventMouseEnter={(mouseEnterInfo) => {
           mouseEnterInfo.el.addEventListener("mouseenter", () => {
             mouseEnterInfo.el.style.cursor = "pointer";
