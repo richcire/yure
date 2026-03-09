@@ -24,10 +24,7 @@ body {
   overscroll-behavior-x: none;
 }
 
-html,
-body,
-#root,
-#app {
+.simple-editor-wrapper {
   height: 100%;
   background-color: var(--tt-bg-color);
 }

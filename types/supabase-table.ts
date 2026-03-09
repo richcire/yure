@@ -128,6 +128,12 @@ export interface IEventTypes {
   border_color: string;
 }
 
+export interface IUserFavoriteSongs {
+  user_id: string;
+  song_id: string;
+  created_at: string;
+}
+
 export interface IPosts {
   id: string;
   author_id: IUserInfo;

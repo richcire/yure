@@ -28,7 +28,7 @@ export default function DeleteUserButton({ userId }: DeleteUserButtonProps) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="destructive" className="w-full mt-4">
+        <Button variant="ghost" className="text-destructive hover:text-destructive">
           회원탈퇴
         </Button>
       </DialogTrigger>

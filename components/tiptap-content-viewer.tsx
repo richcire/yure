@@ -21,6 +21,20 @@ interface TiptapContentViewerProps {
 const EDITOR_CLASS =
   "prose focus:outline-none prose-p:mt-0 prose-p:mb-0 prose-headings:mt-0 prose:max-w-none prose-sm:max-w-none max-w-none w-full";
 
+/**
+ * Convert legacy `<ins class="adsbygoogle">` tags to `<div data-type="google-ad">`
+ * so ProseMirror can parse them as block nodes.
+ */
+function convertLegacyAdTags(html: string): string {
+  return html
+    .replace(/<ins\s+([^>]*class="[^"]*adsbygoogle[^"]*"[^>]*)><\/ins>/g, (_, attrs) => {
+      const withType = attrs.includes('data-type=')
+        ? attrs
+        : `data-type="google-ad" ${attrs}`;
+      return `<div ${withType}></div>`;
+    });
+}
+
 export default function TiptapContentViewer({
   content,
   variant = "article",
@@ -52,7 +66,7 @@ export default function TiptapContentViewer({
       Link.configure(tiptapLinkConfig),
     ],
     editable: false,
-    content: content,
+    content: includesGoogleAd ? convertLegacyAdTags(content) : content,
     editorProps: {
       attributes: { class: EDITOR_CLASS },
     },

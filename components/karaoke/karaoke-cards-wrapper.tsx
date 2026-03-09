@@ -5,6 +5,7 @@ import { createClient } from "@/utils/supabase/client";
 import { useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { KaraokeCard } from "./karaoke-card";
+import { FavoriteButton } from "./favorite-button";
 import { useVirtualizer } from "@tanstack/react-virtual";
 import { cn } from "@/lib/utils";
 import { Checkbox } from "../ui/checkbox";
@@ -43,8 +44,48 @@ export default function KaraokeCardsWrapper() {
     ky: true,
     joysound: false,
   });
+  const [userId, setUserId] = useState<string | undefined>();
+  const [favoriteSongIds, setFavoriteSongIds] = useState<Set<string>>(
+    new Set()
+  );
   const loaderRef = useRef<HTMLDivElement | null>(null);
   const parentRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    const loadFavorites = async () => {
+      const supabase = createClient();
+      const { data: sessionData } = await supabase.auth.getSession();
+      if (!sessionData.session) return;
+
+      const uid = sessionData.session.user.id;
+      setUserId(uid);
+
+      const { data, error } = await supabase
+        .from("user_favorite_songs")
+        .select("song_id")
+        .eq("user_id", uid);
+
+      if (error) {
+        console.error("Error fetching favorites:", error);
+        return;
+      }
+
+      setFavoriteSongIds(new Set(data.map((d) => d.song_id)));
+    };
+    loadFavorites();
+  }, []);
+
+  const handleFavoriteToggle = (songId: string, favorited: boolean) => {
+    setFavoriteSongIds((prev) => {
+      const next = new Set(prev);
+      if (favorited) {
+        next.add(songId);
+      } else {
+        next.delete(songId);
+      }
+      return next;
+    });
+  };
 
   useEffect(() => {
     // Reset state when search query changes
@@ -176,11 +217,12 @@ export default function KaraokeCardsWrapper() {
 
       {/* Column Headers */}
       <div className="flex items-center p-4 font-medium border rounded-lg mb-2">
-        <div className="w-[35%]">곡명</div>
-        <div className="w-[35%]">가수</div>
+        <div className="w-[30%]">곡명</div>
+        <div className="w-[30%]">가수</div>
         <div className="w-[10%] text-center">TJ</div>
         <div className="w-[10%] text-center">KY</div>
         <div className="w-[10%] text-center">JOYSOUND</div>
+        <div className="w-[10%] text-center"></div>
       </div>
 
       <div ref={parentRef} className="border rounded-lg">
@@ -199,16 +241,27 @@ export default function KaraokeCardsWrapper() {
               transform: `translateY(${rowVirtualizer.getVirtualItems()[0]?.start ?? 0}px)`,
             }}
           >
-            {rowVirtualizer.getVirtualItems().map((virtualItem) => (
-              <KaraokeCard
-                key={virtualItem.key}
-                title={songs[virtualItem.index].song_title}
-                artist={songs[virtualItem.index].singer}
-                tjNumber={songs[virtualItem.index].tj ?? undefined}
-                kyNumber={songs[virtualItem.index].ky ?? undefined}
-                joyNumber={songs[virtualItem.index].js ?? undefined}
-              />
-            ))}
+            {rowVirtualizer.getVirtualItems().map((virtualItem) => {
+              const song = songs[virtualItem.index];
+              return (
+                <KaraokeCard
+                  key={virtualItem.key}
+                  title={song.song_title}
+                  artist={song.singer}
+                  tjNumber={song.tj ?? undefined}
+                  kyNumber={song.ky ?? undefined}
+                  joyNumber={song.js ?? undefined}
+                  rightSlot={
+                    <FavoriteButton
+                      songId={song.id}
+                      initialFavorited={favoriteSongIds.has(song.id)}
+                      userId={userId}
+                      onToggle={handleFavoriteToggle}
+                    />
+                  }
+                />
+              );
+            })}
           </div>
         </div>
         {hasMore && (

@@ -7,15 +7,15 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { createClient } from "@/utils/supabase/client";
 import { useSearchParams } from "next/navigation";
-import { useState } from "react";
 import { IKaraokeSongs } from "@/types/supabase-table";
 import { useVirtualizer } from "@tanstack/react-virtual";
 import { cn } from "@/lib/utils";
 import { Checkbox } from "../ui/checkbox";
 import { MobileKaraokeInfeedAdWrapper } from "../google-adsense/mobile-karaoke-infeed-ad-wrapper";
+import { FavoriteButton } from "./favorite-button";
 import Link from "next/link";
 
 export const LoadingSpinner = ({ className }: { className?: string }) => {
@@ -50,8 +50,48 @@ export default function KaraokeAccordion() {
     ky: true,
     joysound: false,
   });
+  const [userId, setUserId] = useState<string | undefined>();
+  const [favoriteSongIds, setFavoriteSongIds] = useState<Set<string>>(
+    new Set()
+  );
   const loaderRef = useRef<HTMLDivElement | null>(null);
   const parentRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    const loadFavorites = async () => {
+      const supabase = createClient();
+      const { data: sessionData } = await supabase.auth.getSession();
+      if (!sessionData.session) return;
+
+      const uid = sessionData.session.user.id;
+      setUserId(uid);
+
+      const { data, error } = await supabase
+        .from("user_favorite_songs")
+        .select("song_id")
+        .eq("user_id", uid);
+
+      if (error) {
+        console.error("Error fetching favorites:", error);
+        return;
+      }
+
+      setFavoriteSongIds(new Set(data.map((d) => d.song_id)));
+    };
+    loadFavorites();
+  }, []);
+
+  const handleFavoriteToggle = (songId: string, favorited: boolean) => {
+    setFavoriteSongIds((prev) => {
+      const next = new Set(prev);
+      if (favorited) {
+        next.add(songId);
+      } else {
+        next.delete(songId);
+      }
+      return next;
+    });
+  };
 
   useEffect(() => {
     // Reset state when search query changes
@@ -209,12 +249,22 @@ export default function KaraokeAccordion() {
                       className="border rounded-lg px-4"
                     >
                       <AccordionTrigger className="hover:no-underline">
-                        <div className="flex flex-col items-start gap-1">
-                          <div className="font-medium">
-                            {songs[virtualItem.index].song_title}
-                          </div>
-                          <div className="text-sm text-muted-foreground">
-                            {songs[virtualItem.index].singer}
+                        <div className="flex items-center gap-3 w-full">
+                          <FavoriteButton
+                            songId={songs[virtualItem.index].id}
+                            initialFavorited={favoriteSongIds.has(
+                              songs[virtualItem.index].id
+                            )}
+                            userId={userId}
+                            onToggle={handleFavoriteToggle}
+                          />
+                          <div className="flex flex-col items-start gap-1">
+                            <div className="font-medium">
+                              {songs[virtualItem.index].song_title}
+                            </div>
+                            <div className="text-sm text-muted-foreground">
+                              {songs[virtualItem.index].singer}
+                            </div>
                           </div>
                         </div>
                       </AccordionTrigger>
