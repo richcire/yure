@@ -1,7 +1,14 @@
+import dynamic from "next/dynamic";
 import { createClient } from "@/utils/supabase/server";
 import { SongGrid } from "./song-grid";
 import { PaginationControl } from "../ui/pagination-control";
-import { BottomDisplayAdWrapper } from "../google-adsense/bottom-display-ad-wrapper";
+
+const BottomDisplayAdWrapper = dynamic(
+  () =>
+    import("../google-adsense/bottom-display-ad-wrapper").then((m) => ({
+      default: m.BottomDisplayAdWrapper,
+    }))
+);
 const ITEMS_PER_PAGE = 8;
 
 interface Props {
@@ -52,8 +59,19 @@ export default async function TranslationList({ searchParams }: Props) {
       ? Math.ceil((translations[0].count || 0) / ITEMS_PER_PAGE)
       : 0;
 
+  // LCP preload: 첫 번째 이미지를 미리 로드
+  const firstThumbnail = translations?.[0]?.thumbnail_url;
+
   return (
     <>
+      {firstThumbnail && (
+        <link
+          rel="preload"
+          as="image"
+          href={`/_next/image?url=${encodeURIComponent(firstThumbnail)}&w=640&q=75`}
+          fetchPriority="high"
+        />
+      )}
       {translations ? (
         <>
           <SongGrid songs={translations} />

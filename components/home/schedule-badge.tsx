@@ -1,7 +1,3 @@
-"use client";
-
-import { motion } from "motion/react";
-
 interface ScheduleBadgeProps {
   title: string;
   bgColor: string;
@@ -14,12 +10,11 @@ export default function ScheduleBadge({
   borderColor,
 }: ScheduleBadgeProps) {
   return (
-    <motion.div
-      whileHover={{ scale: 1.05 }}
-      className="px-3 py-1.5 bg-background rounded-full text-sm inline-block"
+    <div
+      className="px-3 py-1.5 bg-background rounded-full text-sm inline-block transition-transform hover:scale-105"
       style={{ backgroundColor: bgColor, borderColor: borderColor }}
     >
       {title}
-    </motion.div>
+    </div>
   );
 }

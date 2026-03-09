@@ -1,6 +1,13 @@
+import dynamic from "next/dynamic";
 import Footer from "@/components/footer";
-import Navigation from "@/components/navigation-section/navigation";
-import SideBannerAd from "@/components/advertisement/side-banner-ad";
+
+const Navigation = dynamic(
+  () => import("@/components/navigation-section/navigation")
+);
+
+const SideBannerAd = dynamic(
+  () => import("@/components/advertisement/side-banner-ad")
+);
 
 export default function WithNavigationLayout({
   children,

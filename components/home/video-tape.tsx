@@ -1,7 +1,4 @@
-"use client";
-
 import { ITranslations } from "@/types/supabase-table";
-import { motion } from "motion/react";
 import Image from "next/image";
 import squareLogo from "@/public/assets/logos/square_high.jpeg";
 import Link from "next/link";
@@ -13,10 +10,8 @@ export default function VideoTape({
 }) {
   return (
     <Link href={`/translation/${translation.permalink}`}>
-      <motion.div
-        className="w-32 h-[640px] bg-background rounded-lg relative overflow-hidden border border-muted cursor-pointer"
-        key={translation.id}
-        whileHover={{ y: -20 }}
+      <div
+        className="w-32 h-[640px] bg-background rounded-lg relative overflow-hidden border border-muted cursor-pointer transition-transform hover:-translate-y-5"
       >
         {/* Thumbnail section with overlaid title */}
         <div className="absolute top-0 left-0 w-full h-[calc(640px-4rem)]">
@@ -41,7 +36,7 @@ export default function VideoTape({
             {translation.artist}
           </div>
         </div>
-      </motion.div>
+      </div>
     </Link>
   );
 }

@@ -1,20 +1,25 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 interface SideBannerAdProps {
   position?: "left" | "right";
 }
 
 export default function SideBannerAd({ position = "right" }: SideBannerAdProps) {
+  const [isMounted, setIsMounted] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
   const isDevelopment = process.env.NODE_ENV === "development";
 
-  if (!isVisible) return null;
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  if (!isMounted || !isVisible) return null;
 
   return (
     <div
-      className={`fixed top-1/2 -translate-y-1/2 z-[60] block ${
+      className={`fixed top-1/2 -translate-y-1/2 z-[60] hidden 2xl:block ${
         position === "right" ? "right-8" : "left-8"
       }`}
     >
@@ -76,6 +81,7 @@ export default function SideBannerAd({ position = "right" }: SideBannerAdProps) 
               frameBorder="0" 
               scrolling="no" 
               referrerPolicy="unsafe-url"
+              loading="lazy"
               className="w-full h-full"
             />
           </div>
