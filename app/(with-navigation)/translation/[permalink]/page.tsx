@@ -148,7 +148,7 @@ export default async function TranslationPage({ params }: Props) {
             day: "numeric",
           })}
         </p>
-        <TranslationContent content={translation.content} />
+        <TranslationContent content={translation.content} variant="translation" />
         <BottomDisplayAdWrapper />
 
         {/* 추가 섹션(추천/댓글 등) */}

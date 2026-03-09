@@ -78,17 +78,17 @@ export function CommentsRefactory({
   }, []);
 
   return (
-    <div>
+    <div className="text-black">
       {useHideFeature && (
         <Button
           variant="ghost"
           onClick={() => setIsOpen(!isOpen)}
           className="flex items-center gap-2"
         >
-          <span>댓글 {isOpen ? "숨기기" : "보기"}</span>
-          <span className="text-sm text-muted-foreground">
-            ({comment.length})
+          <span className="text-foreground">
+            댓글 {isOpen ? "숨기기" : "보기"}
           </span>
+          <span className="text-sm">{comment.length}</span>
         </Button>
       )}
 
@@ -108,12 +108,12 @@ export function CommentsRefactory({
                   setNewComment(e.target.value)
                 }
                 placeholder="댓글을 달아보세요!"
-                className="w-full border-none shadow-md"
+                className="w-full border-gray-200 bg-transparent focus:outline-none focus-visible:ring-0 focus:border-foreground/20"
               />
             ) : (
               <Textarea
                 placeholder="로그인 후 댓글을 달아보세요!"
-                className="w-full border-none shadow-md"
+                className="w-full text-foreground border-gray-200 bg-transparent focus:outline-none focus-visible:ring-0 focus:border-foreground/20"
                 onClick={() => {
                   router.push(`/sign-in?redirectTo=${pathname}`);
                 }}
@@ -121,9 +121,15 @@ export function CommentsRefactory({
               />
             )}
             {user && (
-              <Button type="submit" disabled={!newComment.trim()}>
-                댓글 작성
-              </Button>
+              <div className="flex justify-end">
+                <Button
+                  type="submit"
+                  disabled={!newComment.trim()}
+                  className="border border-foreground/20 bg-transparent text-foreground hover:bg-background/30 transition-colors"
+                >
+                  댓글 작성
+                </Button>
+              </div>
             )}
           </form>
 

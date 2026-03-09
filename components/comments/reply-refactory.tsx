@@ -22,14 +22,14 @@ export default function Reply({ reply, onDelete }: ReplyProps) {
   // const canDelete = user?.id === reply.author_id;
 
   return (
-    <div className="relative pl-8 py-4 border-t">
+    <div className="relative pl-8 py-4 border-t border-foreground/20">
       <div className="absolute left-0 top-4 h-full w-8">
         <CornerDownRight className="w-4 h-4" />
       </div>
       <div className="flex items-center justify-between gap-2">
         <div className="flex items-center gap-2">
           <span className="font-semibold">{reply.author_name}</span>
-          <span className="text-sm text-muted-foreground">
+          <span className="text-sm text-gray-600">
             {formatDistanceToNow(new Date(reply.created_at), {
               addSuffix: true,
               locale: ko,
@@ -55,7 +55,11 @@ export default function Reply({ reply, onDelete }: ReplyProps) {
         </DropdownMenu>
         {/* )} */}
       </div>
-      <p className="mt-2">{reply.content}</p>
+      {reply.is_deleted ? (
+        <p className="text-foreground/80 mt-2">삭제된 댓글입니다.</p>
+      ) : (
+        <p className="text-foreground/80 mt-2">{reply.content}</p>
+      )}
     </div>
   );
 }

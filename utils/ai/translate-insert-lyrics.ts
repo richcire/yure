@@ -54,7 +54,7 @@ const makeFinalContent = (
       first_artist +
       "</strong><br><strong>" +
       second_artist +
-      "</strong></h2><ins class='rounded-md adsbygoogle' data-ad-layout='in-article' data-ad-format='fluid' data-ad-client='ca-pub-4738868818137222' data-ad-slot='2891582134' style='display: block; text-align: center;'></ins>" +
+      "</strong></h2><div data-type='google-ad' class='rounded-md adsbygoogle' data-ad-layout='in-article' data-ad-format='fluid' data-ad-client='ca-pub-4738868818137222' data-ad-slot='2891582134' style='display: block; text-align: center;'></div>" +
       finalContent;
   }
 

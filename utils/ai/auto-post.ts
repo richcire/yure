@@ -218,9 +218,9 @@ For each lyric block (every 3 lines of input), output the following HTML pattern
 
 ### 2️⃣ Ad Insertion Rule
 
-Insert the following '<ins>' ad block **after every 10 Japanese lyric lines** (that is, after every 10 lyric blocks):
+Insert the following ad block **after every 10 Japanese lyric lines** (that is, after every 10 lyric blocks):
 
-'<ins class=\"rounded-md adsbygoogle\"      data-ad-layout=\"in-article\"      data-ad-format=\"fluid\"      data-ad-client=\"ca-pub-4738868818137222\"      data-ad-slot=\"2891582134\"      style=\"display: block; text-align: center;\"></ins>'
+'<div data-type=\"google-ad\" class=\"rounded-md adsbygoogle\"      data-ad-layout=\"in-article\"      data-ad-format=\"fluid\"      data-ad-client=\"ca-pub-4738868818137222\"      data-ad-slot=\"2891582134\"      style=\"display: block; text-align: center;\"></div>'
 
 - “10 lyric sentences” = **10 Japanese lines (lyric blocks)**, not 30 total lines.
     
@@ -268,7 +268,7 @@ Insert the following '<ins>' ad block **after every 10 Japanese lyric lines** (t
 
 '<h1 style=\"text-align: center;\">사랑의 시작을 알리는 따뜻한 속삭임 💫</h1> <p style=\"text-align: center;\"></p>  <p style=\"text-align: center;\">君の声が聞こえる</p> <p style=\"text-align: center;\">키미노코에가 키코에루</p> <p style=\"text-align: center;\"><mark class=\"bg-[#FFD966] text-[#69140E]\">너의 목소리가 들려와</mark></p> <p style=\"text-align: center;\"></p>  <p style=\"text-align: center;\">世界が変わっていく</p> <p style=\"text-align: center;\">세카이가 카왓테이쿠</p> <p style=\"text-align: center;\"><mark class=\"bg-[#FFD966] text-[#69140E]\">세상이 바뀌어 가</mark></p> <p style=\"text-align: center;\"></p>'
 
-_(If this were the 10th lyric line, the '<ins>' ad block would appear next.)_
+_(If this were the 10th lyric line, the ad block would appear next.)_
 
 ---
 
@@ -293,7 +293,7 @@ Before sending the final output:
     
 -  '<mark>' highlight on Korean interpretation.
     
--  '<ins>' ad block inserted every 10 Japanese lyric lines.
+-  Ad block inserted every 10 Japanese lyric lines.
     
 -  Full lyrics included, no truncation.
     

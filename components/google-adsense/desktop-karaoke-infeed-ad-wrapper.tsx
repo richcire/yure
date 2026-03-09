@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect } from "react";
-import { BottomDisplayAd } from "./bottom-display-ad";
 
 declare global {
   interface Window {
@@ -9,14 +8,14 @@ declare global {
   }
 }
 
-export function MobileKaraokeInfeedAdWrapper() {
+export function DesktopKaraokeInfeedAdWrapper() {
   const isDevelopment = process.env.NODE_ENV !== "production";
 
   if (isDevelopment) {
     return (
       <div className="infeed-ad" style={{ height: "80px", minHeight: "80px", maxHeight: "80px" }}>
         <div className="w-full h-[80px] bg-gradient-to-r from-purple-50 to-blue-50 border border-dashed border-gray-300 rounded flex items-center justify-center">
-          <span className="text-xs text-gray-400">AD Placeholder</span>
+          <span className="text-xs text-gray-400">AD Placeholder (Desktop)</span>
         </div>
       </div>
     );
@@ -25,30 +24,16 @@ export function MobileKaraokeInfeedAdWrapper() {
   useEffect(() => {
     (window.adsbygoogle = window.adsbygoogle || []).push({});
   }, []);
+
   return (
-    <div
-      className="infeed-ad"
-      style={{
-        height: "80px !important",
-        minHeight: "80px",
-        maxHeight: "80px",
-        // overflow: "hidden",
-      }}
-    >
+    <div className="infeed-ad">
       <ins
         className="adsbygoogle"
-        style={{
-          display: "inline-block",
-          width: "375px",
-          height: "80px !important",
-          minHeight: "80px",
-          maxHeight: "80px",
-          overflow: "hidden",
-        }}
+        style={{ display: "block" }}
         data-ad-client="ca-pub-4738868818137222"
-        data-ad-slot="5910638236"
-        data-ad-format="fixed"
-        data-full-width-responsive="false"
+        data-ad-slot="6117941194"
+        data-ad-format="auto"
+        data-full-width-responsive="true"
       ></ins>
     </div>
   );

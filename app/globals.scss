@@ -1,5 +1,5 @@
-@import "../styles/_variables.scss";
-@import "../styles/_keyframe-animations.scss";
+@use "../styles/variables";
+@use "../styles/keyframe-animations";
 
 @tailwind base;
 @tailwind components;
@@ -105,15 +105,32 @@ body {
   box-sizing: border-box;
 }
 
-/* Webkit browsers (Chrome, Safari, etc.) */
-::-webkit-scrollbar {
-  display: none;
+/* html 메인 스크롤바만 표시, 나머지 요소는 숨김 */
+html {
+  scrollbar-width: thin;
+  scrollbar-color: hsl(var(--border)) transparent;
 }
 
-/* Firefox */
-* {
+html::-webkit-scrollbar {
+  width: 0.25rem;
+}
+
+html::-webkit-scrollbar-thumb {
+  background-color: hsl(var(--border));
+  border-radius: 9999px;
+}
+
+html::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+*:not(html) {
   scrollbar-width: none;
-  -ms-overflow-style: none; /* For Internet Explorer and Edge */
+  -ms-overflow-style: none;
+}
+
+*:not(html)::-webkit-scrollbar {
+  display: none;
 }
 
 @keyframes slideUp {

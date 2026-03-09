@@ -12,7 +12,8 @@ import { Typography } from "@tiptap/extension-typography";
 import { Highlight } from "@tiptap/extension-highlight";
 import { Subscript } from "@tiptap/extension-subscript";
 import { Superscript } from "@tiptap/extension-superscript";
-import { Selection } from "@tiptap/extensions";
+import { Placeholder, Selection } from "@tiptap/extensions";
+import { toast } from "sonner";
 
 // --- UI Primitives ---
 import { Button } from "@/components/tiptap-ui-primitive/button";
@@ -68,12 +69,17 @@ import { useCursorVisibility } from "@/hooks/use-cursor-visibility";
 // import { ThemeToggle } from "@/components/tiptap-templates/simple/theme-toggle"
 
 // --- Lib ---
-import { handleImageUpload, MAX_FILE_SIZE } from "@/lib/tiptap-utils";
+import { MAX_FILE_SIZE } from "@/lib/tiptap-utils";
 
 // --- Styles ---
 import "@/components/tiptap-templates/simple/simple-editor.scss";
 
-import content from "@/components/tiptap-templates/simple/data/content.json";
+// import content from "@/components/tiptap-templates/simple/data/content.json";
+
+import { createClient } from "@/utils/supabase/client";
+import { IPosts } from "@/types/supabase-table";
+import { useRouter } from "next/navigation";
+import { Input } from "@/components/ui/input";
 
 const MainToolbarContent = ({
   onHighlighterClick,
@@ -145,7 +151,7 @@ const MainToolbarContent = ({
 
       <Spacer />
 
-      {/* {isMobile && <ToolbarSeparator />} */}
+      {isMobile && <ToolbarSeparator />}
 
       {/* <ToolbarGroup>
         <ThemeToggle />
@@ -183,13 +189,46 @@ const MobileToolbarContent = ({
   </>
 );
 
-export function SimpleEditor() {
+export function PostEditor() {
   const isMobile = useIsBreakpoint();
   const { height } = useWindowSize();
   const [mobileView, setMobileView] = useState<"main" | "highlighter" | "link">(
     "main"
   );
   const toolbarRef = useRef<HTMLDivElement>(null);
+  const [title, setTitle] = useState("");
+  const [isSaving, setIsSaving] = useState(false);
+  const router = useRouter();
+
+  // 업로드 대기 중인 파일들을 저장 (blobUrl -> File 매핑)
+  const pendingFilesRef = useRef<Map<string, File>>(new Map());
+
+  // 이미지 선택 시 바로 업로드하지 않고 blob URL 반환
+  const handleImageSelect = async (
+    file: File,
+    onProgress?: (event: { progress: number }) => void
+  ): Promise<string> => {
+    if (!file) {
+      throw new Error("No file provided");
+    }
+
+    if (file.size > MAX_FILE_SIZE) {
+      toast.error(`파일 크기가 ${MAX_FILE_SIZE / (1024 * 1024)}MB를 초과합니다.`);
+      throw new Error(
+        `File size exceeds maximum allowed (${MAX_FILE_SIZE / (1024 * 1024)}MB)`
+      );
+    }
+
+    // Blob URL 생성 (임시 URL)
+    const blobUrl = URL.createObjectURL(file);
+
+    // 파일을 Map에 저장
+    pendingFilesRef.current.set(blobUrl, file);
+
+    onProgress?.({ progress: 100 });
+
+    return blobUrl;
+  };
 
   const editor = useEditor({
     immediatelyRender: false,
@@ -224,11 +263,14 @@ export function SimpleEditor() {
         accept: "image/*",
         maxSize: MAX_FILE_SIZE,
         limit: 3,
-        upload: handleImageUpload,
-        onError: (error) => console.error("Upload failed:", error),
+        upload: handleImageSelect,
+        onError: (error) => toast.error(`이미지 업로드에 실패했습니다: ${error.message}`),
+      }),
+      Placeholder.configure({
+        placeholder: "여기에 내용을 입력해주세요.",
       }),
     ],
-    content,
+    content: "",
   });
 
   const rect = useCursorVisibility({
@@ -241,6 +283,82 @@ export function SimpleEditor() {
       setMobileView("main");
     }
   }, [isMobile, mobileView]);
+
+  // Save 시 모든 pending 이미지를 Supabase에 업로드
+  const uploadPendingImages = async (content: string): Promise<string> => {
+    const supabase = createClient();
+    let updatedContent = content;
+
+    for (const [blobUrl, file] of Array.from(
+      pendingFilesRef.current.entries()
+    )) {
+      // 파일명 생성
+      const fileExt = file.name.split(".").pop();
+      const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`;
+      const filePath = `post/${fileName}`;
+
+      // Supabase Storage에 업로드
+      const { error } = await supabase.storage
+        .from("images")
+        .upload(filePath, file);
+
+      if (error) {
+        console.error("Upload error:", error);
+        continue;
+      }
+
+      // 공개 URL 가져오기
+      const { data: urlData } = supabase.storage
+        .from("images")
+        .getPublicUrl(filePath);
+
+      // blob URL을 실제 URL로 교체
+      updatedContent = updatedContent.replace(blobUrl, urlData.publicUrl);
+
+      // blob URL 해제
+      URL.revokeObjectURL(blobUrl);
+    }
+
+    // pending 파일 초기화
+    pendingFilesRef.current.clear();
+
+    return updatedContent;
+  };
+
+  const savePost = async () => {
+    if (!editor || !title) {
+      console.error("Please fill in all required fields");
+      return;
+    }
+
+    setIsSaving(true);
+
+    try {
+      const supabase = createClient();
+
+      // pending 이미지들을 Supabase에 업로드하고 URL 교체
+      const content = await uploadPendingImages(editor.getHTML());
+
+      // Prepare the data object
+      const postData: Partial<IPosts> = {
+        title,
+        content,
+      };
+
+      // Save to posts table
+      const { error } = await supabase.from("posts").insert([postData]);
+
+      if (error) {
+        console.error("Error saving post:", error);
+      } else {
+        router.push("/community");
+      }
+    } catch (error) {
+      console.error("Error details:", error);
+    } finally {
+      setIsSaving(false);
+    }
+  };
 
   return (
     <div className="simple-editor-wrapper">
@@ -269,11 +387,28 @@ export function SimpleEditor() {
           )}
         </Toolbar>
 
-        <EditorContent
-          editor={editor}
-          role="presentation"
-          className="simple-editor-content"
-        />
+        <div className="flex flex-col gap-6 max-w-5xl mx-auto w-full p-4">
+          <Input
+            placeholder="제목"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            required
+          />
+
+          <EditorContent
+            editor={editor}
+            role="presentation"
+            className="simple-editor-content"
+          />
+        </div>
+
+        <button
+          onClick={savePost}
+          disabled={isSaving}
+          className="fixed bottom-6 right-6 z-50 bg-primary text-primary-foreground px-5 py-2.5 rounded-full shadow-lg hover:bg-primary/90 transition-colors disabled:opacity-50"
+        >
+          {isSaving ? "저장 중..." : "저장"}
+        </button>
       </EditorContext.Provider>
     </div>
   );
