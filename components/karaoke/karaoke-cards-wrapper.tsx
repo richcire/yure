@@ -10,7 +10,9 @@ import { useVirtualizer } from "@tanstack/react-virtual";
 import { cn } from "@/lib/utils";
 import { Checkbox } from "../ui/checkbox";
 import { BottomDisplayAdWrapper } from "../google-adsense/bottom-display-ad-wrapper";
+import { DesktopKaraokeInfeedAdWrapper } from "../google-adsense/desktop-karaoke-infeed-ad-wrapper";
 import Link from "next/link";
+import React from "react";
 
 export const LoadingSpinner = ({ className }: { className?: string }) => {
   return (
@@ -155,7 +157,10 @@ export default function KaraokeCardsWrapper() {
   const rowVirtualizer = useVirtualizer({
     count: songs.length,
     getScrollElement: () => document.documentElement,
-    estimateSize: () => 60,
+    estimateSize: (index) => {
+      const hasAd = (index + 1) % 5 === 0;
+      return 60 + (hasAd ? 80 : 0);
+    },
     overscan: 5, // Add some overscan for smoother scrolling
   });
 
@@ -243,23 +248,26 @@ export default function KaraokeCardsWrapper() {
           >
             {rowVirtualizer.getVirtualItems().map((virtualItem) => {
               const song = songs[virtualItem.index];
+              const shouldShowAd = (virtualItem.index + 1) % 5 === 0;
               return (
-                <KaraokeCard
-                  key={virtualItem.key}
-                  title={song.song_title}
-                  artist={song.singer}
-                  tjNumber={song.tj ?? undefined}
-                  kyNumber={song.ky ?? undefined}
-                  joyNumber={song.js ?? undefined}
-                  rightSlot={
-                    <FavoriteButton
-                      songId={song.id}
-                      initialFavorited={favoriteSongIds.has(song.id)}
-                      userId={userId}
-                      onToggle={handleFavoriteToggle}
-                    />
-                  }
-                />
+                <React.Fragment key={virtualItem.key}>
+                  <KaraokeCard
+                    title={song.song_title}
+                    artist={song.singer}
+                    tjNumber={song.tj ?? undefined}
+                    kyNumber={song.ky ?? undefined}
+                    joyNumber={song.js ?? undefined}
+                    rightSlot={
+                      <FavoriteButton
+                        songId={song.id}
+                        initialFavorited={favoriteSongIds.has(song.id)}
+                        userId={userId}
+                        onToggle={handleFavoriteToggle}
+                      />
+                    }
+                  />
+                  {shouldShowAd && <DesktopKaraokeInfeedAdWrapper />}
+                </React.Fragment>
               );
             })}
           </div>
