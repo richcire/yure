@@ -24,30 +24,28 @@ body {
   overscroll-behavior-x: none;
 }
 
-html,
-body,
-#root,
-#app {
+.simple-editor-wrapper {
   height: 100%;
   background-color: var(--tt-bg-color);
 }
 
-::-webkit-scrollbar {
-  width: 0.25rem;
-}
+.simple-editor-wrapper {
+  &::-webkit-scrollbar {
+    display: block;
+    width: 0.25rem;
+  }
 
-* {
+  &::-webkit-scrollbar-thumb {
+    background-color: var(--tt-scrollbar-color);
+    border-radius: 9999px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
   scrollbar-width: thin;
   scrollbar-color: var(--tt-scrollbar-color) transparent;
-}
-
-::-webkit-scrollbar-thumb {
-  background-color: var(--tt-scrollbar-color);
-  border-radius: 9999px;
-}
-
-::-webkit-scrollbar-track {
-  background: transparent;
 }
 
 .tiptap.ProseMirror {

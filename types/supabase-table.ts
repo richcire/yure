@@ -54,12 +54,13 @@ export interface IComments {
   content: string;
   parent_comment_id: string | null;
   created_at: string;
+  is_deleted?: boolean;
 }
 
 export type UserRole = "admin" | "employee" | "none";
 
 export interface IUserInfo {
-  id: string;
+  user_id: string;
   name: string;
   role: UserRole;
   created_at: string;
@@ -125,4 +126,20 @@ export interface IEventTypes {
   name: string;
   bg_color: string;
   border_color: string;
+}
+
+export interface IUserFavoriteSongs {
+  user_id: string;
+  song_id: string;
+  created_at: string;
+}
+
+export interface IPosts {
+  id: string;
+  author_id: IUserInfo;
+  title: string;
+  content: string;
+  like_count: number;
+  comment_count: number;
+  created_at: string;
 }

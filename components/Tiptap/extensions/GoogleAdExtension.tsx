@@ -38,7 +38,7 @@ export const GoogleAdExtension = Node.create<GoogleAdOptions>({
   parseHTML() {
     return [
       {
-        tag: "ins.adsbygoogle",
+        tag: 'div[data-type="google-ad"]',
         getAttrs: (element) => {
           if (!(element instanceof HTMLElement)) return {};
 
@@ -55,8 +55,9 @@ export const GoogleAdExtension = Node.create<GoogleAdOptions>({
 
   renderHTML({ HTMLAttributes }) {
     return [
-      "ins",
+      "div",
       mergeAttributes(this.options.HTMLAttributes, {
+        "data-type": "google-ad",
         class: "adsbygoogle",
         style: "display:block; text-align:center;",
         "data-ad-layout": HTMLAttributes.layout,

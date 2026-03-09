@@ -16,11 +16,14 @@ export default function GoogleAd({ node, deleteNode, editor }: NodeViewProps) {
   useEffect(() => {
     // Only execute the ad script when not in edit mode and in production
     if (!showControls && process.env.NODE_ENV === "production") {
-      try {
-        (window.adsbygoogle = window.adsbygoogle || []).push({});
-      } catch (err) {
-        console.error("AdSense error:", err);
-      }
+      const timer = requestAnimationFrame(() => {
+        try {
+          (window.adsbygoogle = window.adsbygoogle || []).push({});
+        } catch (err) {
+          console.error("AdSense error:", err);
+        }
+      });
+      return () => cancelAnimationFrame(timer);
     }
   }, [showControls]);
 
@@ -42,11 +45,10 @@ export default function GoogleAd({ node, deleteNode, editor }: NodeViewProps) {
           </div>
         )}
 
-        {/* Container to limit ad width to 70% */}
-        <div className="w-[70%] mx-auto h-[160px]">
+        <div className="w-full max-w-2xl mx-auto">
           {showControls ? (
             // Preview mode in editor
-            <div className="border-2 border-dashed border-gray-300 rounded-lg p-6  bg-gray-50 dark:bg-gray-800 h-full">
+            <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 bg-gray-50 dark:bg-gray-800 min-h-[100px]">
               <div className="flex items-center justify-center gap-2 text-gray-600 dark:text-gray-400">
                 <DollarSign className="h-6 w-6" />
                 <div className="text-center">
@@ -62,7 +64,7 @@ export default function GoogleAd({ node, deleteNode, editor }: NodeViewProps) {
             </div>
           ) : process.env.NODE_ENV !== "production" ? (
             // Dev mode placeholder in view mode
-            <div className="border border-dashed border-gray-300 dark:border-gray-600 rounded-lg h-full flex items-center justify-center">
+            <div className="border border-dashed border-gray-300 dark:border-gray-600 rounded-lg min-h-[100px] flex items-center justify-center">
               <div className="flex items-center gap-2 text-gray-400 dark:text-gray-500">
                 <DollarSign className="h-4 w-4" />
                 <span className="text-xs">광고 영역 (개발 환경)</span>
@@ -72,7 +74,12 @@ export default function GoogleAd({ node, deleteNode, editor }: NodeViewProps) {
             // Actual ad in view mode (production only)
             <ins
               className="adsbygoogle"
-              style={{ display: "block", textAlign: "center" }}
+              style={{
+                display: "block",
+                textAlign: "center",
+                width: "100%",
+                minHeight: "100px",
+              }}
               data-ad-layout={layout}
               data-ad-format={format}
               data-ad-client={client}

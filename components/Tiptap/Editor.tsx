@@ -150,7 +150,16 @@ export default function TiptapEditor({ id }: { id?: string }) {
           setReleaseDate(new Date(translation.release_date));
         }
         setPermalink(translation.permalink);
-        editor?.commands.setContent(translation.content);
+        // Convert legacy <ins> ad tags to <div> for ProseMirror block parsing
+        const processedContent = translation.content
+          .replace(/<ins\s+([^>]*class="[^"]*adsbygoogle[^"]*"[^>]*)><\/ins>/g,
+            (_: string, attrs: string) => {
+              const withType = attrs.includes('data-type=')
+                ? attrs
+                : `data-type="google-ad" ${attrs}`;
+              return `<div ${withType}></div>`;
+            });
+        editor?.commands.setContent(processedContent);
       }
     };
 
