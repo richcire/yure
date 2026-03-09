@@ -69,16 +69,24 @@ export function FavoriteButton({
   };
 
   return (
-    <button
+    <div
+      role="button"
+      tabIndex={0}
       className={`flex items-center justify-center transition-colors ${
         isFavorited
           ? "text-red-500 hover:text-red-600"
           : "text-gray-400 hover:text-red-500"
       } ${isLoading ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}`}
-      onClick={handleClick}
-      disabled={isLoading}
+      onClick={isLoading ? undefined : handleClick}
+      onKeyDown={(e) => {
+        if ((e.key === "Enter" || e.key === " ") && !isLoading) {
+          e.preventDefault();
+          handleClick(e as unknown as React.MouseEvent);
+        }
+      }}
+      aria-disabled={isLoading}
     >
       <Heart className={`h-4 w-4 ${isFavorited ? "fill-current" : ""}`} />
-    </button>
+    </div>
   );
 }
