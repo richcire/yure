@@ -4,3 +4,5 @@ Disallow: /terms/
 Disallow: /*?*category=
 Disallow: /*?*page=
 Disallow: /*?*sort=
+
+Sitemap: https://yure.me/sitemap-index.xml
