@@ -42,7 +42,7 @@
 ```
 NEXT_PUBLIC_SUPABASE_URL          # Supabase 프로젝트 URL
 NEXT_PUBLIC_SUPABASE_ANON_KEY     # 공개 anon key (클라이언트/서버 공통)
-NEXT_PUBLIC_SUPABASE_SERVICE_ROLE_KEY  # service role key (어드민 전용)
+SUPABASE_SERVICE_ROLE_KEY  # service role key (어드민 전용)
 OPENAI_API_KEY                    # OpenAI API key (AI 번역 파이프라인)
 VERCEL_URL                        # Vercel 배포 URL (자동 설정)
 ```
