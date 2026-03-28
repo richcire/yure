@@ -38,7 +38,7 @@ const supabase = await createClient("service_role");
 ```
 
 - **사용 위치**: Server Action (신뢰된 서버 환경에서만)
-- **특징**: `NEXT_PUBLIC_SUPABASE_SERVICE_ROLE_KEY` 사용, RLS 우회
+- **특징**: `SUPABASE_SERVICE_ROLE_KEY` 사용, RLS 우회
 - **용도**: 유저 계정 삭제, RLS로 제한된 관리자 작업
 - **주의**: 절대 클라이언트 컴포넌트에서 사용 금지
 

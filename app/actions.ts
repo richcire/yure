@@ -103,6 +103,13 @@ export const signOutAction = async () => {
 export const deleteUserAction = async (userId: string) => {
   const supabase = await createClient();
 
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user || user.id !== userId) {
+    return encodedRedirect("error", "/protected/myPage", "권한이 없습니다.");
+  }
+
   const { error: deleteUserInfoError } = await supabase
     .from("user_info")
     .delete()
